@@ -1,113 +1,503 @@
-import Image from 'next/image'
+import Image from "next/image";
+import Faq from "./components/Faq";
 
+type Sector = {
+  name: string;
+  bgColor: string;
+  color?: string;
+};
+const colorOptions = {
+  darkGreen: "#2B5F49",
+  red: "#D43731",
+  milk: "#E6E6E6",
+  maroon: "#713045",
+  blue: "#4266AC",
+  yellow: "#FFCD29",
+  lightGreen: "#DFEBE9",
+  mediumGreen: "#7CB855",
+  lightMaroon: "#8C284A",
+  lightBlue: "#5F94CB",
+  orange: "#E37138",
+  darkBlue: "#304471",
+};
+const sectors1: Sector[] = [
+  { name: "Hunger", bgColor: colorOptions.darkGreen },
+  { name: "Wildlife", bgColor: colorOptions.darkGreen },
+  { name: "Poverty", bgColor: colorOptions.red },
+  { name: "Disaster", bgColor: colorOptions.milk, color: "black" },
+
+  { name: "Charity", bgColor: colorOptions.darkGreen },
+  { name: "Academics", bgColor: colorOptions.maroon },
+  { name: "Medical", bgColor: colorOptions.blue },
+  { name: "Community", bgColor: colorOptions.yellow, color: "black" },
+  { name: "Crisis", bgColor: colorOptions.lightGreen, color: "black" },
+  { name: "Events", bgColor: colorOptions.mediumGreen, color: "black" },
+  // {name : "Hunger", color : colorOptions.darkGreen },
+];
+
+const sectors2: Sector[] = [
+  { name: "Equality", bgColor: colorOptions.lightMaroon },
+  { name: "Climate", bgColor: colorOptions.maroon },
+  { name: "Legal", bgColor: colorOptions.red },
+  { name: "Political", bgColor: colorOptions.blue },
+
+  { name: "Housing", bgColor: colorOptions.maroon },
+  { name: "Health", bgColor: colorOptions.lightBlue },
+  { name: "Women", bgColor: colorOptions.orange },
+  { name: "Disability", bgColor: colorOptions.darkBlue },
+  { name: "Enviroment", bgColor: colorOptions.orange },
+  { name: "Youth", bgColor: colorOptions.darkGreen },
+  // {name : "Hunger", color : colorOptions.darkGreen },
+];
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
+    <main>
+      <section className="modal-backdrop hide-modal">
+        <div className="modal-hold">
+          <div className="join-waitlist-img-hold">
             <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+              src="/assets/svg/join-waitlist.svg"
+              alt="waitlist"
+              width={200}
+              height={200}
+              className=""
             />
-          </a>
+          </div>
+          <form
+            className="modal"
+            name="simple-contact-form"
+            action="https://formspree.io/f/mwkjzgvb"
+            method="POST"
+          >
+            <h2 className="">Join the waitlist!</h2>
+            <p className="">Be the first to know when we launch.</p>
+
+            <div className="input-hold">
+              <label htmlFor="fullname" className="">
+                Full name
+              </label>
+              <input
+                type="text"
+                name="name"
+                id="fullname"
+                className=""
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+
+            <div className="input-hold">
+              <label htmlFor="email" className="">
+                Email address
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                className=""
+                placeholder="Enter your email address"
+                required
+              />
+            </div>
+
+            <div className="input-hold">
+              <label htmlFor="title" className="">
+                Who are you?
+              </label>
+              <select name="message" id="title" className="" required>
+                <option value="">Select title</option>
+                <option value="Volunteer">Volunteer</option>
+                <option value="Non-profit organization">
+                  Non-profit organization
+                </option>
+                <option value="Not sure yet">Not sure yet</option>
+              </select>
+            </div>
+
+            <button type="submit" className="">
+              Submit
+            </button>
+          </form>
         </div>
-      </div>
+      </section>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
+      <nav className="">
         <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+          src="/svg/crowdr-logo.svg"
+          alt="crowdr logo"
+          width={76}
+          height={20}
+          className=""
         />
-      </div>
+        <ul>
+          <li>
+            <a href="#" className="active">
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="#">Contact</a>
+          </li>
+          <li>
+            <a href="#">How it works</a>
+          </li>
+        </ul>
+        <button className="btn-outline">Join Private Beta</button>
+      </nav>
+      <main className="">
+        <section className="cta">
+          <div className="content">
+            <h2 className="content-header">
+              Build community
+              <br />
+              through <span>giving.</span>
+            </h2>
+            <p className="">
+              Crowdr helps you fundraise and find volunteering opportunities
+              that make a change in our world.
+            </p>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+            <button className="btn-standard">Join Private Beta</button>
+          </div>
+        </section>
+        <section className="sectors">
+          <ul>
+            {sectors1.map((sector) => (
+              <li
+                style={{
+                  background: sector.bgColor,
+                  color: sector?.color || "white",
+                }}
+              >
+                {sector.name}
+              </li>
+            ))}
+          </ul>
+          <ul>
+            {sectors2.map((sector) => (
+              <li
+                style={{
+                  background: sector.bgColor,
+                  color: sector?.color || "white",
+                }}
+              >
+                {sector.name}
+              </li>
+            ))}
+          </ul>
+        </section>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+        <section className="slogan">
+          <p className="">STARTING A CAMPAIGN</p>
+          <h2 className="">It takes three simple steps...</h2>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
+          <div className="steps">
+            <div className="step">
+              <div className="step-stage">
+                <div className="">
+                  <div className="dashed"></div>
+                </div>
+                <div className="">
+                  <h1 className="">1</h1>
+                </div>
+                <div className="">
+                  <div className="dashed"></div>
+                </div>
+              </div>
+              <h3 className="">Sign up</h3>
+              <p className="">It takes just 3 minutes.</p>
+            </div>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+            <div className="step">
+              <div className="step-stage">
+                <div className="">
+                  <div className="dashed"></div>
+                </div>
+                <div className="">
+                  <h1 className="">2</h1>
+                </div>
+                <div className="">
+                  <div className="dashed"></div>
+                </div>
+              </div>
+              <h3 className="">Create a campaign</h3>
+              <p className="">Tell your story.</p>
+            </div>
+            <div className="step">
+              <div className="step-stage">
+                <div className="">
+                  <div className="dashed"></div>
+                </div>
+                <div className="">
+                  <h1 className="">3</h1>
+                </div>
+                <div className="">
+                  <div className="dashed"></div>
+                </div>
+              </div>
+              <h3 className="">Share your campaign</h3>
+              <p className="">Get support from your community and beyond.</p>
+            </div>
+          </div>
+          <div className="flex justify-end w-65"><button className="btn-outline">Learn More</button></div>
+        </section>
+
+        <section className="benefits">
+          <div className="benefits-header">
+            <p className="">OUR DIFFERENCE</p>
+            <h2 className="">Why Crowdr?</h2>
+          </div>
+
+          <div className="benefits-details">
+            <div className="benefits-artwork">
+              <Image
+                src="/svg/volunteering.svg"
+                width={200}
+                height={200}
+                alt="volunteering"
+                className=""
+              />
+            </div>
+            <div className="benefits-content">
+              <h2 className="">For Individuals</h2>
+              <p className="">Volunteers and donors.</p>
+
+              <div className="perks">
+                <div className="card-tile">
+                  <Image
+                    src="/svg/hand-love.svg"
+                    width={200}
+                    height={200}
+                    alt="support community"
+                    className=""
+                  />
+                  <div className="">
+                    <h4 className="">Support your community</h4>
+                    <p className="">
+                      Impact your community by volunteering and donating to our
+                      catalog of non-profit initiatives.
+                    </p>
+                  </div>
+                </div>
+                <div className="card-tile">
+                  <Image
+                    src="/svg/heart-paper.svg"
+                    width={200}
+                    height={200}
+                    alt="volunteering resume"
+                    className=""
+                  />
+                  <div className="">
+                    <h4 className="">Build a volunteering resume</h4>
+                    <p className="">
+                      Boost your résumé with volunteering experience and
+                      increase your chances of career success.
+                    </p>
+                  </div>
+                </div>
+                <div className="card-tile">
+                  <Image
+                    src="/svg/people.svg"
+                    width={200}
+                    height={200}
+                    alt="people"
+                    className=""
+                  />
+                  <div className="">
+                    <h4 className="">Network and make new friends</h4>
+                    <p className="">
+                      Expand your circle by connecting with other like-minded
+                      individuals.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="benefits-details">
+            <div className="benefits-artwork artwork-left">
+              <Image
+                src="/svg/non-profit.svg"
+                alt="non-profits"
+                width={200}
+                height={200}
+                className=""
+              />
+            </div>
+            <div className="benefits-content content-right">
+              <h2 className="">For Non-profits</h2>
+              <p className="">NGOs, charities and social good companies.</p>
+
+              <div className="perks">
+                <div className="card-tile">
+                  <Image
+                    src="/svg/money.svg"
+                    alt="receive donations"
+                    width={200}
+                    height={200}
+                    className=""
+                  />
+                  <div className="">
+                    <h4 className="">Receive donations</h4>
+                    <p className="">
+                      Use our fundraising tools to meet and exceed your
+                      organization’s funding goals!
+                    </p>
+                  </div>
+                </div>
+                <div className="card-tile">
+                  <Image
+                    src="/svg/user-search.svg"
+                    alt="search volunteers"
+                    width={200}
+                    height={200}
+                    className=""
+                  />
+                  <div className="">
+                    <h4 className="">Source volunteers</h4>
+                    <p className="">
+                      Find consistent and vetted volunteers to help execute your
+                      outreach initiatives.
+                    </p>
+                  </div>
+                </div>
+                <div className="card-tile">
+                  <Image
+                    src="/svg/chart.svg"
+                    alt="access to valuable insights"
+                    width={200}
+                    height={200}
+                    className=""
+                  />
+                  <div className="">
+                    <h4 className="">Get access to valuable insights</h4>
+                    <p className="">
+                      Use our CRM and analytics tools to better understand your
+                      community and make more effective decisions.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Faq />
+
+        <section className="watchlist">
+          <div className="watchlist-content">
+            <div className="watchlist-text-hold">
+              <h1 className="">Be a part of our community.</h1>
+              <button className="btn-standard btn-white">Join Private Beta</button>
+            </div>
+          </div>
+          <div className="watchlist-partb"/>
+        </section>
+
+        <footer className="">
+          <div className="links-hold">
+            <div className="links">
+              <h3 className="">Company</h3>
+              <ul className="">
+                <li className="">
+                  <a href="" className="">
+                    About us
+                  </a>
+                </li>
+                <li className="">
+                  <a
+                    href="mailto:contact.crowdr@gmail.com"
+                    target="_blank"
+                    className=""
+                  >
+                    Contact
+                  </a>
+                </li>
+                <li className="">
+                  <a href="" className="">
+                    FAQs
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="links">
+              <h3 className="">Legal</h3>
+              <ul className="">
+                <li className="">
+                  <a href="" className="">
+                    Privacy policy
+                  </a>
+                </li>
+                <li className="">
+                  <a href="" className="">
+                    Terms of service
+                  </a>
+                </li>
+                <li className="">
+                  <a href="" className="">
+                    Cookie policy
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="links">
+              <h3 className="">Connect</h3>
+              <div className="socials-links">
+                <a
+                  href="https://instagram.com/crowdr.app?igshid=ZWQyN2ExYTkwZQ=="
+                  target="_blank"
+                  className=""
+                >
+                  <Image
+                    src="/svg/instagram.svg"
+                    alt="instagram"
+                    width={32}
+                    height={32}
+                    className=""
+                  />
+                </a>
+                <a
+                  href="https://twitter.com/crowdr_app?s=11&t=fK9DaoyW8Rt4TYyvhuMThg"
+                  target="_blank"
+                  className=""
+                >
+                  <Image
+                    src="/svg/twitter.svg"
+                    alt="twitter"
+                    width={32}
+                    height={32}
+                    className=""
+                  />
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/crowdr-app/"
+                  target="_blank"
+                  className=""
+                >
+                  <Image
+                    src="/svg/linkedin.svg"
+                    alt="linkedin"
+                    width={32}
+                    height={32}
+                    className=""
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="description">
+            <Image
+              src="/svg/crowdr-logo.svg"
+              alt="crowdr logo"
+              width={76}
+              height={20}
+              className=""
+            />
+            <p className="copyright">Copyright 2023, All Rights Reserved</p>
+          </div>
+        </footer>
+      </main>
     </main>
-  )
+  );
 }

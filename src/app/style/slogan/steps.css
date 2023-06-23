@@ -1,0 +1,77 @@
+.steps {
+  background-color: var(--BACKGROUND_PRIMARY);
+  padding: 20px 10px;
+}
+
+.steps h3 {
+  color: #FFFFFF;
+  margin: 10px 0 10px;
+}
+
+.steps p {
+  color: #FFFFFF;
+  padding: 0 20px;
+  font-weight: 300;
+  width: 100%;
+}
+
+.step-stage {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 10px 0 0;
+}
+
+.dashed {
+  border-top: 2px dashed #FFFFFF;
+  width: 100%;
+}
+
+.step-stage h1 {
+  background-color: #FFFFFF;
+  color: var(--BACKGROUND_PRIMARY);
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  font-size: 88px;
+  display: inline-block;
+  display: flex;
+  justify-content: center;
+}
+
+.step-stage > div {
+  display: flex;
+  align-items: center;
+}
+
+.step:nth-child(2) .step-stage > div:nth-child(2) {
+  border: 2px dashed #FFFFFF;
+  border-top: none;
+  border-radius: 50%;
+  border-right: none;
+  border-left: none;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.step-stage > div:nth-child(2) {
+  border: 2px dashed #FFFFFF;
+  border-bottom: none;
+  border-radius: 50%;
+  border-right: none;
+  border-left: none;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+
+@media screen and (min-width: 940px) {
+  .steps {
+    display: flex;
+    padding: 50px 20px;
+    margin: 50px 0;
+    border-radius: 20px;;
+    width: 65%;
+  }
+}

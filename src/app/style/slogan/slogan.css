@@ -1,0 +1,31 @@
+.slogan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0 0 0;
+  text-align: center;
+  /* background-color: var(--BACKGROUND_GREY); */
+}
+
+.slogan p {
+  color: var(--SECONDARY_COLOR);
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  line-height: 28px;
+  letter-spacing: 1px;
+}
+
+.slogan h2 {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 56px;
+  margin-bottom: 10px;
+  color: var(--BASE);
+}
+
+@media screen and (min-width: 600px) {
+  .slogan {
+    padding: 51px 0 60px 0;
+  }
+}

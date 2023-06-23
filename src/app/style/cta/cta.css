@@ -1,0 +1,77 @@
+.cta {
+  min-height: 70vh;
+  background: var(--PRIMARY_LIGHT_COLOR);
+  background-image: url('./../../assets/svg/worldmap.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding: 60px 10px;
+}
+
+.cta h2 {
+  font-size: 23px;
+  font-weight: 800;
+  color: var(--PRIMARY_DARK_COLOR);
+  max-width: 607px;
+  line-height: 1.25;
+}
+
+.cta p {
+  font-size: 14px;
+  color: var(--PRIMARY_DARK_COLOR);
+  margin: 12px 0 30px;
+  line-height: 22px;
+  width: 90%;
+  max-width: 400px;
+}
+.content {
+  /* width: 600px; */
+  margin-left:auto;
+  margin-right: auto;
+  text-align: center;
+  /* margin-top: -180px; */
+}
+
+.content-header span {
+  color: var(--PRIMARY_COLOR);
+}
+
+.painting {
+  margin:auto;
+  width: fit-content;
+  padding-top: 24px;
+}
+
+.painting img {
+  max-width: 90vw;
+}
+
+@media screen and (min-width: 600px) {
+  .cta h2 {
+    font-size: 48px;
+  }
+}
+
+@media screen and (min-width: 600px) {
+}
+
+@media screen and (min-width: 940px) {
+  .cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px;
+  }
+  .content {
+    align-self: flex-start;
+    padding-top: 130px;
+  }
+  .painting {
+    display: block;
+    padding-top: 0;
+  }
+
+  .painting img {
+    width: 80%;
+  }
+}

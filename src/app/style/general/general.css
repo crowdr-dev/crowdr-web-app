@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+@import './variable.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Public Sans', sans-serif;
+  color: var(--BASE);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--DARK);
+  font-family: 'Playfair Display', serif;
+}

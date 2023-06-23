@@ -1,0 +1,26 @@
+.btn-standard {
+  border: none;
+  background-color: var(--PRIMARY_COLOR);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: bold; 
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-outline {
+  border: none;
+  background-color: var(--PRIMARY_LIGHT_COLOR2);
+  color:  var(--PRIMARY_COLOR);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: bold; 
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-white {
+  background-color: white;
+  color:  var(--PRIMARY_COLOR);
+}
