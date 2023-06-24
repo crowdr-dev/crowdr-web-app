@@ -1,0 +1,33 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: var(--PRIMARY_LIGHT_COLOR);
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+nav ul li {
+  margin-right: 24px;
+  font-weight: bold;
+  color: black;
+}
+
+nav ul li:last-child {
+  margin-right: 0;
+}
+
+nav ul a.active {
+  color: var(--PRIMARY_COLOR);
+}
+
+@media screen and (min-width: 600px) {
+  nav {
+  padding: 20px 40px;
+  }
+}
