@@ -1,54 +1,7 @@
 import Image from "next/image";
 import Faq from "./components/Faq";
+import OurFeaturesAnimation from "./components/OurFeaturesAnimation";
 
-type Sector = {
-  name: string;
-  bgColor: string;
-  color?: string;
-};
-const colorOptions = {
-  darkGreen: "#2B5F49",
-  red: "#D43731",
-  milk: "#E6E6E6",
-  maroon: "#713045",
-  blue: "#4266AC",
-  yellow: "#FFCD29",
-  lightGreen: "#DFEBE9",
-  mediumGreen: "#7CB855",
-  lightMaroon: "#8C284A",
-  lightBlue: "#5F94CB",
-  orange: "#E37138",
-  darkBlue: "#304471",
-};
-const sectors1: Sector[] = [
-  { name: "Hunger", bgColor: colorOptions.darkGreen },
-  { name: "Wildlife", bgColor: colorOptions.darkGreen },
-  { name: "Poverty", bgColor: colorOptions.red },
-  { name: "Disaster", bgColor: colorOptions.milk, color: "black" },
-
-  { name: "Charity", bgColor: colorOptions.darkGreen },
-  { name: "Academics", bgColor: colorOptions.maroon },
-  { name: "Medical", bgColor: colorOptions.blue },
-  { name: "Community", bgColor: colorOptions.yellow, color: "black" },
-  { name: "Crisis", bgColor: colorOptions.lightGreen, color: "black" },
-  { name: "Events", bgColor: colorOptions.mediumGreen, color: "black" },
-  // {name : "Hunger", color : colorOptions.darkGreen },
-];
-
-const sectors2: Sector[] = [
-  { name: "Equality", bgColor: colorOptions.lightMaroon },
-  { name: "Climate", bgColor: colorOptions.maroon },
-  { name: "Legal", bgColor: colorOptions.red },
-  { name: "Political", bgColor: colorOptions.blue },
-
-  { name: "Housing", bgColor: colorOptions.maroon },
-  { name: "Health", bgColor: colorOptions.lightBlue },
-  { name: "Women", bgColor: colorOptions.orange },
-  { name: "Disability", bgColor: colorOptions.darkBlue },
-  { name: "Enviroment", bgColor: colorOptions.orange },
-  { name: "Youth", bgColor: colorOptions.darkGreen },
-  // {name : "Hunger", color : colorOptions.darkGreen },
-];
 export default function Home() {
   return (
     <main>
@@ -161,30 +114,7 @@ export default function Home() {
           </div>
         </section>
         <section className="sectors">
-          <ul>
-            {sectors1.map((sector) => (
-              <li
-                style={{
-                  background: sector.bgColor,
-                  color: sector?.color || "white",
-                }}
-              >
-                {sector.name}
-              </li>
-            ))}
-          </ul>
-          <ul>
-            {sectors2.map((sector) => (
-              <li
-                style={{
-                  background: sector.bgColor,
-                  color: sector?.color || "white",
-                }}
-              >
-                {sector.name}
-              </li>
-            ))}
-          </ul>
+          <OurFeaturesAnimation />
         </section>
 
         <section className="slogan">
@@ -239,7 +169,7 @@ export default function Home() {
               <p className="">Get support from your community and beyond.</p>
             </div>
           </div>
-          <div className="flex justify-end w-65"><button className="btn-outline">Learn More</button></div>
+          <div className="slogan-btn"><button className="btn-outline">Learn More</button></div>
         </section>
 
         <section className="benefits">
@@ -262,8 +192,8 @@ export default function Home() {
               <h2 className="">For Individuals</h2>
               <p className="">Volunteers and donors.</p>
 
-              <div className="perks">
-                <div className="card-tile">
+              <div className="perks ">
+                <div className="card-tile card-tile-active">
                   <Image
                     src="/svg/hand-love.svg"
                     width={200}
@@ -346,7 +276,7 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="card-tile">
+                <div className="card-tile card-tile-active">
                   <Image
                     src="/svg/user-search.svg"
                     alt="search volunteers"
@@ -388,8 +318,10 @@ export default function Home() {
         <section className="watchlist">
           <div className="watchlist-content">
             <div className="watchlist-text-hold">
+              <div>
               <h1 className="">Be a part of our community.</h1>
               <button className="btn-standard btn-white">Join Private Beta</button>
+              </div>
             </div>
           </div>
           <div className="watchlist-partb"/>
@@ -411,32 +343,21 @@ export default function Home() {
                     target="_blank"
                     className=""
                   >
+                    How it works
+                  </a>
+                </li>
+                <li className="">
+                  <a
+                    href="mailto:contact.crowdr@gmail.com"
+                    target="_blank"
+                    className=""
+                  >
                     Contact
                   </a>
                 </li>
                 <li className="">
                   <a href="" className="">
                     FAQs
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="links">
-              <h3 className="">Legal</h3>
-              <ul className="">
-                <li className="">
-                  <a href="" className="">
-                    Privacy policy
-                  </a>
-                </li>
-                <li className="">
-                  <a href="" className="">
-                    Terms of service
-                  </a>
-                </li>
-                <li className="">
-                  <a href="" className="">
-                    Cookie policy
                   </a>
                 </li>
               </ul>
@@ -485,16 +406,39 @@ export default function Home() {
                 </a>
               </div>
             </div>
+            {/* <div className="links">
+              <h3 className="">Legal</h3>
+              <ul className="">
+                <li className="">
+                  <a href="" className="">
+                    Privacy policy
+                  </a>
+                </li>
+                <li className="">
+                  <a href="" className="">
+                    Terms of service
+                  </a>
+                </li>
+                <li className="">
+                  <a href="" className="">
+                    Cookie policy
+                  </a>
+                </li>
+              </ul>
+            </div> */}
+            <div className="links">
+            <p className="copyright">Copyright 2023, All Rights Reserved</p>
+            <p className="copyright">Crowdr App Technologies Limited</p>
+            </div>
           </div>
           <div className="description">
             <Image
               src="/svg/crowdr-logo.svg"
               alt="crowdr logo"
-              width={76}
-              height={20}
+              width={130}
+              height={60}
               className=""
             />
-            <p className="copyright">Copyright 2023, All Rights Reserved</p>
           </div>
         </footer>
       </main>
