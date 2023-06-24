@@ -9,8 +9,8 @@ export default function Faq() {
         <p className="faq-header-big">Get to know more about us</p>
 
         <div>
-          {faqArr.map((faq: any) => (
-            <div className="faq-collapsible-container">
+          {faqArr.map((faq: { heading: string, body: string}, index) => (
+            <div className="faq-collapsible-container" key={index}>
               <Collapsible
                 trigger={
                   <div className="flex justify-between">
