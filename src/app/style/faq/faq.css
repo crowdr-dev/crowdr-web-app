@@ -6,6 +6,10 @@
        /* text-align: center; */
 }
 
+.faq-container {
+       width: 90%;
+}
+
 .faq-header-small {
        color: var(--TERTIARY_COLOR);
        font-size: 18px;
@@ -18,7 +22,7 @@
 
 .faq-header-big {
        color: var(--BASE);
-       font-size: 42px;
+       font-size: 28px;
        font-family: Lato;
        font-weight: 800;
        line-height: 56px;
@@ -38,14 +42,44 @@
 
 .faq-collapsible-header{
        color: var(--BACKGROUND_PRIMARY);
-       text-align: center;
        font-size: 18px;
        font-family: Public Sans;
        font-weight: 700;
        line-height: 32px;
+       max-width: 90%;
+       text-align: left;
 }
 .faq-collapsible-body{
        color: var(--BACKGROUND_PRIMARY);
        font-size: 14px;
        line-height: 28px;
+       max-width: 90%;
+}
+
+.faq-more-questions {
+       color: var(--BASE);
+       font-size: 32px;
+       font-weight: 700;
+       /* line-height: 78.5px; */
+       margin: 30px 0;
+       width: 90%;
+}
+
+@media screen and (min-width: 920px) {
+       .faq-container {
+              max-width: 70%;
+       }
+
+       .faq-header-big {
+              font-size: 42px;
+       }
+
+       .faq-more-questions {
+             
+              font-size: 46px;
+              font-weight: 700;
+              line-height: 78.5px;
+              margin: 30px 0;
+              width: 90%;
+       }
 }

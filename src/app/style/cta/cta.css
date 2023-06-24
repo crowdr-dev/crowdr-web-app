@@ -1,11 +1,11 @@
 .cta {
-  min-height: 70vh;
+  /* min-height: 30px; */
   background: var(--PRIMARY_LIGHT_COLOR);
   background-image: url('./../../assets/svg/worldmap.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  padding: 60px 10px;
+  padding: 60px 10px 0 10px;
 }
 
 .cta h2 {
@@ -47,12 +47,12 @@
 }
 
 @media screen and (min-width: 600px) {
+  .cta {
+    min-height: 70vh;
+  }
   .cta h2 {
     font-size: 48px;
   }
-}
-
-@media screen and (min-width: 600px) {
 }
 
 @media screen and (min-width: 940px) {

@@ -17,15 +17,27 @@
 }
 
 .slogan h2 {
-  font-size: 42px;
+  font-size: 28px;
   font-weight: 700;
   line-height: 56px;
   margin-bottom: 10px;
   color: var(--BASE);
 }
 
+.slogan-btn {
+  display: flex;
+  justify-content: flex-end;
+ width: 90%;
+}
+
 @media screen and (min-width: 600px) {
   .slogan {
     padding: 51px 0 60px 0;
+  }
+  .slogan h2 {
+    font-size: 42px;
+  }
+  .slogan-btn {
+   width: 65%;
   }
 }

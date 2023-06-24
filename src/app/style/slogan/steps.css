@@ -1,6 +1,7 @@
 .steps {
   background-color: var(--BACKGROUND_PRIMARY);
   padding: 20px 10px;
+  margin-bottom: 20px;
 }
 
 .steps h3 {

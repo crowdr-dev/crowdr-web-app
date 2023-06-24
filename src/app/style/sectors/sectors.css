@@ -1,12 +1,12 @@
 .sectors {
   background-color: var(--PRIMARY_LIGHT_COLOR);
   padding-top: 3rem;
+  overflow: hidden;
 }
 
 .sectors ul {
   display: flex;
   justify-content: space-between;
-  margin-left: 4rem;
   padding-top: 1.2rem;
   padding-bottom: 1.2rem;
   overflow-x: hidden;
@@ -14,18 +14,26 @@
 }
 
 .sectors ul:last-child {
-  margin-left: 7rem;
   gap: 2rem;
   padding-bottom: 5rem;
 }
 
 .sectors li {
-  height: 100px;
-  width: 100px;
+  height: 70px;
+  width: 70px;
+  min-width: 70px;
+  min-height: 70px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   /* color: white; */
   font-weight: bold;
+}
+
+@media screen and (min-width: 600px) {
+  .sectors li {
+    height: 100px;
+    width: 100px;
+  }
 }
