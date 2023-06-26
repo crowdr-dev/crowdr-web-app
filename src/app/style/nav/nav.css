@@ -2,7 +2,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 26px 10px;
   background-color: var(--PRIMARY_LIGHT_COLOR);
 }
 
@@ -15,6 +15,8 @@ nav ul li {
   margin-right: 24px;
   font-weight: bold;
   color: black;
+  font-size: 16px;
+  /* font-family: 'Public Sans'; */
 }
 
 nav ul li:last-child {
@@ -27,13 +29,17 @@ nav ul a.active {
 
 @media screen and (min-width: 600px) {
   nav {
-  padding: 20px 40px;
+    padding: 36px 40px;
   }
   nav ul {
     display: flex;
     list-style: none;
     align-items: center;
     font-size: 16px;
+  }
+
+  nav ul li {
+    font-size: 20px;
   }
   
 }

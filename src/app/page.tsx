@@ -89,10 +89,10 @@ export default function Home() {
             </a>
           </li>
           <li>
-            <a href="#">Contact</a>
+            <a href="#">About us</a>
           </li>
           <li>
-            <a href="#">How it works</a>
+            <a href="#">Contact us</a>
           </li>
         </ul>
         <button className="btn-outline">Join Private Beta</button>
@@ -427,8 +427,8 @@ export default function Home() {
               </ul>
             </div> */}
             <div className="links">
-            <p className="copyright">Copyright 2023, All Rights Reserved</p>
-            <p className="copyright">Crowdr App Technologies Limited</p>
+            <p className="copyright">Copyright 2023, All Rights Reserved.</p>
+            <p className="copyright">Crowdr App Technologies Limited.</p>
             </div>
           </div>
           <div className="description">

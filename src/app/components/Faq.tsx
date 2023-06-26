@@ -55,7 +55,7 @@ const faqArr = [
     body: "In order to keep the app running and to provide safe and secure services, we deduct a transaction fee from each donation. ",
   },
   {
-    heading: "Is there a vetting process for volunteers?",
+    heading: "Is there a vetting process for fundraisers and volunteers?",
     body: "Security is our top priority. Our vetting process involves government identification and/or biometrics. ",
   },
   {

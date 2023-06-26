@@ -11,7 +11,11 @@
 }
 
 .benefits p {
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0.56px;
+  margin-bottom: 10px;
 }
 
 .benefits h4 {
@@ -41,9 +45,9 @@
   padding: 0 10px;
 }
 
-.benefits-details div{
- flex-basis: 0;
- flex-grow:1;
+.benefits-details div {
+  flex-basis: 0;
+  flex-grow: 1;
 }
 
 /* .benefits-artwork {
@@ -61,9 +65,17 @@
 }
 
 .benefits-content h2 {
-  font-size: 32px;
+  color: var(--BASE);
+  font-size: 20px;
+  font-family: Public Sans;
   font-weight: 800;
-  margin-bottom: 12px;
+  line-height: 28px;
+}
+
+.benefits-content p {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
 }
 
 .perks {
@@ -79,7 +91,7 @@
 }
 
 .card-tile:hover {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   /* cursor: pointer; */
 }
 
@@ -93,15 +105,16 @@
 }
 
 .card-tile > div h4 {
-  margin-bottom: 5px;
-  font-size: 18px;
-  font-weight: bold;
   color: var(--BASE);
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
 }
 
-.card-tile-active{
+.card-tile-active {
   border-radius: 12px;
-background: #E7F0EE;
+  background: #e7f0ee;
   margin: 40px 0;
 }
 
@@ -113,10 +126,18 @@ background: #E7F0EE;
     margin-bottom: 100px;
   }
 
-  .benefits-header h2 {
-    font-size: 42px;
+  .benefits-header p {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: 0.8px;
   }
 
+  .benefits-header h2 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 56px;
+  }
 
   .benefits-details {
     margin-top: 90px;
@@ -138,8 +159,23 @@ background: #E7F0EE;
   .benefits-artwork img {
     width: 400px;
   }
-}
 
+  .benefits-content h2 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 48px;
+  }
+
+  .benefits-content p {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .card-tile > div h4 {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
 
 @media screen and (min-width: 940px) {
   .benefits {
