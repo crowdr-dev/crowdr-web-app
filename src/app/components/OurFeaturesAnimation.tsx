@@ -53,66 +53,66 @@ const sectors2: Sector[] = [
 const OurFeaturesAnimation = () => {
   return (
     <>
-      <ul
-        style={{
-          display: "flex",
-          overflow: "hidden",
-          justifyContent: "space-between",
-          width: "100vw",
-          gap: "60px",
-        }}
-      >
-        {sectors1.map((sector, index) => (
-          <motion.li
-            key={index}
-            style={{
-              background: sector.bgColor,
-              color: sector?.color || "white",
-            }}
-            initial={{ x: "-100vw" }}
-            animate={{ x: "100vw" }}
-            transition={{
-              duration: 10,
-              ease: "linear",
-              repeat: Infinity,
-              repeatType: "loop",
-              delay: 0.25,
-            }}
-          >
-            {sector.name}
-          </motion.li>
-        ))}
-      </ul>
-      <ul
-        style={{
-          display: "flex",
-          overflow: "hidden",
-          justifyContent: "space-between",
-          width: "100vw",
-          gap: "60px",
-        }}
-      >
-        {sectors2.map((sector, index) => (
-          <motion.li
-            key={index}
-            style={{
-              background: sector.bgColor,
-              color: sector?.color || "white",
-            }}
-            initial={{ x: "100vw" }}
-            animate={{ x: "-100vw" }}
-            transition={{
-              duration: 10,
-              ease: "linear",
-              repeat: Infinity,
-              repeatType: "loop",
-              delay: 0.2,
-            }}
-          >
-            {sector.name}
-          </motion.li>
-        ))}
-      </ul>
+      <div className="position-relative marquee-container d-none d-sm-block">
+        <ul className="marquee d-flex justify-content-around" >
+          {sectors1.map((sector, index) => (
+            <li
+              key={index}
+              style={{
+                background: sector.bgColor,
+                color: sector?.color || "white",
+              }}
+            >
+              {sector.name}
+            </li>
+          ))}
+        </ul>
+        <ul className="marquee marquee2 d-flex justify-content-around">
+          {sectors1.map((sector, index) => (
+            <li
+              key={index}
+              style={{
+                background: sector.bgColor,
+                color: sector?.color || "white",
+
+              }}
+            >
+              {sector.name}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+
+      <div className="position-relative marquee-container d-none d-sm-block">
+        <ul className="marquee-sector2 d-flex justify-content-around" >
+          {sectors2.map((sector, index) => (
+            <li
+              key={index}
+              style={{
+                background: sector.bgColor,
+                color: sector?.color || "white",
+              }}
+            >
+              {sector.name}
+            </li>
+          ))}
+        </ul>
+        <ul className="marquee-sector2 marquee2-sector2 d-flex justify-content-around">
+          {sectors2.map((sector, index) => (
+            <li
+              key={index}
+              style={{
+                background: sector.bgColor,
+                color: sector?.color || "white",
+
+              }}
+            >
+              {sector.name}
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 };

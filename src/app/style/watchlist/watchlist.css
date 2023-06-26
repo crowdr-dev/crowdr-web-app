@@ -2,7 +2,7 @@
   position: relative;
 }
 
-.watchlist>div {
+.watchlist > div {
   text-align: center;
 }
 
@@ -13,17 +13,17 @@
 }
 
 .watchlist h1 {
-  color: #FFFFFF;
+  color: #ffffff;
   margin-bottom: 40px;
-  font-weight: 700;
   font-size: 24px;
+font-weight: 700;
+line-height: 40px;
   text-align: center;
 }
 
-
 .watchlist button {
   color: var(--BACKGROUND_PRIMARY);
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 @media screen and (min-width: 940px) {
@@ -34,7 +34,7 @@
     width: 100%;
     height: 265px;
   }
-  
+
   .watchlist .watchlist-text-hold {
     position: absolute;
     padding: 50px;
@@ -48,11 +48,16 @@
     justify-content: center;
   }
 
-  .watchlist-partb{
+  .watchlist-text-hold h1 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 56px;
+  }
+
+  .watchlist-partb {
     background-color: var(--BACKGROUND_GREY);
     height: 265px;
   }
-  
 
   .watchlist h1 {
     font-weight: 700;

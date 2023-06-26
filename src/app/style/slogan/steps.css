@@ -6,14 +6,19 @@
 
 .steps h3 {
   color: #FFFFFF;
+font-size: 20px;
+font-weight: 700;
+line-height: 32px;
   margin: 10px 0 10px;
 }
 
 .steps p {
   color: #FFFFFF;
   padding: 0 20px;
-  font-weight: 300;
+  font-size: 14px;
+line-height: 24px;
   width: 100%;
+  font-weight: normal;
 }
 
 .step-stage {
@@ -73,6 +78,23 @@
     padding: 50px 20px;
     margin: 50px 0;
     border-radius: 20px;;
-    width: 65%;
+    width: 80%;
+    /* height: 534px; */
   }
+
+  .steps h3{
+    font-size: 24px;
+font-weight: 700;
+line-height: 32px;
+  }
+  .steps p {
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .steps {
+    max-width: 1148px;
+  }
+
 }

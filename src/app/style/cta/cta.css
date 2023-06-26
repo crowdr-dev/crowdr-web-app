@@ -9,20 +9,18 @@
 }
 
 .cta h2 {
-  font-size: 23px;
-  font-weight: 800;
+  font-size: 32px;
+  font-weight: 700;
   color: var(--PRIMARY_DARK_COLOR);
-  max-width: 607px;
-  line-height: 1.25;
+  line-height: 48px;
 }
 
 .cta p {
   font-size: 14px;
   color: var(--PRIMARY_DARK_COLOR);
-  margin: 12px 0 30px;
-  line-height: 22px;
-  width: 90%;
-  max-width: 400px;
+  margin: 16px auto 32px auto;
+  line-height: 28px;
+  max-width: 327px;
 }
 .content {
   /* width: 600px; */
@@ -51,7 +49,12 @@
     min-height: 70vh;
   }
   .cta h2 {
-    font-size: 48px;
+    font-size: 74px;
+    line-height: 72px;
+  }
+  .cta p {
+    font-size: 20px;
+    max-width: 553px;
   }
 }
 

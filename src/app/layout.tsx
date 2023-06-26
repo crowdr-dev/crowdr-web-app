@@ -11,9 +11,9 @@ import './style/watchlist/watchlist.css'
 import './style/footer/footer.css'
 import './style/slogan/steps.css'
 import './style/modal/modal.css'
-import { Inter } from 'next/font/google'
+import { Public_Sans } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Public_Sans({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Fundraise & Find Volunteer Opportunities',
