@@ -1,0 +1,56 @@
+.contact {
+       max-width: 1200px;
+       background-color: var(--PRIMARY_COLOR);
+       color: white;
+       margin: auto;
+       padding: 40px;
+       margin-bottom: 91px;
+}
+
+.contactHeader {
+       color: #FFF;
+       font-size: 34px;
+       font-weight: 700;
+       line-height: 40px;
+       max-width: 744px;
+}
+
+.contactPara {
+       color: #FFF;
+       font-size: 24px;
+       font-weight: 500;
+       line-height: 40px;
+       max-width: fit-content;
+       padding: 50px 0;
+      
+     
+}
+.border {
+       border-bottom: 2px solid #FFF;
+       max-width: 850px;
+       margin-bottom: 50px;
+}
+
+@media screen and (min-width: 600px) {
+       .contact {
+              border-radius: 0px 0px 20px 20px;
+
+       }
+
+       .contactHeader {
+              font-size: 68px;
+              line-height: 78.5px;
+              
+       }
+
+       .contactPara {
+            
+              font-size: 35px;
+              
+              line-height: 78.5px;
+             
+             
+            
+       }
+       
+}

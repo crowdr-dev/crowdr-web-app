@@ -1,7 +1,7 @@
 .cta {
   /* min-height: 30px; */
   background: var(--PRIMARY_LIGHT_COLOR);
-  background-image: url('./../../assets/svg/worldmap.svg');
+  background-image: url('/public/assets/svg/worldmap.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;

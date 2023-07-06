@@ -1,0 +1,48 @@
+.accomplishments {
+  display: block;
+  margin: auto;
+  max-width: fit-content;
+  padding: 60px 0 40px 0;
+  border-top: 2px solid black;
+  text-align: center;
+  /* padding: 105px 10% 204px 10%; */
+  /* padding-bottom: 204px; */
+}
+
+.accomplishments > * {
+  max-width: 400px;
+  margin-bottom: 15px;
+}
+
+.accomplishment > h3 {
+  color: #4c4c4c;
+  font-size: 100px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 96px;
+}
+
+.accomplishment > p {
+  color: #4c4c4c;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.8px;
+}
+
+@media screen and (min-width: 600px) {
+  .accomplishments {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1400px;
+    padding: 105px 10% 204px 10%;
+    gap: 20px;
+    text-align: left;
+    /* padding-bottom: 204px; */
+  }
+
+  .accomplishments > * {
+    margin-bottom: 0;
+  }
+}

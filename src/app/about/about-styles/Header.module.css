@@ -1,0 +1,46 @@
+.headerContainer {
+  display: block;
+  justify-content: space-around;
+  padding: 100px 0 100px 0;
+  max-width: 90%;
+  margin: auto;
+}
+
+.headerHeading {
+  color: var(--PRIMARY_DARK_COLOR);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 48px;
+  margin-bottom: 20px;
+}
+
+.headerHeading span {
+  color: #0a8643;
+}
+
+.headerPara {
+  color: var(--PRIMARY_DARK_COLOR);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  max-width: 553px;
+}
+
+@media screen and (min-width: 900px) {
+  .headerContainer {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    padding: 100px 0 143px 0;
+    max-width: 1800px;
+
+    /* padding: 100px 0 143px 0;
+    max-width: 1800px;
+    margin: auto; */
+  }
+
+  .headerHeading {
+    font-size: 74px;
+    line-height: 72px;
+  }
+}

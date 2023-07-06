@@ -10,7 +10,7 @@
   color: var(--BASE);
 }
 
-/* h1, h2, h3, h4, h5, h6 {
-  color: var(--DARK);
-  font-family: 'Playfair Display', serif;
-} */
+.cursor {
+  cursor: pointer;
+}
+

@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion";
 
 type Sector = {
   name: string;
@@ -52,7 +51,7 @@ const sectors2: Sector[] = [
 
 const OurFeaturesAnimation = () => {
   return (
-    <>
+    <section className="sectors">
       <div className="position-relative marquee-container d-none d-sm-block">
         <ul className="marquee d-flex justify-content-around" >
           {sectors1.map((sector, index) => (
@@ -113,7 +112,7 @@ const OurFeaturesAnimation = () => {
           ))}
         </ul>
       </div>
-    </>
+      </section>
   );
 };
 
