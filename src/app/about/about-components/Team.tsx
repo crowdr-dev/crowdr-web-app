@@ -8,7 +8,7 @@ export default function Team() {
       <div className={styles.teamMembers}>
         {teamMembers.map(({ name, position}) => {
           return (
-            <div className={styles.teamMember}>
+            <div className={styles.teamMember} key={name}>
               <div className={styles.imagePlaceholder} />
               <p className={styles.teamMemberName}>{name}</p>
               <p className={styles.teamMemberPosition}>{position}</p>
