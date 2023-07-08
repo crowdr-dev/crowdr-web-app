@@ -9,7 +9,7 @@ import "./shared-component-styles/Navigation.css";
 import { email } from "@/utils/openEmail";
 // import Modal from "./Modal";
 
-export default function Navigation({openModal} : { openModal : any  }) {
+export default function Navigation({openModal} : any ) {
   const currentPath = usePathname();
   // const [modalIsOpen, setModalIsOpen] = useState(false);
   
