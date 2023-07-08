@@ -6,7 +6,7 @@ import { IoMdMenu, IoMdClose } from "react-icons/io";
 import { usePathname } from "next/navigation";
 import { email } from "@/utils/openEmail";
 
-export default function MobileMenu({openModal} : { openModal : () => void}) {
+export default function MobileMenu({openModal} : any) {
   const [isOpen, setIsOpen] = useState(false);
   const currentPath = usePathname();
 

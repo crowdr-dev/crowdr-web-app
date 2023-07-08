@@ -9,7 +9,7 @@ import "./shared-component-styles/Navigation.css";
 import { email } from "@/utils/openEmail";
 // import Modal from "./Modal";
 
-export default function Navigation({openModal} : { openModal : () => void}) {
+export default function Navigation({openModal} : { openModal : any  }) {
   const currentPath = usePathname();
   // const [modalIsOpen, setModalIsOpen] = useState(false);
   
@@ -24,7 +24,7 @@ export default function Navigation({openModal} : { openModal : () => void}) {
   const isActive = (pathname: string) => {
     return currentPath === pathname ? "active" : "";
   };
-console.log(777)
+
   return (
     <nav>
       <Link href="/">

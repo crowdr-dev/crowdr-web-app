@@ -1,7 +1,6 @@
-import { open } from 'fs/promises'
 import React from 'react'
 
-export default function Header({openModal} : { openModal : () => void}) {
+export default function Header({openModal} : any) {
   return (
        <section className="cta">
        <div className="content">

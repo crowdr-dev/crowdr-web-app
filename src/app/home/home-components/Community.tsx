@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Community({openModal} : { openModal : () => void}) {
+export default function Community({openModal} : any) {
   return (
        <section className="watchlist">
        <div className="watchlist-content">
