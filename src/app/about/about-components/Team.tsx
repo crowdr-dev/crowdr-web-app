@@ -1,15 +1,23 @@
 import React from "react";
 import styles from "../about-styles/Team.module.css";
+import Ada from "../../../../public/images/Ada.jpg";
+import Tritima from "../../../../public/images/Tritima.jpg";
+import Jerry from "../../../../public/images/Jerry.jpeg";
+import Busola from "../../../../public/images/Busola.jpg";
+import Idris from "../../../../public/images/Idris.jpg";
+import Tomiwa from "../../../../public/images/Tomiwa.jpg";
+import Ade from "../../../../public/images/Ade.jpg";
+import Image from "next/image";
 
 export default function Team() {
   return (
     <section className={styles.team}>
       <h2 className={styles.teamHeading}>Meet Our team</h2>
       <div className={styles.teamMembers}>
-        {teamMembers.map(({ name, position}) => {
+        {teamMembers.map(({ name, photo, position}) => {
           return (
             <div className={styles.teamMember} key={name}>
-              <div className={styles.imagePlaceholder} />
+               <Image  className={styles.imagePlaceholder} src={photo} alt={name}/> 
               <p className={styles.teamMemberName}>{name}</p>
               <p className={styles.teamMemberPosition}>{position}</p>
             </div>
@@ -21,11 +29,11 @@ export default function Team() {
 }
 
 const teamMembers = [
-  { name: "Adaobi Ajegbo", position: "Founder, CEO", photo: "" },
-  { name: "Tritima Achigbu", position: "Co-founder, CEO", photo: "" },
-  { name: "Jerry Chibuokem", position: "Full-Stack Dev, CTO", photo: "" },
-  { name: "Busola Omosipe", position: "Backend Developer", photo: "" },
-  { name: "Idris Abdul-Lateef", position: "Backend Developer", photo: "" },
-  { name: "Akintomiwa Ajayi", position: "Product Designer", photo: "" },
-  { name: "Ade Abegunde", position: "Brand Designer", photo: "" },
+  { name: "Adaobi Ajegbo", position: "Founder, CEO", photo: Ada },
+  { name: "Tritima Achigbu", position: "Co-founder, CEO", photo: Tritima },
+  { name: "Jerry Chibuokem", position: "Full-Stack Dev, CTO", photo: Jerry },
+  { name: "Busola Omosipe", position: "Backend Developer", photo: Busola },
+  { name: "Idris Abdul-Lateef", position: "Backend Developer", photo: Idris },
+  { name: "Akintomiwa Ajayi", position: "Product Designer", photo: Tomiwa },
+  { name: "Ade Abegunde", position: "Brand Designer", photo: Ade },
 ];

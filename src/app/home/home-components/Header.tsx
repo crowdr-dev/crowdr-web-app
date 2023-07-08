@@ -1,6 +1,7 @@
+import { open } from 'fs/promises'
 import React from 'react'
 
-export default function Header() {
+export default function Header({openModal} : { openModal : () => void}) {
   return (
        <section className="cta">
        <div className="content">
@@ -14,7 +15,7 @@ export default function Header() {
            that make a change in our world.
          </p>
 
-         <button className="btn-standard">Join Private Beta</button>
+         <button className="btn-standard" onClick={openModal}>Join Private Beta</button>
        </div>
      </section>
   )

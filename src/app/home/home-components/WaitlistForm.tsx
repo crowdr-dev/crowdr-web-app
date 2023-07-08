@@ -1,18 +1,18 @@
 "use client";
 import React from 'react'
 import Image from "next/image";
-
-export default function waitlistForm() {
+import Waitlist from "../../../../public/svg/join-waitlist.svg";
+export default function WaitlistForm() {
   return (
        <section className="modal-backdrop hide-modal">
        <div className="modal-hold">
          <div className="join-waitlist-img-hold">
            <Image
-             src="/assets/svg/join-waitlist.svg"
+             src={Waitlist}
              alt="waitlist"
-             width={200}
-             height={200}
-             className=""
+            //  width={200}
+            //  height={200}
+            //  className=""
            />
          </div>
          <form
@@ -66,7 +66,7 @@ export default function waitlistForm() {
              </select>
            </div>
 
-           <button type="submit" className="">
+           <button type="submit" className="btn-standard">
              Submit
            </button>
          </form>
