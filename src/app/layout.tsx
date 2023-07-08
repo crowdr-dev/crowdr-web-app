@@ -1,7 +1,6 @@
-import "./shared-styles/globals.css";
+import "./globals.css";
 import "./shared-styles/general/general.css";
 import "./shared-styles/general/button.css";
-import "./shared-styles/nav/nav.css";
 import "./shared-styles/cta/cta.css";
 import "./shared-styles/slogan/slogan.css";
 import "./shared-styles/sectors/sectors.css";

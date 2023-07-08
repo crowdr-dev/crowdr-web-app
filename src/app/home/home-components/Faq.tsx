@@ -1,4 +1,5 @@
 "use client";
+import { openEmail } from "@/utils/openEmail";
 import Collapsible from "react-collapsible";
 
 export default function Faq() {
@@ -35,7 +36,7 @@ export default function Faq() {
           Have more questions? Our team is happy to assist you!
         </p>
 
-        <button className="btn-outline">Contact Us</button>
+        <button className="btn-outline" onClick={openEmail}>Contact Us</button>
       </div>
     </section>
   );

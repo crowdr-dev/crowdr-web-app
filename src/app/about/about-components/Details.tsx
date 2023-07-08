@@ -1,5 +1,7 @@
 import React from "react";
 import styles from "../about-styles/Details.module.css";
+import Ada from "../../../../public/images/Ada.jpg";
+import Image from "next/image";
 
 export default function Details() {
   return (
@@ -28,7 +30,7 @@ export default function Details() {
 
       <section className={styles.detailsContainer}>
         <div className={styles.ceo}>
-          <p className={styles.imagePlaceholder} />
+          <Image className={styles.imagePlaceholder} src={Ada} alt="ceo" />
           <div >
             <p className={styles.ceoName}>Adaobi Ajegbo<br />
             Founder, CEO</p>

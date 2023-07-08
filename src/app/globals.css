@@ -11,3 +11,13 @@
     )
     rgb(var(--background-start-rgb));
 } */
+
+.w-100{
+  width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+  .hide-sm {
+    display: none;
+  }
+}

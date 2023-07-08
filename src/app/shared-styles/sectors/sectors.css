@@ -35,7 +35,7 @@
   font-size: 12px;
   flex: 1 1 auto;
   max-width: 100%;
-  margin: 0 1rem;
+  margin: 0 1rem 5px 1rem;
 }
 
 
@@ -44,7 +44,7 @@
 } */
 
 .marquee-container {
-  height: 98px;
+  height: 104px;
   overflow: hidden;
   position: relative;
   line-height: 30px;
@@ -97,7 +97,7 @@
   }
 
   .marquee-container {
-    height: 130px;
+    height: 120px;
   }
 
   .marquee-container:last-child {

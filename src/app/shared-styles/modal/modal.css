@@ -1,4 +1,4 @@
-.modal-backdrop {
+/* .modal-backdrop {
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -9,11 +9,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
-.hide-modal {
-  display: none;
-}
 
 .join-waitlist-image-hold {
   display: none;

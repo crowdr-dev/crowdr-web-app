@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from "next/image";
+import { email } from '@/utils/openEmail';
 
 export default function Footer() {
   return (
@@ -15,16 +16,16 @@ export default function Footer() {
              </li>
              <li className="">
                <a
-                 href="mailto:contact.crowdr@gmail.com"
+                 href="#"
                  target="_blank"
                  className=""
                >
-                 How it works
+                Terms and Conditions
                </a>
              </li>
              <li className="">
                <a
-                 href="mailto:contact.crowdr@gmail.com"
+                 href={email}
                  target="_blank"
                  className=""
                >

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Header() {
+export default function Header({openModal} : any) {
   return (
        <section className="cta">
        <div className="content">
@@ -14,7 +14,7 @@ export default function Header() {
            that make a change in our world.
          </p>
 
-         <button className="btn-standard">Join Private Beta</button>
+         <button className="btn-standard" onClick={openModal}>Join Private Beta</button>
        </div>
      </section>
   )
