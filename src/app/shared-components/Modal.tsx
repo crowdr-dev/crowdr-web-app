@@ -39,7 +39,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 //       overlayClassName="modal-overlay"
        ariaHideApp={false}
 // appElement={typeof window !== 'undefined' ? document.getElementById('__next')! : undefined}
-      style={customStyles}
+      style={customStyles as any}
     >
       {children}
     </ReactModal>
