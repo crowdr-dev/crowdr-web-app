@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Steps() {
+export default function Steps({ openModal} : any) {
   return (
        <section className="slogan">
        <p className="">STARTING A CAMPAIGN</p>
@@ -54,7 +54,7 @@ export default function Steps() {
            <p className="">Get support from your community and beyond.</p>
          </div>
        </div>
-       <div className="slogan-btn"><button className="btn-outline">Learn More</button></div>
+       <div className="slogan-btn"><button className="btn-outline" onClick={openModal}>Join Private Beta</button></div>
      </section>
   )
 }

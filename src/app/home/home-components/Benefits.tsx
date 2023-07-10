@@ -21,7 +21,7 @@ export default function Benefits() {
          </div>
          <div className="benefits-content">
            <h2 className="">For Individuals</h2>
-           <p className="">Volunteers and donors.</p>
+           <p className="">Volunteers can now raise funds</p>
 
            <div className="perks ">
              <div className="card-tile card-tile-active">
@@ -33,10 +33,9 @@ export default function Benefits() {
                  className=""
                />
                <div className="">
-                 <h4 className="">Support your community</h4>
+                 <h4 className="">Raise Funds</h4>
                  <p className="">
-                   Impact your community by volunteering and donating to our
-                   catalog of non-profit initiatives.
+                   Get support from your communinty, whether for a personal, creative or social-good project.
                  </p>
                </div>
              </div>

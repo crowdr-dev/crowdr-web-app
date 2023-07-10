@@ -1,5 +1,4 @@
 import "./globals.css";
-import "./shared-styles/general/general.css";
 import "./shared-styles/general/button.css";
 import "./shared-styles/cta/cta.css";
 import "./shared-styles/slogan/slogan.css";

@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from "next/image";
 import { email } from '@/utils/openEmail';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -10,33 +11,32 @@ export default function Footer() {
            <h3 className="">Company</h3>
            <ul className="">
              <li className="">
-               <a href="" className="">
+               <Link href="/about" className="">
                  About us
-               </a>
+               </Link>
              </li>
              <li className="">
-               <a
-                 href="#"
-                 target="_blank"
+               <Link
+                 href="/policies"
                  className=""
                >
                 Terms and Conditions
-               </a>
+               </Link>
              </li>
              <li className="">
                <a
-                 href={email}
+                 href={`mailto:${email}`}
                  target="_blank"
                  className=""
                >
                  Contact
                </a>
              </li>
-             <li className="">
+             {/* <li className="">
                <a href="" className="">
                  FAQs
                </a>
-             </li>
+             </li> */}
            </ul>
          </div>
          <div className="links">
@@ -104,7 +104,7 @@ export default function Footer() {
            </ul>
          </div> */}
          <div className="links">
-         <p className="copyright">Copyright 2023, All Rights Reserved.</p>
+         <p className="copyright">Copyright 2023. All Rights Reserved.</p>
          <p className="copyright">Crowdr App Technologies Limited.</p>
          </div>
        </div>
