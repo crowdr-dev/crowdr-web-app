@@ -6,18 +6,18 @@ export default function Accomplishments() {
   return (
     <section className={styles.accomplishments}>
       <div className={styles.accomplishment}>
-        <h3 className={lato.className}>100+</h3>
+        <h3 >100+</h3>
         <p>Donors and volunteer partners in our community.</p>
       </div>
       <div className={styles.accomplishment}>
-        <h3 className={lato.className}>30+</h3>
+        <h3>30+</h3>
         <p>
           Non-profit partners who are aligned with our mission and dedicated to
           facilitating change in Africa.
         </p>
       </div>
       <div className={styles.accomplishment}>
-        <h3 className={lato.className}>1</h3>
+        <h3>1</h3>
         <p>App.</p>
       </div>
     </section>
