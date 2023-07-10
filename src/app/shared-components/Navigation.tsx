@@ -48,7 +48,7 @@ export default function Navigation({openModal} : any ) {
           </Link>
         </li>
         <li>
-          <Link href={email} target="_blank">Contact us</Link>
+          <a href={`mailto:${email}`} target="_blank">Contact us</a>
         </li>
       </ul>
       <button className="btn-outline hide-sm" onClick={openModal}>Join Private Beta</button>

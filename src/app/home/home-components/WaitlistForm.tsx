@@ -6,13 +6,11 @@ export default function WaitlistForm() {
   return (
        <section className="modal-backdrop hide-modal">
        <div className="modal-hold">
-         <div className="join-waitlist-img-hold">
+         <div  className="join-waitlist-image-hold">
            <Image
              src={Waitlist}
              alt="waitlist"
-            //  width={200}
-            //  height={200}
-            //  className=""
+            //  className="join-waitlist-image-hold"
            />
          </div>
          <form

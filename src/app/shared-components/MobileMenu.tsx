@@ -41,9 +41,9 @@ export default function MobileMenu({openModal} : any) {
             </Link>
           </li>
           <li>
-            <Link href={email} target="_blank">
+            <a href={`mailto:${email}`} target="_blank">
               Contact Us
-            </Link>
+            </a>
           </li>
           <li><button className="btn-outline w-100" onClick={openModal}>Join Private Beta</button></li>
         </ul>

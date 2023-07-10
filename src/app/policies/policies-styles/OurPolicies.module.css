@@ -1,0 +1,21 @@
+.policies {
+       width: 80%;
+       max-width: 1200px;
+       margin: 30px auto ;
+}
+
+.policies h1 {
+       font-size: 22px;
+       font-weight: bold;
+       text-decoration: underline;
+       margin: 20px 0;
+}
+
+.policies h2 {
+       font-size: 20px;
+       margin: 20px 0;
+}
+
+.policies p {
+       font-size: 16px;
+}

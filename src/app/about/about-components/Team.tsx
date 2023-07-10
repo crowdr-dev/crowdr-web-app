@@ -12,7 +12,7 @@ import Image from "next/image";
 export default function Team() {
   return (
     <section className={styles.team}>
-      <h2 className={styles.teamHeading}>Meet Our team</h2>
+      <h2 className={styles.teamHeading}>Meet our team</h2>
       <div className={styles.teamMembers}>
         {teamMembers.map(({ name, photo, position}) => {
           return (
@@ -30,10 +30,10 @@ export default function Team() {
 
 const teamMembers = [
   { name: "Adaobi Ajegbo", position: "Founder, CEO", photo: Ada },
-  { name: "Tritima Achigbu", position: "Co-founder, CEO", photo: Tritima },
+  { name: "Tritima Achigbu", position: "Co-Founder, CEO", photo: Tritima },
   { name: "Jerry Chibuokem", position: "Full-Stack Dev, CTO", photo: Jerry },
-  { name: "Busola Omosipe", position: "Backend Developer", photo: Busola },
-  { name: "Idris Abdul-Lateef", position: "Backend Developer", photo: Idris },
+  { name: "Busola Omosipe", position: "Frontend Developer", photo: Busola },
+  { name: "Idris Abdul-Lateef", position: "Frontend Developer", photo: Idris },
   { name: "Akintomiwa Ajayi", position: "Product Designer", photo: Tomiwa },
   { name: "Ade Abegunde", position: "Brand Designer", photo: Ade },
 ];

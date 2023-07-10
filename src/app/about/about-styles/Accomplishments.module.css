@@ -20,6 +20,7 @@
   font-style: normal;
   font-weight: 800;
   line-height: 96px;
+  margin-bottom: 10px;
 }
 
 .accomplishment > p {
@@ -29,6 +30,7 @@
   font-weight: 600;
   line-height: 28px;
   letter-spacing: 0.8px;
+  margin-bottom: 10px;
 }
 
 @media screen and (min-width: 600px) {

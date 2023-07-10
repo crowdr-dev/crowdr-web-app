@@ -27,10 +27,10 @@ export default function Home() {
       <main>
         <Header openModal={openModal} />
         <OurFeaturesAnimation />
-        <Steps />
+        <Steps openModal={openModal} />
         <Benefits />
         <Faq />
-        <Community openModal={openModal}/>
+        <Community openModal={openModal} />
         <Footer />
       </main>
       <div id="#modals" />
