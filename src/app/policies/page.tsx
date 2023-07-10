@@ -6,7 +6,7 @@ import OurPolicies from './policies-components/OurPolicies'
 import Modal from "../shared-components/Modal";
 import WaitlistForm from "../home/home-components/WaitlistForm";
 
-export default function page() {
+export default function Policies() {
        const [modalIsOpen, setModalIsOpen] = useState(false);
 
        const openModal = () => {
