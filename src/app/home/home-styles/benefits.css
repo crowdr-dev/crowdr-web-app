@@ -50,12 +50,6 @@
   flex-grow: 1;
 }
 
-/* .benefits-artwork {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-
 .benefits-artwork img {
   width: 100%;
 }
@@ -67,7 +61,6 @@
 .benefits-content h2 {
   color: var(--BASE);
   font-size: 20px;
-  font-family: Public Sans;
   font-weight: 800;
   line-height: 28px;
 }

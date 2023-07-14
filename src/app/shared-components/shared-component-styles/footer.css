@@ -12,7 +12,6 @@ footer li {
 }
 
 footer p {
-  font-family: "Public Sans", sans-serif;
   color: var(--PRIMARY_DARK_COLOR);
   margin-top: 15px;
 }
@@ -30,7 +29,6 @@ footer p {
   padding: 5px;
   text-decoration: none;
   font-size: 14px;
-  /* font-family: 'Public Sans', sans-serif; */
   color: var(--PRIMARY_DARK_COLOR);
   font-weight: 300;
 }
@@ -41,7 +39,8 @@ footer p {
 
 .copyright {
   font-size: 14px;
-  font-weight: 500;
+  color: var(--PRIMARY_DARK_COLOR);
+  font-weight: 300;
   margin-top: 30px;
 }
 

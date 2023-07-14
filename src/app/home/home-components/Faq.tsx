@@ -1,6 +1,7 @@
 "use client";
 import { openEmail } from "@/utils/openEmail";
 import Collapsible from "react-collapsible";
+import "../home-styles/faq.css";
 
 export default function Faq() {
   return (

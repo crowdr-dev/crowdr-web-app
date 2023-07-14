@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import "./shared-component-styles/MobileMenu.css";
 import Link from "next/link";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 import { usePathname } from "next/navigation";
 import { email } from "@/utils/openEmail";
+import "./shared-component-styles/mobile-menu.css";
 
 type Props = {
   openModal : () => void

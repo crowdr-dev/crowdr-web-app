@@ -1,4 +1,5 @@
 import React from 'react'
+import "../home-styles/steps.css";
 
 type Props = {
   openModal : () => void

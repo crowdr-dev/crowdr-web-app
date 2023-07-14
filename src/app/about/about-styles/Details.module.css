@@ -1,5 +1,5 @@
 .details {
-  margin-bottom: 112px;
+  margin-bottom: 60px;
   max-width: 90%;
   margin-left: auto;
   margin-right: auto;
@@ -7,7 +7,7 @@
 
 .detailsContainer {
   display: inline-grid;
-  padding: 60px 0 20px 0;
+  padding: 60px 0 0 0;
 }
 
 .detailsContainer > * {
@@ -23,7 +23,6 @@
 }
 .detailsPara {
   color: var(--PRIMARY_DARK_COLOR);
-
   font-size: 22px;
   font-weight: 500;
   line-height: 28px;
@@ -33,7 +32,9 @@
 .detailsPara p {
   margin-bottom: 24px;
 }
-
+.ceoQuoteContainer {
+  display: none;
+}
 .ceo {
   color: #000;
   display: flex;
@@ -64,7 +65,7 @@
 
 @media screen and (min-width: 900px) {
   .details {
-    margin-bottom: 152px;
+    margin-bottom: 80px;
     max-width: 1600px;
   }
 
@@ -72,7 +73,7 @@
     display: flex;
     justify-content: space-around;
     gap: 10px;
-    padding: 100px 0 110px 0;
+    padding: 80px 0 0 0;
     max-width: 1800px;
 
   }
@@ -87,6 +88,9 @@
     font-weight: 500;
     line-height: 38px;
     /* max-width: 607px; */
+  }
+  .ceoQuoteContainer {
+    padding-top: 50px;
   }
 
   .ceo {

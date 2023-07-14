@@ -1,6 +1,6 @@
 "use client";
 import Faq from "./home/home-components/Faq";
-import OurFeaturesAnimation from "./home/home-components/OurFeaturesAnimation";
+import OurFeaturesAnimation from "./home/home-components/Sectors";
 import Navigation from "./shared-components/Navigation";
 import Header from "./home/home-components/Header";
 import Footer from "./shared-components/Footer";
