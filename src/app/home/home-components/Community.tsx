@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function Community({openModal} : any) {
+type Props = {
+  openModal : () => void
+}
+
+export default function Community({openModal} : Props) {
   return (
        <section className="watchlist">
        <div className="watchlist-content">

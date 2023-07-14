@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function Steps({ openModal} : any) {
+type Props = {
+  openModal : () => void
+}
+
+export default function Steps({ openModal} : Props) {
   return (
        <section className="slogan">
        <p className="">STARTING A CAMPAIGN</p>

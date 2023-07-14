@@ -7,19 +7,13 @@ import { usePathname } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 import "./shared-component-styles/Navigation.css";
 import { email } from "@/utils/openEmail";
-// import Modal from "./Modal";
 
-export default function Navigation({openModal} : any ) {
+type Props = {
+  openModal : () => void
+}
+
+export default function Navigation({openModal} : Props ) {
   const currentPath = usePathname();
-  // const [modalIsOpen, setModalIsOpen] = useState(false);
-  
-  // const openModal = () => {
-  //   setModalIsOpen(true);
-  // };
-
-  // const closeModal = () => {
-  //   setModalIsOpen(false);
-  // };
 
   const isActive = (pathname: string) => {
     return currentPath === pathname ? "active" : "";
