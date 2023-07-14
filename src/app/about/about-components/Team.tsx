@@ -3,10 +3,11 @@ import styles from "../about-styles/Team.module.css";
 import Ada from "../../../../public/images/Ada.jpg";
 import Tritima from "../../../../public/images/Tritima.jpg";
 import Jerry from "../../../../public/images/Jerry.jpeg";
-import Busola from "../../../../public/images/Busola.jpg";
+import Busola from "../../../../public/images/Busola2.jpg";
 import Idris from "../../../../public/images/Idris.jpg";
 import Tomiwa from "../../../../public/images/Tomiwa.jpg";
 import Ade from "../../../../public/images/Ade.jpg";
+import Daniel from "../../../../public/images/Daniel2.jpg"
 import Image from "next/image";
 
 export default function Team() {
@@ -30,10 +31,11 @@ export default function Team() {
 
 const teamMembers = [
   { name: "Adaobi Ajegbo", position: "Founder, CEO", photo: Ada },
-  { name: "Tritima Achigbu", position: "Co-Founder, CEO", photo: Tritima },
+  { name: "Tritima Achigbu", position: "Co-Founder, CMO", photo: Tritima },
   { name: "Jerry Chibuokem", position: "Full-Stack Dev, CTO", photo: Jerry },
   { name: "Busola Omosipe", position: "Frontend Developer", photo: Busola },
   { name: "Idris Abdul-Lateef", position: "Frontend Developer", photo: Idris },
   { name: "Akintomiwa Ajayi", position: "Product Designer", photo: Tomiwa },
   { name: "Ade Abegunde", position: "Brand Designer", photo: Ade },
+  { name: "Daniel Arikawe", position: "Frontend Developer", photo: Daniel },
 ];

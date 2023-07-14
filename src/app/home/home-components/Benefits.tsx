@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from "next/image";
+import "../home-styles/benefits.css";
 
 export default function Benefits() {
   return (
@@ -21,7 +22,7 @@ export default function Benefits() {
          </div>
          <div className="benefits-content">
            <h2 className="">For Individuals</h2>
-           <p className="">Volunteers can now raise funds</p>
+           <p className="">Fundraisers, volunteers and donors.</p>
 
            <div className="perks ">
              <div className="card-tile card-tile-active">

@@ -2,6 +2,7 @@ import React from 'react'
 import Image from "next/image";
 import { email } from '@/utils/openEmail';
 import Link from 'next/link';
+import "./shared-component-styles/footer.css";
 
 export default function Footer() {
   return (
@@ -32,11 +33,6 @@ export default function Footer() {
                  Contact
                </a>
              </li>
-             {/* <li className="">
-               <a href="" className="">
-                 FAQs
-               </a>
-             </li> */}
            </ul>
          </div>
          <div className="links">
@@ -83,29 +79,9 @@ export default function Footer() {
              </a>
            </div>
          </div>
-         {/* <div className="links">
-           <h3 className="">Legal</h3>
-           <ul className="">
-             <li className="">
-               <a href="" className="">
-                 Privacy policy
-               </a>
-             </li>
-             <li className="">
-               <a href="" className="">
-                 Terms of service
-               </a>
-             </li>
-             <li className="">
-               <a href="" className="">
-                 Cookie policy
-               </a>
-             </li>
-           </ul>
-         </div> */}
          <div className="links">
          <p className="copyright">Copyright 2023. All Rights Reserved.</p>
-         <p className="copyright">Crowdr App Technologies Limited.</p>
+         <p className="copyright">CrowdrApp Technologies Limited.</p>
          </div>
        </div>
        <div className="description">

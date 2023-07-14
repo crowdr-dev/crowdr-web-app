@@ -1,18 +1,18 @@
-.watchlist {
+.community {
   position: relative;
 }
 
-.watchlist > div {
+.community > div {
   text-align: center;
 }
 
-.watchlist .watchlist-text-hold {
+.community .community-text-hold {
   width: 100%;
   background-color: var(--BACKGROUND_PRIMARY);
   padding: 40px 20px;
 }
 
-.watchlist h1 {
+.community h1 {
   color: #ffffff;
   margin-bottom: 40px;
   font-size: 24px;
@@ -21,13 +21,13 @@ line-height: 40px;
   text-align: center;
 }
 
-.watchlist button {
+.community button {
   color: var(--BACKGROUND_PRIMARY);
   background-color: #ffffff;
 }
 
 @media screen and (min-width: 940px) {
-  .watchlist .watchlist-content {
+  .community .community-content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -35,7 +35,7 @@ line-height: 40px;
     height: 265px;
   }
 
-  .watchlist .watchlist-text-hold {
+  .community .community-text-hold {
     position: absolute;
     padding: 50px;
     width: 65%;
@@ -48,18 +48,18 @@ line-height: 40px;
     justify-content: center;
   }
 
-  .watchlist-text-hold h1 {
+  .community-text-hold h1 {
     font-size: 48px;
     font-weight: 700;
     line-height: 56px;
   }
 
-  .watchlist-partb {
+  .community-partb {
     background-color: var(--BACKGROUND_GREY);
     height: 265px;
   }
 
-  .watchlist h1 {
+  .community h1 {
     font-weight: 700;
     font-size: 48px;
     margin-bottom: 50px;

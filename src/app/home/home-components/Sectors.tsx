@@ -1,4 +1,5 @@
 "use client";
+import "../home-styles/sectors.css";
 
 type Sector = {
   name: string;

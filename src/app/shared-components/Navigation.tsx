@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MobileMenu from "./MobileMenu";
-import "./shared-component-styles/Navigation.css";
 import { email } from "@/utils/openEmail";
+import "./shared-component-styles/navigation.css";
 
 type Props = {
   openModal : () => void

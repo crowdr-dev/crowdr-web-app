@@ -28,7 +28,7 @@ export default function Details() {
         </aside>
       </section>
 
-      <section className={styles.detailsContainer}>
+      <section className={`${styles.detailsContainer} ${styles.ceoQuoteContainer}`}>
         <div className={styles.ceo}>
           <Image className={styles.imagePlaceholder} src={Ada} alt="ceo" />
           <div >

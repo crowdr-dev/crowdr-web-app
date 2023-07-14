@@ -1,24 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import './shared-styles/general/variable.css';
+@import './shared-styles/variable.css';
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* font-family: 'Public Sans', sans-serif; */
   color: var(--BASE);
 }
-/* body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */
 
 .w-100{
   width: 100%;

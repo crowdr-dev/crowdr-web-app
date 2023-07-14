@@ -1,14 +1,6 @@
 import "./globals.css";
-import "./shared-styles/general/button.css";
-import "./shared-styles/cta/cta.css";
-import "./shared-styles/slogan/slogan.css";
-import "./shared-styles/sectors/sectors.css";
-import "./shared-styles/faq/faq.css";
-import "./shared-styles/benefits/benefits.css";
-import "./shared-styles/watchlist/watchlist.css";
-import "./shared-styles/footer/footer.css";
-import "./shared-styles/slogan/steps.css";
-import "./shared-styles/modal/modal.css";
+import "./shared-styles/button.css";
+
 import { Public_Sans, Lato } from "next/font/google";
 
 export const lato = Lato({
@@ -20,7 +12,7 @@ export const lato = Lato({
 const inter = Public_Sans({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Fundraise & Find Volunteer Opportunities",
+  title: "Crowdr | Fundraise & Find Volunteer Opportunities",
   description: "Best volunteering & fund raising platform in Africa",
 };
 
