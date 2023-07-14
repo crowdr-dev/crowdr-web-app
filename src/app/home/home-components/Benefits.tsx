@@ -34,9 +34,9 @@ export default function Benefits() {
                  className=""
                />
                <div className="">
-                 <h4 className="">Raise Funds</h4>
+                 <h4 className="">Raise funds</h4>
                  <p className="">
-                   Get support from your communinty, whether for a personal, creative or social-good project.
+                   Get support from your community, whether for a personal, creative or social-good project.
                  </p>
                </div>
              </div>

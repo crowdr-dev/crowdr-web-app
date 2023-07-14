@@ -35,7 +35,7 @@ const teamMembers = [
   { name: "Jerry Chibuokem", position: "Full-Stack Dev, CTO", photo: Jerry },
   { name: "Busola Omosipe", position: "Frontend Developer", photo: Busola },
   { name: "Idris Abdul-Lateef", position: "Frontend Developer", photo: Idris },
+  { name: "Daniel Arikawe", position: "Frontend Developer", photo: Daniel },
   { name: "Akintomiwa Ajayi", position: "Product Designer", photo: Tomiwa },
   { name: "Ade Abegunde", position: "Brand Designer", photo: Ade },
-  { name: "Daniel Arikawe", position: "Frontend Developer", photo: Daniel },
 ];
