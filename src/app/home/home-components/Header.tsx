@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function Header({openModal} : any) {
+type Props = {
+  openModal : () => void
+}
+
+export default function Header({openModal} : Props) {
   return (
        <section className="cta">
        <div className="content">
