@@ -79,7 +79,7 @@ export default function Benefits() {
        <div className="benefits-details">
          <div className="benefits-artwork artwork-left">
            <Image
-             src="/svg/non-profit.svg"
+             src="/svg/non-profits.svg"
              alt="non-profits"
              width={200}
              height={200}
