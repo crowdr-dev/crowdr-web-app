@@ -13,7 +13,7 @@ const inter = Public_Sans({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Crowdr | Fundraise & Find Volunteer Opportunities",
-  description: "Best volunteering & fund raising platform in Africa",
+  description: "|Crowdr helps you fundraise and find volunteering opportunities that make a change in our world",
 };
 
 export default function RootLayout({
