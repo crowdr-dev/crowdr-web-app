@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Business from "../../../../public/images/emoji/toolbox.svg"
 
 const interests = [
     {

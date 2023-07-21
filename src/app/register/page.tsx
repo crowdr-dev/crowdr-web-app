@@ -2,21 +2,14 @@
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import Intro from "./components/Intro";
+import AccountDetails from "./components/AccountDetails";
 
 const AboutUs = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
   return (
     <div>
       <Navbar />
-      <Intro />
+      {/* <Intro /> */}
+      <AccountDetails />
     </div>
   );
 };
