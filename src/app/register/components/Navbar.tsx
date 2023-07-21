@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import CrowdrLogo from "../../../../public/brand/crowdr-logo.svg"
+import CrowdrLogo from "../../../../public/images/brand/crowdr-logo.svg"
 
 const Navbar = () => {
   return (
