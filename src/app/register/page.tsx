@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Intro from "./components/Intro";
 import AccountDetails from "./components/AccountDetails";
 import Confirmation from "./components/Confirmation";
+import OrganizationDetails from "./components/OrganizationDetails";
 
 const AboutUs = () => {
   return (
@@ -11,7 +12,8 @@ const AboutUs = () => {
       <Navbar />
       {/* <Intro /> */}
       {/* <AccountDetails /> */}
-      <Confirmation />
+      {/* <Confirmation /> */}
+      <OrganizationDetails />
     </div>
   );
 };

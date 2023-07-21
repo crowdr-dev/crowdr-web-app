@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const AccountDetails = () => {
     return (
-<section>
+  <section>
       <div className="max-w-[525px] mx-auto py-2">
         <div className="flex flex-col py-[21px] md:py-[56px] px-5">
           <h1 className="text-[#0B5351] text-[18px] md:text-[32px] font-[600] mb-[8px] md:mb-[15px]">
