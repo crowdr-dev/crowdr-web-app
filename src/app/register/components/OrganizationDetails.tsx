@@ -34,8 +34,8 @@ const OrganisationDetails = () => {
   
                 <div id="organization_location" className="flex flex-col mb-[26px]">
                     <label htmlFor="organization_location" className="text-[14px] text-[#344054] mb-[6px]">Where is your org<span className="hidden md:inline">anization</span> located?</label>
-                    <select name="organization_location" id="organization_location" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]">
-                      <option selected disabled>Select state</option>
+                    <select name="organization_location" id="organization_location" defaultValue="Select state" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]">
+                      <option disabled>Select state</option>
                       <option value="male">Abia</option>
                       <option value="female">Adamawa</option>
                     </select>
