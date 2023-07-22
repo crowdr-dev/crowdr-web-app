@@ -1,16 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import CrowdrLogo from "../../../../public/images/brand/crowdr-logo.svg";
-import useToast from "@/hooks/useToast";
 
 const Navbar = () => {
-  const toast = useToast();
-  const title = "Account creation successful";
-  const body =
-    "Lorem ipsum dolor sit amet consectetur. Enim nibh enim vulputate in. Sodales.";
   return (
     <>
-      <section className="bg-[#F8F8F8]" onClick={() => toast({ title, body })}>
+      <section className="bg-[#F8F8F8]">
         <div className="max-w-[1750px] mx-auto py-1 md:py-2">
           <div className="flex justify-between items-center px-5 md:px-10">
             <div>

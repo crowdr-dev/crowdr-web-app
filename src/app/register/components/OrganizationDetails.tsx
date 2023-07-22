@@ -1,7 +1,12 @@
 import Image from "next/image";
 import UploadIcon from "../../../../public/svg/upload-cloud.svg"
+import useToast from "@/hooks/useToast";
 
 const OrganisationDetails = () => {
+  const toast = useToast();
+  const title = "Account creation successful";
+  const body =
+    "Lorem ipsum dolor sit amet.";
     return (
         <section>
         <div className="max-w-[346px] mx-auto py-2">
@@ -50,7 +55,7 @@ const OrganisationDetails = () => {
                     </div>
                 </div>
   
-                <button className="bg-[#068645] opacity-50 text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]">Continue</button>
+                <button className="bg-[#068645] opacity-50 text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]" onClick={() => toast({ title, body })}>Continue</button>
                 <button className="opacity-50 text-[#000] text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full px-[20px]">Go back</button>
             </div>
           </div>
