@@ -1,27 +1,22 @@
-import { createContext, useContext } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { UseFormReturn } from "react-hook-form/dist/types";
 
-// const FormContext = createContext<RegisterFormContext>({
-//   formPage: "intro",
-// });
-
-const RegisterFormContext: React.FC<RegisterFormProps> = ({ children }) => {
-  const formContext: RegisterFormContext = { formPage: "intro", ...useForm() };
+const RegisterFormContext: RFC = ({ children }) => {
+  const [formPage, setFormPage] = useState<FormPage>("intro")
+  const formContext: RegisterFormContext = { formPage, setFormPage, ...useForm() };
 
   return <FormProvider {...formContext}>{children}</FormProvider>;
 };
 
 export default RegisterFormContext;
+export { RegisterFormContext }
 
-// const useRegisterForm = () => {
-//   return useContext(FormContext);
-// };
-
-interface RegisterFormProps {
-  children: React.ReactNode;
-}
-
-export interface RegisterFormContext extends UseFormReturn {
-  formPage: "intro" | "account" | "organization" | "confirm";
-}
+type FormPage = "intro" | "account" | "organization" | "confirm"
+type FormPageSetter = Dispatch<SetStateAction<FormPage>>
+type RegisterFormProps = {children: React.ReactNode}
+type RFC = React.FC<RegisterFormProps>
+type RegisterFormContext = {
+  formPage: FormPage
+  setFormPage: FormPageSetter
+} & UseFormReturn

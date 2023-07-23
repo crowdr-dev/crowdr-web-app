@@ -1,9 +1,13 @@
 import Image from "next/image";
+import { useFormContext } from "react-hook-form";
+import { RegisterFormContext } from "@/hooks/useRegisterForm";
 import Email from "../../../../public/images/email.png"
 
 const Confirmation = () => {
-    return (
-<section>
+  const { setFormPage } = useFormContext() as RegisterFormContext;
+
+  return (
+    <section>
       <div className="max-w-[525px] mx-auto py-2">
         <div className="flex flex-col py-[21px] md:py-[56px] px-5">
           <h1 className="text-center text-[#0B5351] text-[18px] md:text-[32px] font-[600] mb-[8px] md:mb-[15px]">
@@ -18,12 +22,12 @@ const Confirmation = () => {
                   <Image src={Email} alt="email icon" className="md:w-[90px]" />
               </div>
 
-              <button className="bg-[#068645] text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]">Resend confirmation email</button>
+              <button onClick={() => setFormPage('account')} className="bg-[#068645] text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]">Resend confirmation email</button>
           </div>
         </div>
       </div>
     </section>
-    );
+  );
 }
 
 export default Confirmation;
