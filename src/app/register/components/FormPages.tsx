@@ -8,7 +8,7 @@ import Confirmation from "./Confirmation";
 
 const FormPages = () => {
   const { formPage, handleSubmit } = useFormContext() as RegisterFormContext;
-  const submit = () => {console.log("SUBMITTED")}
+  const submit = (data: any) => {console.log("SUBMITTED", data)}
 
   return (
     <form onSubmit={handleSubmit(submit)}>
