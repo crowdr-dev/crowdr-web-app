@@ -1,6 +1,10 @@
 import Image from "next/image";
+import { useFormContext } from "react-hook-form";
+import { RegisterFormContext } from "@/hooks/useRegisterForm";
 
 const Intro = () => {
+  const {register} = useFormContext() as RegisterFormContext;
+
   return (
     <section>
       <div className="max-w-[525px] mx-auto py-2">

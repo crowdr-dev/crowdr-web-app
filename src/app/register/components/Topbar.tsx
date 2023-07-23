@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import CrowdrLogo from "../../../../public/images/brand/crowdr-logo.svg";
 
-const Navbar = () => {
+const Topbar = () => {
   return (
     <>
       <section className="bg-[#F8F8F8]">
@@ -23,4 +23,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Topbar;

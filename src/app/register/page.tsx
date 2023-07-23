@@ -1,19 +1,15 @@
 "use client";
-import React, { useState } from "react";
-import Navbar from "./components/Navbar";
-import Intro from "./components/Intro";
-import AccountDetails from "./components/AccountDetails";
-import Confirmation from "./components/Confirmation";
-import OrganizationDetails from "./components/OrganizationDetails";
+import RegisterFormContext from "@/hooks/useRegisterForm";
+import Topbar from "./components/Topbar";
+import FormPages from "./components/FormPages";
 
 const AboutUs = () => {
   return (
     <div>
-      <Navbar />
-      {/* <Intro /> */}
-      {/* <AccountDetails /> */}
-      {/* <Confirmation /> */}
-      <OrganizationDetails />
+      <Topbar />
+      <RegisterFormContext>
+        <FormPages />
+      </RegisterFormContext>
     </div>
   );
 };
