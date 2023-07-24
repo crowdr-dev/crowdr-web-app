@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { RegisterFormContext } from "@/hooks/useRegisterForm";
 
 const AccountDetails = () => {
-  const {setFormPage, register} = useFormContext() as RegisterFormContext;
+  const {setFormPage, register, control} = useFormContext() as RegisterFormContext;
+  const accountType =  useWatch({control, name: "accountType"})
 
     return (
   <section>
@@ -17,15 +18,15 @@ const AccountDetails = () => {
             </h2>
 
           <div className="max-w-[473px]">
-              <div className="flex flex-col mb-[9px]">
+              {accountType == "individual" && <div className="flex flex-col mb-[9px]">
                   <label htmlFor="fullname" className="text-[14px] text-[#344054] mb-[6px]">Full name</label>
                   <input type="text" {...register("fullname")} id="fullname" placeholder="Enter your full name" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
-              </div>
+              </div>}
 
-              <div className="flex flex-col mb-[9px]">
+              {accountType == "non_profit" && <div className="flex flex-col mb-[9px]">
                   <label htmlFor="organization_name" className="text-[14px] text-[#344054] mb-[6px]">Organization name</label>
                   <input type="text" {...register("organizationName")} id="organization_name" placeholder="Enter your organization name" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
-              </div>
+              </div>}
 
               <div className="flex flex-col mb-[9px]">
                   <label htmlFor="email_address" className="text-[14px] text-[#344054] mb-[6px]">Email address</label>
@@ -43,21 +44,21 @@ const AccountDetails = () => {
                   <input type="text" {...register("confirmPassword")} id="confirm_password" placeholder="Confirm password" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
               </div>
 
-              <div className="flex flex-col mb-[9px]">
+              {accountType == "individual" && <div className="flex flex-col mb-[9px]">
                   <label htmlFor="gender" className="text-[14px] text-[#344054] mb-[6px]">Gender</label>
                   <select {...register("gender")} id="gender" defaultValue="Select your gender" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]">
                     <option disabled>Select your gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                   </select>
-              </div>
+              </div>}
 
-              <div className="flex flex-col mb-[9px]">
+              {accountType == "individual" && <div className="flex flex-col mb-[9px]">
                   <label htmlFor="referrer" className="text-[14px] text-[#344054] mb-[6px]">How did you hear about us? <span className="opacity-[0.44]">(Optional)</span></label>
                   <select {...register("referrer")} id="referrer" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]">
                     <option value="google">Google</option>
                   </select>
-              </div>
+              </div>}
 
               <div className="flex gap-x-2 mb-[22px]">
                   <input type="checkbox" {...register("termsAccepted")} id="terms_conditions" className="rounded-[4px] border border-[#D0D5DD] w-4 h-4" />

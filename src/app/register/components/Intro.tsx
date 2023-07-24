@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import Image from "next/image";
 import { useFormContext, useWatch } from "react-hook-form";
 import { RegisterFormContext } from "@/hooks/useRegisterForm";
