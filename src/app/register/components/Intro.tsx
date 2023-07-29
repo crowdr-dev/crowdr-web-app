@@ -5,7 +5,8 @@ import { RegisterFormContext } from "@/hooks/useRegisterForm";
 
 const Intro = () => {
   const { setFormPage, register, control } = useFormContext() as RegisterFormContext;
-  const [accountType, pickedInterests] = useWatch({control, name: ["accountType", "interests"]})
+  let [accountType, pickedInterests] = useWatch({control, name: ["accountType", "interests"]})
+  // pickedInterests = []
   const hasPickedEnoughInterests = useMemo(() => pickedInterests?.length > 0 && pickedInterests?.length <= 3, [pickedInterests])
   const validatePick = (id: string, e: any) => {
     if (pickedInterests?.length == 3 && !pickedInterests?.includes(id)) e.preventDefault()
@@ -27,7 +28,7 @@ const Intro = () => {
               <div id="account_type">
                 <label htmlFor="non_profit" className={(accountType == "non_profit" ? "bg-[#068645]" : "bg-[#F8F8F8]") + " block rounded-[8px] cursor-pointer py-[18px] px-[20px] mb-[11px]"}>
                     <p className={(accountType == "non_profit" ? "text-white" : "text-[#344054]") + " text-[14px] md:text-base font-[600] mb-2"}>Non-Profit</p>
-                    <p className={(accountType == "non_profit" ? "text-white" : "text-[#667085]") + " text-[12px] md:text-[13px] font-[300]"}>Select this if you're a non-profit organization<span className="md:hidden"> looking to raise funds for your cause</span>.</p>
+                    <p className={(accountType == "non_profit" ? "text-white" : "text-[#667085]") + " text-[12px] md:text-[13px] font-[300]"}>Select this if you're a non-profit organization<span className="md:hidden text-inherit"> looking to raise funds for your cause</span>.</p>
                   <input type="radio" {...register("accountType")} id="non_profit" value="non_profit" className="hidden" />
                 </label>
                 <label htmlFor="individual" className={(accountType == "individual" ? "bg-[#068645]" : "bg-[#F8F8F8]") + " block rounded-[8px] cursor-pointer py-[18px] px-[20px]"}>
@@ -45,9 +46,9 @@ const Intro = () => {
               </h2>
               <div id="interests" className="flex flex-wrap gap-y-[10px] mb-[37px] -mr-[6px]">
                 {interests.map(({id, label, icon}) => (
-                    <label key={id} htmlFor={id} onClick={e => validatePick(id, e)} className={(pickedInterests?.includes(id) ? "bg-[#068646]" : "bg-[#F8F8F8]") + " flex justify-center items-center gap-x-[5px] rounded-full cursor-pointer py-[8px] px-[21px] mr-[6px]"}>
-                        {icon && <Image src={`images/emoji/${icon}.svg`} alt={icon} width={15} height={15} className="w-[10px] md:w-[15px]" />}
-                        <span className={(pickedInterests?.includes(id) ? "text-[#F8F8F8]" : "text-[#0B5351]") + " text-[12px] md:text-base"}>{label}</span>
+                    <label key={id} htmlFor={id} onClick={e => validatePick(id, e)} className={((pickedInterests || [])?.includes(id) ? "bg-[#068646]" : "bg-[#F8F8F8]") + " flex justify-center items-center gap-x-[5px] rounded-full cursor-pointer py-[8px] px-[21px] mr-[6px]"}>
+                        {icon && <Image src={`images/emoji/${icon}.svg`} alt={icon} width={15} height={15} className="w-[15px]" />}
+                        <span className={((pickedInterests || [])?.includes(id) ? "text-[#F8F8F8]" : "text-[#0B5351]") + " text-[12px] md:text-base"}>{label}</span>
                     <input type="checkbox" {...register("interests")} id={id} value={id} className="hidden" />
                 </label>
                 ))}

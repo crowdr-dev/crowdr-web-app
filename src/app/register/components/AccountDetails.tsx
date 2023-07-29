@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { useFormContext, useWatch } from "react-hook-form";
 import { RegisterFormContext } from "@/hooks/useRegisterForm";
+import { useMemo } from "react";
 
 const AccountDetails = () => {
   const {setFormPage, register, control} = useFormContext() as RegisterFormContext;
   const accountType =  useWatch({control, name: "accountType"})
+  // const validationPassed = useMemo(() => {}, [])
 
     return (
   <section>
@@ -46,8 +48,8 @@ const AccountDetails = () => {
 
               {accountType == "individual" && <div className="flex flex-col mb-[9px]">
                   <label htmlFor="gender" className="text-[14px] text-[#344054] mb-[6px]">Gender</label>
-                  <select {...register("gender")} id="gender" defaultValue="Select your gender" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]">
-                    <option disabled>Select your gender</option>
+                  <select {...register("gender")} id="gender" value="" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]">
+                    <option value="" disabled>Select your gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                   </select>
