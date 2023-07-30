@@ -5,11 +5,10 @@ import { RegisterFormContext } from "@/hooks/useRegisterForm";
 
 const Intro = () => {
   const { setFormPage, register, control } = useFormContext() as RegisterFormContext;
-  let [accountType, pickedInterests] = useWatch({control, name: ["accountType", "interests"]})
-  // pickedInterests = []
+  const [accountType, pickedInterests] = useWatch({control, name: ["accountType", "interests"]})
   const hasPickedEnoughInterests = useMemo(() => pickedInterests?.length > 0 && pickedInterests?.length <= 3, [pickedInterests])
-  const validatePick = (id: string, e: any) => {
-    if (pickedInterests?.length == 3 && !pickedInterests?.includes(id)) e.preventDefault()
+  const validatePick = (id: string, event: any) => {
+    if (pickedInterests?.length == 3 && !pickedInterests?.includes(id)) event.preventDefault()
   }
 
   return (

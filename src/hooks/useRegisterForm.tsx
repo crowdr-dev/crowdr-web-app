@@ -12,16 +12,30 @@ const RegisterFormContext: RFC = ({ children }) => {
 export default RegisterFormContext;
 export type { RegisterFormContext, FormFields }
 
-const config = {
+const config: UseFormConfig = {
   defaultValues: {
-    accountType: "non_profit"
-  }
+    accountType: "non_profit",
+    interests: [],
+    fullname: "",
+    organizationName: "",
+    emailAddress: "",
+    password: "",
+    confirmPassword: "",
+    gender: "",
+    referrer: "google",
+    termsAccepted: false,
+    cacNumber: "",
+    organizationLocation: "",
+    publicUrl: ""
+  },
+  mode: 'onChange'
 }
 
 type FormPage = "intro" | "account" | "organization" | "confirm"
 type FormPageSetter = Dispatch<SetStateAction<FormPage>>
 type RegisterFormProps = {children: React.ReactNode}
 type RFC = React.FC<RegisterFormProps>
+type UseFormConfig = Parameters<typeof useForm<FormFields>>[0]
 type FormFields = {
   accountType:          string;
   interests:            string[];
