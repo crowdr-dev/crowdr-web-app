@@ -1,10 +1,11 @@
-import Image from "next/image";
+import NextImage from "next/image";
 import { useFormContext } from "react-hook-form";
 import { RegisterFormContext } from "@/hooks/useRegisterForm";
 import UploadIcon from "../../../../public/svg/upload-cloud.svg"
 
 const OrganisationDetails = () => {
   const { setFormPage, register, formState: {errors, isValid} } = useFormContext() as RegisterFormContext;
+  const {onChange} = register("upload")
 
     return (
         <section>
@@ -18,25 +19,24 @@ const OrganisationDetails = () => {
               </h2>
   
             <div className="max-w-[346px]">
-                <div id="upload" className="flex flex-col items-center rounded-lg border-[2px] border-dashed border-[#e4e7ec] py-4 px-6 mb-[20px]">
-                  <div className="bg-[#F2F4F7] rounded-full border-[6px] border-[#F9FAFB] p-[10px] mb-3">
-                    <Image src={UploadIcon} alt="upload icon" width={24} />
-                  </div>
-
-                  <div className="text-center">
-                    <p className="text-sm mb-1"><span className="text-[#FF5200]">Click to upload</span> or drag and drop</p>
-                    <p className="text-xs text-[#667085]">SVG, PNG, JPG or GIF (max. 800x400px)</p>
-                  </div>
-                    {/* <label htmlFor="upload" className="text-[14px] text-[#344054] mb-[6px]">CAC number</label>
-                    <input type="file" id="upload" name="upload" placeholder="Enter your organization’s CAC number" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" /> */}
-                    {/* TODO: Implement drag-and-drop feature */}
-                    {/* TODO: Add validation */}
-                    {/* TODO: Make cursor on buttons pointer */}
+                <div className="mb-[20px]">
+                  <label htmlFor="upload" className="flex flex-col items-center cursor-pointer rounded-lg border-[2px] border-dashed border-[#e4e7ec] py-4 px-6 mb-1">
+                    <div className="bg-[#F2F4F7] rounded-full border-[6px] border-[#F9FAFB] p-[10px] mb-3">
+                      <NextImage src={UploadIcon} alt="upload icon" width={24} />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm mb-1"><span className="text-[#FF5200] hover:underline">Click to upload</span> or drag and drop</p>
+                      <p className="text-xs text-[#667085]">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+                    </div>
+                      <input type="file" {...register("upload", {required: {value: true, message: "Please upload an image"}, validate: { isCorrectSize: checkIfCorrectSize}})} id="upload" accept=".svg, .png, .jpg, .jpeg, .gif" className="hidden" />
+                      {/* TODO: Implement drag-and-drop feature */}
+                  </label>
+                  {errors.upload && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.upload?.message}</span>}
                 </div>
 
                 <div className="flex flex-col mb-[26px]">
                     <label htmlFor="cac_number" className="text-[14px] text-[#344054] mb-[6px]">CAC number</label>
-                    <input type="text" {...register("cacNumber", {required: true, pattern: {value: /\d+/, message: "Enter a valid CAC number"}})} id="cac_number" placeholder="Enter your organization’s CAC number" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
+                    <input type="text" {...register("cacNumber", {required: true, pattern: {value: /^\d+$/, message: "Enter a valid CAC number"}})} id="cac_number" placeholder="Enter your organization’s CAC number" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
                   {errors.cacNumber && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.cacNumber?.message}</span>}
                 </div>
   
@@ -68,3 +68,30 @@ const OrganisationDetails = () => {
 }
 
 export default OrganisationDetails;
+
+const checkIfCorrectSize = async (fileList: any) => {
+  const file = fileList[0]
+  if (!file) return "Please select an image"
+
+  const imageStatus = await new Promise<string | boolean>((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      if (img.width > 800 || img.height > 400) {
+        console.log({width: img.width, height: img.height})
+        reject("Image must not be larger than 800x400px")
+      } else {
+        resolve(true)
+      }
+    }
+  
+    const reader = new FileReader()
+    reader.onload = e => {
+      if (typeof e.target?.result === 'string') {
+        img.src = e.target?.result
+      }
+    }
+    reader.readAsDataURL(file)
+  })
+
+  return imageStatus
+}

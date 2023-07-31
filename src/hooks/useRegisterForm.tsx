@@ -47,6 +47,7 @@ type FormFields = {
   gender:               string;
   referrer:             string;
   termsAccepted:        boolean;
+  upload:               string;
   cacNumber:            string;
   organizationLocation: string;
   publicUrl:            string;
