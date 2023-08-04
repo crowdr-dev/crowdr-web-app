@@ -26,7 +26,7 @@ const AccountDetails = () => {
                   {errors.fullName && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.fullName?.message}</span>}
               </div>}
 
-              {userType == "non_profit" && <div className="flex flex-col mb-[9px]">
+              {userType == "non-profit" && <div className="flex flex-col mb-[9px]">
                   <label htmlFor="organization_name" className="text-[14px] text-[#344054] mb-[6px]">Organization name</label>
                   <input type="text" {...register("organizationName", {required: {value: true, message: "Organization name is required"}})} id="organization_name" placeholder="Enter your organization name" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
                   {errors.organizationName && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.organizationName?.message}</span>}
