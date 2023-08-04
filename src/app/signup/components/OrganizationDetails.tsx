@@ -1,10 +1,11 @@
 import NextImage from "next/image";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { RegisterFormContext } from "@/hooks/useRegisterForm";
+import Select from 'react-select';
 import UploadIcon from "../../../../public/svg/upload-cloud.svg"
 
 const OrganisationDetails = () => {
-  const { setFormPage, register, formState: {errors, isValid} } = useFormContext() as RegisterFormContext;
+  const { setFormPage, register, control, formState: {errors, isValid} } = useFormContext() as RegisterFormContext;
   const {onChange} = register("upload")
 
     return (
@@ -43,12 +44,13 @@ const OrganisationDetails = () => {
   
                 <div className="flex flex-col mb-[26px]">
                     <label htmlFor="organization_location" className="text-[14px] text-[#344054] mb-[6px]">Where is your org<span className="hidden md:inline">anization</span> located?</label>
-                    <select {...register("organizationLocation", {required: true})} id="organization_location" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]">
+                    <Controller name="organizationLocation" control={control} rules={{ required: {value: true, message: "Select an option"} }} render={({field: {onChange, value}}) => (<Select id="organization_location" options={stateOptions} isSearchable={true} isClearable={false} value={stateOptions.find(g => g.value === value)} onChange={(g) => onChange(g!.value)} />)} />
+                  {errors.organizationLocation && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.organizationLocation?.message}</span>}
+                    {/* <select {...register("organizationLocation", {required: true})} id="organization_location" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]">
                       <option value="" disabled>Select state</option>
                       <option value="Abia">Abia</option>
                       <option value="Adamawa">Adamawa</option>
-                      {/* TODO: Switch to react-select */}
-                    </select>
+                    </select> */}
                 </div>
 
                 <div className="flex flex-col mb-[40px]">
@@ -97,3 +99,43 @@ const checkIfCorrectSize = async (fileList: any) => {
 
   return imageStatus
 }
+
+const stateOptions = [
+  {value: 'Abia', label: 'Abia'},
+  {value: 'Adamawa', label: 'Adamawa'},
+  {value: 'Akwa Ibom', label: 'Akwa Ibom'},
+  {value: 'Anambra', label: 'Anambra'},
+  {value: 'Bauchi', label: 'Bauchi'},
+  {value: 'Bayelsa', label: 'Bayelsa'},
+  {value: 'Benue', label: 'Benue'},
+  {value: 'Borno', label: 'Borno'},
+  {value: 'Cross River', label: 'Cross River'},
+  {value: 'Delta', label: 'Delta'},
+  {value: 'Ebonyi', label: 'Ebonyi'},
+  {value: 'Edo', label: 'Edo'},
+  {value: 'Ekiti', label: 'Ekiti'},
+  {value: 'Enugu', label: 'Enugu'},
+  {value: 'Gombe', label: 'Gombe'},
+  {value: 'Imo', label: 'Imo'},
+  {value: 'Jigawa', label: 'Jigawa'},
+  {value: 'Kaduna', label: 'Kaduna'},
+  {value: 'Kano', label: 'Kano'},
+  {value: 'Katsina', label: 'Katsina'},
+  {value: 'Kebbi', label: 'Kebbi'},
+  {value: 'Kogi', label: 'Kogi'},
+  {value: 'Kwara', label: 'Kwara'},
+  {value: 'Lagos', label: 'Lagos'},
+  {value: 'Nasarawa', label: 'Nasarawa'},
+  {value: 'Niger', label: 'Niger'},
+  {value: 'Ogun', label: 'Ogun'},
+  {value: 'Ondo', label: 'Ondo'},
+  {value: 'Osun', label: 'Osun'},
+  {value: 'Oyo', label: 'Oyo'},
+  {value: 'Plateau', label: 'Plateau'},
+  {value: 'Rivers', label: 'Rivers'},
+  {value: 'Sokoto', label: 'Sokoto'},
+  {value: 'Taraba', label: 'Taraba'},
+  {value: 'Yobe', label: 'Yobe'},
+  {value: 'Zamfara', label: 'Zamfara'},
+  {value: 'FCT', label: 'FCT'},
+]
