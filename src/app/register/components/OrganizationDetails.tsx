@@ -30,6 +30,7 @@ const OrganisationDetails = () => {
                     </div>
                       <input type="file" {...register("upload", {required: {value: true, message: "Please upload an image"}, validate: { isCorrectSize: checkIfCorrectSize}})} id="upload" accept=".svg, .png, .jpg, .jpeg, .gif" className="hidden" />
                       {/* TODO: Implement drag-and-drop feature */}
+                      {/* TODO: Make responsive to file drag-over and succesful upload */}
                   </label>
                   {errors.upload && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.upload?.message}</span>}
                 </div>
@@ -46,6 +47,7 @@ const OrganisationDetails = () => {
                       <option value="" disabled>Select state</option>
                       <option value="Abia">Abia</option>
                       <option value="Adamawa">Adamawa</option>
+                      {/* TODO: Switch to react-select */}
                     </select>
                 </div>
 
@@ -73,12 +75,12 @@ const checkIfCorrectSize = async (fileList: any) => {
   const file = fileList[0]
   if (!file) return "Please select an image"
 
-  const imageStatus = await new Promise<string | boolean>((resolve, reject) => {
+  const imageStatus = await new Promise<string | boolean>((resolve) => {
     const img = new Image()
     img.onload = () => {
       if (img.width > 800 || img.height > 400) {
         console.log({width: img.width, height: img.height})
-        reject("Image must not be larger than 800x400px")
+        resolve("Image must not be larger than 800x400px")
       } else {
         resolve(true)
       }

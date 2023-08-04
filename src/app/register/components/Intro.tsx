@@ -5,7 +5,7 @@ import { RegisterFormContext } from "@/hooks/useRegisterForm";
 
 const Intro = () => {
   const { setFormPage, register, control } = useFormContext() as RegisterFormContext;
-  const [accountType, pickedInterests] = useWatch({control, name: ["accountType", "interests"]})
+  const [userType, pickedInterests] = useWatch({control, name: ["userType", "interests"]})
   const hasPickedEnoughInterests = useMemo(() => pickedInterests?.length > 0 && pickedInterests?.length <= 3, [pickedInterests])
   const validatePick = (id: string, event: any) => {
     if (pickedInterests?.length == 3 && !pickedInterests?.includes(id)) event.preventDefault()
@@ -25,15 +25,15 @@ const Intro = () => {
                 Who are you?
               </h2>
               <div id="account_type">
-                <label htmlFor="non_profit" className={(accountType == "non_profit" ? "bg-[#068645]" : "bg-[#F8F8F8]") + " block rounded-[8px] cursor-pointer py-[18px] px-[20px] mb-[11px]"}>
-                    <p className={(accountType == "non_profit" ? "text-white" : "text-[#344054]") + " text-[14px] md:text-base font-[600] mb-2"}>Non-Profit</p>
-                    <p className={(accountType == "non_profit" ? "text-white" : "text-[#667085]") + " text-[12px] md:text-[13px] font-[300]"}>Select this if you're a non-profit organization<span className="md:hidden text-inherit"> looking to raise funds for your cause</span>.</p>
-                  <input type="radio" {...register("accountType")} id="non_profit" value="non_profit" className="hidden" />
+                <label htmlFor="non-profit" className={(userType == "non-profit" ? "bg-[#068645]" : "bg-[#F8F8F8]") + " block rounded-[8px] cursor-pointer py-[18px] px-[20px] mb-[11px]"}>
+                    <p className={(userType == "non-profit" ? "text-white" : "text-[#344054]") + " text-[14px] md:text-base font-[600] mb-2"}>Non-Profit</p>
+                    <p className={(userType == "non-profit" ? "text-white" : "text-[#667085]") + " text-[12px] md:text-[13px] font-[300]"}>Select this if you're a non-profit organization<span className="md:hidden text-inherit"> looking to raise funds for your cause</span>.</p>
+                  <input type="radio" {...register("userType")} id="non-profit" value="non-profit" className="hidden" />
                 </label>
-                <label htmlFor="individual" className={(accountType == "individual" ? "bg-[#068645]" : "bg-[#F8F8F8]") + " block rounded-[8px] cursor-pointer py-[18px] px-[20px]"}>
-                    <p className={(accountType == "individual" ? "text-white" : "text-[#344054]") + " text-[14px] md:text-base font-[600] mb-2"}>Individual</p>
-                    <p className={(accountType == "individual" ? "text-white" : "text-[#667085]") + " text-[12px] md:text-[13px] font-[300]"}>Select this if you’re a person looking to volunteer, donate or raise funds.</p>
-                  <input type="radio" {...register("accountType")} id="individual" value="individual" className="hidden" />
+                <label htmlFor="individual" className={(userType == "individual" ? "bg-[#068645]" : "bg-[#F8F8F8]") + " block rounded-[8px] cursor-pointer py-[18px] px-[20px]"}>
+                    <p className={(userType == "individual" ? "text-white" : "text-[#344054]") + " text-[14px] md:text-base font-[600] mb-2"}>Individual</p>
+                    <p className={(userType == "individual" ? "text-white" : "text-[#667085]") + " text-[12px] md:text-[13px] font-[300]"}>Select this if you’re a person looking to volunteer, donate or raise funds.</p>
+                  <input type="radio" {...register("userType")} id="individual" value="individual" className="hidden" />
                 </label>
               </div>
 
@@ -110,7 +110,7 @@ const interests = [
         icon: 'office-building'
     },
     {
-        id: 'sports',
+        id: 'sport',
         label: 'Sports',
         icon: 'man-swimming-light-skin-tone'
     },

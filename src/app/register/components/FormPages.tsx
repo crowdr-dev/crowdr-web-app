@@ -1,14 +1,36 @@
 import { useFormContext } from "react-hook-form";
-import { RegisterFormContext } from "@/hooks/useRegisterForm";
+import _ from "lodash";
+import { FormFields, RegisterFormContext } from "@/hooks/useRegisterForm";
+import { API_BASE_URL } from "@/config";
 
 import Intro from "./Intro";
 import AccountDetails from "./AccountDetails";
 import OrganizationDetails from "./OrganizationDetails";
 import Confirmation from "./Confirmation";
+import axios from "axios";
 
 const FormPages = () => {
-  const { formPage, handleSubmit, control, formState: {errors} } = useFormContext() as RegisterFormContext;
-  const submit = (data: any) => {console.log("SUBMITTED", data); console.log({errors})}
+  const { formPage, setFormPage, handleSubmit } =
+    useFormContext() as RegisterFormContext;
+
+  const submit = async (formFields: FormFields) => {
+    const endpoint = API_BASE_URL + "/api/v1/users/signup";
+    let payload = _.pick(formFields, [
+      "userType",
+      "email",
+      "interests",
+      "password",
+      "referrer",
+      "organizationName",
+      "fullName",
+      "gender",
+    ]);
+
+    try {
+      const res = await axios.post(endpoint, payload);
+      setFormPage('confirm');
+    } catch (error) {}
+  };
 
   return (
     <>
