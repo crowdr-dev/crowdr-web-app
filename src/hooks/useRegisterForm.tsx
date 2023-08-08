@@ -14,11 +14,11 @@ export type { RegisterFormContext, FormFields }
 
 const config: UseFormConfig = {
   defaultValues: {
-    accountType: "non_profit",
+    userType: "non-profit",
     interests: [],
-    fullname: "",
+    fullName: "",
     organizationName: "",
-    emailAddress: "",
+    email: "",
     password: "",
     confirmPassword: "",
     gender: "",
@@ -37,11 +37,11 @@ type RegisterFormProps = {children: React.ReactNode}
 type RFC = React.FC<RegisterFormProps>
 type UseFormConfig = Parameters<typeof useForm<FormFields>>[0]
 type FormFields = {
-  accountType:          string;
+  userType:             string;
   interests:            string[];
-  fullname:             string;
+  fullName:             string;
   organizationName:     string;
-  emailAddress:         string;
+  email:                string;
   password:             string;
   confirmPassword:      string;
   gender:               string;
