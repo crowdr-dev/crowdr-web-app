@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFormContext, useWatch, Controller } from "react-hook-form";
 import { RegisterFormContext } from "@/hooks/useRegisterForm";
+import Select from 'react-select';
 
 const AccountDetails = () => {
   const {setFormPage, register, control, formState: {errors, isValid}} = useFormContext() as RegisterFormContext;
-  const [accountType] =  useWatch({control, name: ["accountType"]})
+  const [userType] =  useWatch({control, name: ["userType"]})
   const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/
 
     return (
@@ -19,13 +20,13 @@ const AccountDetails = () => {
             </h2>
 
           <div className="max-w-[473px]">
-              {accountType == "individual" && <div className="flex flex-col mb-[9px]">
-                  <label htmlFor="fullname" className="text-[14px] text-[#344054] mb-[6px]">Full name</label>
-                  <input type="text" {...register("fullname", {required: {value: true, message: "Full name is required"}})} id="fullname" placeholder="Enter your full name" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
-                  {errors.fullname && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.fullname?.message}</span>}
+              {userType == "individual" && <div className="flex flex-col mb-[9px]">
+                  <label htmlFor="fullName" className="text-[14px] text-[#344054] mb-[6px]">Full name</label>
+                  <input type="text" {...register("fullName", {required: {value: true, message: "Full name is required"}})} id="fullName" placeholder="Enter your full name" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
+                  {errors.fullName && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.fullName?.message}</span>}
               </div>}
 
-              {accountType == "non_profit" && <div className="flex flex-col mb-[9px]">
+              {userType == "non-profit" && <div className="flex flex-col mb-[9px]">
                   <label htmlFor="organization_name" className="text-[14px] text-[#344054] mb-[6px]">Organization name</label>
                   <input type="text" {...register("organizationName", {required: {value: true, message: "Organization name is required"}})} id="organization_name" placeholder="Enter your organization name" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
                   {errors.organizationName && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.organizationName?.message}</span>}
@@ -33,8 +34,8 @@ const AccountDetails = () => {
 
               <div className="flex flex-col mb-[9px]">
                   <label htmlFor="email_address" className="text-[14px] text-[#344054] mb-[6px]">Email address</label>
-                  <input type="text" {...register("emailAddress", {required: {value: true, message: "Email is required"}, pattern: {value: emailRegex, message: "Enter a valid email"}})} id="email_address" placeholder="Enter your email" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
-                  {errors.emailAddress && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.emailAddress?.message}</span>}
+                  <input type="text" {...register("email", {required: {value: true, message: "Email is required"}, pattern: {value: emailRegex, message: "Enter a valid email"}})} id="email_address" placeholder="Enter your email" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
+                  {errors.email && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.email?.message}</span>}
               </div>
 
               <div className="flex flex-col mb-[9px]">
@@ -49,23 +50,15 @@ const AccountDetails = () => {
                   {errors.confirmPassword && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.confirmPassword?.message}</span>}
               </div>
 
-              {accountType == "individual" && <div className="flex flex-col mb-[9px]">
+              {userType == "individual" && <div className="flex flex-col mb-[9px]">
                   <label htmlFor="gender" className="text-[14px] text-[#344054] mb-[6px]">Gender</label>
-                  <select {...register("gender", {required: {value: true, message: "Select an option"}})} id="gender" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]">
-                    <option value="" disabled>Select your gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
+                  <Controller name="gender" control={control} rules={{ required: {value: true, message: "Select an option"} }} render={({field: {onChange, value}}) => (<Select id="gender" options={genderOptions} value={genderOptions.find(g => g.value === value)} isSearchable={false} isClearable={false}  onChange={(g) => onChange(g!.value)} placeholder="Select your gender" />)} />
                   {errors.gender && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.gender?.message}</span>}
               </div>}
 
-              {accountType == "individual" && <div className="flex flex-col mb-[9px]">
+              {userType == "individual" && <div className="flex flex-col mb-[9px]">
                   <label htmlFor="referrer" className="text-[14px] text-[#344054] mb-[6px]">How did you hear about us? <span className="opacity-[0.44]">(Optional)</span></label>
-                  <select {...register("referrer", {required: {value: true, message: "Select an option"}})} id="referrer" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]">
-                    <option value="google">Google</option>
-                    <option value="facebook">Facebook</option>
-                    <option value="other">Other</option>
-                  </select>
+                  <Controller name="referrer" control={control} rules={{ required: {value: true, message: "Select an option"} }} render={({field: {onChange, value}}) => (<Select id="referrer" options={referrerOptions} defaultValue={referrerOptions[0]} isClearable={false} value={referrerOptions.find(g => g.value === value)} onChange={(g) => onChange(g!.value)} />)} />
                   {errors.referrer && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.referrer?.message}</span>}
               </div>}
 
@@ -77,7 +70,7 @@ const AccountDetails = () => {
                   </p>
               </div>
 
-              <button type="button" onClick={() => setFormPage(accountType == "non_profit" ? "organization" : "confirm")} disabled={!isValid} className={`${isValid ? "opacity-100" :  "opacity-50"} bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]`}>Continue</button>
+              <button type="submit" disabled={!isValid} className={`${isValid ? "opacity-100" :  "opacity-50"} bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]`}>Continue</button>
               <button type="button" onClick={() => setFormPage("intro")} className="opacity-50 text-[#000] text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full px-[20px]">Go back</button>
           </div>
         </div>
@@ -87,3 +80,14 @@ const AccountDetails = () => {
 }
 
 export default AccountDetails;
+
+const genderOptions = [
+  {value: 'male', label: 'Male'},
+  {value: 'female', label: 'Female'},
+]
+
+const referrerOptions = [
+  {value: 'google', label: 'Google'},
+  {value: 'facebook', label: 'Facebook'},
+  {value: 'other', label: 'Other'},
+]

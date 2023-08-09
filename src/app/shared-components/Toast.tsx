@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 import Image from "next/image";
 import CheckCircle from "../../../public/svg/check-circle.svg";
 import XMark from "../../../public/svg/x-mark.svg";
+
 import { Status } from "@/hooks/useToast";
 
 const Toast = ({ t, title, body, type }: ToastProps ) => {
