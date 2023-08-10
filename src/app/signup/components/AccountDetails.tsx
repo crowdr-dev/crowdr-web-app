@@ -1,11 +1,15 @@
+import { useState } from "react";
 import Link from "next/link";
 import { useFormContext, useWatch, Controller } from "react-hook-form";
-import { RegisterFormContext } from "@/hooks/useRegisterForm";
 import Select from 'react-select';
+import { RegisterFormContext } from "@/hooks/useRegisterForm";
+import {LuEye, LuEyeOff} from "react-icons/lu"
 
 const AccountDetails = () => {
   const {setFormPage, register, control, formState: {errors, isValid}} = useFormContext() as RegisterFormContext;
   const [userType] =  useWatch({control, name: ["userType"]})
+  const [passIsVisible, setPassIsVisible] = useState(false)
+  const [confirmPassIsVisible, setConfirmPassIsVisible] = useState(false)
   const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/
 
     return (
@@ -40,13 +44,21 @@ const AccountDetails = () => {
 
               <div className="flex flex-col mb-[9px]">
                   <label htmlFor="password" className="text-[14px] text-[#344054] mb-[6px]">Password</label>
-                  <input type="password" {...register("password", {required: {value: true, message: "Password is required"}, minLength: {value: 8, message: "Must be at least 8 characters."}})} id="password" placeholder="Create a password" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
+                  <div className="relative">
+                    <input type={passIsVisible ? 'text' : 'password'} {...register("password", {required: {value: true, message: "Password is required"}, minLength: {value: 8, message: "Must be at least 8 characters."}})} id="password" placeholder="Create a password" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] pl-[14px] pr-10 w-full" />
+                    {passIsVisible && <span onClick={() => setPassIsVisible(false)} className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"><LuEye size="1.25rem" title="Hide password" /></span>}
+                    {!passIsVisible && <span onClick={() => setPassIsVisible(true)} className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"><LuEyeOff size="1.25rem" title="Show password" /></span>}
+                  </div>
                   {errors.password && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.password?.message}</span>}
               </div>
 
               <div className="flex flex-col mb-[9px]">
                   <label htmlFor="confirm_password" className="text-[14px] text-[#344054] mb-[6px]">Confirm Password*</label>
-                  <input type="password" {...register("confirmPassword", {required: true, validate: {value: (confirmPassword, {password}) => confirmPassword === password || "Passwords do not match"}})} id="confirm_password" placeholder="Confirm password" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
+                  <div className="relative">
+                    <input type={confirmPassIsVisible ? 'text' : 'password'} {...register("confirmPassword", {required: true, validate: {value: (confirmPassword, {password}) => confirmPassword === password || "Passwords do not match"}})} id="confirm_password" placeholder="Confirm password" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] pl-[14px] pr-10 w-full" />
+                    {confirmPassIsVisible && <span onClick={() => setConfirmPassIsVisible(false)} className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"><LuEye size="1.25rem" title="Hide password" /></span>}
+                      {!confirmPassIsVisible && <span onClick={() => setConfirmPassIsVisible(true)} className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"><LuEyeOff size="1.25rem" title="Show password" /></span>}
+                  </div>
                   {errors.confirmPassword && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.confirmPassword?.message}</span>}
               </div>
 

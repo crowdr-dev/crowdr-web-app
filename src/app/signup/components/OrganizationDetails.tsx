@@ -46,11 +46,6 @@ const OrganisationDetails = () => {
                     <label htmlFor="organization_location" className="text-[14px] text-[#344054] mb-[6px]">Where is your org<span className="hidden md:inline">anization</span> located?</label>
                     <Controller name="organizationLocation" control={control} rules={{ required: {value: true, message: "Select an option"} }} render={({field: {onChange, value}}) => (<Select id="organization_location" options={stateOptions} isSearchable={true} isClearable={false} value={stateOptions.find(g => g.value === value)} onChange={(g) => onChange(g!.value)} />)} />
                   {errors.organizationLocation && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.organizationLocation?.message}</span>}
-                    {/* <select {...register("organizationLocation", {required: true})} id="organization_location" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]">
-                      <option value="" disabled>Select state</option>
-                      <option value="Abia">Abia</option>
-                      <option value="Adamawa">Adamawa</option>
-                    </select> */}
                 </div>
 
                 <div className="flex flex-col mb-[40px]">
