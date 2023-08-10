@@ -77,8 +77,8 @@ const AccountDetails = () => {
               <div className="flex gap-x-2 mb-[22px]">
                   <input type="checkbox" {...register("termsAccepted", {required: true})} id="terms_conditions" className="rounded-[4px] border border-[#D0D5DD] w-4 h-4" />
                   <p className="text-[14px] text-[#344054] font-[500]">
-                    I have read, understood and I agree to <span className="text-[#003D66]">Crowdr’s</span> <Link href="/privacy-policy" className="underline">Privacy Policy</Link>,
-                    and <Link href="/terms-and-conditions" className="underline">Terms and conditions</Link>.
+                    I have read, understood and I agree to <span className="text-[#003D66]">Crowdr’s</span> <Link href="/policies" target="_blank" className="underline">Privacy Policy</Link>,
+                    and <Link href="/policies" target="_blank" className="underline">Terms and conditions</Link>.
                   </p>
               </div>
 
