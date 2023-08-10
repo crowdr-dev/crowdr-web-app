@@ -6,7 +6,6 @@ import XMark from "../../../public/svg/x-mark.svg";
 import { Status } from "@/hooks/useToast";
 
 const Toast = ({ t, title, body, type }: ToastProps ) => {
-    console.log(t)
   return (
     <div className={`${t.visible ? 'animate-in fade-in zoom-in' : 'animate-out fade-out zoom-out'} flex max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto p-4`}>
       <div className="self-start flex-shrink-0 bg-[#D1FADF] rounded-full border-[6px] border-[#ECFDF3] p-[10px] mr-[14px]">

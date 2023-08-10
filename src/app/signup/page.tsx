@@ -1,7 +1,7 @@
 "use client";
 import RegisterFormContext from "@/hooks/useRegisterForm";
-import Topbar from "./signup-components/Topbar";
-import FormPages from "./signup-components/FormPages";
+import Topbar from "./components/Topbar";
+import FormPages from "./components/FormPages";
 
 const AboutUs = () => {
   return (
