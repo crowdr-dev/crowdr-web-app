@@ -3,6 +3,7 @@ import "./shared-styles/button.css";
 
 import { Toaster } from "react-hot-toast";
 import { Public_Sans, Lato } from "next/font/google";
+import { PropsWithChildren } from "react";
 
 export const lato = Lato({
   weight: ["400", "700"],
@@ -19,9 +20,7 @@ export const metadata = {
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={inter.className}>
