@@ -1,6 +1,6 @@
 import React from "react";
 import ReactModal, { Styles } from "react-modal";
-import "./shared-component-styles/modal.css"
+import "./shared-component-styles/modal.css";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -28,7 +28,11 @@ const customStyles: Styles = {
 
 // ReactModal.setAppElement('#modals');
 
-const Modal = ({ isOpen, onClose, children }: React.PropsWithChildren<ModalProps>) => {
+const Modal = ({
+  isOpen,
+  onClose,
+  children,
+}: React.PropsWithChildren<ModalProps>) => {
   return (
     <ReactModal
       isOpen={isOpen}
@@ -40,7 +44,7 @@ const Modal = ({ isOpen, onClose, children }: React.PropsWithChildren<ModalProps
       // appElement={typeof window !== 'undefined' ? document.getElementById('__next')! : undefined}
       style={customStyles}
     >
-      {children as any}
+      <>{children}</>
     </ReactModal>
   );
 };
