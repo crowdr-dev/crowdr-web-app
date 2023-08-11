@@ -29,7 +29,7 @@ const customStyles: Styles = {
 
 // ReactModal.setAppElement('#modals');
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, onClose, children }: React.PropsWithChildren<ModalProps>) => {
   return (
     <ReactModal
       isOpen={isOpen}
