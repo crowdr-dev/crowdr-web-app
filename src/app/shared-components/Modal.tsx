@@ -40,7 +40,7 @@ const Modal = ({ isOpen, onClose, children }: React.PropsWithChildren<ModalProps
       // appElement={typeof window !== 'undefined' ? document.getElementById('__next')! : undefined}
       style={customStyles}
     >
-      {children}
+      {children as any}
     </ReactModal>
   );
 };
