@@ -4,7 +4,6 @@ import "./shared-component-styles/modal.css"
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  children: React.ReactNode;
 }
 
 const customStyles: Styles = {
