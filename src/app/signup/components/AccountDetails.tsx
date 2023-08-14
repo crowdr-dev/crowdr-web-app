@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useFormContext, useWatch, Controller } from "react-hook-form";
 import Select from 'react-select';
-import { RegisterFormContext } from "@/hooks/useRegisterForm";
+import { RegisterFormContext } from "@/app/signup/utils/useRegisterForm";
 import {LuEye, LuEyeOff} from "react-icons/lu"
 import {CgSpinner} from "react-icons/cg"
 import "../styles/shared.css"

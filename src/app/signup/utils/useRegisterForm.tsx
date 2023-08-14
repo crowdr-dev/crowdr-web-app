@@ -3,7 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { UseFormReturn } from "react-hook-form/dist/types";
 
 const RegisterFormContext: RFC = ({ children }) => {
-  const [formPage, setFormPage] = useState<FormPage>("intro")
+  const [formPage, setFormPage] = useState<FormPage>("organization")
   const formContext: RegisterFormContext = { formPage, setFormPage, ...useForm<FormFields>(config) };
 
   return <FormProvider {...formContext}>{children}</FormProvider>;
@@ -47,7 +47,7 @@ type FormFields = {
   gender:               string;
   referrer:             string;
   termsAccepted:        boolean;
-  upload:               string;
+  upload:               FileList;
   cacNumber:            string;
   organizationLocation: string;
   publicUrl:            string;

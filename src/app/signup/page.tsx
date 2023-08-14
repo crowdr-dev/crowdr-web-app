@@ -1,5 +1,5 @@
 "use client";
-import RegisterFormContext from "@/hooks/useRegisterForm";
+import RegisterFormContext from "@/app/signup/utils/useRegisterForm";
 import Topbar from "./components/Topbar";
 import FormPages from "./components/FormPages";
 

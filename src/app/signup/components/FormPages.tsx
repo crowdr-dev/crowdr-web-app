@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import _ from "lodash";
 import axios from "axios";
-import { FormFields, RegisterFormContext } from "@/hooks/useRegisterForm";
+import { FormFields, RegisterFormContext } from "@/app/signup/utils/useRegisterForm";
 import { API_BASE_URL } from "@/config";
 
 import Intro from "./Intro";

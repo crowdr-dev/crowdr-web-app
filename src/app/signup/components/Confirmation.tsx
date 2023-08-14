@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useFormContext } from "react-hook-form";
-import { RegisterFormContext } from "@/hooks/useRegisterForm";
+import { RegisterFormContext } from "@/app/signup/utils/useRegisterForm";
 import Email from "../../../../public/images/email.png"
 
 const Confirmation = () => {
