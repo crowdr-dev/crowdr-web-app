@@ -14,7 +14,7 @@ export type { LoginFormContext, FormFields }
 
 const config: UseFormConfig = {
     defaultValues: {
-        emailAddress: "",
+        email: "",
         password: "",
     },
     mode: 'onChange'
@@ -26,7 +26,7 @@ type LoginFormProps = { children: React.ReactNode }
 type RFC = React.FC<LoginFormProps>
 type UseFormConfig = Parameters<typeof useForm<FormFields>>[0]
 type FormFields = {
-    emailAddress: string;
+    email: string;
     password: string;
 }
 type LoginFormContext = {
