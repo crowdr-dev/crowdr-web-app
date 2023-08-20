@@ -1,7 +1,7 @@
 import Image from "next/image";
 import axios from "axios";
 import { useFormContext } from "react-hook-form";
-import { RegisterFormContext } from "@/app/signup/utils/useRegisterForm";
+import { RegisterFormContext } from "@/app/register/utils/useRegisterForm";
 import { API_BASE_URL } from "@/config";
 import Email from "../../../../public/images/email.png"
 
@@ -10,11 +10,7 @@ const Confirmation = () => {
   const resendEmail = async () => {
     const params = {userId}
     const endpoint = API_BASE_URL + `/api/v1/users/resend-verification-link`
-    try {
-      await axios.get(endpoint, {params: params})
-    } catch (error) {
-      console.log(error)
-    }
+    await axios.get(endpoint, {params: params})
   }
 
   return (

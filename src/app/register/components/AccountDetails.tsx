@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useFormContext, useWatch, Controller } from "react-hook-form";
 import Select from 'react-select';
-import { RegisterFormContext } from "@/app/signup/utils/useRegisterForm";
+import { RegisterFormContext } from "@/app/register/utils/useRegisterForm";
 import {LuEye, LuEyeOff} from "react-icons/lu"
 import {CgSpinner} from "react-icons/cg"
 import "../styles/shared.css"
@@ -90,7 +90,7 @@ const AccountDetails = () => {
               </div>
 
               <button type="submit" disabled={!isValid || isSubmitting} className={`${isValid && !isSubmitting ? "opacity-100" :  "opacity-50"} flex items-center justify-center bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]`}>Continue {isSubmitting && <span>
-                <CgSpinner size="1.5rem" className="animate-spin icon text-white opacity-100 ml-2.5" />
+                <CgSpinner size="1.5rem" className="animate-spin icon opacity-100 ml-2.5" />
               </span>}</button>
               <button type="button" onClick={() => prevPage()} className="opacity-50 text-[#000] text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full px-[20px]">Go back</button>
           </div>

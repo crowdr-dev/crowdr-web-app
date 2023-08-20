@@ -1,9 +1,9 @@
 "use client";
-import RegisterFormContext from "@/app/signup/utils/useRegisterForm";
+import RegisterFormContext from "@/app/register/utils/useRegisterForm";
 import Topbar from "./components/Topbar";
 import FormPages from "./components/FormPages";
 
-const AboutUs = () => {
+const Register = () => {
   return (
     <div>
       <Topbar />
@@ -14,4 +14,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default Register;

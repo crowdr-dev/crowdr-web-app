@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import NextImage from "next/image";
 import { Controller, useFormContext } from "react-hook-form";
-import { RegisterFormContext } from "@/app/signup/utils/useRegisterForm";
+import { RegisterFormContext } from "@/app/register/utils/useRegisterForm";
 import imageCompression from "browser-image-compression";
 import Select from "react-select";
 import UploadIcon from "../../../../public/svg/upload-cloud.svg";

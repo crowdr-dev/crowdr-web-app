@@ -5,7 +5,7 @@ import useToast from "@/hooks/useToast";
 import {
   FormFields,
   RegisterFormContext,
-} from "@/app/signup/utils/useRegisterForm";
+} from "@/app/register/utils/useRegisterForm";
 import { API_BASE_URL } from "@/config";
 
 import Intro from "./Intro";
