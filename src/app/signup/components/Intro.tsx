@@ -11,6 +11,11 @@ const Intro = () => {
     if (pickedInterests?.length == 3 && !pickedInterests?.includes(id)) event.preventDefault()
   }
 
+  const nextPage = () => {
+    window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+    setFormPage("account")
+  }
+
   return (
     <section>
       <div className="max-w-[525px] mx-auto py-2">
@@ -53,7 +58,7 @@ const Intro = () => {
                 ))}
               </div>
 
-              <button type="submit" onClick={() => setFormPage("account")} disabled={!hasPickedEnoughInterests} className={`${hasPickedEnoughInterests ? "opacity-100" :  "opacity-50"} bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px]`}>Continue</button>
+              <button type="submit" onClick={() => nextPage()} disabled={!hasPickedEnoughInterests} className={`${hasPickedEnoughInterests ? "opacity-100" :  "opacity-50"} bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px]`}>Continue</button>
           </div>
         </div>
       </div>

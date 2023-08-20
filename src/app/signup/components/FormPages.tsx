@@ -10,7 +10,7 @@ import OrganizationDetails from "./OrganizationDetails";
 import Confirmation from "./Confirmation";
 
 const FormPages = () => {
-  const { formPage, setFormPage, handleSubmit } =
+  const { formPage, setFormPage, setUserId, handleSubmit } =
     useFormContext() as RegisterFormContext;
 
   const submit = async (formFields: FormFields) => {
@@ -27,7 +27,8 @@ const FormPages = () => {
     ]);
 
     try {
-      const res = await axios.post(endpoint, payload);
+      const {data: {data}} = await axios.post(endpoint, payload);
+      setUserId(data._id)
       setFormPage('confirm');
     } catch (error) {}
   };

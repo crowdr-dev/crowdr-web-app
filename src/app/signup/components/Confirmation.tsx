@@ -1,10 +1,21 @@
 import Image from "next/image";
+import axios from "axios";
 import { useFormContext } from "react-hook-form";
 import { RegisterFormContext } from "@/app/signup/utils/useRegisterForm";
+import { API_BASE_URL } from "@/config";
 import Email from "../../../../public/images/email.png"
 
 const Confirmation = () => {
-  const { setFormPage } = useFormContext() as RegisterFormContext;
+  const { userId } = useFormContext() as RegisterFormContext;
+  const resendEmail = async () => {
+    const params = {userId}
+    const endpoint = API_BASE_URL + `api/v1/users/resend-verification-link?${new URLSearchParams(params)}`
+    try {
+      await axios.get(endpoint)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <section>
@@ -22,7 +33,7 @@ const Confirmation = () => {
                   <Image src={Email} alt="email icon" className="md:w-[90px]" />
               </div>
 
-              <button onClick={() => setFormPage('account')} className="bg-[#068645] text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]">Resend confirmation email</button>
+              <button onClick={() => resendEmail()} className="bg-[#068645] text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]">Resend confirmation email</button>
           </div>
         </div>
       </div>

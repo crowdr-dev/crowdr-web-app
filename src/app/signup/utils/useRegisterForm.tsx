@@ -3,8 +3,9 @@ import { useForm, FormProvider } from "react-hook-form";
 import { UseFormReturn } from "react-hook-form/dist/types";
 
 const RegisterFormContext: RFC = ({ children }) => {
-  const [formPage, setFormPage] = useState<FormPage>("organization")
-  const formContext: RegisterFormContext = { formPage, setFormPage, ...useForm<FormFields>(config) };
+  const [formPage, setFormPage] = useState<FormPage>("intro")
+  const [userId, setUserId] = useState('')
+  const formContext: RegisterFormContext = { formPage, setFormPage, userId, setUserId, ...useForm<FormFields>(config) };
 
   return <FormProvider {...formContext}>{children}</FormProvider>;
 };
@@ -55,4 +56,6 @@ type FormFields = {
 type RegisterFormContext = {
   formPage: FormPage
   setFormPage: FormPageSetter
+  userId: string
+  setUserId: Dispatch<SetStateAction<string>>
 } & UseFormReturn<FormFields>

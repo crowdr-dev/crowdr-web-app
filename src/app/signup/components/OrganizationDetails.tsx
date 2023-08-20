@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import NextImage from "next/image";
 import { Controller, useFormContext } from "react-hook-form";
 import { RegisterFormContext } from "@/app/signup/utils/useRegisterForm";
@@ -15,36 +15,58 @@ const OrganisationDetails = () => {
     watch,
     formState: { errors, isValid },
   } = useFormContext() as RegisterFormContext;
-  const upload = watch('upload')
-  const photoUploaded =  useMemo(() => {
-    return upload != undefined && !errors.upload
-  }, [upload])
+  const upload = watch("upload");
+  const photoUploaded = useMemo(
+    () => upload?.length && !errors.upload,
+    [upload]
+  );
 
-const checkIfCorrectSize = async (fileList: any) => {
-  const selectedImage = fileList[0];
-  if (!selectedImage) return "Please select an image";
+  const [dragActive, setDragActive] = useState(false);
 
-  const maxSize = 3 * 1024 * 1024; // 3MB in bytes
-  if (selectedImage.size > maxSize) {
-    const imageStatus = await new Promise<string | boolean>(async (resolve) => {
-      const compressedBlob = await imageCompression(selectedImage, {
-        maxSizeMB: 3,
-        maxWidthOrHeight: 800,
-        useWebWorker: true,
-      });
-      
-      if (compressedBlob.size > maxSize) {
-        resolve("Image size exceeds 3MB.");
-      } else {
-        setValue('upload', blobToFile(compressedBlob))
-        resolve(true);
-      }
-    });
-    return imageStatus
-  } else {
-    return true;
-  }
-};
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragActive(false);
+    const files = e.dataTransfer.files;
+    setValue("upload", files);
+  };
+
+  const checkIfCorrectSize = async (fileList: any) => {
+    const selectedImage = fileList[0];
+    if (!selectedImage) return "Please select an image";
+
+    const maxSize = 3 * 1024 * 1024; // 3MB in bytes
+    if (selectedImage.size > maxSize) {
+      const imageStatus = await new Promise<string | boolean>(
+        async (resolve) => {
+          const compressedBlob = await imageCompression(selectedImage, {
+            maxSizeMB: 3,
+            maxWidthOrHeight: 800,
+            useWebWorker: true,
+          });
+
+          if (compressedBlob.size > maxSize) {
+            resolve("Image size exceeds 3MB.");
+          } else {
+            setValue("upload", blobToFile(compressedBlob));
+            resolve(true);
+          }
+        }
+      );
+      return imageStatus;
+    } else {
+      return true;
+    }
+  };
 
   return (
     <section>
@@ -61,9 +83,21 @@ const checkIfCorrectSize = async (fileList: any) => {
             <div className="mb-[20px]">
               <label
                 htmlFor="upload"
-                className="flex flex-col items-center cursor-pointer rounded-lg border-[2px] border-dashed border-[#e4e7ec] py-4 px-6 mb-1"
+                onDragOver={handleDrag}
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDrop={handleDrop}
+                className={`${
+                  dragActive ? "border-green-200" : "border-[#e4e7ec]"
+                } flex flex-col items-center cursor-pointer rounded-lg border-[2px] border-dashed py-4 px-6 mb-1`}
               >
-                <div className={`${photoUploaded ? 'bg-green-100 border-green-50' : 'bg-[#F2F4F7] border-[#F9FAFB]'} rounded-full border-[6px] p-[10px] mb-3`}>
+                <div
+                  className={`${
+                    photoUploaded
+                      ? "bg-green-100 border-green-50"
+                      : "bg-[#F2F4F7] border-[#F9FAFB]"
+                  } rounded-full border-[6px] p-[10px] mb-3`}
+                >
                   <NextImage src={UploadIcon} alt="upload icon" width={24} />
                 </div>
                 <div className="text-center">
@@ -211,10 +245,10 @@ const checkIfCorrectSize = async (fileList: any) => {
 export default OrganisationDetails;
 
 function blobToFile(blob: Blob): FileList {
-  const file = new File([blob], blob.name, {type: blob.type})
-  const dataTransfer = new DataTransfer()
-  dataTransfer.items.add(file)
-  return dataTransfer.files
+  const file = new File([blob], blob.name, { type: blob.type });
+  const dataTransfer = new DataTransfer();
+  dataTransfer.items.add(file);
+  return dataTransfer.files;
 }
 
 const stateOptions = [

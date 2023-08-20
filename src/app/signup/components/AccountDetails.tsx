@@ -14,6 +14,11 @@ const AccountDetails = () => {
   const [confirmPassIsVisible, setConfirmPassIsVisible] = useState(false)
   const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/
 
+  const prevPage = () => {
+    window.scroll({top: 0, left: 0, behavior: 'smooth'})
+    setFormPage("intro")
+  }
+
     return (
   <section>
       <div className="max-w-[525px] mx-auto py-2">
@@ -87,7 +92,7 @@ const AccountDetails = () => {
               <button type="submit" disabled={!isValid || isSubmitting} className={`${isValid && !isSubmitting ? "opacity-100" :  "opacity-50"} flex items-center justify-center bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]`}>Continue {isSubmitting && <span>
                 <CgSpinner size="1.5rem" className="animate-spin icon text-white opacity-100 ml-2.5" />
               </span>}</button>
-              <button type="button" onClick={() => setFormPage("intro")} className="opacity-50 text-[#000] text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full px-[20px]">Go back</button>
+              <button type="button" onClick={() => prevPage()} className="opacity-50 text-[#000] text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full px-[20px]">Go back</button>
           </div>
         </div>
       </div>
