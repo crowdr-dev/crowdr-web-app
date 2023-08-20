@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { useFormContext, useWatch } from "react-hook-form";
 import { RegisterFormContext } from "@/hooks/useRegisterForm";
-import { LoginFormContext } from '../../../hooks/useLoginForm';
+import { FormFields, LoginFormContext } from "../../../hooks/useLoginForm";
+import { API_BASE_URL } from "@/config";
+import _ from "lodash";
+import axios from "axios";
 
 const SignIn = () => {
   const {
@@ -28,7 +31,7 @@ const SignIn = () => {
               </label>
               <input
                 type="text"
-                {...register("emailAddress", {
+                {...register("email", {
                   required: {
                     value: true,
                     message: "Email address is required"
@@ -38,9 +41,9 @@ const SignIn = () => {
                 placeholder="Enter your email"
                 className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]"
               />
-              {errors.emailAddress && (
+              {errors.email && (
                 <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
-                  {errors.emailAddress?.message}
+                  {errors.email?.message}
                 </span>
               )}
             </div>
@@ -72,24 +75,25 @@ const SignIn = () => {
             </div>
 
             <button
-              type="button"
-              onClick={() => { }
-              }
+              type="submit"
               disabled={!isValid}
-              className={`${isValid ? "opacity-100" : "opacity-50"
-                } bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px] mt-[15px]`}>
+              className={`${
+                isValid ? "opacity-100" : "opacity-50"
+              } bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px] mt-[15px]`}>
               Login
             </button>
             <button
               type="button"
-              onClick={() => setFormPage("forgot-password")}
+              onClick={() => "forgot-password"}
               className="opacity-50 text-[#000] text-[16px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full px-[20px]">
               Forgot password?
             </button>
 
             <div className="bg-[#F8F8F8] py-[18px] px-[23px] mt-[13px] rounded-lg">
               <h2 className="text-[#344054]">Having problems logging in?</h2>
-              <button className="underline text-[13px] text-[#667085]">Contact support</button>
+              <button className="underline text-[13px] text-[#667085]">
+                Contact support
+              </button>
             </div>
           </div>
         </div>
