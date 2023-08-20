@@ -1,7 +1,11 @@
 import { useFormContext } from "react-hook-form";
 import _ from "lodash";
 import axios from "axios";
-import { FormFields, RegisterFormContext } from "@/app/signup/utils/useRegisterForm";
+import useToast from "@/hooks/useToast";
+import {
+  FormFields,
+  RegisterFormContext,
+} from "@/app/signup/utils/useRegisterForm";
 import { API_BASE_URL } from "@/config";
 
 import Intro from "./Intro";
@@ -12,6 +16,7 @@ import Confirmation from "./Confirmation";
 const FormPages = () => {
   const { formPage, setFormPage, setUserId, handleSubmit } =
     useFormContext() as RegisterFormContext;
+  const toast = useToast();
 
   const submit = async (formFields: FormFields) => {
     const endpoint = API_BASE_URL + "/api/v1/users/signup";
@@ -27,10 +32,15 @@ const FormPages = () => {
     ]);
 
     try {
-      const {data: {data}} = await axios.post(endpoint, payload);
-      setUserId(data._id)
-      setFormPage('confirm');
-    } catch (error) {}
+      const {
+        data: { data },
+      } = await axios.post(endpoint, payload);
+      setUserId(data._id);
+      setFormPage("confirm");
+    } catch (error: any) {
+      const { message } = error.response.data;
+      toast({title: 'Oops!', body: message, type: 'error'})
+    }
   };
 
   return (

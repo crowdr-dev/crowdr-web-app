@@ -9,9 +9,9 @@ const Confirmation = () => {
   const { userId } = useFormContext() as RegisterFormContext;
   const resendEmail = async () => {
     const params = {userId}
-    const endpoint = API_BASE_URL + `api/v1/users/resend-verification-link?${new URLSearchParams(params)}`
+    const endpoint = API_BASE_URL + `/api/v1/users/resend-verification-link`
     try {
-      await axios.get(endpoint)
+      await axios.get(endpoint, {params: params})
     } catch (error) {
       console.log(error)
     }
@@ -33,7 +33,7 @@ const Confirmation = () => {
                   <Image src={Email} alt="email icon" className="md:w-[90px]" />
               </div>
 
-              <button onClick={() => resendEmail()} className="bg-[#068645] text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]">Resend confirmation email</button>
+              <button type="button" onClick={() => resendEmail()} className="bg-[#068645] text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]">Resend confirmation email</button>
           </div>
         </div>
       </div>

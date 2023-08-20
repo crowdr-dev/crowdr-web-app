@@ -13,8 +13,10 @@ const VerifyEmail = () => {
 
   useEffect(() => {
     if (token) {
-      const endpoint = API_BASE_URL + `/api/v1/users/verify-email?${new URLSearchParams({token})}`;
-      axios.get(endpoint).then(() => router.replace("/login"));
+      const endpoint = API_BASE_URL + `/api/v1/users/verify-email`;
+      axios
+        .get(endpoint, { params: { token } })
+        .then(() => router.replace("/login"));
     }
   }, [token]);
 
