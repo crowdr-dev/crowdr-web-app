@@ -56,11 +56,11 @@ export default function WaitlistForm() {
              </label>
              <select name="message" id="title" className="" required>
                <option value="">Select title</option>
-               <option value="Volunteer">Volunteer</option>
+               <option value="Individual">Individual</option>
                <option value="Non-profit organization">
                  Non-profit organization
                </option>
-               <option value="Not sure yet">Not sure yet</option>
+               <option value="other">Other</option>
              </select>
            </div>
 
