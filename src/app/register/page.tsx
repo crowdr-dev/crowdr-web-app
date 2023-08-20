@@ -1,7 +1,7 @@
 "use client";
 import RegisterFormContext from "@/app/register/utils/useRegisterForm";
-import Topbar from "./components/Topbar";
-import FormPages from "./components/FormPages";
+import Topbar from "./register-components/Topbar";
+import FormPages from "./register-components/FormPages";
 
 const Register = () => {
   return (
