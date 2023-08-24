@@ -31,7 +31,7 @@ const ForgotPassword = () => {
               </label>
               <input
                 type="text"
-                {...register("emailAddress", {
+                {...register("email", {
                   required: {
                     value: true,
                     message: "Email address is required"
@@ -41,9 +41,9 @@ const ForgotPassword = () => {
                 placeholder="Enter your email"
                 className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]"
               />
-              {errors.emailAddress && (
+              {errors.email && (
                 <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
-                  {errors.emailAddress?.message}
+                  {errors.email?.message}
                 </span>
               )}
             </div>
