@@ -15,7 +15,7 @@ const VerifyEmail = () => {
     if (token) {
       const endpoint = API_BASE_URL + `/api/v1/users/verify-email`;
       axios
-        .get(endpoint, { params: { token } })
+        .get(endpoint, { headers: {'X-Auth-Token': token} })
         .then(() => router.replace("/login"));
     }
   }, [token]);

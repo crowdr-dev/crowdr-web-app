@@ -1,22 +1,18 @@
+import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
-// import { RegisterFormContext } from "@/hooks/useRegisterForm";
-import { API_BASE_URL } from "@/config";
 import _ from "lodash";
 import axios from "axios";
+import { API_BASE_URL } from "@/config";
 
 import LoginFormContext, { FormFields } from "../../../hooks/useLoginForm";
 import ForgotPassword from "./ForgotPassword";
 import SignIn from "./SignIn";
 import ResetPassword from "./ResetPassword";
-import { useRouter } from "next/navigation";
-import useToast from "@/hooks/useToast";
 
 const FormPages = () => {
   const {
     formPage,
     handleSubmit,
-    control,
-    formState: { errors },
   } = useFormContext() as LoginFormContext;
   const router = useRouter()
 
@@ -28,7 +24,7 @@ const FormPages = () => {
       const res = await axios.post(endpoint, payload);
       const { token, userType, organizationId } = res.data.data;
       localStorage.setItem("token", token);
-debugger
+
       if (userType == 'non-profit' && organizationId == null) {
         router.push('/register/organization')
       } else {
