@@ -25,14 +25,11 @@ const config: UseFormConfig = {
     gender: "",
     referrer: "google",
     termsAccepted: false,
-    cacNumber: "",
-    organizationLocation: "",
-    publicUrl: ""
   },
   mode: 'onChange'
 }
 
-type FormPage = "intro" | "account" | "organization" | "confirm"
+type FormPage = "intro" | "account" | "confirm"
 type FormPageSetter = Dispatch<SetStateAction<FormPage>>
 type RegisterFormProps = {children: React.ReactNode}
 type RFC = React.FC<RegisterFormProps>
@@ -48,10 +45,6 @@ type FormFields = {
   gender:               string;
   referrer:             string;
   termsAccepted:        boolean;
-  upload:               FileList;
-  cacNumber:            string;
-  organizationLocation: string;
-  publicUrl:            string;
 }
 type RegisterFormContext = {
   formPage: FormPage

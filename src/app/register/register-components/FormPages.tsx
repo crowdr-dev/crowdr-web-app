@@ -10,7 +10,6 @@ import { API_BASE_URL } from "@/config";
 
 import Intro from "./Intro";
 import AccountDetails from "./AccountDetails";
-import OrganizationDetails from "./OrganizationDetails";
 import Confirmation from "./Confirmation";
 
 const FormPages = () => {
@@ -39,19 +38,16 @@ const FormPages = () => {
       setFormPage("confirm");
     } catch (error: any) {
       const { message } = error.response.data;
-      toast({title: 'Oops!', body: message, type: 'error'})
+      toast({ title: "Oops!", body: message, type: "error" });
     }
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(submit)}>
-        {formPage == "intro" && <Intro />}
-        {formPage == "account" && <AccountDetails />}
-        {formPage == "organization" && <OrganizationDetails />}
-        {formPage == "confirm" && <Confirmation />}
-      </form>
-    </>
+    <form onSubmit={handleSubmit(submit)}>
+      {formPage == "intro" && <Intro />}
+      {formPage == "account" && <AccountDetails />}
+      {formPage == "confirm" && <Confirmation />}
+    </form>
   );
 };
 

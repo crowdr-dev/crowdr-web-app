@@ -1,25 +1,23 @@
 import { useMemo, useState } from "react";
 import NextImage from "next/image";
 import { Controller, useFormContext } from "react-hook-form";
-import { RegisterFormContext } from "@/app/register/utils/useRegisterForm";
+import { OrganizationFormContext } from "@/app/register/utils/useOrganizatonForm";
 import imageCompression from "browser-image-compression";
 import Select from "react-select";
 import UploadIcon from "../../../../public/svg/upload-cloud.svg";
+import { CgSpinner } from "react-icons/cg";
+import "../styles/shared.css"
 
 const OrganisationDetails = () => {
   const {
-    setFormPage,
     register,
     control,
     setValue,
     watch,
-    formState: { errors, isValid },
-  } = useFormContext() as RegisterFormContext;
-  const upload = watch("upload");
-  const photoUploaded = useMemo(
-    () => upload?.length && !errors.upload,
-    [upload]
-  );
+    formState: { errors, isValid, isSubmitting },
+  } = useFormContext() as OrganizationFormContext;
+  const image = watch("image");
+  const imageUploaded = useMemo(() => image?.length && !errors.image, [image]);
 
   const [dragActive, setDragActive] = useState(false);
 
@@ -37,27 +35,27 @@ const OrganisationDetails = () => {
     e.preventDefault();
     setDragActive(false);
     const files = e.dataTransfer.files;
-    setValue("upload", files);
+    setValue("image", files);
   };
 
-  const checkIfCorrectSize = async (fileList: any) => {
-    const selectedImage = fileList[0];
-    if (!selectedImage) return "Please select an image";
+  const validateImage = async (fileList: FileList) => {
+    const image = fileList[0];
+    if (!image) return "Please select an image";
 
-    const maxSize = 3 * 1024 * 1024; // 3MB in bytes
-    if (selectedImage.size > maxSize) {
+    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+    if (image.size > maxSize) {
       const imageStatus = await new Promise<string | boolean>(
         async (resolve) => {
-          const compressedBlob = await imageCompression(selectedImage, {
-            maxSizeMB: 3,
+          const compressedBlob = await imageCompression(image, {
+            maxSizeMB: 2,
             maxWidthOrHeight: 800,
             useWebWorker: true,
           });
 
           if (compressedBlob.size > maxSize) {
-            resolve("Image size exceeds 3MB.");
+            resolve("Image size exceeds 2MB");
           } else {
-            setValue("upload", blobToFile(compressedBlob));
+            setValue("image", blobToFile(compressedBlob));
             resolve(true);
           }
         }
@@ -93,7 +91,7 @@ const OrganisationDetails = () => {
               >
                 <div
                   className={`${
-                    photoUploaded
+                    imageUploaded
                       ? "bg-green-100 border-green-50"
                       : "bg-[#F2F4F7] border-[#F9FAFB]"
                   } rounded-full border-[6px] p-[10px] mb-3`}
@@ -111,23 +109,17 @@ const OrganisationDetails = () => {
                 </div>
                 <input
                   type="file"
-                  {...register("upload", {
-                    required: {
-                      value: true,
-                      message: "Please upload an image",
-                    },
-                    validate: { isCorrectSize: checkIfCorrectSize },
+                  {...register("image", {
+                    validate: { validateImage },
                   })}
                   id="upload"
                   accept=".svg, .png, .jpg, .jpeg, .gif"
                   className="hidden"
                 />
-                {/* TODO: Implement drag-and-drop feature */}
-                {/* TODO: Make responsive to file drag-over and succesful upload */}
               </label>
-              {errors.upload && (
+              {errors.image && (
                 <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
-                  {errors.upload?.message}
+                  {errors.image?.message}
                 </span>
               )}
             </div>
@@ -161,21 +153,21 @@ const OrganisationDetails = () => {
 
             <div className="flex flex-col mb-[26px]">
               <label
-                htmlFor="organization_location"
+                htmlFor="state"
                 className="text-[14px] text-[#344054] mb-[6px]"
               >
                 Where is your org
                 <span className="hidden md:inline">anization</span> located?
               </label>
               <Controller
-                name="organizationLocation"
+                name="state"
                 control={control}
                 rules={{
                   required: { value: true, message: "Select an option" },
                 }}
                 render={({ field: { onChange, value } }) => (
                   <Select
-                    id="organization_location"
+                    id="state"
                     options={stateOptions}
                     isSearchable={true}
                     isClearable={false}
@@ -184,9 +176,9 @@ const OrganisationDetails = () => {
                   />
                 )}
               />
-              {errors.organizationLocation && (
+              {errors.state && (
                 <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
-                  {errors.organizationLocation?.message}
+                  {errors.state?.message}
                 </span>
               )}
             </div>
@@ -220,14 +212,21 @@ const OrganisationDetails = () => {
             </div>
 
             <button
-              type="button"
-              onClick={() => setFormPage("confirm")}
-              disabled={!isValid}
+              type="submit"
+              disabled={!isValid || isSubmitting}
               className={`${
-                isValid ? "opacity-100" : "opacity-50"
-              } bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]`}
+                isValid && !isSubmitting ? "opacity-100" : "opacity-50"
+              } flex items-center justify-center bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]`}
             >
-              Continue
+              Continue{" "}
+              {isSubmitting && (
+                <span>
+                  <CgSpinner
+                    size="1.5rem"
+                    className="animate-spin icon opacity-100 ml-2.5"
+                  />
+                </span>
+              )}
             </button>
             <button
               type="submit"

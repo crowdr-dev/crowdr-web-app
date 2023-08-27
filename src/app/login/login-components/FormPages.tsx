@@ -8,6 +8,7 @@ import LoginFormContext, { FormFields } from "../../../hooks/useLoginForm";
 import ForgotPassword from "./ForgotPassword";
 import SignIn from "./SignIn";
 import ResetPassword from "./ResetPassword";
+import { useRouter } from "next/navigation";
 import useToast from "@/hooks/useToast";
 
 const FormPages = () => {
@@ -15,8 +16,9 @@ const FormPages = () => {
     formPage,
     handleSubmit,
     control,
-    formState: { errors }
+    formState: { errors },
   } = useFormContext() as LoginFormContext;
+  const router = useRouter()
 
   const submit = async (formFields: FormFields) => {
     const endpoint = API_BASE_URL + "/api/v1/users/signin";
@@ -24,6 +26,14 @@ const FormPages = () => {
 
     try {
       const res = await axios.post(endpoint, payload);
+      const { token, userType, organizationId } = res.data.data;
+      localStorage.setItem("token", token);
+debugger
+      if (userType == 'non-profit' && organizationId == null) {
+        router.push('/register/organization')
+      } else {
+        router.push('/dashboard')
+      }
     } catch (error) {}
   };
 
