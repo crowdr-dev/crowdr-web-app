@@ -228,12 +228,6 @@ const OrganisationDetails = () => {
                 </span>
               )}
             </button>
-            <button
-              type="submit"
-              className="opacity-50 text-[#000] text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full px-[20px]"
-            >
-              Go back
-            </button>
           </div>
         </div>
       </div>
