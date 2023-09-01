@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useFormContext, useWatch } from "react-hook-form";
-import { RegisterFormContext } from "@/hooks/useRegisterForm";
 import { LoginFormContext } from '../../../hooks/useLoginForm';
 
 const ResetPassword = () => {

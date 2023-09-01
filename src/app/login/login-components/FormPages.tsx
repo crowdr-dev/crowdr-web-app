@@ -1,20 +1,19 @@
+import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
-import { RegisterFormContext } from "@/hooks/useRegisterForm";
-import { API_BASE_URL } from "@/config";
 import _ from "lodash";
 import axios from "axios";
+import { API_BASE_URL } from "@/config";
 
 import LoginFormContext, { FormFields } from "../../../hooks/useLoginForm";
 import SignIn from "./SignIn";
-import useToast from "@/hooks/useToast";
+import { setDataInLocalStorage } from "@/utils/localStorageData";
 
 const FormPages = () => {
   const {
     formPage,
     handleSubmit,
-    control,
-    formState: { errors }
   } = useFormContext() as LoginFormContext;
+  const router = useRouter()
 
   const submit = async (formFields: FormFields) => {
     const endpoint = API_BASE_URL + "/api/v1/users/signin";
@@ -22,6 +21,14 @@ const FormPages = () => {
 
     try {
       const res = await axios.post(endpoint, payload);
+      const { token, userType, organizationId } = res.data.data;
+      setDataInLocalStorage("token", token)
+
+      if (userType == 'non-profit' && organizationId == null) {
+        router.push('/register/organization')
+      } else {
+        router.push('/dashboard')
+      }
     } catch (error) {}
   };
 
