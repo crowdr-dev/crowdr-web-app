@@ -14,7 +14,7 @@ const Topbar = () => {
                             </Link>
                         </div>
                         <button className="bg-[#068645] opacity-70 text-[12px] md:text-base text-white rounded-lg md:rounded-full transition-all py-3 px-5">
-                            <Link href="/register">Don’t have an account? Sign up</Link>
+                            <Link href="/signup">Don’t have an account? Sign up</Link>
                         </button>
                     </div>
                 </div>
