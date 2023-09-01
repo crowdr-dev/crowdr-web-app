@@ -34,8 +34,9 @@ const SignIn = () => {
                 {...register("email", {
                   required: {
                     value: true,
-                    message: "Email address is required",
+                    message: "Email address is required"
                   },
+                  pattern: { value: emailRegex, message: "Enter a valid email" }
                 })}
                 id="fullname"
                 placeholder="Enter your email"
