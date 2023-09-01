@@ -8,6 +8,7 @@ import LoginFormContext, { FormFields } from "../../../hooks/useLoginForm";
 import ForgotPassword from "./ForgotPassword";
 import SignIn from "./SignIn";
 import ResetPassword from "./ResetPassword";
+import { setDataInLocalStorage } from "@/utils/localStorageData";
 
 const FormPages = () => {
   const {
@@ -23,7 +24,7 @@ const FormPages = () => {
     try {
       const res = await axios.post(endpoint, payload);
       const { token, userType, organizationId } = res.data.data;
-      localStorage.setItem("token", token);
+      setDataInLocalStorage("token", token)
 
       if (userType == 'non-profit' && organizationId == null) {
         router.push('/register/organization')

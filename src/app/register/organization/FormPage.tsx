@@ -10,6 +10,7 @@ import useToast from "@/hooks/useToast";
 import { API_BASE_URL } from "@/config";
 
 import OrganizationDetails from "../register-components/OrganizationDetails";
+import { getDataFromLocalStorage } from "@/utils/localStorageData";
 
 const FormPage = () => {
   const { handleSubmit } = useFormContext() as OrganizationFormContext;
@@ -18,7 +19,7 @@ const FormPage = () => {
 
   const submit = async (formFields: FormFields) => {
     const endpoint = API_BASE_URL + "/api/v1/organizations/register";
-    const token = localStorage.getItem("token");
+    const token = getDataFromLocalStorage("token");
     const payload = { ...formFields, image: formFields.image[0] };
 
     try {
