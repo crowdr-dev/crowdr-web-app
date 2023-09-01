@@ -5,9 +5,7 @@ import axios from "axios";
 import { API_BASE_URL } from "@/config";
 
 import LoginFormContext, { FormFields } from "../../../hooks/useLoginForm";
-import ForgotPassword from "./ForgotPassword";
 import SignIn from "./SignIn";
-import ResetPassword from "./ResetPassword";
 import { setDataInLocalStorage } from "@/utils/localStorageData";
 
 const FormPages = () => {
@@ -37,9 +35,7 @@ const FormPages = () => {
   return (
     <>
       <form onSubmit={handleSubmit(submit)}>
-        {formPage === "login" && <SignIn />}
-        {formPage === "forgot-password" && <ForgotPassword />}
-        {formPage === "reset-password" && <ResetPassword />}
+        <SignIn />
       </form>
     </>
   );
