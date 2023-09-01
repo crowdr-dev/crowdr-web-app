@@ -48,34 +48,32 @@ const ResetPassword = () => {
 
                         <div className="flex flex-col mb-[9px]">
                             <label
-                                htmlFor="password"
+                                htmlFor="confirmPassword"
                                 className="text-[14px] text-[#344054] mb-[6px]">
                                Confirm Password*
                             </label>
                             <input
                                 type="password"
-                                {...register("password", {
+                                {...register("confirmPassword", {
                                     required: { value: true, message: "Password is required" },
                                     minLength: {
                                         value: 8,
                                         message: "Must be at least 8 characters."
                                     }
                                 })}
-                                id="password"
+                                id="confirmPassword"
                                 placeholder="Confirm password"
                                 className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]"
                             />
-                            {errors.password && (
+                            {errors.confirmPassword && (
                                 <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
-                                    {errors.password?.message}
+                                    {errors.confirmPassword?.message}
                                 </span>
                             )}
                         </div>
 
                         <button
-                            type="button"
-                            onClick={() => { }
-                            }
+                            type="submit"
                             disabled={!isValid}
                             className={`${isValid ? "opacity-100" : "opacity-50"
                                 } bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px] mt-[15px]`}>

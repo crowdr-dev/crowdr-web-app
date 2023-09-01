@@ -16,6 +16,7 @@ const config: UseFormConfig = {
     defaultValues: {
         email: "",
         password: "",
+        confirmPassword: ""
     },
     mode: 'onChange'
 }
@@ -28,6 +29,7 @@ type UseFormConfig = Parameters<typeof useForm<FormFields>>[0]
 type FormFields = {
     email: string;
     password: string;
+    confirmPassword: string;
 }
 type LoginFormContext = {
     formPage: FormPage

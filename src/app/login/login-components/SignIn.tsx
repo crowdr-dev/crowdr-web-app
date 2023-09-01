@@ -82,12 +82,11 @@ const SignIn = () => {
                 } bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px] mt-[15px]`}>
               Login
             </button>
-            <button
-              type="button"
-              onClick={() => "forgot-password"}
-              className="opacity-50 text-[#000] text-[16px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full px-[20px]">
+            <Link
+              href={"forgot-password"}
+              className="opacity-50 text-[#000] text-[16px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full px-[20px] text-center">
               Forgot password?
-            </button>
+            </Link>
 
             <div className="bg-[#F8F8F8] py-[18px] px-[23px] mt-[13px] rounded-lg">
               <h2 className="text-[#344054]">Having problems logging in?</h2>

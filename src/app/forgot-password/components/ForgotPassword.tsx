@@ -35,7 +35,8 @@ const ForgotPassword = () => {
                   required: {
                     value: true,
                     message: "Email address is required"
-                  }
+                  },
+                  pattern: { value: emailRegex, message: "Enter a valid email" }
                 })}
                 id="fullname"
                 placeholder="Enter your email"
@@ -49,20 +50,18 @@ const ForgotPassword = () => {
             </div>
 
             <button
-              type="button"
-              onClick={() => {}}
+              type="submit"
               disabled={!isValid}
-              className={`${
-                isValid ? "opacity-100" : "opacity-50"
-              } bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px] mt-[15px]`}>
+              className={`${isValid ? "opacity-100" : "opacity-50"
+                } bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px] mt-[15px]`}>
               Continue
             </button>
-            <button
+            <Link
               type="button"
-              onClick={() => setFormPage("login")}
-              className=" text-[#068645] text-[16px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full px-[20px]">
+              href="login"
+              className=" text-[#068645] text-[16px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full px-[20px] text-center">
               Return to login
-            </button>
+            </Link>
           </div>
         </div>
       </div>
