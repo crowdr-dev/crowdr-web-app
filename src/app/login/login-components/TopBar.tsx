@@ -13,7 +13,7 @@ const Topbar = () => {
                                 <Image src={CrowdrLogo} alt="Crowdr Logo" />
                             </Link>
                         </div>
-                        <button className="bg-[#068645] opacity-70 text-[12px] md:text-base text-white rounded-lg md:rounded-full transition-all py-3 px-5">
+                        <button className="bg-[#068645] opacity-70 hover:opacity-100 text-[12px] md:text-base text-white rounded-lg md:rounded-full transition-all py-3 px-5">
                             <Link href="/register">Don’t have an account? Sign up</Link>
                         </button>
                     </div>
