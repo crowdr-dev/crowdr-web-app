@@ -42,10 +42,9 @@ export default async function makeRequest<T>(
   }
 
   try {
-    console.log(API_BASE_URL + endpoint, requestOptions,889)
     const response = await fetch(API_BASE_URL + endpoint, requestOptions);
     const data = await response.json();
-    console.log(data,789)
+
     if (!response.ok) {
       throw new Error(
         response.status >= 400 && response.status < 500
