@@ -17,7 +17,7 @@ const FormPages = () => {
 
   const submit = async (formFields: FormFields) => {
     const endpoint = "/api/v1/users/signin";
-    let payload = _.pick(formFields, ["email", "password"]);
+    let payload = JSON.stringify(_.pick(formFields, ["email", "password"]));
 
     try {
       const { data: user } = await makeRequest<{ data: User }>(endpoint, {

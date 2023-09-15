@@ -1,13 +1,15 @@
 import { API_BASE_URL } from "@/config";
 import { extractErrorMessage } from "./extractErrorMessage";
+import { RequestOptions } from "https";
 
 export default async function makeRequest<T>(
   endpoint: string,
   options: {
     method?: string;
-    payload?: Record<string, any> | null;
-    headers?: Record<string, string> | null;
+    payload?: Record<string, any> | null | any;
+    headers?: Record<string, string | number> | null;
     cache?: RequestCache;
+    tags?: string[];
   } = {}
 ): Promise<T> {
   const {
@@ -15,21 +17,28 @@ export default async function makeRequest<T>(
     payload = null,
     headers,
     cache = "default",
+    tags,
   } = options;
 
-  const requestOptions: RequestInit = {
-    method,
-    headers: headers
-      ? { "Content-Type": "application/json", ...headers }
-      : {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-    cache,
+  const defaultHeader = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
   };
 
+  const requestOptions: RequestOptions & RequestInit = {
+    method,
+    headers: headers ? { ...defaultHeader, ...headers } : defaultHeader,
+    cache,
+    next: { tags },
+  };
+
+  // allow fetch ao automatically set "Content-Type"] === "multipart/form-data", so it can add boundary
+  if(requestOptions.headers && requestOptions.headers["Content-Type"] === "multipart/form-data"){
+    delete requestOptions.headers["Content-Type"]
+  }
+
   if (payload !== null) {
-    requestOptions.body = JSON.stringify(payload);
+    requestOptions.body = payload;
   }
 
   try {

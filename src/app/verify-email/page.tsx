@@ -1,5 +1,7 @@
+import { userTag } from "@/tags";
 import makeRequest from "@/utils/makeRequest";
 import { redirect } from "next/navigation";
+import { revalidate } from "@/app/api/revalidate";
 
 export default async function VerifyEmail({
   searchParams,
@@ -10,9 +12,9 @@ export default async function VerifyEmail({
   if (token) {
     const endpoint = `/api/v1/users/verify-email`;
 
-    const headers = { "X-Auth-Token": token };
+    const headers = { "X-Auth-Token": token, cache: "no-cache" };
     await makeRequest(endpoint, { headers });
-
+    revalidate(userTag); // revalidate after user isEmailVerified property changes
     redirect("/login");
   }
 

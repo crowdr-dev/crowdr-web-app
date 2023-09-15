@@ -1,6 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import makeRequest from "@/utils/makeRequest";
+import { userTag } from "@/tags";
 
 export type User = {
   _id: string;
@@ -27,6 +28,7 @@ export const getUser = async () => {
   const { data: user } = await makeRequest<{ data: User }>(endpoint, {
     headers,
     cache: "force-cache",
+    tags: [userTag] // for cache revalidation
   });
   return user;
 };

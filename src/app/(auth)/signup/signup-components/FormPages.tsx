@@ -35,7 +35,7 @@ const FormPages = () => {
     try {
       const { data: user } = await makeRequest<{ data: User }>(endpoint, {
         method: "POST",
-        payload,
+        payload: JSON.stringify(payload),
       });
 
       const { token } = user;

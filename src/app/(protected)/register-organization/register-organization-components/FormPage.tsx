@@ -11,6 +11,8 @@ import { getUser } from "@/app/api/user/getUser";
 import makeRequest from "@/utils/makeRequest";
 import { extractErrorMessage } from "@/utils/extractErrorMessage";
 import objectToFormData from "@/utils/objectToFormData";
+import { userTag } from "@/tags";
+import { revalidate } from "@/app/api/revalidate";
 
 const FormPage = () => {
   const { handleSubmit } = useFormContext() as OrganizationFormContext;
@@ -35,7 +37,8 @@ const FormPage = () => {
         method: "POST",
         payload: objectToFormData(payload),
       });
-
+      
+      revalidate(userTag); // revalidate user data after organization gets attached to user  
       toast({ title: "Success!", body: message, type: "success" });
       if (success) router.replace("/explore");
     } catch (error) {
