@@ -35,6 +35,10 @@ export default async function ProtectedLayout({ children }: PropsWithChildren) {
     case currentPath === registerOrgPath && user.userType === "individual":
       redirect(explore);
 
+    // finally prevent a user that is done with verirification & escaoed all the business registration check above from going to confirmation again
+    case currentPath === confirmationPath && user.isEmailVerified:
+      redirect(explore);
+
     default:
       break;
   }
