@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useFormContext } from "react-hook-form";
-import { LoginFormContext } from "@/hooks/useLoginForm";
-import Button from "@/app/shared-components/Button";
+import { LoginFormContext } from "@/app/common/hooks/useLoginForm";
+import Button from "@/app/common/components/Button";
 
 const ForgotPassword = () => {
   const {
@@ -74,3 +74,4 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
+

@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import _ from "lodash";
-import useToast from "@/hooks/useToast";
+import useToast from "@/app/common/hooks/useToast";
 import {
   FormFields,
   RegisterFormContext,
@@ -21,7 +21,7 @@ const FormPages = () => {
 
   const submit = async (formFields: FormFields) => {
     const endpoint = "/api/v1/users/signup";
-    let payload = _.pick(formFields, [
+    let payload = JSON.stringify(_.pick(formFields, [
       "userType",
       "email",
       "interests",
@@ -30,12 +30,12 @@ const FormPages = () => {
       "organizationName",
       "fullName",
       "gender",
-    ]);
+    ]));
 
     try {
       const { data: user } = await makeRequest<{ data: User }>(endpoint, {
         method: "POST",
-        payload: JSON.stringify(payload),
+        payload,
       });
 
       const { token } = user;

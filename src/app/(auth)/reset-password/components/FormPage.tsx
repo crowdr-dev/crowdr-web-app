@@ -1,8 +1,8 @@
 import { useFormContext } from "react-hook-form";
 import _ from "lodash";
-import LoginFormContext, { FormFields } from "@/hooks/useLoginForm";
+import LoginFormContext, { FormFields } from "@/app/common/hooks/useLoginForm";
 import ResetPassword from "./ResetPassword";
-import useToast from "@/hooks/useToast";
+import useToast from "@/app/common/hooks/useToast";
 import makeRequest from "@/utils/makeRequest";
 import { extractErrorMessage } from "@/utils/extractErrorMessage";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -16,7 +16,7 @@ const FormPages = () => {
   const toast = useToast();
   const submit = async (formFields: FormFields) => {
     const endpoint = "/api/v1/users/reset-password";
-    let payload = _.pick(formFields, ["password"]);
+    let payload = JSON.stringify(_.pick(formFields, ["password"]));
 
     const headers = { "x-auth-token": token! };
     try {

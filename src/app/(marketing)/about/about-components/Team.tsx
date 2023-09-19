@@ -1,13 +1,13 @@
 import React from "react";
 import styles from "../about-styles/Team.module.css";
-import Ada from "../../../../public/images/team/Ada.jpg";
-import Tritima from "../../../../public/images/team/Tritima.jpg";
-import Jerry from "../../../../public/images/team/Jerry.jpeg";
-import Busola from "../../../../public/images/team/Busola2.jpg";
-import Idris from "../../../../public/images/team/Idris.jpg";
-import Tomiwa from "../../../../public/images/team/Tomiwa.jpg";
-import Ade from "../../../../public/images/team/Ade.jpg";
-import Daniel from "../../../../public/images/team/Daniel2.jpg"
+import Ada from "../../../../../public/images/team/Ada.jpg";
+import Tritima from "../../../../../public/images/team/Tritima.jpg";
+import Jerry from "../../../../../public/images/team/Jerry.jpeg";
+import Busola from "../../../../../public/images/team/Busola2.jpg";
+import Idris from "../../../../../public/images/team/Idris.jpg";
+import Tomiwa from "../../../../../public/images/team/Tomiwa.jpg";
+import Ade from "../../../../../public/images/team/Ade.jpg";
+import Daniel from "../../../../../public/images/team/Daniel2.jpg"
 import Image from "next/image";
 
 export default function Team() {

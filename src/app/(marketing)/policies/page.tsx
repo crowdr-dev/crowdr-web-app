@@ -1,10 +1,10 @@
 "use client";
 import React,{ useState } from 'react'
-import Navigation from '../shared-components/Navigation'
-import Footer from '../shared-components/Footer'
+import Navigation from '@/app/common/components/Navigation';
+import Footer from '@/app/common/components/Footer'
 import OurPolicies from './policies-components/OurPolicies'
-import Modal from "../shared-components/Modal";
-import WaitlistForm from "../home/home-components/WaitlistForm";
+import Modal from '@/app/common/components/Modal';
+import WaitlistForm from '@/app/home/home-components/WaitlistForm';
 
 export default function Policies() {
        const [modalIsOpen, setModalIsOpen] = useState(false);

@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
   });
 }
 
-// See "Matching Paths" below to learn more
+// "Matching Paths" 
 export const config = {
   matcher: [
     "/confirmation",

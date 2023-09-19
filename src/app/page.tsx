@@ -1,15 +1,15 @@
 "use client";
 import Faq from "./home/home-components/Faq";
 import OurFeaturesAnimation from "./home/home-components/Sectors";
-import Navigation from "./shared-components/Navigation";
 import Header from "./home/home-components/Header";
-import Footer from "./shared-components/Footer";
 import Steps from "./home/home-components/Steps";
 import Benefits from "./home/home-components/Benefits";
 import Community from "./home/home-components/Community";
-import Modal from "./shared-components/Modal";
 import { useState } from "react";
 import WaitlistForm from "./home/home-components/WaitlistForm";
+import Modal from "./common/components/Modal";
+import Footer from "./common/components/Footer";
+import Navigation from "./common/components/Navigation";
 
 export default function Home() {
   const [modalIsOpen, setModalIsOpen] = useState(false);

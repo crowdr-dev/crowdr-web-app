@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "../about-styles/Accomplishments.module.css";
-import { lato } from "@/app/layout";
 
 export default function Accomplishments() {
   return (

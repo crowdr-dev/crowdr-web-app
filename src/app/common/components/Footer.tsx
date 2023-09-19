@@ -2,7 +2,7 @@ import React from 'react'
 import Image from "next/image";
 import { email } from '@/utils/openEmail';
 import Link from 'next/link';
-import "./shared-component-styles/footer.css";
+import "./component-styles/footer.css";
 
 export default function Footer() {
   return (

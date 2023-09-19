@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useFormContext } from "react-hook-form";
-import { LoginFormContext } from "@/hooks/useLoginForm";
+import { LoginFormContext } from "@/app/common/hooks/useLoginForm";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { CgSpinner } from "react-icons/cg";
 import "../styles/shared.css";
-import Button from "@/app/shared-components/Button";
+import Button from "@/app/common/components/Button";
 
 const SignIn = () => {
   const {
