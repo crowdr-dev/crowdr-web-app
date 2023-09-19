@@ -12,6 +12,7 @@ export default function Error({
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error)
+    console.log(error.digest,error.cause, error.message, error.name)
   }, [error])
   return (
     <div className="flex items-center justify-center h-screen w-screen">

@@ -1,10 +1,8 @@
 import toast from "react-hot-toast";
 import Image from "next/image";
-import CheckCircle from "../../../public/svg/check-circle.svg";
-import XMark from "../../../public/svg/x-mark.svg";
 import { FaExclamation } from "react-icons/fa";
 
-import { Status } from "@/hooks/useToast";
+import { Status } from "@/app/common/hooks/useToast";
 
 const Toast = ({ t, title, body, type }: ToastProps) => {
   const getColor = () => {
@@ -22,7 +20,7 @@ const Toast = ({ t, title, body, type }: ToastProps) => {
         return <FaExclamation className="red" style={{ fill: "rgb(239, 68, 68)" }} />;
 
       default:
-        return <Image src={CheckCircle} alt="check-circle" width={20} />;
+        return <Image src="/svg/check-circle.svg" alt="check-circle" width={30} height={30} />;
     }
   };
 
@@ -46,7 +44,7 @@ const Toast = ({ t, title, body, type }: ToastProps) => {
       </div>
 
       <div onClick={() => toast.dismiss(t.id)}>
-        <Image src={XMark} alt="x-mark" />
+        <Image src="/svg/x-mark.svg" alt="x-mark" width={60} height={60} />
       </div>
     </div>
   );

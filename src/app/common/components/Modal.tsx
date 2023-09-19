@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import ReactModal, { Styles } from "react-modal";
-import "./shared-component-styles/modal.css"
+import "./component-styles/modal.css"
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
