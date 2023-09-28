@@ -2,6 +2,8 @@ import { useState, Dispatch, SetStateAction } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { UseFormReturn } from "react-hook-form/dist/types";
 
+import { RFC } from "@/types/Component";
+
 const RegisterFormContext: RFC = ({ children }) => {
   const [formPage, setFormPage] = useState<FormPage>("intro")
   const formContext: RegisterFormContext = { formPage, setFormPage, ...useForm<FormFields>(config) };
@@ -30,8 +32,6 @@ const config: UseFormConfig = {
 
 type FormPage = "intro" | "account" | "confirm"
 type FormPageSetter = Dispatch<SetStateAction<FormPage>>
-type RegisterFormProps = {children: React.ReactNode}
-type RFC = React.FC<RegisterFormProps>
 type UseFormConfig = Parameters<typeof useForm<FormFields>>[0]
 type FormFields = {
   userType:             string;
