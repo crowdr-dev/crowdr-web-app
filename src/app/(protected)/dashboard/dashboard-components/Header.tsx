@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Button, LightButton } from "./Button";
+import { Button, GrayButton } from "./Button";
 
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg";
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg";
@@ -15,7 +15,7 @@ const Header = () => {
       </div>
       <div className="flex items-center">
         <div className="flex mr-6">
-          <LightButton
+          <GrayButton
             text="Setup Guide"
             iconUrl={PuzzleIcon}
             className="hidden md:block mr-[6px]"

@@ -7,6 +7,7 @@ const Pill: RFC<PillProps> = ({label, textColor, bgColor, iconUrl, size}) => {
     padding: size == 'small' ? '2px 12px' : '8px 21px'
     
   }
+  // TODO: FINISH UP PILL COMPONENT
   return (
     <span style={pillStyle} className="inline-block rounded-full px-[6px] py-[2px]">
       {label}

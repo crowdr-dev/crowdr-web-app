@@ -77,7 +77,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   );
 };
 
-export const LightButton: RFC<ButtonProps> = ({ ...props }) => {
+export const GrayButton: RFC<ButtonProps> = ({ ...props }) => {
   return (
     <Button
       bgColor="#F8F8F8"
@@ -89,7 +89,6 @@ export const LightButton: RFC<ButtonProps> = ({ ...props }) => {
 };
 
 // FIXME: DEFAULT PROPS SOON TO BE DEPRECATED
-// TODO: MAKE BUTTON TRANSPARENT BY DEFAULT
 Button.defaultProps = {
   bgColor: "#00B964",
   textColor: "#FFF",
