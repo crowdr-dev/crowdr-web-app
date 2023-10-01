@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { pageGroups } from "../pages";
+import { pageGroups } from "../(pages)/pages";
 
 const Sidebar = () => {
   const pathname = usePathname()

@@ -1,4 +1,4 @@
-import Icon from "../../../../public/svg/upload-cloud.svg"
+import Icon from "../../../../../public/svg/upload-cloud.svg"
 
 class Page {
   constructor(
