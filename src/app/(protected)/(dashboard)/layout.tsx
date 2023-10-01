@@ -1,6 +1,6 @@
-import Page from "./dashboard-components/Page";
-import Sidebar from "./dashboard-components/Sidebar";
-import Header from "./dashboard-components/Header";
+import Page from "./components/Page";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
 
 import { RFC } from "@/types/Component";
 
