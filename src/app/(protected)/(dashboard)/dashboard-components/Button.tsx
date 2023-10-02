@@ -20,7 +20,7 @@ export const Button: RFC<ButtonProps> = ({
   const props = { text, bgColor, textColor, outlineColor, iconUrl, shadow };
 
   return href ? (
-    <Link href={href} className={className + " inline-block"}>
+    <Link href={href} className={className}>
       <ButtonContent {...props} />
     </Link>
   ) : (
@@ -60,7 +60,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
     <div
       style={buttonStyle}
       className={
-        "flex justify-between items-center rounded-lg cursor-pointer px-[16px] py-[10px]"
+        "inline-flex justify-between items-center rounded-lg cursor-pointer px-[16px] py-[10px]"
       }
     >
       {iconUrl && (
@@ -81,6 +81,17 @@ export const GrayButton: RFC<ButtonProps> = ({ ...props }) => {
   return (
     <Button
       bgColor="#F8F8F8"
+      textColor="#292A2E"
+      outlineColor="rgba(230, 230, 230, 0.30)"
+      {...props}
+    />
+  );
+};
+
+export const WhiteButton: RFC<ButtonProps> = ({ ...props }) => {
+  return (
+    <Button
+      bgColor="#FFF"
       textColor="#292A2E"
       outlineColor="rgba(230, 230, 230, 0.30)"
       {...props}

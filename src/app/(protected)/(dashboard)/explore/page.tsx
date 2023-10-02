@@ -2,7 +2,7 @@ import Link from "next/link";
 import Test from "../dashboard-components/Test";
 import { getUser } from "@/app/api/user/getUser";
 
-export default async function Dashboard() {
+export default async function Explore() {
   const user = await getUser();
   return (
     <div>

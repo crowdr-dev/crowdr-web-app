@@ -12,7 +12,7 @@ const Sidebar = () => {
     <nav className="flex flex-col border-r-[0.7px] border-[rgba(56, 56, 56, 0.08)] w-[272px] pl-[26px] pr-[27px]">
       {pageGroups.map((pageGroup, index) => (
         <div key={index}>
-        {index == 0 || <hr className="border-[0.7px] border-[rgba(56, 56, 56, 0.08)]" />}
+        {index == 0 || <hr className=" border-[rgba(56, 56, 56, 0.08)]" />}
         <div className="py-[27px]">
           {pageGroup.map((page, index) => {
             let pageLinkStyle = "flex items-center font-medium text-[0.96rem] rounded-[0.275rem] pl-[28px] pt-[14px] pb-[15px]"

@@ -4,7 +4,7 @@ import { Button, GrayButton } from "./Button";
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg";
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg";
 import BurgerIcon from "../../../../../public/svg/burger-icon.svg";
-import Avatar from "../../../../../public/avatar.png"
+import Avatar from "../../../../../public/temp/avatar.png"
 import Pill from "./Pill";
 
 const Header = () => {
@@ -18,7 +18,7 @@ const Header = () => {
           <GrayButton
             text="Setup Guide"
             iconUrl={PuzzleIcon}
-            className="hidden md:block mr-[6px]"
+            className="hidden md:inline-block mr-[6px]"
           />
           <Button text="Create Campaign" />
         </div>
