@@ -25,25 +25,22 @@ export default function ResendConfirmationEmail() {
         method: "GET",
         cache: "no-store",
       });
-      toast({ title: "success!", body: data.message, type: "success" });
+      toast({ title: "Success!", body: data.message, type: "success" });
     } catch (error: any) {
       const message = extractErrorMessage(error);
       toast({ title: "Oops!", body: message, type: "error" });
     }
     setSubmitting(false);
-
   };
   return (
     <>
-    <Button
-              type="button"
-              text="Resend confirmation email"
-              isSubmitting={isSubmitting}
-              className="mb-[21px] mt-[15px]"
-              onClick={resendEmail}
-            />
+      <Button
+        type="button"
+        text="Resend confirmation email"
+        isSubmitting={isSubmitting}
+        className="mb-[21px] mt-[15px]"
+        onClick={resendEmail}
+      />
     </>
-    
   );
 }
-
