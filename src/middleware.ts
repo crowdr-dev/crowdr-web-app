@@ -24,5 +24,11 @@ export const config = {
     "/dashboard",
     "/register-organization",
     "/explore",
+    "/campaigns",
+    "donations",
+    "inbox",
+    "manage-webpage",
+    "notifications",
+    "settings"
   ],
 };
