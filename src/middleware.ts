@@ -25,10 +25,10 @@ export const config = {
     "/register-organization",
     "/explore",
     "/campaigns",
-    "donations",
-    "inbox",
-    "manage-webpage",
-    "notifications",
-    "settings"
+    "/donations",
+    "/inbox",
+    "/manage-webpage",
+    "/notifications",
+    "/settings"
   ],
 };
