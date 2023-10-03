@@ -5,6 +5,7 @@ import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import ArrowUpIcon from "../../../../../public/svg/arrow-up.svg"
 import AltArrowUpIcon from "../../../../../public/temp/arrow-up.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
+import Pill from "../dashboard-components/Pill";
 
 const Campaigns = () => {
   return (
@@ -18,6 +19,7 @@ const Campaigns = () => {
         </p>
       </hgroup>
 
+      {/* action buttons */}
       <div className="flex justify-between items-center mb-10">
         <div className="inline-flex rounded-md" role="group">
           <button
@@ -46,8 +48,10 @@ const Campaigns = () => {
         </div>
       </div>
 
-      <div className="flex mb-[44px]">
-        <div className="bg-primary rounded-[5px] w-[353px] py-[22.5px] px-[21px]">
+      {/* stats */}
+      <div className="grid grid-cols-[repeat(3,_minmax(0,_350px))] gap-5 mb-[44px]">
+        {/* TODO: get background image */}
+        <div className="bg-primary bg- rounded-[5px] py-[22.5px] px-[21px]">
           <p className="text-sm text-white mb-2">Total Raised</p>
           <p className="text-2xl text-white mb-2">N235,880.70</p>
           <div className="flex items-center">
@@ -56,7 +60,7 @@ const Campaigns = () => {
           </div>
         </div>
 
-        <div className="bg-[#F8F8F8] rounded-[5px] w-[353px] py-[22.5px] px-[21px]">
+        <div className="bg-[#F8F8F8] rounded-[5px] py-[22.5px] px-[21px]">
           <p className="text-sm text-[#292A2E] mb-2">Total Campaigns</p>
           <p className="text-2xl text-[#0C0C0C] mb-2">2</p>
           <div className="flex items-center">
@@ -65,7 +69,7 @@ const Campaigns = () => {
           </div>
         </div>
 
-        <div className="bg-[#F8F8F8] rounded-[5px] w-[353px] py-[22.5px] px-[21px]">
+        <div className="bg-[#F8F8F8] rounded-[5px] py-[22.5px] px-[21px]">
           <p className="text-sm text-[#292A2E] mb-2">Campaign Views</p>
           <p className="text-2xl text-[#0C0C0C] mb-2">19,830</p>
           <div className="flex items-center">
@@ -75,9 +79,42 @@ const Campaigns = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center">
+      {/* all campaigns x filters */}
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl text-[#292A2E]">All Campaigns</h2>
         <GrayButton text="Filters" iconUrl={FilterIcon} />
+      </div>
+
+      {/* campaigns */}
+      <div className="grid grid-cols-[repeat(2,_minmax(0,_550px))] gap-x-[10px] gap-y-[40px]">
+        <div className="bg-white border border-[rgba(57, 62, 70, 0.08)] rounded-xl py-[26px] px-[24px]">
+          <div className="mb-[10px]"><Pill label="Completed" /></div>
+
+          <div className="flex justify-between items-center mb-[19px]">
+            <p className="text-lg text-black">Help Nicholas go back to college</p>
+            <Pill label="Education" />
+          </div>
+
+          <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px]">
+            <p className="text-sm text-[#667085] mb-1"><span className="text-[#292A2E]">Goal</span> N286,000/N286,000</p>
+            {/* progress */}
+            <div className="flex items-center">
+              <div className="grow h-2 mr-3">
+                <div className="bg-primary h-full w-full rounded-full"></div>
+              </div>
+              <p className="text-[#344054]">100%</p>
+            </div>
+          </div>
+
+          <div className="flex justify-between items-end">
+            <div className="text-[13px] text-[#5C636E]">
+              <p className="mb-2.5"><span className="text-black font-medium">Views:</span> <span className="text-[#5C636E] font">3,200</span></p>
+              <p className="mb-2.5"><span className="text-black font-medium">Donors:</span> <span>182</span></p>
+              <p className="mb-2.5"><span className="text-black font-medium">Duration:</span> <span>1d 16h</span></p>
+            </div>
+            <GrayButton text="Update campaign" textColor="#667085" outlineColor="transparent" />
+          </div>
+        </div>
       </div>
     </div>
   );
