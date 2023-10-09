@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button";
+import Pill from "../dashboard-components/Pill";
 
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import ArrowUpIcon from "../../../../../public/svg/arrow-up.svg"
 import AltArrowUpIcon from "../../../../../public/temp/arrow-up.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
-import Pill from "../dashboard-components/Pill";
+import { label } from "../dashboard-components/Label";
 
 const Campaigns = () => {
   return (
@@ -88,7 +89,7 @@ const Campaigns = () => {
       {/* campaigns */}
       <div className="grid grid-cols-[repeat(2,_minmax(0,_550px))] gap-x-[10px] gap-y-[40px]">
         <div className="bg-white border border-[rgba(57, 62, 70, 0.08)] rounded-xl py-[26px] px-[24px]">
-          <div className="mb-[10px]"><Pill label="Completed" /></div>
+          <div className="mb-[10px]">{label('completed')}</div>
 
           <div className="flex justify-between items-center mb-[19px]">
             <p className="text-lg text-black">Help Nicholas go back to college</p>

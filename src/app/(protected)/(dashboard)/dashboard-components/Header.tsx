@@ -5,7 +5,7 @@ import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg";
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg";
 import BurgerIcon from "../../../../../public/svg/burger-icon.svg";
 import Avatar from "../../../../../public/temp/avatar.png"
-import Pill from "./Pill";
+import Label from "./Label";
 
 const Header = () => {
   return (
@@ -28,7 +28,7 @@ const Header = () => {
           <div className="mr-[15px]"><Image src={Avatar} alt="avatar" width={43} /></div>
           <div>
             <p>Ajayi Akintomiwa</p>
-            <Pill label="Individual" />
+            <Label text="Individual" />
           </div>
         </div>
 
