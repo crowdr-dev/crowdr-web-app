@@ -9,9 +9,9 @@ const Pill: RFC<PillProps> = ({label, textColor, bgColor, iconUrl, size}) => {
   }
   // TODO: FINISH UP PILL COMPONENT
   return (
-    <span style={pillStyle} className="inline-block rounded-full px-[6px] py-[2px]">
+    <div style={pillStyle} className="inline-block rounded-full px-[6px] py-[2px]">
       {label}
-    </span>
+    </div>
   );
 }
 
@@ -30,3 +30,19 @@ type PillProps = {
   textColor?: string
   bgColor?: string
 }
+
+
+type Item = {
+  id: string;
+};
+
+const items = [
+  { id: 'business' },
+  { id: 'tech' },
+  { id: 'health' },
+] as const;
+
+type ItemIds = typeof items[number]['id'];
+
+// ItemIds is now a union type of the 'id' properties
+// 'business' | 'tech' | 'health'

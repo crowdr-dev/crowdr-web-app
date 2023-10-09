@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import './shared-styles/variable.css';
+@import '../../public/coolicons.css';
 
 * {
   margin: 0;
