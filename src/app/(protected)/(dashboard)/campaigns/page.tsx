@@ -1,16 +1,16 @@
 import Image from "next/image";
+import CampaignCard from "../dashboard-components/CampaignCard";
 import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button";
-import Pill, { pill } from "../dashboard-components/Pill";
 
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import ArrowUpIcon from "../../../../../public/svg/arrow-up.svg"
 import AltArrowUpIcon from "../../../../../public/temp/arrow-up.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
-import { label } from "../dashboard-components/Label";
 
 const Campaigns = () => {
   return (
     <div>
+      {/* page title x subtitle */}
       <hgroup className="mb-[5px]">
         <h1 className="text-2xl font-semibold text-[#101828] mb-[5px]">
           Campaigns
@@ -88,34 +88,10 @@ const Campaigns = () => {
 
       {/* campaigns */}
       <div className="grid grid-cols-[repeat(2,_minmax(0,_550px))] gap-x-[10px] gap-y-[40px]">
-        <div className="bg-white border border-[rgba(57, 62, 70, 0.08)] rounded-xl py-[26px] px-[24px]">
-          <div className="mb-[10px]">{label('completed')}</div>
-
-          <div className="flex justify-between mb-[19px]">
-            <p className="text-lg text-black">Help Nicholas go back to college</p>
-            {pill('education')}
-          </div>
-
-          <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px]">
-            <p className="text-sm text-[#667085] mb-1"><span className="text-[#292A2E]">Goal</span> N286,000/N286,000</p>
-            {/* progress */}
-            <div className="flex items-center">
-              <div className="grow h-2 mr-3">
-                <div className="bg-primary h-full w-full rounded-full"></div>
-              </div>
-              <p className="text-[#344054]">100%</p>
-            </div>
-          </div>
-
-          <div className="flex justify-between items-end">
-            <div className="text-[13px] text-[#5C636E]">
-              <p className="mb-2.5"><span className="text-black font-medium">Views:</span> <span className="text-[#5C636E] font">3,200</span></p>
-              <p className="mb-2.5"><span className="text-black font-medium">Donors:</span> <span>182</span></p>
-              <p className="mb-2.5"><span className="text-black font-medium">Duration:</span> <span>1d 16h</span></p>
-            </div>
-            <GrayButton text="Update campaign" textColor="#667085" outlineColor="transparent" />
-          </div>
-        </div>
+        <CampaignCard />
+        <CampaignCard />
+        <CampaignCard />
+        <CampaignCard />
       </div>
     </div>
   );
