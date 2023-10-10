@@ -33,7 +33,7 @@ const SelectInput: RFC<SelectInputProps> = ({
             isSearchable={false}
             value={options.find((g) => g.value === value)}
             onChange={(g) => onChange(g!.value)}
-            styles={{ control: (baseStyles, state) => ({...baseStyles, fontSize: 15, borderRadius: 8, borderColor: '#D0D5DD', boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)", padding: 4}) }}
+            styles={{ control: (baseStyles, state) => ({...baseStyles, fontSize: 14, borderRadius: 8, borderColor: '#D0D5DD', boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)", padding: 4}) }}
           />
         )}
       />
