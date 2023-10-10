@@ -51,7 +51,7 @@ const Intro = () => {
               <div id="interests" className="flex flex-wrap gap-y-[10px] mb-[37px] -mr-[6px]">
                 {interests.map(({id, label, icon}) => (
                     <label key={id} htmlFor={id} onClick={e => validatePick(id, e)} className={((pickedInterests || [])?.includes(id) ? "bg-[#068646]" : "bg-[#F8F8F8]") + " flex justify-center items-center gap-x-[5px] rounded-full cursor-pointer py-[8px] px-[21px] mr-[5.5px]"}>
-                        {icon && <Image src={`images/emoji/${icon}.svg`} alt={icon} width={15} height={15} />}
+                        {icon && <Image src={`svg/emoji/${icon}.svg`} alt={icon} width={15} height={15} />}
                         <span className={((pickedInterests || [])?.includes(id) ? "text-[#F8F8F8]" : "text-[#0B5351]") + " text-[12px] md:text-base"}>{label}</span>
                     <input type="checkbox" {...register("interests")} id={id} value={id} className="hidden" />
                 </label>

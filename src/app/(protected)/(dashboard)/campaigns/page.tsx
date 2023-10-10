@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button";
-import Pill from "../dashboard-components/Pill";
+import Pill, { pill } from "../dashboard-components/Pill";
 
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import ArrowUpIcon from "../../../../../public/svg/arrow-up.svg"
@@ -91,9 +91,9 @@ const Campaigns = () => {
         <div className="bg-white border border-[rgba(57, 62, 70, 0.08)] rounded-xl py-[26px] px-[24px]">
           <div className="mb-[10px]">{label('completed')}</div>
 
-          <div className="flex justify-between items-center mb-[19px]">
+          <div className="flex justify-between mb-[19px]">
             <p className="text-lg text-black">Help Nicholas go back to college</p>
-            <Pill label="Education" />
+            {pill('education')}
           </div>
 
           <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px]">
