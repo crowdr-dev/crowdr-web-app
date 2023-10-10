@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import Image from "next/image";
 import { useFormContext, useWatch } from "react-hook-form";
 import { RegisterFormContext } from "@/app/(auth)/signup/utils/useRegisterForm";
+import { campaignCategories as interests } from "@/utils/campaignCategory";
 
 const Intro = () => {
   const { setFormPage, register, control } = useFormContext() as RegisterFormContext;
@@ -49,11 +50,11 @@ const Intro = () => {
                 Which industry are you primarily interested in?
               </h2>
               <div id="interests" className="flex flex-wrap gap-y-[10px] mb-[37px] -mr-[6px]">
-                {interests.map(({id, label, icon}) => (
-                    <label key={id} htmlFor={id} onClick={e => validatePick(id, e)} className={((pickedInterests || [])?.includes(id) ? "bg-[#068646]" : "bg-[#F8F8F8]") + " flex justify-center items-center gap-x-[5px] rounded-full cursor-pointer py-[8px] px-[21px] mr-[5.5px]"}>
+                {interests.map(({value, label, icon}) => (
+                    <label key={value} htmlFor={value} onClick={e => validatePick(value, e)} className={((pickedInterests || [])?.includes(value) ? "bg-[#068646]" : "bg-[#F8F8F8]") + " flex justify-center items-center gap-x-[5px] rounded-full cursor-pointer py-[8px] px-[21px] mr-[5.5px]"}>
                         {icon && <Image src={`svg/emoji/${icon}.svg`} alt={icon} width={15} height={15} />}
-                        <span className={((pickedInterests || [])?.includes(id) ? "text-[#F8F8F8]" : "text-[#0B5351]") + " text-[12px] md:text-base"}>{label}</span>
-                    <input type="checkbox" {...register("interests")} id={id} value={id} className="hidden" />
+                        <span className={((pickedInterests || [])?.includes(value) ? "text-[#F8F8F8]" : "text-[#0B5351]") + " text-[12px] md:text-base"}>{label}</span>
+                    <input type="checkbox" {...register("interests")} id={value} value={value} className="hidden" />
                 </label>
                 ))}
               </div>
@@ -68,64 +69,3 @@ const Intro = () => {
 
 export default Intro;
 
-const interests = [
-    {
-        id: 'business',
-        label: 'Business',
-        icon: 'toolbox'
-    },
-    {
-        id: 'tech',
-        label: 'Tech',
-        icon: 'desktop-computer'
-    },
-    {
-        id: 'health',
-        label: 'Health',
-        icon: 'syringe'
-    },
-    {
-        id: 'music',
-        label: 'Music',
-        icon: 'guitar'
-    },
-    {
-        id: 'legal',
-        label: 'Legal',
-        icon: 'balance-scale'
-    },
-    {
-        id: 'family',
-        label: 'Family',
-        icon: 'family-man-woman-girl-boy'
-    },
-    {
-        id: 'events',
-        label: 'Events',
-        icon: 'circus-tent'
-    },
-    {
-        id: 'arts',
-        label: 'Arts',
-        icon: 'artist-palette'
-    },
-    {
-        id: 'politics',
-        label: 'Politics',
-        icon: 'office-building'
-    },
-    {
-        id: 'sport',
-        label: 'Sports',
-        icon: 'man-swimming-light-skin-tone'
-    },
-    {
-        id: 'education',
-        label: 'Education',
-        icon: 'books'
-    },
-    {
-        id: 'others',
-        label: 'Others',
-    },
-]

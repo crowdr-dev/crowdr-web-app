@@ -20,7 +20,7 @@ const Header = () => {
             iconUrl={PuzzleIcon}
             className="hidden md:inline-block mr-[6px]"
           />
-          <Button text="Create Campaign" />
+          <Button text="Create Campaign" href="/campaigns/create-or-edit-campaign" />
         </div>
 
         {/* profile */}
