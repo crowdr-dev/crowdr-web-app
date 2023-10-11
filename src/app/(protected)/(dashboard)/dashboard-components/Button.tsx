@@ -48,6 +48,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   };
   const textStyle: React.CSSProperties = {
     color: textColor,
+    textAlign: "center"
   };
 
   if (outlineColor) buttonStyle.border = `1px solid ${outlineColor}`;
@@ -60,7 +61,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
     <div
       style={buttonStyle}
       className={
-        "flex justify-between items-center rounded-lg cursor-pointer px-[16px] py-[10px]"
+        `flex  rounded-lg cursor-pointer px-[16px] py-[10px] items-center ${iconUrl ? "justify-between" : "justify-center"} `
       }
     >
       {iconUrl && (

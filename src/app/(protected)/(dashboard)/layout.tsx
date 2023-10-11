@@ -8,7 +8,7 @@ const DashboardLayout: RFC = (props) => {
   return (
     <div className="flex flex-col h-full">
       <Header />
-      <div className="flex grow">
+      <div className="flex">
         <Sidebar />
         <Page {...props} />
       </div>
