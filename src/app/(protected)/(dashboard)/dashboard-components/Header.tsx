@@ -9,7 +9,7 @@ import Label from "./Label";
 
 const Header = () => {
   return (
-    <header className="flex justify-between items-center w-full h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
+    <header className="flex justify-between items-center w-full min-h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
       <div>
         <Image src={CrowdrLogo} alt="crowdr logo" />
       </div>

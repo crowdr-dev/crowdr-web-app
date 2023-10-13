@@ -4,13 +4,14 @@ import { RFC } from "@/types/Component";
 
 const TextAreaInput: RFC<TextAreaInputProps> = ({ config, label, error, control, placeholder, characterLimit, optional }) => {
   const {setValue} = useFormContext()
-  const [input] = useWatch({control, name: [config.name]})
-  const showCharactersLeft = characterLimit && input?.length > 0
-  const charactersLeft = characterLimit! - input?.length
+  const [inputContent] = useWatch({control, name: [config.name]})
+  const showCharactersLeft = characterLimit && inputContent?.length > 0
+  const charactersLeft = characterLimit! - inputContent?.length
 
   useEffect(() => {
+    // FIXME: CHARACTER LIMIT MECHANISM BUGGY
     if (characterLimit && charactersLeft < 0) {
-      setValue(config.name, input.slice(0, characterLimit))
+      setValue(config.name, inputContent.slice(0, characterLimit))
     }
   }, [charactersLeft])
 
