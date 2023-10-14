@@ -1,17 +1,18 @@
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import CampaignFormContext, {
   FormFields,
 } from "../campaigns/create-or-edit-campaign/utils/useCreateCampaign";
+import { Button, WhiteButton } from "./Button";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import InputTitle from "./InputTitle";
 import TextAreaInput from "./TextAreaInput";
+import NumberInput from "./NumberInput";
+import DateInput from "./DateInput";
 
 import { campaignCategories } from "@/utils/campaignCategory";
 import { RFC } from "@/types/Component";
-import { Button, WhiteButton } from "./Button";
-import { useState } from "react";
-import NumberInput from "./NumberInput";
 
 const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
   const {
@@ -27,6 +28,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
     ...campaignCategories,
   ];
 
+  // TODO: PUT ARIA-LABELS IN INPUTS TO MAKE THEM MORE ACCESSIBLE
   return (
     <form onSubmit={handleSubmit(submit)}>
       {/* create campaign */}
@@ -136,11 +138,13 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           />
 
           <div className="max-w-lg">
-            <TextInput
+            <DateInput
               config={register("campaignDuration", {
-                required: { value: true, message: "Funding goal is required" },
+                required: { value: true, message: "Campaign duration is required" },
               })}
               error={errors.campaignDuration}
+              mode="range"
+              enableTime
             />
           </div>
         </div>

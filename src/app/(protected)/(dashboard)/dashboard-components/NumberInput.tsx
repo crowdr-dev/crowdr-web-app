@@ -27,6 +27,7 @@ const NumberInput: RFC<NumberInputProps> = ({config, label, error, placeholder, 
           config.onChange(e)
         }}
         prefix={prefix}
+        style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
         className="text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px]"
       />
       {error && (

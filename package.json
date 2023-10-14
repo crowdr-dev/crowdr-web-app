@@ -17,6 +17,7 @@
     "browser-image-compression": "^2.0.2",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
+    "flatpickr": "^4.6.13",
     "flowbite": "^1.8.1",
     "flowbite-react": "^0.6.3",
     "framer-motion": "^10.12.17",
