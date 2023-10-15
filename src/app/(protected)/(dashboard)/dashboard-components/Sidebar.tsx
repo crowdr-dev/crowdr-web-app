@@ -9,7 +9,7 @@ const Sidebar = () => {
   const pathname = usePathname()
 
   return (
-    <div className="flex-none">
+    <div className="flex grow">
     <nav className="flex flex-col border-r-[0.7px] border-[rgba(56, 56, 56, 0.08)] w-[272px] pl-[26px] pr-[27px]">
       {pageGroups.map((pageGroup, index) => (
         <div key={index}>
