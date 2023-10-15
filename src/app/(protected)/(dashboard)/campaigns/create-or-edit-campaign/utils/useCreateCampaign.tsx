@@ -28,7 +28,7 @@ type FormFields = {
   fundingGoal: string;
   campaignDuration: string;
   campaignImages: string[];
-  skillsNeeded: string;
+  skillsNeeded: string[];
   otherSkillsNeeded: string;
   ageRange: string;
   genderPreference: string;

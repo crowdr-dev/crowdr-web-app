@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useMemo, useRef, useState } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 import CampaignFormContext, {
   FormFields,
 } from "../campaigns/create-or-edit-campaign/utils/useCreateCampaign";
@@ -13,6 +13,7 @@ import DateInput from "./DateInput";
 
 import { campaignCategories } from "@/utils/campaignCategory";
 import { RFC } from "@/types/Component";
+import OptionInput from "./OptionInput";
 
 const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
   const {
@@ -21,12 +22,25 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
   } = useFormContext() as CampaignFormContext;
+  const skillsNeeded = useWatch({ control, name: "skillsNeeded" });
+  const otherSkillsRef = useRef<HTMLInputElement>(null);
   const [fundraiseOpen, setFundraiseOpen] = useState(true);
   const [volunteerCallOpen, setVolunteerCallOpen] = useState(true);
   const categories = [
     { value: "", label: "Select a category..." },
     ...campaignCategories,
   ];
+
+  const enableOtherSkillsInput = useMemo(() => {
+    if (skillsNeeded?.includes("other")) {
+      if (otherSkillsRef.current) {
+        setTimeout(() => otherSkillsRef.current!.focus(), 0);
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }, [skillsNeeded]);
 
   // TODO: PUT ARIA-LABELS IN INPUTS TO MAKE THEM MORE ACCESSIBLE
   return (
@@ -47,62 +61,61 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
       </div>
       <hr className="mb-[26px]" />
 
-      {/* title */}
-      <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
-        <InputTitle
-          title="Title"
-          detail="This will be displayed on your campaign."
-        />
-
-        <div className="max-w-lg">
-          <TextInput
-            config={register("title", {
-              required: { value: true, message: "Title is required" },
-            })}
-            error={errors.title}
+      <div>
+        {/* title */}
+        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+          <InputTitle
+            title="Title"
+            detail="This will be displayed on your campaign."
           />
+          <div className="max-w-lg">
+            <TextInput
+              config={register("title", {
+                required: { value: true, message: "Title is required" },
+              })}
+              error={errors.title}
+            />
+          </div>
         </div>
-      </div>
 
-      {/* category */}
-      <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
-        <InputTitle
-          title="Category"
-          detail="Choose the most relevant category that best represents your campaign."
-        />
-
-        <div className="max-w-lg">
-          <SelectInput
-            name="category"
-            control={control}
-            options={categories}
-            validation={{
-              required: { value: true, message: "Category is required" },
-            }}
-            error={errors.category}
+        {/* category */}
+        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+          <InputTitle
+            title="Category"
+            detail="Choose the most relevant category that best represents your campaign."
           />
+          <div className="max-w-lg">
+            <SelectInput
+              name="category"
+              control={control}
+              options={categories}
+              validation={{
+                required: { value: true, message: "Category is required" },
+              }}
+              error={errors.category}
+            />
+          </div>
         </div>
-      </div>
 
-      {/* tell your story */}
-      <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
-        <InputTitle
-          title="Tell Your Story"
-          detail="Share your passion and purpose behind this campaign."
-        />
-
-        <div className="max-w-lg">
-          <TextAreaInput
-            config={register("story", {
-              required: { value: true, message: "Story is required" },
-            })}
-            characterLimit={300}
-            control={control}
-            error={errors.story}
+        {/* tell your story */}
+        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+          <InputTitle
+            title="Tell Your Story"
+            detail="The more details, the better."
           />
+          <div className="max-w-lg">
+            <TextAreaInput
+              config={register("story", {
+                required: { value: true, message: "Story is required" },
+              })}
+              characterLimit={300}
+              control={control}
+              error={errors.story}
+            />
+          </div>
         </div>
+        <hr className="mb-5" />
       </div>
-      <hr className="mb-5" />
 
       {/* FUNDRAISE */}
       <details open={fundraiseOpen} className="mb-14">
@@ -140,7 +153,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <div className="max-w-lg">
             <DateInput
               config={register("campaignDuration", {
-                required: { value: true, message: "Campaign duration is required" },
+                required: {
+                  value: true,
+                  message: "Campaign duration is required",
+                },
               })}
               error={errors.campaignDuration}
               mode="range"
@@ -158,6 +174,104 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
         >
           Call for Volunteers
         </summary>
+
+        {/* skills needed */}
+        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+          <InputTitle title="Skills Needed" detail="Select all that apply" />
+
+          <div className="max-w-lg">
+            {skillsList.map((skill) => (
+              <OptionInput
+                type="checkbox"
+                value={skill.value}
+                label={skill.label}
+                config={register("skillsNeeded")}
+              />
+            ))}
+            <div className="flex">
+              <OptionInput
+                type="checkbox"
+                value="other"
+                label="Other (please specify):"
+                config={register("skillsNeeded")}
+              />
+              <input
+                {...register("otherSkillsNeeded")}
+                ref={otherSkillsRef}
+                disabled={!enableOtherSkillsInput}
+                className="-translate-y-1 border-b border-[#4c4c4c] border-dashed outline-none w-28 h-6 ml-2"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* age needed */}
+        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+          <InputTitle title="Age Range" />
+
+          <div className="max-w-lg">
+            {ageRanges.map((ageRange) => (
+              <OptionInput
+                type="radio"
+                value={ageRange.value}
+                label={ageRange.label}
+                config={register("ageRange")}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* gender preference */}
+        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+          <InputTitle title="Gender Preference" />
+
+          <div className="max-w-lg">
+            {genderPreferences.map((genderPreference) => (
+              <OptionInput
+                type="radio"
+                value={genderPreference.value}
+                label={genderPreference.label}
+                config={register("genderPreference")}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* date and time needed */}
+        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+          <InputTitle title="Date and Time Needed" />
+
+          <div className="max-w-lg">
+            <DateInput
+              config={register("timeCommitment", {
+                required: {
+                  value: true,
+                  message: "Time commitment is required",
+                },
+              })}
+              error={errors.timeCommitment}
+              mode="range"
+              enableTime
+            />
+          </div>
+        </div>
+
+        {/* volunteer commitment */}
+        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+          <InputTitle title="Volunteer Commitment" />
+
+          <div className="max-w-lg">
+            {volunteerCommitment.map((commitment) => (
+              <OptionInput
+                type="radio"
+                value={commitment.value}
+                label={commitment.label}
+                config={register("volunteerCommitment")}
+              />
+            ))}
+          </div>
+        </div>
+
         {/* additional requirements or notes */}
         <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle title="Additional Requirements or Notes" />
@@ -190,3 +304,36 @@ export default CampaignForm;
 type CampaignFormProps = {
   submit: (formFields: FormFields) => void;
 };
+
+function Option(value: string, label: string) {
+  return { value, label };
+}
+
+const skillsList = [
+  Option("event planning", "Event Planning"),
+  Option("marketing & social media", "Marketing & Social Media"),
+  Option("photography & videography", "Photography & Videography"),
+  Option("teaching & training", "Teaching & Training"),
+];
+
+const ageRanges = [
+  Option("18 - 25", "18 - 25"),
+  Option("26 - 35", "26 - 35"),
+  Option("36 - 45", "36 - 45"),
+  Option("46 - 55", "46 - 55"),
+  Option("56 and above", "56 and above"),
+  Option("no preference", "No preference"),
+];
+
+const genderPreferences = [
+  Option("female", "Female"),
+  Option("male", "Male"),
+  Option("no preference", "No preference"),
+];
+
+const volunteerCommitment = [
+  Option("one-time event", "One-time event"),
+  Option("weekly commitment", "Weekly commitment"),
+  Option("monthly commitment", "Monthly commitment"),
+  Option("flexible schedule", "Flexible schedule"),
+];

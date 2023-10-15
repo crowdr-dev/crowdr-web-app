@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+// TODO: POSSIBLY SWITCH TO react-flatpickr
 import flatpickr from "flatpickr";
 import { useFormContext, FieldError, UseFormRegisterReturn } from "react-hook-form";
 import { RFC } from "@/types/Component";
@@ -25,7 +26,6 @@ const DateInput: RFC<DateInputProps> = ({
         dateFormat,
         enableTime,
         onChange: (selectedDates, dateStr, instance) => {
-          console.log(selectedDates)
           if (dateStr) {
             setValue(config.name, dateStr)
           } else {
