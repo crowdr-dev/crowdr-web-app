@@ -1,10 +1,10 @@
 import Select from "react-select";
+import { useFormContext } from "react-hook-form";
 import { FieldError, Controller, Control } from "react-hook-form";
 import { RFC } from "@/types/Component";
 
 const SelectInput: RFC<SelectInputProps> = ({
   options,
-  control,
   name,
   label,
   error,
@@ -12,6 +12,7 @@ const SelectInput: RFC<SelectInputProps> = ({
   placeholder,
   optional,
 }) => {
+  const {control} = useFormContext()
   return (
     <span>
       {label && (
@@ -50,7 +51,6 @@ export default SelectInput;
 
 type SelectInputProps = {
   options: readonly Option[];
-  control: Control<any, any>;
   name: string;
   label?: string;
   error?: FieldError;

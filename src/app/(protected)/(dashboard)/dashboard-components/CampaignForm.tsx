@@ -10,10 +10,11 @@ import InputTitle from "./InputTitle";
 import TextAreaInput from "./TextAreaInput";
 import NumberInput from "./NumberInput";
 import DateInput from "./DateInput";
+import OptionInput from "./OptionInput";
+import FileInput from "./FileInput";
 
 import { campaignCategories } from "@/utils/campaignCategory";
 import { RFC } from "@/types/Component";
-import OptionInput from "./OptionInput";
 
 const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
   const {
@@ -61,7 +62,6 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
       </div>
       <hr className="mb-[26px]" />
 
-      <div>
         {/* title */}
         <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle
@@ -71,7 +71,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <div className="max-w-lg">
             <TextInput
               config={register("title", {
-                required: { value: true, message: "Title is required" },
+                required: "Title is required",
               })}
               error={errors.title}
             />
@@ -87,10 +87,9 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <div className="max-w-lg">
             <SelectInput
               name="category"
-              control={control}
               options={categories}
               validation={{
-                required: { value: true, message: "Category is required" },
+                required: "Category is required",
               }}
               error={errors.category}
             />
@@ -106,7 +105,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <div className="max-w-lg">
             <TextAreaInput
               config={register("story", {
-                required: { value: true, message: "Story is required" },
+                required: "Story is required",
               })}
               characterLimit={300}
               control={control}
@@ -115,7 +114,6 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           </div>
         </div>
         <hr className="mb-5" />
-      </div>
 
       {/* FUNDRAISE */}
       <details open={fundraiseOpen} className="mb-14">
@@ -131,11 +129,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
             title="Set Your Funding Goal"
             detail="You can always adjust your goal as your campaign progresses."
           />
-
           <div className="max-w-lg">
             <NumberInput
               config={register("fundingGoal", {
-                required: { value: true, message: "Funding goal is required" },
+                required: "Funding goal is required",
               })}
               error={errors.fundingGoal}
               prefix="N"
@@ -153,14 +150,30 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <div className="max-w-lg">
             <DateInput
               config={register("campaignDuration", {
-                required: {
-                  value: true,
-                  message: "Campaign duration is required",
-                },
+                required: "Campaign duration is required",
               })}
               error={errors.campaignDuration}
               mode="range"
               enableTime
+            />
+          </div>
+        </div>
+
+        {/* upload engaging media */}
+        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+          <InputTitle
+            title="Upload Engaging Media"
+            detail="Visuals can make a significant impact on your campaign's success."
+          />
+
+          <div className="max-w-lg">
+            <FileInput
+              config={register("campaignImages", {
+                required: "Campaign image is required",
+              })}
+              error={errors.campaignImages}
+              multiple
+              showFileList
             />
           </div>
         </div>
@@ -183,9 +196,12 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
             {skillsList.map((skill) => (
               <OptionInput
                 type="checkbox"
+                key={skill.value}
                 value={skill.value}
                 label={skill.label}
-                config={register("skillsNeeded")}
+                config={register("skillsNeeded", {
+                  required: "Skills needed is required",
+                })}
               />
             ))}
             <div className="flex">
@@ -202,6 +218,11 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
                 className="-translate-y-1 border-b border-[#4c4c4c] border-dashed outline-none w-28 h-6 ml-2"
               />
             </div>
+            {errors.skillsNeeded && (
+              <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
+                {errors.skillsNeeded?.message}
+              </span>
+            )}
           </div>
         </div>
 
@@ -213,11 +234,19 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
             {ageRanges.map((ageRange) => (
               <OptionInput
                 type="radio"
+                key={ageRange.value}
                 value={ageRange.value}
                 label={ageRange.label}
-                config={register("ageRange")}
+                config={register("ageRange", {
+                  required: "Age needed is required",
+                })}
               />
             ))}
+            {errors.ageRange && (
+              <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
+                {errors.ageRange?.message}
+              </span>
+            )}
           </div>
         </div>
 
@@ -229,11 +258,19 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
             {genderPreferences.map((genderPreference) => (
               <OptionInput
                 type="radio"
+                key={genderPreference.value}
                 value={genderPreference.value}
                 label={genderPreference.label}
-                config={register("genderPreference")}
+                config={register("genderPreference", {
+                  required: "Gender preference is required",
+                })}
               />
             ))}
+            {errors.genderPreference && (
+              <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
+                {errors.genderPreference?.message}
+              </span>
+            )}
           </div>
         </div>
 
@@ -244,10 +281,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <div className="max-w-lg">
             <DateInput
               config={register("timeCommitment", {
-                required: {
-                  value: true,
-                  message: "Time commitment is required",
-                },
+                required: "Time commitment is required",
               })}
               error={errors.timeCommitment}
               mode="range"
@@ -264,11 +298,19 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
             {volunteerCommitment.map((commitment) => (
               <OptionInput
                 type="radio"
+                key={commitment.value}
                 value={commitment.value}
                 label={commitment.label}
-                config={register("volunteerCommitment")}
+                config={register("volunteerCommitment", {
+                  required: "Volunteer commitment is required",
+                })}
               />
             ))}
+            {errors.volunteerCommitment && (
+              <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
+                {errors.volunteerCommitment?.message}
+              </span>
+            )}
           </div>
         </div>
 
@@ -279,7 +321,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <div className="max-w-lg">
             <TextAreaInput
               config={register("additionalNotes", {
-                required: { value: true, message: "Additional notes required" },
+                required: "Additional notes required",
               })}
               characterLimit={300}
               control={control}
