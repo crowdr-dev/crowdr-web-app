@@ -4,11 +4,7 @@ import { RFC } from "@/types/Component";
 import { Button } from "./Button";
 import ProgressBar from "./ProgressBar";
 
-
 import Menu from "../../../../../public/svg/menu.svg";
-
-
-
 
 type ExploreCardProps = {
   name: string;
@@ -19,7 +15,7 @@ type ExploreCardProps = {
   currentAmount: string;
   donateImage: any;
   routeTo?: string;
-  avatar?: string;
+  avatar: any;
 }
 
 
