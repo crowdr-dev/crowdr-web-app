@@ -38,8 +38,7 @@ const FileInput: RFC<FileInputProps> = ({ config, label, error, placeholder, opt
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDragActive(false);
-    const files = e.dataTransfer.files;
-    setValue(config.name, files);
+    processFileSelection(e)
   };
 
   const validateImage = async (fileList: FileList) => {
@@ -70,9 +69,9 @@ const FileInput: RFC<FileInputProps> = ({ config, label, error, placeholder, opt
     }
   };
 
-  const processFileSelection = (e: React.ChangeEvent<HTMLInputElement>) => {
-    config.onChange(e)
-    const selectedFiles = Array.from(e.target.files!)
+  // BUG: DRAG & DROP IS ABLE TO BY-PASS FILE TYPE SPECIFIED
+  const processFileSelection = (e: React.ChangeEvent<HTMLInputElement> | React.DragEvent) => {
+    const selectedFiles = isChangeEvent(e) ? Array.from(e?.target?.files!) : Array.from(e.dataTransfer.files)
 
       if (showFileList && multiple) {
         if (!files && selectedFiles?.length === 0) {
@@ -102,7 +101,6 @@ const FileInput: RFC<FileInputProps> = ({ config, label, error, placeholder, opt
         } else {
           fileInputRef.current!.value = ""
           setValue(config.name, null)
-          setError(config.name, {type: 'required'})
         }
         
       }
@@ -110,15 +108,18 @@ const FileInput: RFC<FileInputProps> = ({ config, label, error, placeholder, opt
   }
 
   const removeFile = (name: string) => {
-    debugger
     const remainingFiles = files!.filter(file => file.name != name)
     if (remainingFiles.length > 0) {
       setValue(config.name, remainingFiles)
     } else {
       fileInputRef.current!.value = ""
       setValue(config.name, null)
-      setError(config.name, {type: 'required'})
+      trigger(config.name)
     }
+  }
+
+  const isChangeEvent = (event: React.ChangeEvent<HTMLInputElement> | React.DragEvent): event is React.ChangeEvent<HTMLInputElement> => {
+    return 'files' in event.target
   }
 
   return (
@@ -144,8 +145,9 @@ const FileInput: RFC<FileInputProps> = ({ config, label, error, placeholder, opt
           <Image src={UploadIcon} alt="upload icon" width={24} />
         </div>
         <div className="text-center">
-          <p className="text-sm mb-1">
-            <span className="text-[#FF5200]">Click to upload</span> or drag and
+          <p className="text-primary text-sm mb-1">
+            {/* text-[#FF5200] */}
+            <span className="text-inherit">Click to upload</span> or drag and
             drop
           </p>
           <p className="text-xs text-[#667085]">
@@ -153,10 +155,7 @@ const FileInput: RFC<FileInputProps> = ({ config, label, error, placeholder, opt
           </p>
         </div>
         <input
-          {...register(config.name, {
-            validate: { validateImage },
-            required: "fsdfdsf"
-          })}
+          {...config}
           type="file"
           ref={fileInputRef}
           id={config.name}
@@ -205,15 +204,15 @@ function toMB(bytes: number) {
 const FileDetail: RFC<FileDetailProps> = ({name, size, removeFile}) => {
   return (
     <div className="flex rounded-lg border border-[#D0D5DD] w-full mt-4">
-        <div className="text-sm bg-[#F9FAFB] w-8/12 rounded-l-lg p-4 pl-[18px]">
-          <p className="whitespace-nowrap overflow-hidden text-ellipsis">{name}</p>
-          <p className="text-[#667085]">{toMB(size)} MB</p>
-        </div>
-        <div className="grow bg-white rounded-r-lg p-4">
-          {/* <Image src={LoadingCircle} alt="spinner icon" className="block ml-auto" /> */}
-          <HiMiniXCircle size={32} className="ml-auto" onClick={removeFile} />
-        </div>
+      <div className="text-sm bg-[#F9FAFB] w-8/12 rounded-l-lg p-4 pl-[18px]">
+        <p className="whitespace-nowrap overflow-hidden text-ellipsis">{name}</p>
+        <p className="text-[#667085]">{toMB(size)} MB</p>
       </div>
+      <div className="grow bg-white rounded-r-lg p-4">
+        {/* <Image src={LoadingCircle} alt="spinner icon" className="block ml-auto" /> */}
+        <HiMiniXCircle size={32} className="ml-auto" onClick={removeFile} />
+      </div>
+    </div>
   )
 }
 

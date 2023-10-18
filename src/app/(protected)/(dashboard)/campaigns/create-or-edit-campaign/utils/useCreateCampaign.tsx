@@ -24,11 +24,12 @@ type UseFormConfig = Parameters<typeof useForm<FormFields>>[0];
 type FormFields = {
   title: string;
   category: CampaignCategory;
+  campaignType: 'fundraise' | 'volunteer' | 'fundraiseAndVolunteer'
   story: string;
   fundingGoal: string;
   campaignDuration: string;
-  campaignImages: string[];
-  skillsNeeded: string[];
+  campaignImages: File[];
+  skillsNeeded: string;
   otherSkillsNeeded: string;
   ageRange: string;
   genderPreference: string;

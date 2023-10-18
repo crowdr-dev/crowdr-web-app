@@ -1,9 +1,9 @@
 import { RFC } from "@/types/Component";
 import CurrencyInput from "react-currency-input-field";
-
-import { FieldError, UseFormRegisterReturn } from "react-hook-form";
+import { useFormContext, FieldError, UseFormRegisterReturn } from "react-hook-form";
 
 const NumberInput: RFC<NumberInputProps> = ({config, label, error, placeholder, optional, prefix, suffix}) => {
+  const {setValue, trigger} = useFormContext()
   // FIXME: STILL ABLE TO TYPE JUST A DOT OR MULTIPLE DOTS
   const regex = /[^0-9.]/gi
 
@@ -23,8 +23,9 @@ const NumberInput: RFC<NumberInputProps> = ({config, label, error, placeholder, 
         placeholder={placeholder}
         decimalsLimit={2}
         onChange={e => {
-          e.target.value = (e.target.value.replace(regex, ''))
-          config.onChange(e)
+          const value = (e.target.value.replace(regex, ''))
+          setValue(config.name, value)
+          trigger(config.name)
         }}
         prefix={prefix}
         style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}

@@ -18,7 +18,7 @@ const Header = () => {
           <GrayButton
             text="Setup Guide"
             iconUrl={PuzzleIcon}
-            className="hidden md:inline-block mr-[6px]"
+            className="hidden md:inline-flex mr-[6px]"
           />
           <Button text="Create Campaign" href="/campaigns/create-or-edit-campaign" />
         </div>

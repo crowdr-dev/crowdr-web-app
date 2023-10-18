@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { RFC } from "@/types/Component";
+import { CgSpinner } from "react-icons/cg";
 
 export const Button: RFC<ButtonProps> = ({
   text,
@@ -15,8 +16,10 @@ export const Button: RFC<ButtonProps> = ({
   shadow,
   buttonType,
   className,
+  loading,
+  disabled,
 }) => {
-  const props = { text, bgColor, textColor, outlineColor, iconUrl, shadow };
+  const props = { text, bgColor, textColor, outlineColor, iconUrl, shadow, loading };
 
   return href ? (
     <Link href={href} className={className}>
@@ -27,6 +30,7 @@ export const Button: RFC<ButtonProps> = ({
       type={buttonType}
       aria-label={text}
       onClick={callback}
+      disabled={disabled}
       className={className}
     >
       <ButtonContent {...props} />
@@ -41,6 +45,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   outlineColor,
   iconUrl,
   shadow,
+  loading
 }) => {
   const buttonStyle: React.CSSProperties = {
     background: bgColor,
@@ -72,6 +77,14 @@ const ButtonContent: RFC<ButtonContentProps> = ({
         />
       )}
       <span style={textStyle}>{text}</span>
+      {loading && (
+        <span>
+          <CgSpinner
+            size="1.5rem"
+            className="animate-spin icon opacity-100 ml-2.5"
+          />
+        </span>
+      )}
     </div>
   );
 };
@@ -119,4 +132,6 @@ type ButtonContentProps = {
   outlineColor?: string;
   iconUrl?: string;
   shadow?: boolean;
+  loading?: boolean
+  disabled?: boolean
 };

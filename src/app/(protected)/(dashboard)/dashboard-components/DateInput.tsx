@@ -27,7 +27,7 @@ const DateInput: RFC<DateInputProps> = ({
         enableTime,
         onChange: (selectedDates, dateStr, instance) => {
           if (dateStr) {
-            setValue(config.name, dateStr)
+            setValue(config.name, selectedDates)
           } else {
             setValue(config.name, null)
             setError(config.name, {type: 'required'})

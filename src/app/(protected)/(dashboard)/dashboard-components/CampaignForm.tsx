@@ -20,19 +20,19 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
   const {
     register,
     control,
+    setValue,
+    trigger,
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
   } = useFormContext() as CampaignFormContext;
-  const skillsNeeded = useWatch({ control, name: "skillsNeeded" });
-  const otherSkillsRef = useRef<HTMLInputElement>(null);
+  const [skillsNeeded, campaignType] = useWatch({ control, name: ['skillsNeeded', 'campaignType'] });
   const [fundraiseOpen, setFundraiseOpen] = useState(true);
-  const [volunteerCallOpen, setVolunteerCallOpen] = useState(true);
-  const categories = [
-    { value: "", label: "Select a category..." },
-    ...campaignCategories,
-  ];
-
-  const enableOtherSkillsInput = useMemo(() => {
+  const [volunteerOpen, setVolunteerCallOpen] = useState(true);
+  const showFundraiseSection = campaignType?.match(/fundraise/i)
+  const showVolunteerSection = campaignType?.match(/volunteer/i)
+  const otherSkillsRef = useRef<HTMLInputElement>(null);
+  
+  const otherSkillsEnabled = useMemo(() => {
     if (skillsNeeded?.includes("other")) {
       if (otherSkillsRef.current) {
         setTimeout(() => otherSkillsRef.current!.focus(), 0);
@@ -42,6 +42,16 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
       return false;
     }
   }, [skillsNeeded]);
+
+  const toggleFundraise = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setFundraiseOpen(prev => !prev)
+  }
+
+  const toggleVolunteer = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setVolunteerCallOpen(prev => !prev)
+  }
 
   // TODO: PUT ARIA-LABELS IN INPUTS TO MAKE THEM MORE ACCESSIBLE
   return (
@@ -57,7 +67,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
 
         <div>
           <WhiteButton text="Cancel" shadow className="mr-3" />
-          <Button text="Launch Campaign" buttonType="submit" />
+          <Button text="Launch Campaign" buttonType="submit" loading={isSubmitting} disabled={isSubmitting} />
         </div>
       </div>
       <hr className="mb-[26px]" />
@@ -74,6 +84,24 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
                 required: "Title is required",
               })}
               error={errors.title}
+            />
+          </div>
+        </div>
+
+        {/* campaign type */}
+        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+          <InputTitle
+            title="Campaign Type"
+            detail="Choose the type that fits the needs of your campaign."
+          />
+          <div className="max-w-lg">
+            <SelectInput
+              name="campaignType"
+              options={campaignTypes}
+              validation={{
+                required: "Campaign type is required",
+              }}
+              error={errors.campaignType}
             />
           </div>
         </div>
@@ -116,10 +144,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
         <hr className="mb-5" />
 
       {/* FUNDRAISE */}
-      <details open={fundraiseOpen} className="mb-14">
+      {showFundraiseSection && <details open={fundraiseOpen} className={fundraiseOpen ? "mb-14" : ''}>
         <summary
           className="text-primary cursor-pointer mb-2"
-          onClick={(prev) => setFundraiseOpen(!prev)}
+          onClick={toggleFundraise}
         >
           Fundraise
         </summary>
@@ -177,13 +205,14 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
             />
           </div>
         </div>
-      </details>
+      </details>}
 
       {/* CALL FOR VOLUNTEERS */}
-      <details open={volunteerCallOpen} className="mb-10">
+      {showVolunteerSection && <details open={volunteerOpen} className="mb-10">
+        {/* TODO: STYLE DETAIL DROPDOWN ICON TO LOOK LIKE FIGMA */}
         <summary
           className="text-primary cursor-pointer mb-2"
-          onClick={(prev) => setVolunteerCallOpen(!prev)}
+          onClick={toggleVolunteer}
         >
           Call for Volunteers
         </summary>
@@ -195,7 +224,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <div className="max-w-lg">
             {skillsList.map((skill) => (
               <OptionInput
-                type="checkbox"
+                type="radio"
                 key={skill.value}
                 value={skill.value}
                 label={skill.label}
@@ -206,21 +235,26 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
             ))}
             <div className="flex">
               <OptionInput
-                type="checkbox"
-                value="other"
+                type="radio"
+                value="others"
                 label="Other (please specify):"
                 config={register("skillsNeeded")}
               />
               <input
-                {...register("otherSkillsNeeded")}
+                {...register("otherSkillsNeeded", {required: otherSkillsEnabled && "Other skills is required"})}
+                id="otherSkillsNeeded"
+                onChange={e => {
+                  setValue('otherSkillsNeeded', e.target.value)
+                  trigger('otherSkillsNeeded')
+                }}
                 ref={otherSkillsRef}
-                disabled={!enableOtherSkillsInput}
-                className="-translate-y-1 border-b border-[#4c4c4c] border-dashed outline-none w-28 h-6 ml-2"
+                disabled={!otherSkillsEnabled}
+                className="-translate-y-1 border-t-0 border-b border-[#4c4c4c] border-dashed outline-none w-28 h-6 ml-2"
               />
             </div>
-            {errors.skillsNeeded && (
+            {(errors.skillsNeeded || errors.otherSkillsNeeded) && (
               <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
-                {errors.skillsNeeded?.message}
+                {errors.skillsNeeded?.message || errors.otherSkillsNeeded?.message}
               </span>
             )}
           </div>
@@ -329,12 +363,12 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
             />
           </div>
         </div>
-      </details>
+      </details>}
 
       <div className="flex justify-end mb-5">
         <div>
           <WhiteButton text="Cancel" shadow className="mr-3" />
-          <Button text="Launch Campaign" buttonType="submit" />
+          <Button text="Launch Campaign" buttonType="submit" loading={isSubmitting} disabled={isSubmitting} />
         </div>
       </div>
     </form>
@@ -347,9 +381,21 @@ type CampaignFormProps = {
   submit: (formFields: FormFields) => void;
 };
 
-function Option(value: string, label: string) {
-  return { value, label };
+function Option(value: string, label: string, isDisabled = false) {
+  return { value, label, isDisabled };
 }
+
+const categories = [
+  Option('', 'Select a category...', true),
+  ...campaignCategories,
+];
+
+const campaignTypes = [
+  Option('', 'Select a campaign type...', true),
+  Option('fundraise', 'Fundraise'),
+  Option('volunteer', 'Volunteer'),
+  Option('fundraiseAndVolunteer', 'Fundraise and volunteer'),
+]
 
 const skillsList = [
   Option("event planning", "Event Planning"),
