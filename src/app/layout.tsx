@@ -1,5 +1,5 @@
 import "./globals.css";
-import "./shared-styles/button.css";
+import "./common/styles/button.css";
 
 import { Toaster } from "react-hot-toast";
 import { Public_Sans, Lato } from "next/font/google";

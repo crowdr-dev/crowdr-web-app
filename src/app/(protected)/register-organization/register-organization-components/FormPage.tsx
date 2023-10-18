@@ -5,7 +5,7 @@ import {
   FormFields,
   OrganizationFormContext,
 } from "../utils/useOrganizatonForm";
-import useToast from "@/hooks/useToast";
+import useToast from "@/app/common/hooks/useToast";
 import OrganizationDetails from "./OrganizationDetails";
 import { getUser } from "@/app/api/user/getUser";
 import makeRequest from "@/utils/makeRequest";

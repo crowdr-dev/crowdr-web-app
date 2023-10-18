@@ -49,7 +49,7 @@ export default async function makeRequest<T>(
       throw new Error(
         response.status >= 400 && response.status < 500
           ? data.message || "Request failed"
-          : "Unknown server error"
+          : data.message || "Unknown server error"
       );
     }
 

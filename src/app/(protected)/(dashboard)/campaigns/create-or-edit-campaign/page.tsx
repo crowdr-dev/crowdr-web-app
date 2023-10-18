@@ -6,7 +6,7 @@ import CampaignForm from "../../dashboard-components/CampaignForm";
 import makeRequest from "@/utils/makeRequest";
 import { extractErrorMessage } from "@/utils/extractErrorMessage";
 import { getUser } from "@/app/api/user/getUser";
-import useToast from "@/hooks/useToast";
+import useToast from "@/app/common/hooks/useToast";
 import objectToFormData from "@/utils/objectToFormData";
 
 const CreateEditCampaign = () => {

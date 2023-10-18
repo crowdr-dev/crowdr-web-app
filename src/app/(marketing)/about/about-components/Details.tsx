@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../about-styles/Details.module.css";
-import Ada from "../../../../public/images/team/Ada.jpg";
+import Ada from "../../../../../public/images/team/Ada.jpg";
 import Image from "next/image";
 
 export default function Details() {

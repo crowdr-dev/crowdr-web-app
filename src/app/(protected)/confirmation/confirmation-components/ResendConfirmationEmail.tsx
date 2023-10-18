@@ -1,7 +1,7 @@
 "use client";
 import { getUser } from "@/app/api/user/getUser";
-import Button from "@/app/shared-components/Button";
-import useToast from "@/hooks/useToast";
+import Button from "@/app/common/components/Button";
+import useToast from "@/app/common/hooks/useToast";
 import { extractErrorMessage } from "@/utils/extractErrorMessage";
 import makeRequest from "@/utils/makeRequest";
 import { useState } from "react";

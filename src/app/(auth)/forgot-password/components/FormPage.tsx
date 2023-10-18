@@ -1,8 +1,8 @@
 import { useFormContext } from "react-hook-form";
 import _ from "lodash";
-import LoginFormContext, { FormFields } from "@/hooks/useLoginForm";
+import LoginFormContext, { FormFields } from "@/app/common/hooks/useLoginForm";
 import ForgotPassword from "./ForgotPassword";
-import useToast from "@/hooks/useToast";
+import useToast from "@/app/common/hooks/useToast";
 import { extractErrorMessage } from "@/utils/extractErrorMessage";
 import makeRequest from "@/utils/makeRequest";
 
@@ -14,7 +14,7 @@ const FormPages = () => {
   const toast = useToast();
   const submit = async (formFields: FormFields) => {
     const endpoint = "/api/v1/users/forgot-password";
-    let payload = _.pick(formFields, ["email"]);
+    let payload = JSON.stringify(_.pick(formFields, ["email"]));
 
     try {
       const { message } = await makeRequest<{ message: string }>(endpoint, {

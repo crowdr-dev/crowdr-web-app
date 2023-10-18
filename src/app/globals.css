@@ -3,6 +3,7 @@
 @tailwind utilities;
 @import './shared-styles/variable.css';
 @import '../../public/coolicons.css';
+@import './common/styles/variable.css';
 
 * {
   margin: 0;

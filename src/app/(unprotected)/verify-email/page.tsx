@@ -2,6 +2,8 @@ import { userTag } from "@/tags";
 import makeRequest from "@/utils/makeRequest";
 import { redirect } from "next/navigation";
 import { revalidate } from "@/app/api/revalidate";
+import { extractErrorMessage } from "@/utils/extractErrorMessage";
+
 
 export default async function VerifyEmail({
   searchParams,
@@ -9,12 +11,26 @@ export default async function VerifyEmail({
   searchParams: { [key: string]: string };
 }) {
   const { token } = searchParams;
+
   if (token) {
     const endpoint = `/api/v1/users/verify-email`;
+    const headers = { "X-Auth-Token": token };
 
-    const headers = { "X-Auth-Token": token, cache: "no-cache" };
-    await makeRequest(endpoint, { headers });
-    revalidate(userTag); // revalidate after user isEmailVerified property changes
+
+    try {
+      await makeRequest(endpoint, { headers, cache: "no-cache" });
+    
+      revalidate(userTag); // revalidate after user isEmailVerified property changes
+    } catch (error) {
+      console.log(extractErrorMessage(error),999)
+      return (
+        <div className="flex items-center justify-center h-screen w-screen">
+          <div>{extractErrorMessage(error)}</div>
+        </div>
+      );
+    }
+
+    // redirect if there is no error
     redirect("/login");
   }
 
