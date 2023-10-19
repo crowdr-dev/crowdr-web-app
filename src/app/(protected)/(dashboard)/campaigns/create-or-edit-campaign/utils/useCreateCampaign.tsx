@@ -29,7 +29,7 @@ type FormFields = {
   fundingGoal: string;
   campaignDuration: string;
   campaignImages: File[];
-  skillsNeeded: string;
+  skillsNeeded: string[];
   otherSkillsNeeded: string;
   ageRange: string;
   genderPreference: string;

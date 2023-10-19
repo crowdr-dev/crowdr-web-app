@@ -14,7 +14,6 @@ const CreateEditCampaign = () => {
   const toast = useToast();
 
   const submit = async (formFields: FormFields) => {
-    console.log(formFields);
     const {
       category,
       campaignImages,
@@ -31,20 +30,22 @@ const CreateEditCampaign = () => {
       volunteerCommitment,
       additionalNotes,
     } = formFields;
-    const campaignCoverImage = campaignImages[0];
-    const campaignAdditionalImages = campaignImages.length > 1 ? campaignImages.slice(1) : null
+    const isFundraiseRelated = campaignType?.match(/fundraise/i)
+    const isVolunteerRelated = campaignType?.match(/volunteer/i)
     const endpoint = "/api/v1/campaigns";
 
-    const payload = {
+    const payload: any = {
       title,
       category: category,
-      campaignCoverImage,
-      campaignAdditionalImages,
       story: story,
       campaignType: campaignType,
       campaignStatus: "in-progress",
+    };
+
+    if (isFundraiseRelated) {
+      payload.campaignCoverImage = campaignImages[0]
       // TODO: MAKE objectToFormData handle converting nested objects to JSON
-      fundraise: JSON.stringify({
+      payload.fundraise = JSON.stringify({
         fundingGoalDetails: [
           {
             // TODO: MAKE SURE NUMBER INPUT HANDLES CONVERSION TO NUMBER
@@ -54,8 +55,15 @@ const CreateEditCampaign = () => {
         ],
         startOfFundraise: campaignDuration[0],
         endOfFundraise: campaignDuration[1]
-      }),
-      volunteer: JSON.stringify({
+      })
+
+      if (campaignImages.length > 1) {
+        payload.campaignAdditionalImages = campaignImages.slice(1)
+      }
+    }
+
+    if (isVolunteerRelated) {
+      payload.volunteer = JSON.stringify({
         skillsNeeded,
         otherSkillsNeeded,
         ageRange,
@@ -65,7 +73,7 @@ const CreateEditCampaign = () => {
         requiredCommitment: volunteerCommitment,
         additonalNotes: additionalNotes
       })
-    };
+    }
 
     try {
       const user = await getUser();

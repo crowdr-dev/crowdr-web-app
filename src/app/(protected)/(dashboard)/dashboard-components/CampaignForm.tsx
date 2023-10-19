@@ -33,7 +33,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
   const otherSkillsRef = useRef<HTMLInputElement>(null);
   
   const otherSkillsEnabled = useMemo(() => {
-    if (skillsNeeded?.includes("other")) {
+    if (skillsNeeded?.includes("others")) {
       if (otherSkillsRef.current) {
         setTimeout(() => otherSkillsRef.current!.focus(), 0);
       }
@@ -224,7 +224,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <div className="max-w-lg">
             {skillsList.map((skill) => (
               <OptionInput
-                type="radio"
+                type="checkbox"
                 key={skill.value}
                 value={skill.value}
                 label={skill.label}
@@ -235,7 +235,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
             ))}
             <div className="flex">
               <OptionInput
-                type="radio"
+                type="checkbox"
                 value="others"
                 label="Other (please specify):"
                 config={register("skillsNeeded")}
