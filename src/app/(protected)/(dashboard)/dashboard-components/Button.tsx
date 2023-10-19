@@ -52,6 +52,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   };
   const textStyle: React.CSSProperties = {
     color: textColor,
+    textAlign: "center"
   };
 
   if (outlineColor) buttonStyle.border = `1px solid ${outlineColor}`;
@@ -63,9 +64,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   return (
     <div
       style={buttonStyle}
-      className={
-        "inline-flex justify-between items-center rounded-lg cursor-pointer px-[16px] py-[10px]"
-      }
+      className="inline-flex justify-between items-center rounded-lg cursor-pointer px-[16px] py-[10px]"
     >
       {iconUrl && (
         <Image

@@ -17,7 +17,7 @@ const CampaignCard = () => {
         <p className="text-sm text-[#667085] mb-1">
           <span className="text-[#292A2E]">Goal</span> N286,000/N286,000
         </p>
-        <ProgressBar percent={100} />
+        <ProgressBar percent={70} />
       </div>
 
       <div className="flex justify-between items-end">

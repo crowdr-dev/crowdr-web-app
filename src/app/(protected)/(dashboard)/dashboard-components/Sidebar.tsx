@@ -10,7 +10,7 @@ const Sidebar = () => {
   const currentPath = usePathname()
 
   return (
-    <nav className="flex flex-col overflow-y-auto border-r-[0.7px] border-[rgba(56, 56, 56, 0.08)] w-[272px] pl-[26px] pr-[27px]">
+    <nav className="flex flex-col overflow-y-auto border-r-[0.7px] border-[rgba(56, 56, 56, 0.08)] min-w-[272px] pl-[26px] pr-[27px]">
       {pageGroups.map((pageGroup, index) => (
         <div key={index}>
         {index == 0 || <hr className=" border-[rgba(56, 56, 56, 0.08)]" />}
