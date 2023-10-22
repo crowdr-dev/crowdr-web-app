@@ -15,7 +15,7 @@ const OptionInput: RFC<OptionInputProps> = ({
         {...config}
         type={type}
         value={value}
-        id={value}
+        id={config.name}
         className="rounded-md border border-[#D0D5DD] h-5 w-5 mr-3"
       />
 

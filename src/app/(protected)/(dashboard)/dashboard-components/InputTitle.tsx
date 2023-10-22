@@ -1,9 +1,9 @@
 import { RFC } from "@/types/Component";
 
-const InputTitle: RFC<InputTitleProps> = ({ title, detail }) => {
+const InputTitle: RFC<InputTitleProps> = ({ title, detail, id }) => {
   return (
     <div>
-      <h2>{title}</h2>
+      <label id={id || title} className="block">{title}</label>
       {detail && <p className="text-sm text-[#667085]">{detail}</p>}
     </div>
   );
@@ -14,4 +14,5 @@ export default InputTitle;
 type InputTitleProps = {
   title: string;
   detail?: string;
+  id?: string
 };
