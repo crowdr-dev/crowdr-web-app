@@ -15,6 +15,7 @@ const DateInput: RFC<DateInputProps> = ({
   mode,
   dateFormat,
   enableTime,
+  minDate,
 }) => {
   const {setValue, setError} = useFormContext()
   const inputRef = useRef<HTMLInputElement>(null);
@@ -25,6 +26,11 @@ const DateInput: RFC<DateInputProps> = ({
         mode,
         dateFormat,
         enableTime,
+        minDate,
+        static: true,
+        locale: {
+          rangeSeparator: " — "
+        },
         onChange: (selectedDates, dateStr, instance) => {
           if (dateStr) {
             setValue(config.name, selectedDates)
@@ -56,7 +62,7 @@ const DateInput: RFC<DateInputProps> = ({
         id={config.name}
         placeholder={placeholder}
         style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
-        className="text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px]"
+        className="relative text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px]"
       />
       {error && (
         <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
@@ -81,7 +87,7 @@ type DateInputProps = {
   placeholder?: string;
   optional?: boolean;
   mode?: "single" | "multiple" | "range" | "time"
-  minDate?: string
+  minDate?: string | Date
   dateFormat?: string
   enableTime?: boolean
 };

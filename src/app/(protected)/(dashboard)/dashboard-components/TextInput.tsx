@@ -1,7 +1,7 @@
 import { RFC } from "@/types/Component";
 import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 
-const TextInput: RFC<TextInputProps> = ({ config, label, error, placeholder, optional }) => {
+const TextInput: RFC<TextInputProps> = ({ config, label, error, placeholder, optional, ariaLabelledBy }) => {
   return (
     <span>
       {label && (
@@ -18,6 +18,7 @@ const TextInput: RFC<TextInputProps> = ({ config, label, error, placeholder, opt
         id={config.name}
         placeholder={placeholder}
         style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
+        aria-labelledby={ariaLabelledBy}
         className="text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px]"
       />
       {error && (
@@ -37,4 +38,5 @@ type TextInputProps = {
   error?: FieldError
   placeholder?: string
   optional?: boolean
+  ariaLabelledBy?: string
 };

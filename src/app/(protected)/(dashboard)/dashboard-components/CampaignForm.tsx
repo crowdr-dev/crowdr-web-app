@@ -77,6 +77,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <InputTitle
             title="Title"
             detail="This will be displayed on your campaign."
+            id="title-label"
           />
           <div className="max-w-lg">
             <TextInput
@@ -84,6 +85,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
                 required: "Title is required",
               })}
               error={errors.title}
+              ariaLabelledBy="title-label"
             />
           </div>
         </div>
@@ -183,6 +185,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               error={errors.campaignDuration}
               mode="range"
               enableTime
+              minDate={new Date}
             />
           </div>
         </div>
