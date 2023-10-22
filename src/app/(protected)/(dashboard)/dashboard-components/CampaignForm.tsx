@@ -33,7 +33,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
   const otherSkillsRef = useRef<HTMLInputElement>(null);
   
   const otherSkillsEnabled = useMemo(() => {
-    if (skillsNeeded?.includes("others")) {
+    if ((skillsNeeded || [])?.includes("others")) {
       if (otherSkillsRef.current) {
         setTimeout(() => otherSkillsRef.current!.focus(), 0);
       }
