@@ -77,7 +77,6 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <InputTitle
             title="Title"
             detail="This will be displayed on your campaign."
-            id="title-label"
           />
           <div className="max-w-lg">
             <TextInput
@@ -85,7 +84,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
                 required: "Title is required",
               })}
               error={errors.title}
-              ariaLabelledBy="title-label"
+              ariaLabelledBy="Title"
             />
           </div>
         </div>
@@ -95,6 +94,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <InputTitle
             title="Campaign Type"
             detail="Choose the type that fits the needs of your campaign."
+            id="campaign-type"
           />
           <div className="max-w-lg">
             <SelectInput
@@ -104,6 +104,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
                 required: "Campaign type is required",
               }}
               error={errors.campaignType}
+              ariaLabelledBy="campaign-type"
             />
           </div>
         </div>
@@ -122,6 +123,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
                 required: "Category is required",
               }}
               error={errors.category}
+              ariaLabelledBy="Category"
             />
           </div>
         </div>
@@ -131,6 +133,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           <InputTitle
             title="Tell Your Story"
             detail="The more details, the better."
+            id="your-story"
           />
           <div className="max-w-lg">
             <TextAreaInput
@@ -140,6 +143,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               characterLimit={300}
               control={control}
               error={errors.story}
+              ariaLabelledBy="your-story"
             />
           </div>
         </div>
@@ -354,7 +358,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
 
         {/* additional requirements or notes */}
         <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
-          <InputTitle title="Additional Requirements or Notes" />
+          <InputTitle title="Additional Requirements or Notes" id="notes" />
 
           <div className="max-w-lg">
             <TextAreaInput
@@ -364,6 +368,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               characterLimit={300}
               control={control}
               error={errors.additionalNotes}
+              ariaLabelledBy="notes"
             />
           </div>
         </div>

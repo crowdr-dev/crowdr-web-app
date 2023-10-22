@@ -37,3 +37,7 @@ html, body {
 .spinner path {
   fill: #068645
 }
+
+.flatpickr-wrapper {
+  display: block !important;
+}

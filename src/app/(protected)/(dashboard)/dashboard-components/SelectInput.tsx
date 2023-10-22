@@ -9,7 +9,7 @@ const SelectInput: RFC<SelectInputProps> = ({
   label,
   error,
   validation,
-  placeholder,
+  ariaLabelledBy,
   optional,
 }) => {
   const {control} = useFormContext()
@@ -35,6 +35,7 @@ const SelectInput: RFC<SelectInputProps> = ({
             value={options.find((g) => g.value === value)}
             onChange={(g) => onChange(g!.value)}
             styles={{ control: (baseStyles, state) => ({...baseStyles, fontSize: 14, borderRadius: 8, borderColor: '#D0D5DD', boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)", padding: 4}) }}
+            aria-labelledby={ariaLabelledBy}
           />
         )}
       />
@@ -57,6 +58,7 @@ type SelectInputProps = {
   validation?: any;
   placeholder?: string;
   optional?: boolean;
+  ariaLabelledBy?: string
 };
 
 interface Option {

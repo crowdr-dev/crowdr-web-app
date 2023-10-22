@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import {Control, FieldError, UseFormRegisterReturn, useFormContext, useWatch} from "react-hook-form"
 import { RFC } from "@/types/Component";
 
-const TextAreaInput: RFC<TextAreaInputProps> = ({ config, label, error, control, placeholder, characterLimit, optional }) => {
+const TextAreaInput: RFC<TextAreaInputProps> = ({ config, label, error, control, placeholder, characterLimit, optional, ariaLabelledBy }) => {
   const {setValue} = useFormContext()
   const [inputContent] = useWatch({control, name: [config.name]})
   const showCharactersLeft = characterLimit && inputContent?.length > 0
@@ -30,6 +30,7 @@ const TextAreaInput: RFC<TextAreaInputProps> = ({ config, label, error, control,
         id={config.name}
         placeholder={placeholder}
         rows={5}
+        aria-labelledby={ariaLabelledBy}
         style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
         className="text-[13px] resize-none rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px]"
       />
@@ -57,4 +58,5 @@ type TextAreaInputProps = {
   optional?: boolean
   characterLimit?: number
   control?: Control<any, any>;
+  ariaLabelledBy?: string
 }

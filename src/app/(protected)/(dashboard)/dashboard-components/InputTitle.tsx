@@ -3,7 +3,7 @@ import { RFC } from "@/types/Component";
 const InputTitle: RFC<InputTitleProps> = ({ title, detail, id }) => {
   return (
     <div>
-      <label id={id || title} className="block">{title}</label>
+      <h2 id={id || title} className="block">{title}</h2>
       {detail && <p className="text-sm text-[#667085]">{detail}</p>}
     </div>
   );
