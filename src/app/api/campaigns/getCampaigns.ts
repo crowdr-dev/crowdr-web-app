@@ -1,6 +1,7 @@
 import makeRequest from "@/utils/makeRequest";
 import { cookies } from "next/headers";
 import { campaignsTag } from "@/tags";
+import { getUser } from "../user/getUser";
 
 export type Campaign = {
   success: boolean;
@@ -37,21 +38,21 @@ export type Campaign = {
 };
 
 export const getCampaigns = async () => {
-  const cookie = cookies();
-  const token = cookie.get("token")?.value;
+  const user = await getUser()
 
-  if (!token) {
+  if (!user) {
     return null;
   }
 
   const endpoint = `/api/v1/campaigns`;
   const headers = {
-    "x-auth-token": token
+    "x-auth-token": user.token
   };
 
   const { data: campaigns } = await makeRequest<{ data: Campaign }>(endpoint, {
     headers,
-    cache: "force-cache"
+    cache: "force-cache",
+    tags: [campaignsTag]
   });
   return campaigns;
 };
