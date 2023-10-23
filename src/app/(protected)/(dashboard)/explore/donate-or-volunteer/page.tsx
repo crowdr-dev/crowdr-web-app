@@ -22,23 +22,22 @@ const inActiveTabStyle = "text-[#667085]";
 const genderOptions = [
   {
     name: "Male",
-    value: "male"
+    value: "male",
   },
   {
     name: "Female",
-    value: "female"
+    value: "female",
   },
-]
+];
 
 const ageRange = [
   {
     name: "18 - 25",
-    value: "18 - 25"
+    value: "18 - 25",
   },
   {
     name: "26 - 35",
     value: "26 - 35",
-
   },
   {
     name: "36 - 45",
@@ -51,10 +50,10 @@ const ageRange = [
   {
     name: "56 and above",
     value: "56 and above",
-  }
-]
+  },
+];
 
-export default async function DonateOrVolunteer() {
+export default function DonateOrVolunteer() {
   const [tab, setTab] = useState("donate");
   return (
     <div className="mb-6">
@@ -118,19 +117,23 @@ export default async function DonateOrVolunteer() {
         <div>
           <div>
             <span
-              className={`text-sm p-3 ${tab === "donate" ? activeTabStyle : inActiveTabStyle
-                }`}
+              className={`text-sm p-3 ${
+                tab === "donate" ? activeTabStyle : inActiveTabStyle
+              }`}
               onClick={() => {
                 setTab("donate");
-              }}>
+              }}
+            >
               Donate
             </span>
             <span
-              className={`text-sm p-3 ml-4 ${tab === "volunteer" ? activeTabStyle : inActiveTabStyle
-                }`}
+              className={`text-sm p-3 ml-4 ${
+                tab === "volunteer" ? activeTabStyle : inActiveTabStyle
+              }`}
               onClick={() => {
                 setTab("volunteer");
-              }}>
+              }}
+            >
               Volunteer
             </span>
           </div>
@@ -169,17 +172,15 @@ export default async function DonateOrVolunteer() {
                   name="gender"
                   id="gender"
                   options={genderOptions}
-
                 />
 
-<Select
+                <Select
                   label={"Age Range"}
                   name="ageRange"
                   id="ageRange"
                   options={ageRange}
-
                 />
-               
+
                 <Input
                   label={"Address"}
                   placeholder="Lagos, NG"
@@ -213,7 +214,9 @@ export default async function DonateOrVolunteer() {
 
               <div className="mt-4">
                 <p className="text-base">Donation Amount</p>
-                <div className="text-sm rounded-lg border border-[#D0D5DD] py-[10px] px-[14px] ">N20,000.00</div>
+                <div className="text-sm rounded-lg border border-[#D0D5DD] py-[10px] px-[14px] ">
+                  N20,000.00
+                </div>
               </div>
 
               <div className="mt-4">
@@ -230,11 +233,23 @@ export default async function DonateOrVolunteer() {
                   id="emailAddress"
                 />
                 <div className="flex flex-col mt-[30px]">
-                  <Checkbox id={"1"} label={"Don't display my name publicly on the fundraiser."} />
-                  <Checkbox id={"2"} label={"I'm delighted to share my name and email with this charity to receive updates on other ways I can help."} />
-                  <Checkbox id={"3"} label={"Get occasional marketing updates from Crowdr. You may unsubscribe at any time."} />
+                  <Checkbox
+                    id={"1"}
+                    label={"Don't display my name publicly on the fundraiser."}
+                  />
+                  <Checkbox
+                    id={"2"}
+                    label={
+                      "I'm delighted to share my name and email with this charity to receive updates on other ways I can help."
+                    }
+                  />
+                  <Checkbox
+                    id={"3"}
+                    label={
+                      "Get occasional marketing updates from Crowdr. You may unsubscribe at any time."
+                    }
+                  />
                 </div>
-
               </div>
 
               <Button text="Donate" className="w-full mt-4 text-center" />
@@ -245,7 +260,6 @@ export default async function DonateOrVolunteer() {
 
                   <Filter query="Top Donors" />
                 </div>
-
               </div>
             </div>
           )}
@@ -254,3 +268,4 @@ export default async function DonateOrVolunteer() {
     </div>
   );
 }
+
