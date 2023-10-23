@@ -64,7 +64,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   return (
     <div
       style={buttonStyle}
-      className="inline-flex justify-between items-center rounded-lg cursor-pointer px-[16px] py-[10px]"
+      className="inline-flex justify-between items-center rounded-lg cursor-pointer px-[16px] py-[10px] w-full"
     >
       {iconUrl && (
         <Image
