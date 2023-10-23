@@ -13,8 +13,8 @@ import ExploreCard from "../dashboard-components/ExploreCard"
 const PROGRESS_COUNT = 8;
 
 export default async function Dashboard() {
-
-  console.log("campaigns", getCampaigns())
+const campaigns =  await getCampaigns()
+  console.log("campaigns",campaigns)
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
