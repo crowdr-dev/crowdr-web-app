@@ -4,12 +4,12 @@ import { Button, GrayButton } from "./Button";
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg";
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg";
 import BurgerIcon from "../../../../../public/svg/burger-icon.svg";
-import Avatar from "../../../../../public/avatar.png"
-import Pill from "./Pill";
+import Avatar from "../../../../../public/temp/avatar.png"
+import Label from "./Label";
 
 const Header = () => {
   return (
-    <header className="flex justify-between items-center w-full h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
+    <header className="flex justify-between items-center w-full min-h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
       <div>
         <Image src={CrowdrLogo} alt="crowdr logo" />
       </div>
@@ -18,9 +18,9 @@ const Header = () => {
           <GrayButton
             text="Setup Guide"
             iconUrl={PuzzleIcon}
-            className="hidden md:block mr-[6px]"
+            className="hidden md:inline-flex mr-[6px]"
           />
-          <Button text="Create Campaign" />
+          <Button text="Create Campaign" href="/campaigns/create-or-edit-campaign" />
         </div>
 
         {/* profile */}
@@ -28,7 +28,7 @@ const Header = () => {
           <div className="mr-[15px]"><Image src={Avatar} alt="avatar" width={43} /></div>
           <div>
             <p>Ajayi Akintomiwa</p>
-            <Pill label="Individual" />
+            <Label text="Individual" />
           </div>
         </div>
 

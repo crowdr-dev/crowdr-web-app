@@ -1,0 +1,53 @@
+import { RFC } from "@/types/Component";
+
+const Label: RFC<LabelProps> = ({ text, textColor, bgColor, dotColor }) => {
+  return (
+    <div
+      style={{ backgroundColor: bgColor, color: textColor }}
+      className="inline-flex shrink-0 items-center rounded-full px-2.5 py-1"
+    >
+      {dotColor && (
+        <span
+          style={{ backgroundColor: dotColor }}
+          className="rounded-full h-2 w-2 mr-[6px]"
+        ></span>
+      )}
+      <span style={{ color: textColor, fontSize: "12px" }}>{text}</span>
+    </div>
+  );
+};
+
+export default Label;
+
+Label.defaultProps = {
+  textColor: "#027A48",
+  bgColor: "#ECFDF3",
+};
+
+type LabelProps = {
+  text: string;
+  textColor?: string;
+  bgColor?: string;
+  dotColor?: string;
+};
+
+const Completed = <Label text="Completed" dotColor="#12B76A" />
+const InProgress = <Label text="In progress" textColor="#B54708" bgColor="#FFFAEB" dotColor="#F79009" />
+const Declined = <Label text="Declined" textColor="#B42318" bgColor="#F04438" dotColor="#F04438" />
+const InReview = <Label text="In review" textColor="#344054" bgColor="#F2F4F7" dotColor="#667085" />
+
+export const label = (type: 'completed' | 'in-progress' | 'declined' | 'in-review') => {
+  switch (type) {
+    case 'completed':
+      return Completed
+
+    case 'in-progress':
+      return InProgress
+
+    case 'declined':
+      return Declined
+
+    case 'in-review':
+      return InReview
+  }
+}

@@ -1,29 +1,27 @@
-type ProgressBarProps = {
-    bgcolor: string;
-    progress: number;
-};
-const ProgressBar = ({ bgcolor, progress }: ProgressBarProps) => {
-    const Parentdiv = {
-        height: "4px",
-        width: "100%",
-        backgroundColor: "#EBECEC",
-        marginTop: "10px",
-        borderRadius: "4px"
-    };
+import { RFC } from "@/types/Component";
 
-    const Childdiv = {
-        height: "100%",
-        width: `${progress}%`,
-        backgroundColor: bgcolor,
-        transition: "width 1s linear",
-        borderRadius: "4px"
-    };
-
-    return (
-        <div style={Parentdiv}>
-            <div style={Childdiv} />
-        </div>
-    );
+const ProgressBar: RFC<ProgressBarProps> = ({ percent, bgColor, showValue }) => {
+  return (
+    <div className="flex items-center">
+      <div className="grow bg-[#EBECEC] rounded-full h-2">
+        <div
+          style={{ width: `${percent}%`, background: bgColor }}
+          className="bg-primary h-full rounded-full transition"
+        ></div>
+      </div>
+      {showValue && <p className="text-[#344054] ml-3">{percent}%</p>}
+    </div>
+  );
 };
 
 export default ProgressBar;
+
+ProgressBar.defaultProps = {
+  bgColor: '#00B964'
+}
+
+type ProgressBarProps = {
+  percent: number;
+  bgColor?: string;
+  showValue?: boolean
+};

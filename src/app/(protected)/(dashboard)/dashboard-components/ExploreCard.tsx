@@ -37,7 +37,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
         <Image src={Menu} alt="menu" />
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 mb-6">
         <Image
           src={donateImage}
           alt="donate"
@@ -54,13 +54,13 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
           <h4 className="mt-5 text-[#667085] text-sm">40 mins ago</h4>
         </div>
         <div className="bg-[#F9F9F9] p-4">
-          <p className="text-sm text-[#667085]">
+          <p className="text-sm text-[#667085] mb-[10px]">
             {" "}
             <span className="text-[#000]">Goal</span> £{currentAmount}/£{totalAmount}
           </p>
           <ProgressBar
-            bgcolor="#00B964"
-            progress={(progress) * 100}
+            bgColor="#00B964"
+            percent={(progress) * 100}
           />
         </div>
       </div>

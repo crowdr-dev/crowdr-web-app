@@ -2,25 +2,29 @@ import Link from "next/link";
 import Image from "next/image";
 import Test from "../dashboard-components/Test";
 import { getCampaigns } from "@/app/api/campaigns/getCampaigns";
-import Avatar from "../../../../../public/avatar.png";
+import Avatar from "../../../../../public/temp/avatar.png";
 import Menu from "../../../../../public/svg/menu.svg";
 import Donate from "../../../../../public/images/donate.png";
 import ProgressBar from "../dashboard-components/ProgressBar";
 import Filter from "../dashboard-components/Filter";
 import { Button } from "../dashboard-components/Button";
-import ExploreCard from "../dashboard-components/ExploreCard"
+import ExploreCard from "../dashboard-components/ExploreCard";
 
 const PROGRESS_COUNT = 8;
 
-export default async function Dashboard() {
+export default async function Explore() {
 const campaigns =  await getCampaigns()
   console.log("campaigns",campaigns)
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-2xl text-black">Welcome to Crowdr, Akintomiwa! 💚</h3>
-          <p className="text-sm text-[#61656B]">Explore campaigns and spread love by donating. </p>
+          <h3 className="text-2xl text-black">
+            Welcome to Crowdr, Akintomiwa! 💚
+          </h3>
+          <p className="text-sm text-[#61656B]">
+            Explore campaigns and spread love by donating.{" "}
+          </p>
         </div>
         <div>
           <Filter query="Trending" />
@@ -45,9 +49,7 @@ const campaigns =  await getCampaigns()
           avatar={Avatar}
         />
 
-
         <ExploreCard
-
           name="Nicholas"
           tier="Individual"
           header="Help Nicholas go back to college"
@@ -64,6 +66,6 @@ const campaigns =  await getCampaigns()
           avatar={Avatar}
         />
       </div>
-    </div >
+    </div>
   );
 }

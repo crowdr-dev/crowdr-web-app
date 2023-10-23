@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import Test from "../../dashboard-components/Test";
 import { getUser } from "@/app/api/user/getUser";
-import Avatar from "../../../../../../public/avatar.png";
+import Avatar from "../../../../../../public/temp/avatar.png";
 import Menu from "../../../../../../public/svg/menu.svg";
 import Donate from "../../../../../../public/images/donate.png";
 import ProgressBar from "../../dashboard-components/ProgressBar";
@@ -106,8 +106,8 @@ export default function DonateOrVolunteer() {
                 <span className="text-[#000]">Goal</span> £6,700/£6,700
               </p>
               <ProgressBar
-                bgcolor="#00B964"
-                progress={(PROGRESS_COUNT / 10) * 100}
+                bgColor="#00B964"
+                percent={(PROGRESS_COUNT / 10) * 100}
               />
             </div>
           </div>
@@ -147,8 +147,8 @@ export default function DonateOrVolunteer() {
                   <span className="text-[#000]">Goal</span> 35/70 Volunteers
                 </p>
                 <ProgressBar
-                  bgcolor="#00B964"
-                  progress={(PROGRESS_COUNT / 10) * 100}
+                  bgColor="#00B964"
+                  percent={(PROGRESS_COUNT / 10) * 100}
                 />
                 <p className="mt-3 text-sm opacity-50">240 applications</p>
               </div>
@@ -188,11 +188,17 @@ export default function DonateOrVolunteer() {
                   id="address"
                 />
                 <div className="flex flex-col items-start w-full">
-                  <label className="text-[14px] text-[#344054] mb-[6px]">
+                  <label
+                    htmlFor="bio"
+                    className="text-[14px] text-[#344054] mb-[6px]"
+                  >
                     Tell us a bit about yourself and why you’re interested in
                     this project!
                   </label>
-                  <textarea className="w-full text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
+                  <textarea
+                    id="bio"
+                    className="w-full text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]"
+                  />
                 </div>
               </div>
 
@@ -206,8 +212,8 @@ export default function DonateOrVolunteer() {
                   <span className="text-[#000]">Goal</span> 35/70 Volunteers
                 </p>
                 <ProgressBar
-                  bgcolor="#00B964"
-                  progress={(PROGRESS_COUNT / 10) * 100}
+                  bgColor="#00B964"
+                  percent={(PROGRESS_COUNT / 10) * 100}
                 />
                 <p className="mt-3 text-sm opacity-50">240 applications</p>
               </div>

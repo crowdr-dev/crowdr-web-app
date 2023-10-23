@@ -15,8 +15,11 @@ module.exports = {
       width: {
         '65': '65%',
         '80': '80%'
+      },
+      colors: {
+        primary: '#00B964',
       }
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("flowbite/plugin")],
 }

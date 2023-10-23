@@ -1,9 +1,9 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 
 import { RFC } from "@/types/Component";
+import { CgSpinner } from "react-icons/cg";
 
 export const Button: RFC<ButtonProps> = ({
   text,
@@ -16,11 +16,13 @@ export const Button: RFC<ButtonProps> = ({
   shadow,
   buttonType,
   className,
+  loading,
+  disabled,
 }) => {
-  const props = { text, bgColor, textColor, outlineColor, iconUrl, shadow };
+  const props = { text, bgColor, textColor, outlineColor, iconUrl, shadow, loading };
 
   return href ? (
-    <Link href={href} className={className + " inline-block"}>
+    <Link href={href} className={className}>
       <ButtonContent {...props} />
     </Link>
   ) : (
@@ -28,6 +30,7 @@ export const Button: RFC<ButtonProps> = ({
       type={buttonType}
       aria-label={text}
       onClick={callback}
+      disabled={disabled}
       className={className}
     >
       <ButtonContent {...props} />
@@ -42,6 +45,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   outlineColor,
   iconUrl,
   shadow,
+  loading
 }) => {
   const buttonStyle: React.CSSProperties = {
     background: bgColor,
@@ -60,9 +64,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   return (
     <div
       style={buttonStyle}
-      className={
-        `flex  rounded-lg cursor-pointer px-[16px] py-[10px] items-center ${iconUrl ? "justify-between" : "justify-center"} `
-      }
+      className="inline-flex justify-between items-center rounded-lg cursor-pointer px-[16px] py-[10px] w-full"
     >
       {iconUrl && (
         <Image
@@ -74,6 +76,14 @@ const ButtonContent: RFC<ButtonContentProps> = ({
         />
       )}
       <span style={textStyle}>{text}</span>
+      {loading && (
+        <span>
+          <CgSpinner
+            size="1.5rem"
+            className="animate-spin icon opacity-100 ml-2.5"
+          />
+        </span>
+      )}
     </div>
   );
 };
@@ -82,6 +92,17 @@ export const GrayButton: RFC<ButtonProps> = ({ ...props }) => {
   return (
     <Button
       bgColor="#F8F8F8"
+      textColor="#292A2E"
+      outlineColor="rgba(230, 230, 230, 0.30)"
+      {...props}
+    />
+  );
+};
+
+export const WhiteButton: RFC<ButtonProps> = ({ ...props }) => {
+  return (
+    <Button
+      bgColor="#FFF"
       textColor="#292A2E"
       outlineColor="rgba(230, 230, 230, 0.30)"
       {...props}
@@ -110,4 +131,6 @@ type ButtonContentProps = {
   outlineColor?: string;
   iconUrl?: string;
   shadow?: boolean;
+  loading?: boolean
+  disabled?: boolean
 };
