@@ -4,8 +4,11 @@ import { Button, GrayButton } from "./Button";
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg";
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg";
 import BurgerIcon from "../../../../../public/svg/burger-icon.svg";
-import Avatar from "../../../../../public/temp/avatar.png"
+import Avatar from "../../../../../public/temp/avatar.png";
 import Label from "./Label";
+import DrawerTrigger from "./DrawerTrigger";
+import Drawer from "./Drawer";
+import Sidebar from "./Sidebar";
 
 const Header = () => {
   return (
@@ -20,12 +23,17 @@ const Header = () => {
             iconUrl={PuzzleIcon}
             className="hidden md:inline-flex mr-[6px]"
           />
-          <Button text="Create Campaign" href="/campaigns/create-or-edit-campaign" />
+          <Button
+            text="Create Campaign"
+            href="/campaigns/create-or-edit-campaign"
+          />
         </div>
 
         {/* profile */}
         <div className="hidden md:flex items-center">
-          <div className="mr-[15px]"><Image src={Avatar} alt="avatar" width={43} /></div>
+          <div className="mr-[15px]">
+            <Image src={Avatar} alt="avatar" width={43} />
+          </div>
           <div>
             <p>Ajayi Akintomiwa</p>
             <Label text="Individual" />
@@ -33,10 +41,19 @@ const Header = () => {
         </div>
 
         {/* burger icon */}
-        <div>
-          <Image src={BurgerIcon} width={28} alt="burger icon" className="block md:hidden" />
-        </div>
+        <DrawerTrigger id="sidebar">
+          <Image
+            src={BurgerIcon}
+            width={28}
+            alt="burger icon"
+            className="block md:hidden"
+          />
+        </DrawerTrigger>
       </div>
+
+      <Drawer id="sidebar" ariaLabel="Sidebar">
+        <Sidebar drawer />
+      </Drawer>
     </header>
   );
 };

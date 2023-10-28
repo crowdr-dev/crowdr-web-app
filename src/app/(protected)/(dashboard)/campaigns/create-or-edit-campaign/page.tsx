@@ -43,6 +43,8 @@ const CreateEditCampaign = () => {
     };
 
     if (isFundraiseRelated) {
+      console.log({fundingGoal})
+      return
       payload.campaignCoverImage = campaignImages[0]
       // TODO: MAKE objectToFormData handle converting nested objects to JSON
       payload.fundraise = JSON.stringify({

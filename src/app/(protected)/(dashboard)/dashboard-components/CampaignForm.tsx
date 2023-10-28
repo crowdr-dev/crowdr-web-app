@@ -53,7 +53,6 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
     setVolunteerCallOpen(prev => !prev)
   }
 
-  // TODO: PUT ARIA-LABELS IN INPUTS TO MAKE THEM MORE ACCESSIBLE
   return (
     <form onSubmit={handleSubmit(submit)}>
       {/* create campaign */}
@@ -73,7 +72,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
       <hr className="mb-[26px]" />
 
         {/* title */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Title"
             detail="This will be displayed on your campaign."
@@ -87,7 +86,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               ariaLabelledBy="Title"
             />
           </div>
-        </div>
+        </div> */}
 
         {/* campaign type */}
         <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
@@ -110,7 +109,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
         </div>
 
         {/* category */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Category"
             detail="Choose the most relevant category that best represents your campaign."
@@ -126,10 +125,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               ariaLabelledBy="Category"
             />
           </div>
-        </div>
+        </div> */}
 
         {/* tell your story */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Tell Your Story"
             detail="The more details, the better."
@@ -147,7 +146,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
             />
           </div>
         </div>
-        <hr className="mb-5" />
+        <hr className="mb-5" /> */}
 
       {/* FUNDRAISE */}
       {showFundraiseSection && <details open={fundraiseOpen} className={fundraiseOpen ? "mb-14" : ''}>
@@ -175,7 +174,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
         </div>
 
         {/* choose a campaign duration */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Choose a Campaign Duration"
             detail="Determine the timeframe for your campaign."
@@ -192,10 +191,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               minDate={new Date}
             />
           </div>
-        </div>
+        </div> */}
 
         {/* upload engaging media */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Upload Engaging Media"
             detail="Visuals can make a significant impact on your campaign's success."
@@ -211,7 +210,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               showFileList
             />
           </div>
-        </div>
+        </div> */}
       </details>}
 
       {/* CALL FOR VOLUNTEERS */}
@@ -225,7 +224,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
         </summary>
 
         {/* skills needed */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle title="Skills Needed" detail="Select all that apply" />
 
           <div className="max-w-lg">
@@ -265,10 +264,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               </span>
             )}
           </div>
-        </div>
+        </div> */}
 
         {/* age needed */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle title="Age Range" />
 
           <div className="max-w-lg">
@@ -289,10 +288,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               </span>
             )}
           </div>
-        </div>
+        </div> */}
 
         {/* gender preference */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle title="Gender Preference" />
 
           <div className="max-w-lg">
@@ -313,10 +312,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               </span>
             )}
           </div>
-        </div>
+        </div> */}
 
         {/* date and time needed */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle title="Date and Time Needed" />
 
           <div className="max-w-lg">
@@ -330,10 +329,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               minDate={new Date}
             />
           </div>
-        </div>
+        </div> */}
 
         {/* volunteer commitment */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle title="Volunteer Commitment" />
 
           <div className="max-w-lg">
@@ -354,10 +353,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               </span>
             )}
           </div>
-        </div>
+        </div> */}
 
         {/* additional requirements or notes */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
           <InputTitle title="Additional Requirements or Notes" id="notes" />
 
           <div className="max-w-lg">
@@ -371,13 +370,13 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               ariaLabelledBy="notes"
             />
           </div>
-        </div>
+        </div> */}
       </details>}
 
       <div className="flex justify-end mb-5">
         <div>
           <WhiteButton text="Cancel" shadow className="mr-3" />
-          <Button text="Launch Campaign" buttonType="submit" loading={isSubmitting} disabled={isSubmitting} />
+          <Button text="Launch Campaign" buttonType="submit" />
         </div>
       </div>
     </form>

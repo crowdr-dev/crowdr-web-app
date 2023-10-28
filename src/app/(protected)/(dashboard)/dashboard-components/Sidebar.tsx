@@ -5,12 +5,15 @@ import { usePathname } from "next/navigation";
 import { pageGroups } from "../pages";
 import Icon from "./Icon";
 import Cloud from "../../../../../public/svg/upload-cloud.svg"
+import { RFC } from "@/types/Component";
+import DrawerTrigger from "./DrawerTrigger";
 
-const Sidebar = () => {
+const Sidebar: RFC<SidebarProps> = ({drawer}) => {
   const currentPath = usePathname()
+  const display = drawer ? 'flex' : 'hidden md:flex'
 
   return (
-    <nav className="flex flex-col overflow-y-auto border-r-[0.7px] border-[rgba(56, 56, 56, 0.08)] min-w-[272px] pl-[26px] pr-[27px]">
+    <nav className={display + " flex-col overflow-y-auto min-w-[272px] pl-[26px] pr-[27px]"}>
       {pageGroups.map((pageGroup, index) => (
         <div key={index}>
         {index == 0 || <hr className=" border-[rgba(56, 56, 56, 0.08)]" />}
@@ -23,11 +26,13 @@ const Sidebar = () => {
             if (isCurrentPage) pageLinkStyle += ' text-white bg-[#00B964]'
 
             return (
-              <Link key={index} href={page.route} className={pageLinkStyle}>
-                <Icon name={page.icon} className="text-inherit text-xl mr-2" />
-                {/* <Image src={Cloud} width={18} height={18} alt="icon" className="mr-2" /> */}
-                {page.title}
-            </Link>
+              <DrawerTrigger id="sidebar" type="hide">
+                <Link key={index} href={page.route} className={pageLinkStyle}>
+                  <Icon name={page.icon} className="text-inherit text-xl mr-2" />
+                  {/* <Image src={Cloud} width={18} height={18} alt="icon" className="mr-2" /> */}
+                  {page.title}
+                </Link>
+              </DrawerTrigger>
             )
           })}
         </div>
@@ -38,5 +43,9 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+type SidebarProps = {
+  drawer?: boolean
+}
 
 
