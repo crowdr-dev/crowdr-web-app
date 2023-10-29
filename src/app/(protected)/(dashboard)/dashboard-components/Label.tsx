@@ -4,7 +4,7 @@ const Label: RFC<LabelProps> = ({ text, textColor, bgColor, dotColor }) => {
   return (
     <div
       style={{ backgroundColor: bgColor, color: textColor }}
-      className="inline-flex shrink-0 items-center rounded-full px-2.5 py-1"
+      className="inline-flex shrink-0 self-start items-center rounded-full px-2.5 py-1"
     >
       {dotColor && (
         <span

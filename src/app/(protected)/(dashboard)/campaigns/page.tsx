@@ -1,11 +1,9 @@
-import Image from "next/image";
 import CampaignCard from "../dashboard-components/CampaignCard";
 import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button";
 
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
-import ArrowUpIcon from "../../../../../public/svg/arrow-up.svg"
-import AltArrowUpIcon from "../../../../../public/temp/arrow-up.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
+import StatCard from "../dashboard-components/StatCard";
 
 const Campaigns = () => {
   return (
@@ -21,7 +19,7 @@ const Campaigns = () => {
       </hgroup>
 
       {/* action buttons */}
-      <div className="flex justify-between items-center mb-10">
+      <div className="flex justify-between items-center mb-5 md:mb-10">
         <div className="inline-flex rounded-md" role="group">
           <button
             type="button"
@@ -43,41 +41,23 @@ const Campaigns = () => {
           </button>
         </div>
 
-        <div className="flex">
+        <div className="hidden md:flex">
           <WhiteButton text="Export Report" iconUrl={FileDownloadIcon} shadow className="mr-3" />
           <Button text="Withdraw Donations" />
         </div>
       </div>
 
       {/* stats */}
-      <div className="grid grid-cols-[repeat(3,_minmax(0,_350px))] gap-5 mb-[44px]">
+      <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] gap-5 mb-[23px] md:mb-[44px]">
         {/* TODO: get background image */}
-        <div className="bg-primary bg- rounded-[5px] py-[22.5px] px-[21px]">
-          <p className="text-sm text-white mb-2">Total Raised</p>
-          <p className="text-2xl text-white mb-2">N235,880.70</p>
-          <div className="flex items-center">
-            <p className="flex items-center mr-[10px]"><Image src={AltArrowUpIcon} alt="arrow up icon" className="inline-block mr-1" /> <span className="text-white">100%</span></p>
-            <p className="text-white">vs yesterday</p>
-          </div>
-        </div>
+        <StatCard title="Total Raised" figure="N235,880.70" percentageChange={100} time="yesterday" pattern />
+        <StatCard title="Total Campaigns" figure="2" percentageChange={100} time="yesterday" colorScheme="light" />
+        <StatCard title="Campaign Views" figure="19,830" percentageChange={100} time="yesterday" colorScheme="light" />
+      </div>
 
-        <div className="bg-[#F8F8F8] rounded-[5px] py-[22.5px] px-[21px]">
-          <p className="text-sm text-[#292A2E] mb-2">Total Campaigns</p>
-          <p className="text-2xl text-[#0C0C0C] mb-2">2</p>
-          <div className="flex items-center">
-            <p className="flex items-center mr-[10px]"><Image src={ArrowUpIcon} alt="arrow up icon" className="inline-block mr-1" /> <span className="text-primary">100%</span></p>
-            <p className="text-[#5C636E]">vs yesterday</p>
-          </div>
-        </div>
-
-        <div className="bg-[#F8F8F8] rounded-[5px] py-[22.5px] px-[21px]">
-          <p className="text-sm text-[#292A2E] mb-2">Campaign Views</p>
-          <p className="text-2xl text-[#0C0C0C] mb-2">19,830</p>
-          <div className="flex items-center">
-            <p className="flex items-center mr-[10px]"><Image src={ArrowUpIcon} alt="arrow up icon" className="inline-block mr-1" /> <span className="text-primary">100%</span></p>
-            <p className="text-[#5C636E]">vs yesterday</p>
-          </div>
-        </div>
+      <div className="flex md:hidden mb-[9px]">
+          <WhiteButton text="Export Report" iconUrl={FileDownloadIcon} shadow className="mr-3" />
+          <Button text="Withdraw Donations" />
       </div>
 
       {/* all campaigns x filters */}

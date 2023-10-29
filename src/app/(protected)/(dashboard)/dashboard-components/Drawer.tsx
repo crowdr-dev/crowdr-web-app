@@ -1,6 +1,7 @@
 import { RFC } from "@/types/Component";
 
 const Drawer: RFC<DrawerProps> = ({ id, children, ariaLabel }) => {
+  // TODO: POSSIBLY USE FLOWBITE REACT FOR DRAWER
   return (
     <div
       id={id}

@@ -13,7 +13,7 @@ const Pill: RFC<PillProps> = ({text, textColor, bgColor, icon}) => {
   }
   
   return (
-    <div style={pillStyle} className="inline-flex shrink-0 justify-between items-center rounded-full px-[21px] py-[8px]">
+    <div style={pillStyle} className="inline-flex shrink-0 self-start items-center rounded-full px-[21px] py-[8px]">
       {icon && <Image src={`svg/emoji/${icon}.svg`} alt={icon} width={15} height={15} className="mr-[5px]" />}
       <span style={textStyle} className="text-sm">{text}</span>
     </div>
