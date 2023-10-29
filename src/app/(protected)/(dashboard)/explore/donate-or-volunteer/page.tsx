@@ -53,7 +53,7 @@ const ageRange = [
   },
 ];
 
-export default async function DonateOrVolunteer() {
+export default function DonateOrVolunteer() {
   const [tab, setTab] = useState("donate");
   return (
     <div className="mb-6">
@@ -274,3 +274,4 @@ export default async function DonateOrVolunteer() {
     </div>
   );
 }
+
