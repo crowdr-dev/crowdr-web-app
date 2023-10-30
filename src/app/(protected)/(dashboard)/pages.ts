@@ -20,6 +20,6 @@ export const pageGroups = [
   [
     new Page("/inbox", "Inbox", 'Heart_01'),
     new Page("/notifications", "Notifications", 'Heart_01'),
-    new Page("/settings", "Settings", 'Settings'),
+    new Page("/settings/profile", "Settings", 'Settings'),
   ],
 ];
