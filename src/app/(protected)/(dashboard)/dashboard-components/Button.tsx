@@ -15,14 +15,14 @@ export const Button: RFC<ButtonProps> = ({
   outlineColor,
   shadow,
   buttonType,
-  className,
   loading,
   disabled,
+  styles,
 }) => {
-  const props = { text, bgColor, textColor, outlineColor, iconUrl, shadow, loading };
+  const props = { text, bgColor, textColor, outlineColor, iconUrl, shadow, loading, styles };
 
   return href ? (
-    <Link href={href} className={className}>
+    <Link href={href} className={styles?.outer}>
       <ButtonContent {...props} />
     </Link>
   ) : (
@@ -31,7 +31,7 @@ export const Button: RFC<ButtonProps> = ({
       aria-label={text}
       onClick={callback}
       disabled={disabled}
-      className={className}
+      className={styles?.outer}
     >
       <ButtonContent {...props} />
     </button>
@@ -45,7 +45,8 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   outlineColor,
   iconUrl,
   shadow,
-  loading
+  loading,
+  styles,
 }) => {
   const buttonStyle: React.CSSProperties = {
     background: bgColor,
@@ -64,7 +65,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   return (
     <div
       style={buttonStyle}
-      className="inline-flex justify-between items-center rounded-lg cursor-pointer px-[16px] py-[10px] w-full"
+      className={"inline-flex justify-between items-center rounded-lg cursor-pointer px-[16px] py-[10px] w-full " + styles?.inner}
     >
       {iconUrl && (
         <Image
@@ -121,7 +122,6 @@ type ButtonProps = ButtonContentProps & {
   href?: string;
   callback?: () => void;
   buttonType?: "button" | "submit" | "reset";
-  className?: string;
 };
 
 type ButtonContentProps = {
@@ -133,4 +133,5 @@ type ButtonContentProps = {
   shadow?: boolean;
   loading?: boolean
   disabled?: boolean
+  styles?: {outer?: string, inner?: string}
 };

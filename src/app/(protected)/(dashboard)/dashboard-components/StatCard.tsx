@@ -11,7 +11,7 @@ const StatCard: RFC<StatCardProps> = ({title, figure, percentageChange, changeTy
   const figureColor = colorScheme == 'dark' ? 'white' : '#0C0C0C'
 
   return (
-    <div style={{backgroundColor, backgroundImage, backgroundBlendMode: 'overlay'}} className="relative rounded-[5px] py-[22.5px] px-[21px]">
+    <div style={{backgroundColor, backgroundBlendMode: 'overlay'}} className="relative rounded-[5px] py-[22.5px] px-[21px]">
       <p style={{color: titleColor}} className="text-sm mb-2">{title}</p>
       <p style={{color: figureColor}} className="text-2xl mb-2">{figure}</p>
       <div className="flex items-center">

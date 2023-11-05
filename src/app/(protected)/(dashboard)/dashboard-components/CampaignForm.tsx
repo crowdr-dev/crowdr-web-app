@@ -65,7 +65,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
         </hgroup>
 
         <div>
-          <WhiteButton text="Cancel" shadow className="mr-3" />
+          <WhiteButton text="Cancel" shadow styles={{outer: "mr-3"}} />
           <Button text="Launch Campaign" buttonType="submit" loading={isSubmitting} disabled={isSubmitting} />
         </div>
       </div>
@@ -375,7 +375,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
 
       <div className="flex justify-end mb-5">
         <div>
-          <WhiteButton text="Cancel" shadow className="mr-3" />
+          <WhiteButton text="Cancel" shadow styles={{outer: "mr-3"}} />
           <Button text="Launch Campaign" buttonType="submit" />
         </div>
       </div>
