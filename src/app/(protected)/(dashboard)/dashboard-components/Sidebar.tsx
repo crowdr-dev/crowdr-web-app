@@ -26,7 +26,7 @@ const Sidebar: RFC<SidebarProps> = ({drawer}) => {
         <div className="py-[27px]">
           {pageGroup.map((page, index) => {
             let pageLinkStyle = "flex items-center font-medium text-[0.96rem] rounded-[0.275rem] pl-[28px] pt-[14px] pb-[15px]"
-            let isCurrentPage = currentPath.startsWith(page.route)
+            let isCurrentPage = currentPath.startsWith("/"+page.route.split("/")[1])
 
             if (index != 0) pageLinkStyle += ' mt-[10px]'
             if (isCurrentPage) pageLinkStyle += ' text-white bg-[#00B964]'
