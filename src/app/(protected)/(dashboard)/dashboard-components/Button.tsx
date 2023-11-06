@@ -65,7 +65,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   return (
     <div
       style={buttonStyle}
-      className={"inline-flex justify-between items-center rounded-lg cursor-pointer px-[16px] py-[10px] w-full " + styles?.inner}
+      className={"inline-flex justify-between items-center rounded-lg cursor-pointer text-sm px-[16px] py-[10px] w-full " + styles?.inner}
     >
       {iconUrl && (
         <Image
@@ -76,7 +76,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
           className="mr-2"
         />
       )}
-      <span style={textStyle} className="text-sm">{text}</span>
+      <span style={textStyle}>{text}</span>
       {loading && (
         <span>
           <CgSpinner

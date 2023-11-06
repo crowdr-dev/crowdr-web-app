@@ -17,7 +17,6 @@ const UserContext = createContext<IUser | null>({
 
 const UserProvider: RFC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<IUser | null>(null)
-  console.log(user)
   
   useEffect(() => {
     getUser().then((res) => setUser(res as IUser))

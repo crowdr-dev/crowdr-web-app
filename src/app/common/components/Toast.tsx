@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 import Image from "next/image";
-import { FaExclamation } from "react-icons/fa";
 
+import { FaExclamation } from "react-icons/fa";
 import { Status } from "@/app/common/hooks/useToast";
 
 const Toast = ({ t, title, body, type }: ToastProps) => {
