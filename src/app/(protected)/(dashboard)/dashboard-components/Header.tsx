@@ -1,16 +1,21 @@
+'use client'
 import Image from "next/image";
 import { Button, GrayButton } from "./Button";
+import Label from "./Label";
+import DrawerTrigger from "./DrawerTrigger";
+import Drawer from "./Drawer";
+import Sidebar from "./Sidebar";
+import { useUser } from "../utils/useUser";
 
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg";
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg";
 import BurgerIcon from "../../../../../public/svg/burger-icon.svg";
 import Avatar from "../../../../../public/temp/avatar.png";
-import Label from "./Label";
-import DrawerTrigger from "./DrawerTrigger";
-import Drawer from "./Drawer";
-import Sidebar from "./Sidebar";
 
 const Header = () => {
+  const user = useUser()
+  const accountType = user?.userType == 'individual' ? "Individual" : "Non-Profit"
+
   return (
     <header className="flex justify-between items-center w-full min-h-[62px] md:min-h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
       <div>
@@ -30,15 +35,15 @@ const Header = () => {
         </div>
 
         {/* profile */}
-        <div className="hidden md:flex items-center">
+        {user && <div className="hidden md:flex items-center">
           <div className="mr-[15px]">
             <Image src={Avatar} alt="avatar" width={43} />
           </div>
           <div>
-            <p>Ajayi Akintomiwa</p>
-            <Label text="Individual" />
+            <p>{user?.fullName || user?.organizationName}</p>
+            <Label text={accountType} />
           </div>
-        </div>
+        </div>}
 
         {/* burger icon */}
         <DrawerTrigger id="sidebar">

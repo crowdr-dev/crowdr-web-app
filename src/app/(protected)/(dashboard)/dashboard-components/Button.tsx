@@ -8,7 +8,7 @@ import { CgSpinner } from "react-icons/cg";
 export const Button: RFC<ButtonProps> = ({
   text,
   href,
-  callback,
+  onClick,
   iconUrl,
   bgColor,
   textColor,
@@ -29,7 +29,7 @@ export const Button: RFC<ButtonProps> = ({
     <button
       type={buttonType}
       aria-label={text}
-      onClick={callback}
+      onClick={onClick}
       disabled={disabled}
       className={styles?.outer}
     >
@@ -120,7 +120,7 @@ Button.defaultProps = {
 
 type ButtonProps = ButtonContentProps & {
   href?: string;
-  callback?: () => void;
+  onClick?: () => void;
   buttonType?: "button" | "submit" | "reset";
 };
 

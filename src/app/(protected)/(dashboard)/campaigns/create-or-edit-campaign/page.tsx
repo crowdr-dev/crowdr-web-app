@@ -8,9 +8,11 @@ import { extractErrorMessage } from "@/utils/extractErrorMessage";
 import { getUser } from "@/app/api/user/getUser";
 import useToast from "@/app/common/hooks/useToast";
 import objectToFormData from "@/utils/objectToFormData";
+import { useUser } from "../../utils/useUser";
 
 const CreateEditCampaign = () => {
   const router = useRouter()
+  const user = useUser()
   const toast = useToast();
 
   const submit = async (formFields: FormFields) => {
@@ -32,23 +34,25 @@ const CreateEditCampaign = () => {
     } = formFields;
     const isFundraiseRelated = campaignType?.match(/fundraise/i)
     const isVolunteerRelated = campaignType?.match(/volunteer/i)
+    const isIndividual = user?.userType == 'individual'
     const endpoint = "/api/v1/campaigns";
 
     const payload: any = {
       title,
       category: category,
       story: story,
-      campaignType: campaignType,
-      campaignStatus: "in-progress",
+      campaignType: isIndividual ? 'fundraise' : campaignType,
     };
 
-    if (isFundraiseRelated) {
+    if (!isIndividual) payload.campaignStatus = "in-progress"
+
+    if (isFundraiseRelated || isIndividual) {
       payload.campaignCoverImage = campaignImages[0]
       // TODO: MAKE objectToFormData handle converting nested objects to JSON
       payload.fundraise = JSON.stringify({
         fundingGoalDetails: [
           {
-            amount: fundingGoal.replace(/[^0-9.]/gi, ''),
+            amount: fundingGoal,
             currency: 'naira'
           }
         ],

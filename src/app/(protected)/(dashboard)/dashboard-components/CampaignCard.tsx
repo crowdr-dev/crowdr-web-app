@@ -39,7 +39,7 @@ const CampaignCard = () => {
           text="Update campaign"
           textColor="#667085"
           outlineColor="transparent"
-          styles={{outer: "self-end", inner: "px-8"}}
+          styles={{outer: "self-end", inner: "px-7"}}
         />
       </div>
     </div>

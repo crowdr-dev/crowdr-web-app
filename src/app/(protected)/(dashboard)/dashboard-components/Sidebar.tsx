@@ -2,11 +2,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import DrawerTrigger from "./DrawerTrigger";
 import { pageGroups } from "../pages";
+
 import Icon from "./Icon";
 import Cloud from "../../../../../public/svg/upload-cloud.svg"
+import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg";
 import { RFC } from "@/types/Component";
-import DrawerTrigger from "./DrawerTrigger";
 
 const Sidebar: RFC<SidebarProps> = ({drawer}) => {
   const currentPath = usePathname()
@@ -14,6 +16,10 @@ const Sidebar: RFC<SidebarProps> = ({drawer}) => {
 
   return (
     <nav className={display + " flex-col overflow-y-auto min-w-[272px] pl-[26px] pr-[27px]"}>
+      <div className="md:hidden mt-3">
+        <Image src={CrowdrLogo} alt="crowdr logo" className="w-[52px] md:w-[52px]" />
+      </div>
+
       {pageGroups.map((pageGroup, index) => (
         <div key={index}>
         {index == 0 || <hr className=" border-[rgba(56, 56, 56, 0.08)]" />}
@@ -26,7 +32,7 @@ const Sidebar: RFC<SidebarProps> = ({drawer}) => {
             if (isCurrentPage) pageLinkStyle += ' text-white bg-[#00B964]'
 
             return (
-              <DrawerTrigger id="sidebar" type="hide">
+              <DrawerTrigger key={index} id="sidebar" type="hide">
                 <Link key={index} href={page.route} className={pageLinkStyle}>
                   <Icon name={page.icon} className="text-inherit text-xl mr-2" />
                   {/* <Image src={Cloud} width={18} height={18} alt="icon" className="mr-2" /> */}
