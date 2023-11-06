@@ -76,7 +76,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
           className="mr-2"
         />
       )}
-      <span style={textStyle}>{text}</span>
+      <span style={textStyle} className="text-sm">{text}</span>
       {loading && (
         <span>
           <CgSpinner

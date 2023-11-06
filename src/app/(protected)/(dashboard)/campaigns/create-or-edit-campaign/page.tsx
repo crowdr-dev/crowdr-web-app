@@ -43,15 +43,12 @@ const CreateEditCampaign = () => {
     };
 
     if (isFundraiseRelated) {
-      console.log({fundingGoal})
-      return
       payload.campaignCoverImage = campaignImages[0]
       // TODO: MAKE objectToFormData handle converting nested objects to JSON
       payload.fundraise = JSON.stringify({
         fundingGoalDetails: [
           {
-            // TODO: MAKE SURE NUMBER INPUT HANDLES CONVERSION TO NUMBER
-            amount: Number(fundingGoal.replace(/[^0-9.]/gi, '')),
+            amount: fundingGoal.replace(/[^0-9.]/gi, ''),
             currency: 'naira'
           }
         ],

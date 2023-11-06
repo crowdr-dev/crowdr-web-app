@@ -11,6 +11,7 @@ const TextInput: RFC<TextInputProps> = ({
   onChange,
   id,
   styles,
+  value,
   ...props
 }) => {
   const inputStyle = props.icon ? "pl-9" : ""
@@ -46,6 +47,7 @@ const TextInput: RFC<TextInputProps> = ({
           type="text"
           {...config}
           id={id || config?.name}
+          value={value}
           placeholder={placeholder}
           onChange={handleChange}
           style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}

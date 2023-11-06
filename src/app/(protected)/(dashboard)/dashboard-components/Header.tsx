@@ -12,9 +12,9 @@ import Sidebar from "./Sidebar";
 
 const Header = () => {
   return (
-    <header className="flex justify-between items-center w-full min-h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
+    <header className="flex justify-between items-center w-full min-h-[62px] md:min-h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
       <div>
-        <Image src={CrowdrLogo} alt="crowdr logo" />
+        <Image src={CrowdrLogo} alt="crowdr logo" className="w-[52px] md:w-[52px]" />
       </div>
       <div className="flex items-center">
         <div className="flex mr-6">
@@ -44,9 +44,8 @@ const Header = () => {
         <DrawerTrigger id="sidebar">
           <Image
             src={BurgerIcon}
-            width={28}
             alt="burger icon"
-            className="block md:hidden"
+            className="block md:hidden w-6 md:w-7"
           />
         </DrawerTrigger>
       </div>

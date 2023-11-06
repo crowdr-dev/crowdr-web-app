@@ -56,7 +56,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
   return (
     <form onSubmit={handleSubmit(submit)}>
       {/* create campaign */}
-      <div className="flex justify-between mb-5">
+      <div className="flex justify-between mb-7 md:mb-5">
         <hgroup>
           <h1 className="text-lg mb-1">Create Campaign</h1>
           <p className="text-sm text-[#667085]">
@@ -64,7 +64,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           </p>
         </hgroup>
 
-        <div>
+        <div className="hidden md:block">
           <WhiteButton text="Cancel" shadow styles={{outer: "mr-3"}} />
           <Button text="Launch Campaign" buttonType="submit" loading={isSubmitting} disabled={isSubmitting} />
         </div>
@@ -72,7 +72,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
       <hr className="mb-[26px]" />
 
         {/* title */}
-        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Title"
             detail="This will be displayed on your campaign."
@@ -86,10 +86,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               ariaLabelledBy="Title"
             />
           </div>
-        </div> */}
+        </div>
 
         {/* campaign type */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Campaign Type"
             detail="Choose the type that fits the needs of your campaign."
@@ -109,7 +109,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
         </div>
 
         {/* category */}
-        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Category"
             detail="Choose the most relevant category that best represents your campaign."
@@ -125,10 +125,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               ariaLabelledBy="Category"
             />
           </div>
-        </div> */}
+        </div>
 
         {/* tell your story */}
-        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Tell Your Story"
             detail="The more details, the better."
@@ -146,10 +146,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
             />
           </div>
         </div>
-        <hr className="mb-5" /> */}
+        <hr className="mb-5" />
 
       {/* FUNDRAISE */}
-      {showFundraiseSection && <details open={fundraiseOpen} className={fundraiseOpen ? "mb-14" : ''}>
+      {showFundraiseSection && <details open={fundraiseOpen} className={fundraiseOpen ? "mb-10 md:mb-14" : ''}>
         <summary
           className="text-primary cursor-pointer mb-2"
           onClick={toggleFundraise}
@@ -157,7 +157,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
           Fundraise
         </summary>
         {/* set your funding goal */}
-        <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Set Your Funding Goal"
             detail="You can always adjust your goal as your campaign progresses."
@@ -174,7 +174,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
         </div>
 
         {/* choose a campaign duration */}
-        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Choose a Campaign Duration"
             detail="Determine the timeframe for your campaign."
@@ -191,10 +191,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               minDate={new Date}
             />
           </div>
-        </div> */}
+        </div>
 
         {/* upload engaging media */}
-        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Upload Engaging Media"
             detail="Visuals can make a significant impact on your campaign's success."
@@ -210,11 +210,11 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               showFileList
             />
           </div>
-        </div> */}
+        </div>
       </details>}
 
       {/* CALL FOR VOLUNTEERS */}
-      {showVolunteerSection && <details open={volunteerOpen} className="mb-10">
+      {showVolunteerSection && <details open={volunteerOpen} className="mb-[34px] md:mb-10">
         {/* TODO: STYLE DETAIL DROPDOWN ICON TO LOOK LIKE FIGMA */}
         <summary
           className="text-primary cursor-pointer mb-2"
@@ -224,7 +224,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
         </summary>
 
         {/* skills needed */}
-        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle title="Skills Needed" detail="Select all that apply" />
 
           <div className="max-w-lg">
@@ -264,10 +264,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               </span>
             )}
           </div>
-        </div> */}
+        </div>
 
         {/* age needed */}
-        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle title="Age Range" />
 
           <div className="max-w-lg">
@@ -288,10 +288,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               </span>
             )}
           </div>
-        </div> */}
+        </div>
 
         {/* gender preference */}
-        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle title="Gender Preference" />
 
           <div className="max-w-lg">
@@ -312,10 +312,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               </span>
             )}
           </div>
-        </div> */}
+        </div>
 
         {/* date and time needed */}
-        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle title="Date and Time Needed" />
 
           <div className="max-w-lg">
@@ -329,10 +329,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               minDate={new Date}
             />
           </div>
-        </div> */}
+        </div>
 
         {/* volunteer commitment */}
-        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle title="Volunteer Commitment" />
 
           <div className="max-w-lg">
@@ -353,10 +353,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               </span>
             )}
           </div>
-        </div> */}
+        </div>
 
         {/* additional requirements or notes */}
-        {/* <div className="grid grid-cols-[350px_minmax(0,_1fr)] gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle title="Additional Requirements or Notes" id="notes" />
 
           <div className="max-w-lg">
@@ -370,10 +370,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
               ariaLabelledBy="notes"
             />
           </div>
-        </div> */}
+        </div>
       </details>}
 
-      <div className="flex justify-end mb-5">
+      <div className="flex md:justify-end mb-5">
         <div>
           <WhiteButton text="Cancel" shadow styles={{outer: "mr-3"}} />
           <Button text="Launch Campaign" buttonType="submit" />
