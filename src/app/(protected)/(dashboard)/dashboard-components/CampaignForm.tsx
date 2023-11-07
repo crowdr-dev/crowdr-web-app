@@ -16,6 +16,8 @@ import FileInput from "./FileInput"
 import { campaignCategories } from "@/utils/campaignCategory"
 import { RFC } from "@/types/Component"
 import { useUser } from "../utils/useUser"
+import { useModal } from "@/app/common/hooks/useModal"
+import CampaignModal from "./CampaignModal"
 
 const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
   const {
@@ -60,19 +62,31 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
     setVolunteerCallOpen((prev) => !prev)
   }
 
+  const modal = useModal()
+
   return (
     <form>
       {/* create campaign */}
       <div className="flex justify-between mb-7 md:mb-5">
         <hgroup>
-          <h1 className="text-lg mb-1">Create Campaign</h1>
+          <h1
+            onClick={() => modal.show(<CampaignModal />)}
+            className="text-lg mb-1"
+          >
+            Create Campaign
+          </h1>
           <p className="text-sm text-[#667085]">
             Now's your chance to tell your story!
           </p>
         </hgroup>
 
         <div className="hidden md:block">
-          <WhiteButton text="Cancel" shadow styles={{ outer: "mr-3" }} />
+          <WhiteButton
+            text="Cancel"
+            disabled={isSubmitting}
+            shadow
+            styles={{ outer: "mr-3" }}
+          />
           <Button
             text="Launch Campaign"
             loading={isSubmitting}
@@ -399,7 +413,12 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
 
       <div className="flex md:justify-end mb-5">
         <div>
-          <WhiteButton text="Cancel" shadow styles={{ outer: "mr-3" }} />
+          <WhiteButton
+            text="Cancel"
+            disabled={isSubmitting}
+            shadow
+            styles={{ outer: "mr-3" }}
+          />
           <Button
             text="Launch Campaign"
             loading={isSubmitting}

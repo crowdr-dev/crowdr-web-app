@@ -1,9 +1,7 @@
-import CampaignToast from "../dashboard-components/CampaignToast";
-
 const Settings = () => {
   return (
     <div>
-      <CampaignToast />
+      Settings
     </div>
   );
 }

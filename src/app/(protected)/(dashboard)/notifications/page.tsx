@@ -1,9 +1,11 @@
+import CampaignToast from "../dashboard-components/CampaignModal"
+
 const Notifications = () => {
   return (
     <div>
-      Notifications
+      <CampaignToast />
     </div>
-  );
+  )
 }
 
-export default Notifications;
+export default Notifications

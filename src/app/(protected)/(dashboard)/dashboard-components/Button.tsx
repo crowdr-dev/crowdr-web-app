@@ -70,8 +70,8 @@ const ButtonContent: RFC<ButtonContentProps> = ({
       {iconUrl && (
         <Image
           src={iconUrl}
-          height={24}
-          width={24}
+          height={20}
+          width={20}
           alt="button icon"
           className="mr-2"
         />
@@ -80,7 +80,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
       {loading && (
         <span>
           <CgSpinner
-            size="1.5rem"
+            size="20px"
             className="animate-spin icon opacity-100 ml-2.5"
           />
         </span>
