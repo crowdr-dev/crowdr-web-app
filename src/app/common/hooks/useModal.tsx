@@ -16,8 +16,7 @@ const ModalContext = createContext({
   show: (modalContent: React.ReactNode) => {},
   hide: () => {},
 })
-
-const ModalProvider: RFC<ModalProviderProps> = ({ children }) => {
+function ModalProvider({ children }: ModalProviderProps) {
   const [modalContent, setModalContent] = useState<React.ReactNode>()
   const modalOptions = useRef<ModalOptions>()
   const modal = useRef<Modal>()
@@ -58,7 +57,6 @@ const ModalProvider: RFC<ModalProviderProps> = ({ children }) => {
   )
 }
 
-ModalProvider.displayName = "ModalProvider"
 export default ModalProvider
 
 type ModalProviderProps = {
