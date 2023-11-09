@@ -7,7 +7,6 @@ import {
   useRef,
   useState,
 } from "react"
-import { createPortal } from "react-dom"
 import { Modal } from "flowbite"
 
 import { RFC } from "@/types/Component"
@@ -45,7 +44,7 @@ const ModalProvider: RFC<ModalProviderProps> = ({ children }) => {
 
   return (
     <ModalContext.Provider value={{ show, hide }}>
-      <Children children={children} />
+      <Children>{children}</Children>
       <div
         ref={modalRef}
         data-modal-backdrop="static"
@@ -53,7 +52,7 @@ const ModalProvider: RFC<ModalProviderProps> = ({ children }) => {
         aria-hidden="true"
         className="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
-        {modalRef.current ? createPortal(modalContent, modalRef.current) : null}
+        {modalContent}
       </div>
     </ModalContext.Provider>
   )
