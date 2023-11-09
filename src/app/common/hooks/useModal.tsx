@@ -16,7 +16,8 @@ const ModalContext = createContext({
   show: (modalContent: React.ReactNode) => {},
   hide: () => {},
 })
-function ModalProvider({ children }: ModalProviderProps) {
+
+const ModalProvider: RFC<ModalProviderProps> = ({ children }) => {
   const [modalContent, setModalContent] = useState<React.ReactNode>()
   const modalOptions = useRef<ModalOptions>()
   const modal = useRef<Modal>()
