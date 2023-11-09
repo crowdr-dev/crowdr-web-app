@@ -73,44 +73,48 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
       </div>
 
       <div className='mt-4 mb-6'>
-        {slideImages?.length > 1 ? (
-          <Carousel
-            autoPlay
-            useKeyboardArrows
-            showIndicators={false}
-            stopOnHover
-            swipeable
-            showStatus={false}
-            infiniteLoop
-          >
-            {slideImages?.map((image, index) => (
-              <div key={index}>
-                <Image
-                  src={image}
-                  alt='donate'
-                  className='h-56 object-center object-cover rounded-lg'
-                  width={500}
-                  height={400}
-                  style={{
-                    width: '100%',
-                    objectFit: 'cover'
-                  }}
-                />
-              </div>
-            ))}
-          </Carousel>
-        ) : (
-          <Image
-            src={slideImages[0]}
-            alt='donate'
-            className='h-56 object-center object-cover rounded-lg'
-            width={500}
-            height={400}
-            style={{
-              width: '100%',
-              objectFit: 'cover'
-            }}
-          />
+        {!!slideImages && (
+          <div>
+            {slideImages?.length > 1 ? (
+              <Carousel
+                autoPlay
+                useKeyboardArrows
+                showIndicators={false}
+                stopOnHover
+                swipeable
+                showStatus={false}
+                infiniteLoop
+              >
+                {slideImages?.map((image, index) => (
+                  <div key={index}>
+                    <Image
+                      src={image}
+                      alt='donate'
+                      className='h-56 object-center object-cover rounded-lg'
+                      width={500}
+                      height={400}
+                      style={{
+                        width: '100%',
+                        objectFit: 'cover'
+                      }}
+                    />
+                  </div>
+                ))}
+              </Carousel>
+            ) : (
+              <Image
+                src={!!slideImages && slideImages[0]}
+                alt='donate'
+                className='h-56 object-center object-cover rounded-lg'
+                width={500}
+                height={400}
+                style={{
+                  width: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            )}
+          </div>
         )}
         <div className='my-5'>
           <h3 className='font-semibold text-lg'>{header}</h3>
