@@ -2,18 +2,19 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
-import Test from "../../dashboard-components/Test";
+import { useState,useEffect } from "react";
+import Test from "../../../dashboard-components/Test";
 import { getUser } from "@/app/api/user/getUser";
-import Avatar from "../../../../../../public/temp/avatar.png";
-import Menu from "../../../../../../public/svg/menu.svg";
-import Donate from "../../../../../../public/images/donate.png";
-import ProgressBar from "../../dashboard-components/ProgressBar";
-import Filter from "../../dashboard-components/Filter";
-import Input from "../../dashboard-components/Input";
-import Checkbox from "../../dashboard-components/Checkbox";
-import Select from "../../dashboard-components/Select";
-import { Button } from "../../dashboard-components/Button";
+import ProgressBar from "../../../dashboard-components/ProgressBar";
+import ExploreCard from "../../../dashboard-components/ExploreCard";
+import Filter from "../../../dashboard-components/Filter";
+import Input from "../../../dashboard-components/Input";
+import Checkbox from "../../../dashboard-components/Checkbox";
+import Select from "../../../dashboard-components/Select";
+import { Button } from "../../../dashboard-components/Button";
+import { getSingleCampaign } from "@/app/api/campaigns/getCampaigns";
+import { CampaignProps } from "../../page";
+
 
 const PROGRESS_COUNT = 8;
 
@@ -53,8 +54,21 @@ const ageRange = [
   },
 ];
 
-export default function DonateOrVolunteer() {
+export default function DonateOrVolunteer({params}:{params: {id: string}}) {
   const [tab, setTab] = useState("donate");
+  const [campaign, setCampaign] = useState<any>()
+
+
+const fetchSingleCampaign = async () => {
+  const singleCampaign = await getSingleCampaign(params.id);
+  setCampaign(singleCampaign)
+}
+
+console.log("campaign",campaign)
+useEffect(() => {
+  fetchSingleCampaign()
+},[params.id])
+
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between mb-4">
@@ -65,55 +79,20 @@ export default function DonateOrVolunteer() {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-12 min-w-full">
-        <div className="p-6 rounded-xl border-[#393e4614] border h-fit">
-          <div className="flex items-center justify-between ">
-            <div className="flex items-center">
-              <Image src={Avatar} alt="user-avatar" />
-              <div className="pl-3">
-                <h3 className="text-sm font-normal text-[#344054]">Nicholas</h3>
-                <h4 className="text-xs font-normal text-[#667085]">
-                  Individual
-                </h4>
-              </div>
-            </div>
-            <Image src={Menu} alt="menu" />
-          </div>
-
-          <div className="mt-4">
-            <Image
-              src={Donate}
-              alt="donate"
-              className="h-56 object-center object-cover rounded-lg"
-            />
-            <div className="my-5">
-              <h3 className="font-semibold text-lg">
-                Help Nicholas go back to college
-              </h3>
-              <p className="text-sm mt-2 ">
-                The "Help Nicholas Go Back to College" campaign aims to raise
-                funds to support Nicholas in pursuing his higher education
-                dreams. Nicholas is a passionate and determined individual who,
-                due to financial constraints, had to put his college education
-                on hold. Now, he is eager to return to college to pursue his
-                academic goals and unlock a brighter future.{" "}
-                <span className="text-[#667085]">See more</span>
-              </p>
-              <h4 className="mt-5 text-[#667085] text-sm">40 mins ago</h4>
-            </div>
-            <div className="bg-[#F9F9F9] p-4">
-              <p className="text-sm text-[#667085]">
-                {" "}
-                <span className="text-[#000]">Goal</span> £6,700/£6,700
-              </p>
-              <ProgressBar
-                bgColor="#00B964"
-                percent={(PROGRESS_COUNT / 10) * 100}
-              />
-            </div>
-          </div>
-
-          <Button text="Donate" className="w-full mt-4 text-center" />
-        </div>
+      <ExploreCard
+            name='Nicholas'
+            tier='Individual'
+            header={campaign?.title}
+            subheader={campaign?.story}
+            totalAmount={campaign?.fundraise.fundingGoalDetails[0].amount}
+            currentAmount={6000}
+            timePosted={campaign?.fundraise.startOfFundraise}
+            donateImage={
+              campaign?.campaignCoverImage?.url
+            }
+            routeTo={`/explore/`}
+            avatar={"https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg"}
+          />
         <div>
           <div>
             <span

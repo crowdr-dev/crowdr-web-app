@@ -37,8 +37,8 @@ export type Campaign = {
   };
 };
 
-export const getCampaigns = async () => {
-  const user = await getUser()
+export const getCampaigns = async (page?: number, perPage?: number) => {
+  const user = await getUser();
 
   if (!user) {
     return null;
@@ -55,4 +55,24 @@ export const getCampaigns = async () => {
     tags: [campaignsTag]
   });
   return campaigns;
+};
+
+export const getSingleCampaign = async (id: string) => {
+  const user = await getUser();
+
+  if (!user) {
+    return null;
+  }
+
+  const endpoint = `/api/v1/campaigns/${id}`;
+  const headers = {
+    "x-auth-token": user.token
+  };
+
+  const { data: campaign } = await makeRequest<{ data: Campaign }>(endpoint, {
+    headers,
+    cache: "force-cache",
+    tags: [campaignsTag]
+  });
+  return campaign;
 };
