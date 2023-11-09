@@ -65,7 +65,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
         </div>
       </div>
 
-      <Button text="Donate" className="w-full mt-4 text-center" href={routeTo} />
+      <Button text="Donate" styles={{outer: "w-full mt-4", inner: "!justify-center"}} href={routeTo} />
     </div>
   )
 }
