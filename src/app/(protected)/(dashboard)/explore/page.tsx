@@ -35,8 +35,6 @@ export type CampaignProps = {
 }
 export default async function Explore () {
   const campaigns = await getCampaigns()
-
-  console.log("campaigns", campaigns)
   return (
     <div>
       <div className='flex items-center justify-between mb-4'>
@@ -54,7 +52,7 @@ export default async function Explore () {
       </div>
 
       <div className='grid grid-cols-2 gap-2.5 min-w-full'>
-        {campaigns?.map((campaign: CampaignProps, index: number) => (
+        {Array.isArray(campaigns) && campaigns?.map((campaign: CampaignProps, index: number) => (
           <ExploreCard
             name='Nicholas'
             tier='Individual'
