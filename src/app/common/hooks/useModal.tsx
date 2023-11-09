@@ -58,6 +58,7 @@ const ModalProvider: RFC<ModalProviderProps> = ({ children }) => {
   )
 }
 
+ModalProvider.displayName = "ModalProvider"
 export default ModalProvider
 
 type ModalProviderProps = {
