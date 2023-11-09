@@ -19,7 +19,7 @@ type ExploreCardProps = {
   totalAmount: number
   currentAmount: number
   donateImage: any
-  slideImages: string[]
+  slideImages?: string[]
   routeTo?: string
   avatar: any
   timePosted?: string
