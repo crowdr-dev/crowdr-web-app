@@ -1,3 +1,4 @@
+import { CampaignStatus } from "@/types/Campaign";
 import { RFC } from "@/types/Component";
 
 const Label: RFC<LabelProps> = ({ text, textColor, bgColor, dotColor }) => {
@@ -36,7 +37,7 @@ const InProgress = <Label text="In progress" textColor="#B54708" bgColor="#FFFAE
 const Declined = <Label text="Declined" textColor="#B42318" bgColor="#F04438" dotColor="#F04438" />
 const InReview = <Label text="In review" textColor="#344054" bgColor="#F2F4F7" dotColor="#667085" />
 
-export const label = (type: 'completed' | 'in-progress' | 'declined' | 'in-review') => {
+export const label = (type: CampaignStatus) => {
   switch (type) {
     case 'completed':
       return Completed

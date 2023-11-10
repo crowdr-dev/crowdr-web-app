@@ -1,15 +1,49 @@
-'use client'
+"use client"
+import { useEffect, useState } from "react"
+import CampaignCard from "../dashboard-components/CampaignCard"
+import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
+import TextInput from "../dashboard-components/TextInput"
+import StatCard from "../dashboard-components/StatCard"
+import { getUser } from "@/app/api/user/getUser"
+import makeRequest from "@/utils/makeRequest"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
-import CampaignCard from "../dashboard-components/CampaignCard";
-import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button";
-import TextInput from "../dashboard-components/TextInput";
-import StatCard from "../dashboard-components/StatCard";
-
-import { BiSearch } from 'react-icons/bi';
+import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
+import { Campaign } from "@/types/Campaign"
 
 const Campaigns = () => {
+  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      const query = new URLSearchParams({ page: "1", perPage: "10" })
+      const endpoint = `/api/v1/my-campaigns?${query}`
+
+      try {
+        const user = await getUser()
+        const headers = {
+          "Content-Type": "multipart/form-data",
+          "x-auth-token": user?.token!,
+        }
+        const { success, data } = await makeRequest<{
+          success: boolean
+          data: Campaign[]
+        }>(endpoint, {
+          headers,
+          method: "GET",
+        })
+        setCampaigns(data)
+      } catch (error) {
+        const message = extractErrorMessage(error)
+        // toast({ title: "Oops!", body: message, type: "error" })
+      }
+    }
+
+    fetchCampaigns()
+  }, [])
+
   return (
     <div>
       {/* page title x subtitle */}
@@ -49,7 +83,12 @@ const Campaigns = () => {
         </div>
 
         <div className="hidden md:flex">
-          <WhiteButton text="Export Report" iconUrl={FileDownloadIcon} shadow styles={{outer: "mr-3"}} />
+          <WhiteButton
+            text="Export Report"
+            iconUrl={FileDownloadIcon}
+            shadow
+            styles={{ outer: "mr-3" }}
+          />
           <Button text="Withdraw Donations" />
         </div>
       </div>
@@ -57,39 +96,70 @@ const Campaigns = () => {
       {/* stats */}
       <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] gap-4 md:gap-5 mb-[23px] md:mb-[44px]">
         {/* TODO: get background image */}
-        <StatCard title="Total Raised" figure="N235,880.70" percentageChange={100} time="yesterday" pattern />
-        <StatCard title="Total Campaigns" figure="2" percentageChange={100} time="yesterday" colorScheme="light" />
-        <StatCard title="Campaign Views" figure="19,830" percentageChange={100} time="yesterday" colorScheme="light" />
+        <StatCard
+          title="Total Raised"
+          figure="N235,880.70"
+          percentageChange={100}
+          time="yesterday"
+          pattern
+        />
+        <StatCard
+          title="Total Campaigns"
+          figure="2"
+          percentageChange={100}
+          time="yesterday"
+          colorScheme="light"
+        />
+        <StatCard
+          title="Campaign Views"
+          figure="19,830"
+          percentageChange={100}
+          time="yesterday"
+          colorScheme="light"
+        />
       </div>
 
       <div className="flex md:hidden mb-[23px] md:mb-[9px]">
-          <WhiteButton text="Export Report" iconUrl={FileDownloadIcon} shadow styles={{outer: "mr-3"}} />
-          <Button text="Withdraw Donations" />
+        <WhiteButton
+          text="Export Report"
+          iconUrl={FileDownloadIcon}
+          shadow
+          styles={{ outer: "mr-3" }}
+        />
+        <Button text="Withdraw Donations" />
       </div>
 
       {/* all campaigns x filters */}
-      <h2 className="md:hidden text-lg text-[#292A2E] mb-[9px]">All Campaigns</h2>
+      <h2 className="md:hidden text-lg text-[#292A2E] mb-[9px]">
+        All Campaigns
+      </h2>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="hidden md:block text-xl text-[#292A2E]">All Campaigns</h2>
+        <h2 className="hidden md:block text-xl text-[#292A2E]">
+          All Campaigns
+        </h2>
         <TextInput
           value=""
           onChange={() => null}
           placeholder="Search campaigns"
           icon={BiSearch}
-          styles={{wrapper: "grow mr-[22px] block md:hidden", input: "text-sm"}}
+          styles={{
+            wrapper: "grow mr-[22px] block md:hidden",
+            input: "text-sm",
+          }}
         />
         <GrayButton text="Filters" iconUrl={FilterIcon} />
       </div>
 
       {/* campaigns */}
       <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] gap-x-[10px] gap-y-3 md:gap-y-[40px]">
+        {campaigns.map(campaign => <CampaignCard key={campaign._id} campaign={campaign} />)}
+        {/* <CampaignCard />
         <CampaignCard />
         <CampaignCard />
-        <CampaignCard />
-        <CampaignCard />
+        <CampaignCard /> */}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Campaigns;
+export default Campaigns
