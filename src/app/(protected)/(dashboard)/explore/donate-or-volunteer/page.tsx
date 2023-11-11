@@ -112,7 +112,7 @@ export default function DonateOrVolunteer() {
             </div>
           </div>
 
-          <Button text="Donate" styles={{outer: "w-full mt-4", inner: "!justify-center"}} />
+          <Button text="Donate" className="w-full mt-4 !justify-center" />
         </div>
         <div>
           <div>
@@ -202,7 +202,7 @@ export default function DonateOrVolunteer() {
                 </div>
               </div>
 
-              <Button text="Apply" styles={{outer: "w-full mt-4", inner: "!justify-center"}} />
+              <Button text="Apply" className="w-full mt-4 !justify-center" />
             </div>
           ) : (
             <div className="mt-6">
@@ -258,7 +258,7 @@ export default function DonateOrVolunteer() {
                 </div>
               </div>
 
-              <Button text="Donate" styles={{outer: "w-full mt-4", inner: "!justify-center"}} />
+              <Button text="Donate" className="w-full mt-4 !justify-center" />
 
               <div className="mt-10">
                 <div className="flex flex-row items-start justify-between">

@@ -3,7 +3,7 @@ import CampaignToast from "../dashboard-components/CampaignModal"
 const Notifications = () => {
   return (
     <div>
-      <CampaignToast />
+      Notifications
     </div>
   )
 }
