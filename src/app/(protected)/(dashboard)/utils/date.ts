@@ -1,5 +1,3 @@
-// import { differenceIn, format }from "date-fns"
-
 export function getDuration(startDate: IDate, endDate: IDate) {
   [startDate, endDate] = [new Date(startDate), new Date(endDate)]
   const durationInMs = endDate.getTime() - startDate.getTime()

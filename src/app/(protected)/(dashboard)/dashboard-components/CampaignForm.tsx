@@ -12,21 +12,22 @@ import NumberInput from "./NumberInput"
 import DateInput from "./DateInput"
 import OptionInput from "./OptionInput"
 import FileInput from "./FileInput"
+import { useUser } from "../utils/useUser"
+import makeRequest from "@/utils/makeRequest"
 
 import { campaignCategories } from "@/utils/campaignCategory"
 import { RFC } from "@/types/Component"
-import { useUser } from "../utils/useUser"
-import { useModal } from "@/app/common/hooks/useModal"
-import CampaignModal from "./CampaignModal"
+import { Campaign } from "@/types/Campaign"
 
-const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
+const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
   const {
     register,
     control,
     setValue,
     trigger,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting },
   } = useFormContext() as CampaignFormContext
   const user = useUser()
   const [skillsNeeded, campaignType] = useWatch({
@@ -40,6 +41,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
     Boolean(campaignType?.match(/fundraise/i)) || isIndividual
   const showVolunteerSection = Boolean(campaignType?.match(/volunteer/i))
   const otherSkillsRef = useRef<HTMLInputElement>(null)
+  const isEdit = Boolean(campaignId)
+  const saveButtonText = isEdit ? "Save" : "Launch Campaign"
+  const pageTitle = isEdit ? "Edit Campaign" : "Create Campaign"
+  const pageSubtext = isEdit ? "Enter correct details to update campaign" : "Now’s your chance to tell your story!"
 
   const otherSkillsEnabled = useMemo(() => {
     if ((skillsNeeded || [])?.includes("others")) {
@@ -52,6 +57,37 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
     }
   }, [skillsNeeded])
 
+  useEffect(() => {
+    if (campaignId) {
+      const fetchCampaignData = async () => {
+        const endpoint = `/api/v1/my-campaigns/${campaignId}`
+
+        try {
+          const headers = {
+            "Content-Type": "multipart/form-data",
+            "x-auth-token": user?.token!,
+          }
+          const { success, data } = await makeRequest<{
+            success: boolean
+            data: Campaign
+          }>(endpoint, {
+            headers,
+            method: "GET",
+          })
+
+          const formData = mapResponseToForm(data)
+          console.log(formData)
+          reset(formData)
+        } catch (error) {
+          // const message = extractErrorMessage(error)
+          // toast({ title: "Oops!", body: message, type: "error" })
+        }
+      }
+
+      fetchCampaignData()
+    }
+  }, [])
+
   const toggleFundraise = (e: React.MouseEvent) => {
     e.preventDefault()
     setFundraiseOpen((prev) => !prev)
@@ -62,33 +98,26 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
     setVolunteerCallOpen((prev) => !prev)
   }
 
-  const modal = useModal()
-
   return (
     <form>
       {/* create campaign */}
       <div className="flex justify-between mb-7 md:mb-5">
         <hgroup>
-          <h1
-            onClick={() => modal.show(<CampaignModal />)}
-            className="text-lg mb-1"
-          >
-            Create Campaign
-          </h1>
+          <h1 className="text-lg mb-1">{pageTitle}</h1>
           <p className="text-sm text-[#667085]">
-            Now's your chance to tell your story!
+            {pageSubtext}
           </p>
         </hgroup>
 
         <div className="hidden md:block">
           <WhiteButton
             text="Cancel"
-            disabled={isSubmitting}
+            href="/campaigns"
             shadow
-            styles={{ outer: "mr-3" }}
+            className="mr-3"
           />
           <Button
-            text="Launch Campaign"
+            text={saveButtonText}
             loading={isSubmitting}
             disabled={isSubmitting}
             onClick={handleSubmit(submit)}
@@ -219,10 +248,9 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
                 config={register("campaignDuration", {
                   required: "Campaign duration is required",
                 })}
-                error={errors.campaignDuration}
+                error={errors.campaignDuration as any}
                 mode="range"
                 enableTime
-                minDate={new Date()}
               />
             </div>
           </div>
@@ -236,7 +264,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
 
             <div className="max-w-lg">
               <FileInput
-                config={register("campaignImages", {
+                config={isEdit ? register("campaignImages") : register("campaignImages", {
                   required: "Campaign image is required",
                 })}
                 error={errors.campaignImages}
@@ -415,12 +443,12 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit }) => {
         <div>
           <WhiteButton
             text="Cancel"
-            disabled={isSubmitting}
+            href="/campaigns"
             shadow
-            styles={{ outer: "mr-3" }}
+            className="mr-3"
           />
           <Button
-            text="Launch Campaign"
+            text={saveButtonText}
             loading={isSubmitting}
             disabled={isSubmitting}
             onClick={handleSubmit(submit)}
@@ -435,6 +463,7 @@ export default CampaignForm
 
 type CampaignFormProps = {
   submit: (formFields: FormFields) => void
+  campaignId?: string
 }
 
 function Option(value: string, label: string, isDisabled = false) {
@@ -481,3 +510,26 @@ const volunteerCommitment = [
   Option("monthly commitment", "Monthly commitment"),
   Option("flexible schedule", "Flexible schedule"),
 ]
+
+function mapResponseToForm(campaign: Campaign): Partial<FormFields> {
+  const {
+    title,
+    category,
+    campaignStatus,
+    campaignViews,
+    allDonors,
+    fundraise,
+    campaignType,
+    story,
+  } = campaign
+  const { fundingGoalDetails, startOfFundraise, endOfFundraise } = fundraise
+
+  return {
+    title,
+    category,
+    campaignType,
+    story,
+    fundingGoal: fundingGoalDetails[0].amount,
+    campaignDuration: [startOfFundraise, endOfFundraise],
+  }
+}

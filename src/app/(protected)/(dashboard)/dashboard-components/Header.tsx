@@ -26,7 +26,7 @@ const Header = () => {
           <GrayButton
             text="Setup Guide"
             iconUrl={PuzzleIcon}
-            styles={{outer: "hidden md:inline-flex mr-[6px]"}}
+            className="hidden md:inline-flex mr-[6px]"
           />
           <Button
             text="Create Campaign"

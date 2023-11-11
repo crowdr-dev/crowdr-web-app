@@ -23,11 +23,11 @@ const NumberInput: RFC<NumberInputProps> = ({
 
     if (isChangeEvent(e)) {
       let value = e.target.value.replace(regex, "");
-      console.log({value, currentInput: getValues(config.name)})
+      // console.log({value, currentInput: getValues(config.name)})
       if (value.endsWith('.')) value += '0'
       setValue(config.name, value ? Number(value) : undefined);
       trigger(config.name);
-      console.log({value, currentInput: getValues(config.name)})
+      // console.log({value, currentInput: getValues(config.name)})
     } else if (isKeyboardEvent(e)) {
       if (e.ctrlKey) {
       } else if (e.key == ".") {
@@ -39,7 +39,7 @@ const NumberInput: RFC<NumberInputProps> = ({
     } else {
       // TODO: HANDLE CASE WITH PASTED TEXT
       const pastedText = e.clipboardData.getData("text");
-      console.log("Pasted text:", pastedText);
+      // console.log("Pasted text:", pastedText);
     }
   };
 
@@ -73,6 +73,7 @@ const NumberInput: RFC<NumberInputProps> = ({
         onKeyDown={handleInput}
         onPaste={handleInput}
         prefix={prefix}
+        value={getValues(config.name)}
         style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
         className="text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px]"
       />

@@ -4,7 +4,7 @@ import CampaignCard from "../dashboard-components/CampaignCard"
 import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
 import TextInput from "../dashboard-components/TextInput"
 import StatCard from "../dashboard-components/StatCard"
-import { getUser } from "@/app/api/user/getUser"
+import { useUser } from "../utils/useUser"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
@@ -12,9 +12,11 @@ import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
 import { Campaign } from "@/types/Campaign"
+import { getUser } from "@/app/api/user/getUser"
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const user = useUser()
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -87,14 +89,14 @@ const Campaigns = () => {
             text="Export Report"
             iconUrl={FileDownloadIcon}
             shadow
-            styles={{ outer: "mr-3" }}
+            className="mr-3"
           />
           <Button text="Withdraw Donations" />
         </div>
       </div>
 
       {/* stats */}
-      <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] gap-4 md:gap-5 mb-[23px] md:mb-[44px]">
+      <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[44px]">
         {/* TODO: get background image */}
         <StatCard
           title="Total Raised"
@@ -124,7 +126,7 @@ const Campaigns = () => {
           text="Export Report"
           iconUrl={FileDownloadIcon}
           shadow
-          styles={{ outer: "mr-3" }}
+          className="mr-3"
         />
         <Button text="Withdraw Donations" />
       </div>
@@ -151,12 +153,8 @@ const Campaigns = () => {
       </div>
 
       {/* campaigns */}
-      <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] gap-x-[10px] gap-y-3 md:gap-y-[40px]">
+      <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px]">
         {campaigns.map(campaign => <CampaignCard key={campaign._id} campaign={campaign} />)}
-        {/* <CampaignCard />
-        <CampaignCard />
-        <CampaignCard />
-        <CampaignCard /> */}
       </div>
     </div>
   )

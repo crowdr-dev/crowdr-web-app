@@ -1,10 +1,12 @@
+import { CampaignCategory } from "@/utils/campaignCategory";
+
 export interface Campaign {
   _id:                      string;
   userId:                   string;
-  category:                 string;
+  category:                 CampaignCategory;
   title:                    string;
   story:                    string;
-  campaignType:             string;
+  campaignType:             CampaignType;
   campaignStatus:           CampaignStatus;
   campaignCoverImage:       CampaignCoverImage;
   campaignAdditionalImages: any[];
@@ -34,3 +36,4 @@ export interface FundingGoalDetail {
 }
 
 export type CampaignStatus = "completed" | "in-progress" | "declined" | "in-review"
+export type CampaignType = 'fundraise' | 'volunteer' | 'fundraiseAndVolunteer'

@@ -27,6 +27,7 @@ export const config = {
     "/explore/donate-or-volunteer",
     "/campaigns",
     "/campaigns/create-or-edit-campaign",
+    "/campaigns/create-or-edit-campaign/[id]",
     "/donations",
     "/inbox",
     "/manage-webpage",

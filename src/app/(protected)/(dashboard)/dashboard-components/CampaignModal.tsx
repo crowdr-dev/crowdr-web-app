@@ -1,7 +1,10 @@
+"use client"
+import { useModal } from "@/app/common/hooks/useModal"
 import { Button, WhiteButton } from "./Button"
 
-const CampaignModal
- = () => {
+import { RFC } from "@/types/Component"
+
+const CampaignModal: RFC<CampaignModalProps> = ({clearModal}) => {
   const boxShadow =
     "0px 8px 8px -4px rgba(16, 24, 40, 0.03), 0px 20px 24px -4px rgba(16, 24, 40, 0.08)"
   const buttonClasses = "!justify-center font-semibold !text-base"
@@ -13,10 +16,7 @@ const CampaignModal
     >
       <div className="flex justify-between mb-3">
         <CheckIcon />
-
-        <div className="">
-          <XIcon />
-        </div>
+        <XIcon onClick={clearModal} />
       </div>
 
       <div className="flex flex-col gap-1 mb-6">
@@ -30,15 +30,12 @@ const CampaignModal
       </div>
 
       <div className="flex flex-col gap-3">
-        <Button
-          text="Share on your Socials"
-          styles={{ inner: buttonClasses }}
-          shadow
-        />
+        <Button text="Share on your Socials" className={buttonClasses} shadow />
         <WhiteButton
           text="Cancel"
           outlineColor="#D0D5DD"
-          styles={{ inner: buttonClasses }}
+          className={buttonClasses}
+          onClick={clearModal}
         />
       </div>
     </div>
@@ -47,6 +44,9 @@ const CampaignModal
 
 export default CampaignModal
 
+type CampaignModalProps = {
+  clearModal: () => void
+}
 
 const CheckIcon = () => {
   const ringClasses =
@@ -104,7 +104,7 @@ const CheckIcon = () => {
   )
 }
 
-const XIcon = () => {
+const XIcon = ({onClick}: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -112,6 +112,7 @@ const XIcon = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
+      onClick={onClick}
     >
       <path
         d="M18 6L6 18M6 6L18 18"

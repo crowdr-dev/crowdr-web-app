@@ -4,19 +4,20 @@ import Link from "next/link"
 import objectToFormData from "@/utils/objectToFormData"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import CampaignFormContext, { FormFields } from "./utils/useCreateCampaign"
-import { useUser } from "../../utils/useUser"
+import CampaignFormContext, { FormFields } from "../utils/useCreateCampaign"
+import { useUser } from "../../../utils/useUser"
 import { useModal } from "@/app/common/hooks/useModal"
 import { getUser } from "@/app/api/user/getUser"
 import { useToast } from "@/app/common/hooks/useToast"
-import CampaignForm from "../../dashboard-components/CampaignForm"
-import CampaignToast from "../../dashboard-components/CampaignModal"
+import CampaignForm from "../../../dashboard-components/CampaignForm"
+import CampaignToast from "../../../dashboard-components/CampaignModal"
 
-const CreateEditCampaign = () => {
+const CreateEditCampaign = ({ params }: Route) => {
   const router = useRouter()
   const user = useUser()
   const modal = useModal()
   const toast = useToast()
+  const isEdit = Boolean(params.id)
 
   const submit = async (formFields: FormFields) => {
     const {
@@ -38,7 +39,6 @@ const CreateEditCampaign = () => {
     const isFundraiseRelated = campaignType?.match(/fundraise/i)
     const isVolunteerRelated = campaignType?.match(/volunteer/i)
     const isIndividual = user?.userType == "individual"
-    const endpoint = "/api/v1/campaigns"
 
     const payload: any = {
       title,
@@ -50,7 +50,6 @@ const CreateEditCampaign = () => {
     if (!isIndividual) payload.campaignStatus = "in-progress"
 
     if (isFundraiseRelated || isIndividual) {
-      payload.campaignCoverImage = campaignImages[0]
       // TODO: MAKE objectToFormData handle converting nested objects to JSON
       payload.fundraise = JSON.stringify({
         fundingGoalDetails: [
@@ -63,7 +62,11 @@ const CreateEditCampaign = () => {
         endOfFundraise: campaignDuration[1],
       })
 
-      if (campaignImages.length > 1) {
+      if (campaignImages) {
+        payload.campaignCoverImage = campaignImages[0]
+      }
+
+      if (campaignImages && campaignImages?.length > 1) {
         payload.campaignAdditionalImages = campaignImages.slice(1)
       }
     }
@@ -87,20 +90,27 @@ const CreateEditCampaign = () => {
         "Content-Type": "multipart/form-data",
         "x-auth-token": user?.token!,
       }
+      const endpoint = isEdit
+        ? `/api/v1/campaigns/${params.id}`
+        : "/api/v1/campaigns"
+
       const { success, message } = await makeRequest<{
         data: any
         success: boolean
         message: string
       }>(endpoint, {
         headers,
-        method: "POST",
+        method: isEdit ? "PUT" : "POST",
         payload: objectToFormData(payload),
       })
 
       if (success) {
         router.push("/campaigns")
-        modal.show(<CampaignToast />)
-        // toast({ title: "Well done!", body: message })
+        if (isEdit) {
+          toast({ title: "Well done!", body: message })
+        } else {
+          modal.show(<CampaignToast clearModal={modal.hide} />)
+        }
       }
     } catch (error: any) {
       const message = extractErrorMessage(error)
@@ -117,10 +127,14 @@ const CreateEditCampaign = () => {
       </nav>
 
       <CampaignFormContext>
-        <CampaignForm submit={submit} />
+        <CampaignForm submit={submit} campaignId={params.id} />
       </CampaignFormContext>
     </div>
   )
 }
 
 export default CreateEditCampaign
+
+interface Route {
+  params: { id: string }
+}

@@ -164,7 +164,7 @@ function darken(color: string) {
   const colorObj = Color(color)
   const brightness = colorObj.luminosity()
   const darkenedColor =
-    brightness > 0.5 ? colorObj.darken(0.04) : colorObj.darken(0.07)
+    brightness > 0.5 ? colorObj.darken(0.04) : colorObj.darken(0.075)
 
   return darkenedColor.hex()
 }

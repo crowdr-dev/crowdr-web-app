@@ -1,16 +1,23 @@
-import ProgressBar from "./ProgressBar";
-import { GrayButton } from "./Button";
-import { label } from "./Label";
-import { pill } from "./Pill";
-import { formatAmount } from "../utils/currency";
+import ProgressBar from "./ProgressBar"
+import { GrayButton } from "./Button"
+import { label } from "./Label"
+import { pill } from "./Pill"
+import { formatAmount } from "../utils/currency"
+import { getDuration } from "../utils/date"
 
-import { Campaign } from "@/types/Campaign";
-import { RFC } from "@/types/Component";
-import { getDuration } from "../utils/date";
+import { Campaign } from "@/types/Campaign"
+import { RFC } from "@/types/Component"
 
-const CampaignCard: RFC<CampaignCardProps> = ({campaign}) => {
-  const {title, category, campaignStatus, campaignViews, allDonors, fundraise} = campaign
-  const {fundingGoalDetails, startOfFundraise, endOfFundraise} = fundraise
+const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
+  const {
+    title,
+    category,
+    campaignStatus,
+    campaignViews,
+    allDonors,
+    fundraise,
+  } = campaign
+  const { fundingGoalDetails, startOfFundraise, endOfFundraise } = fundraise
   const fundingGoals = fundingGoalDetails[0]
   const duration = getDuration(startOfFundraise, endOfFundraise)
 
@@ -25,7 +32,8 @@ const CampaignCard: RFC<CampaignCardProps> = ({campaign}) => {
 
       <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[10px] md:mb-3">
         <p className="text-sm text-[#667085] mb-1">
-          <span className="text-[#292A2E]">Goal</span> N286,000/N{formatAmount(fundingGoals.currency, fundingGoals.amount)}
+          <span className="text-[#292A2E]">Goal</span> N286,000/N
+          {formatAmount(fundingGoals.currency, fundingGoals.amount)}
         </p>
         <ProgressBar percent={70} showValue />
       </div>
@@ -46,17 +54,18 @@ const CampaignCard: RFC<CampaignCardProps> = ({campaign}) => {
           </p>
         </div>
         <GrayButton
+          href={`/campaigns/create-or-edit-campaign/${campaign._id}`}
           text="Update campaign"
           textColor="#667085"
           outlineColor="transparent"
-          styles={{outer: "self-end", inner: "px-7"}}
+          className="self-end !px-7"
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CampaignCard;
+export default CampaignCard
 
 type CampaignCardProps = {
   campaign: Campaign
