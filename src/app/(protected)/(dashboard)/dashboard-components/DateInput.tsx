@@ -1,11 +1,17 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react"
 // TODO: POSSIBLY SWITCH TO react-flatpickr
-import flatpickr from "flatpickr";
-import { useFormContext, FieldError, UseFormRegisterReturn } from "react-hook-form";
-import { RFC } from "@/types/Component";
+import flatpickr from "flatpickr"
+import {
+  useFormContext,
+  FieldError,
+  UseFormRegisterReturn,
+} from "react-hook-form"
+import { RFC } from "@/types/Component"
 
-import "flatpickr/dist/flatpickr.min.css";
+import "flatpickr/dist/flatpickr.min.css"
+import { Instance as Flatpickr } from "flatpickr/dist/types/instance"
 
+// TODO: INTERNATIONALIZE DATE VALUES; CONVERT TO AND FROM UTC WHEN SENDING AND RECEIVING DATE TO AND FROM SERVER
 const DateInput: RFC<DateInputProps> = ({
   config,
   label,
@@ -17,32 +23,46 @@ const DateInput: RFC<DateInputProps> = ({
   enableTime,
   minDate,
 }) => {
-  const {setValue, setError} = useFormContext()
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { setValue, getValues, setError } = useFormContext()
+  const inputRef = useRef<HTMLInputElement>(null)
+  const flatpickrInstance = useRef<Flatpickr>()
+  const dateRange = getValues(config.name)
 
   useEffect(() => {
     if (inputRef.current) {
-      flatpickr(inputRef.current, {
+      flatpickrInstance.current = flatpickr(inputRef.current, {
         mode,
         dateFormat,
         enableTime,
         minDate,
         static: true,
         locale: {
-          rangeSeparator: " — "
+          rangeSeparator: " — ",
         },
+        defaultDate: dateRange,
         onChange: (selectedDates, dateStr, instance) => {
           if (dateStr) {
-            setValue(config.name, selectedDates)
+            if (mode == "range" && selectedDates.length < 2) {
+              setValue(config.name, null)
+              setError(config.name, { type: "required" })
+            } else {
+              setValue(config.name, selectedDates)
+            }
           } else {
             setValue(config.name, null)
-            setError(config.name, {type: 'required'})
+            setError(config.name, { type: "required" })
           }
-          config.onChange({target: inputRef.current})
+          config.onChange({ target: inputRef.current })
         },
-      });
+      })
     }
-  }, []);
+  }, [])
+
+  useEffect(() => {
+    if (!inputRef.current?.value && dateRange && flatpickrInstance.current) {
+      flatpickrInstance.current.setDate(dateRange, true)
+    }
+  }, [dateRange])
 
   return (
     <span>
@@ -70,24 +90,24 @@ const DateInput: RFC<DateInputProps> = ({
         </span>
       )}
     </span>
-  );
-};
+  )
+}
 
-export default DateInput;
+export default DateInput
 
 DateInput.defaultProps = {
-  mode: 'single',
-  dateFormat: 'M j, Y',
+  mode: "single",
+  dateFormat: "M j, Y",
 }
 
 type DateInputProps = {
-  config: UseFormRegisterReturn;
-  label?: string;
-  error?: FieldError;
-  placeholder?: string;
-  optional?: boolean;
+  config: UseFormRegisterReturn
+  label?: string
+  error?: FieldError
+  placeholder?: string
+  optional?: boolean
   mode?: "single" | "multiple" | "range" | "time"
   minDate?: string | Date
   dateFormat?: string
   enableTime?: boolean
-};
+}

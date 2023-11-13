@@ -3,6 +3,7 @@ import { UseFormReturn } from "react-hook-form/dist/types";
 
 import { RFC } from "@/types/Component";
 import { CampaignCategory } from "@/utils/campaignCategory";
+import { CampaignType } from "@/types/Campaign";
 
 const CampaignFormContext: RFC = ({ children }) => {
   const formContext: CampaignFormContext = {
@@ -24,11 +25,11 @@ type UseFormConfig = Parameters<typeof useForm<FormFields>>[0];
 type FormFields = {
   title: string;
   category: CampaignCategory;
-  campaignType: 'fundraise' | 'volunteer' | 'fundraiseAndVolunteer'
+  campaignType: CampaignType
   story: string;
-  fundingGoal: string;
-  campaignDuration: string;
-  campaignImages: File[];
+  fundingGoal: number;
+  campaignDuration: [string, string];
+  campaignImages?: File[];
   skillsNeeded: string[];
   otherSkillsNeeded: string;
   ageRange: string;

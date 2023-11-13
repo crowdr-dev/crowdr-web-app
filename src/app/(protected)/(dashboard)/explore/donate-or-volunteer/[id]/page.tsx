@@ -181,7 +181,7 @@ useEffect(() => {
                 </div>
               </div>
 
-              <Button text="Apply" className="w-full mt-4 text-center" />
+              <Button text="Apply" className="w-full mt-4 !justify-center" />
             </div>
           ) : (
             <div className="mt-6">
@@ -237,7 +237,7 @@ useEffect(() => {
                 </div>
               </div>
 
-              <Button text="Donate" className="w-full mt-4 text-center" />
+              <Button text="Donate" className="w-full mt-4 !justify-center" />
 
               <div className="mt-10">
                 <div className="flex flex-row items-start justify-between">

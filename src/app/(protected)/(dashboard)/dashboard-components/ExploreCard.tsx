@@ -53,6 +53,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
     : subheader
   const progress = currentAmount / totalAmount
 
+
   return (
     <div className='p-6 rounded-xl border-[#393e4614] border mt-8'>
       <div className='flex items-center justify-between '>
@@ -141,7 +142,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
         </div>
       </div>
 
-      <Button text='Donate' href={routeTo} />
+      <Button text="Donate" className="w-full mt-4 !justify-center" href={routeTo} />
     </div>
   )
 }

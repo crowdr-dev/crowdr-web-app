@@ -9,6 +9,7 @@ import ProgressBar from '../dashboard-components/ProgressBar'
 import Filter from '../dashboard-components/Filter'
 import { Button } from '../dashboard-components/Button'
 import ExploreCard from '../dashboard-components/ExploreCard'
+import DynamicExplore from '../dashboard-components/DynamicExplore'
 
 const PROGRESS_COUNT = 8
 
@@ -71,6 +72,7 @@ export default async function Explore () {
           />
         ))}
       </div>
+      <DynamicExplore/>
 
     </div>
   )
