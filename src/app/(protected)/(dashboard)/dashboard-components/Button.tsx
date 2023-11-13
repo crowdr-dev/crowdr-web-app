@@ -83,7 +83,6 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   textColor,
   iconUrl,
   loading,
-  buttonStyle,
   ...props
 }) => {
   const textStyle: React.CSSProperties = {
@@ -91,10 +90,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   }
 
   return (
-    <div
-      style={buttonStyle}
-      className={`inline-flex ${iconUrl ? "justify-between" : "justify-center"} items-center rounded-lg cursor-pointer px-[16px] py-[10px] w-full`}
-    >
+    <>
       {iconUrl && (
         <Image
           src={iconUrl}
@@ -112,7 +108,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
           className="animate-spin icon opacity-100 ml-2.5"
         />
       )}
-    </div>
+    </>
   )
 }
 
@@ -162,7 +158,6 @@ type ButtonContentProps = {
   loading?: boolean
   disabled?: boolean
   className?: string
-  buttonStyle?: React.CSSProperties
 }
 
 function darken(color: string) {
