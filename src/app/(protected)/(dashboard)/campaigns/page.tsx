@@ -1,19 +1,60 @@
-import Image from "next/image";
-import CampaignCard from "../dashboard-components/CampaignCard";
-import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button";
+"use client"
+import { useEffect, useState } from "react"
+import CampaignCard from "../dashboard-components/CampaignCard"
+import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
+import TextInput from "../dashboard-components/TextInput"
+import StatCard from "../dashboard-components/StatCard"
+import { useUser } from "../utils/useUser"
+import makeRequest from "@/utils/makeRequest"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
+import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
-import ArrowUpIcon from "../../../../../public/svg/arrow-up.svg"
-import AltArrowUpIcon from "../../../../../public/temp/arrow-up.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
+import { Campaign } from "@/types/Campaign"
+import { getUser } from "@/app/api/user/getUser"
 
 const Campaigns = () => {
+  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const user = useUser()
+
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      const query = new URLSearchParams({ page: "1", perPage: "10" })
+      const endpoint = `/api/v1/my-campaigns?${query}`
+
+      try {
+        const user = await getUser()
+        const headers = {
+          "Content-Type": "multipart/form-data",
+          "x-auth-token": user?.token!,
+        }
+        const { success, data } = await makeRequest<{
+          success: boolean
+          data: Campaign[]
+        }>(endpoint, {
+          headers,
+          method: "GET",
+        })
+        setCampaigns(data)
+      } catch (error) {
+        const message = extractErrorMessage(error)
+        // toast({ title: "Oops!", body: message, type: "error" })
+      }
+    }
+
+    fetchCampaigns()
+  }, [])
+
   return (
     <div>
       {/* page title x subtitle */}
       <hgroup className="mb-[5px]">
-        <h1 className="text-2xl font-semibold text-[#101828] mb-[5px]">
+        <h1 className="hidden md:block text-2xl font-semibold text-[#101828] mb-[5px]">
           Campaigns
+        </h1>
+        <h1 className="md:hidden text-lg font-semibold text-[#101828] mb-[5px]">
+          My Campaigns
         </h1>
         <p className="text-[15px] text-[#667085]">
           Manage campaigns and earnings
@@ -21,7 +62,7 @@ const Campaigns = () => {
       </hgroup>
 
       {/* action buttons */}
-      <div className="flex justify-between items-center mb-10">
+      <div className="flex justify-between items-center mb-5 md:mb-10">
         <div className="inline-flex rounded-md" role="group">
           <button
             type="button"
@@ -43,58 +84,80 @@ const Campaigns = () => {
           </button>
         </div>
 
-        <div className="flex">
-          <WhiteButton text="Export Report" iconUrl={FileDownloadIcon} shadow className="mr-3" />
+        <div className="hidden md:flex">
+          <WhiteButton
+            text="Export Report"
+            iconUrl={FileDownloadIcon}
+            shadow
+            className="mr-3"
+          />
           <Button text="Withdraw Donations" />
         </div>
       </div>
 
       {/* stats */}
-      <div className="grid grid-cols-[repeat(3,_minmax(0,_350px))] gap-5 mb-[44px]">
+      <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[44px]">
         {/* TODO: get background image */}
-        <div className="bg-primary bg- rounded-[5px] py-[22.5px] px-[21px]">
-          <p className="text-sm text-white mb-2">Total Raised</p>
-          <p className="text-2xl text-white mb-2">N235,880.70</p>
-          <div className="flex items-center">
-            <p className="flex items-center mr-[10px]"><Image src={AltArrowUpIcon} alt="arrow up icon" className="inline-block mr-1" /> <span className="text-white">100%</span></p>
-            <p className="text-white">vs yesterday</p>
-          </div>
-        </div>
+        <StatCard
+          title="Total Raised"
+          figure="N235,880.70"
+          percentageChange={100}
+          time="yesterday"
+          pattern
+        />
+        <StatCard
+          title="Total Campaigns"
+          figure="2"
+          percentageChange={100}
+          time="yesterday"
+          colorScheme="light"
+        />
+        <StatCard
+          title="Campaign Views"
+          figure="19,830"
+          percentageChange={100}
+          time="yesterday"
+          colorScheme="light"
+        />
+      </div>
 
-        <div className="bg-[#F8F8F8] rounded-[5px] py-[22.5px] px-[21px]">
-          <p className="text-sm text-[#292A2E] mb-2">Total Campaigns</p>
-          <p className="text-2xl text-[#0C0C0C] mb-2">2</p>
-          <div className="flex items-center">
-            <p className="flex items-center mr-[10px]"><Image src={ArrowUpIcon} alt="arrow up icon" className="inline-block mr-1" /> <span className="text-primary">100%</span></p>
-            <p className="text-[#5C636E]">vs yesterday</p>
-          </div>
-        </div>
-
-        <div className="bg-[#F8F8F8] rounded-[5px] py-[22.5px] px-[21px]">
-          <p className="text-sm text-[#292A2E] mb-2">Campaign Views</p>
-          <p className="text-2xl text-[#0C0C0C] mb-2">19,830</p>
-          <div className="flex items-center">
-            <p className="flex items-center mr-[10px]"><Image src={ArrowUpIcon} alt="arrow up icon" className="inline-block mr-1" /> <span className="text-primary">100%</span></p>
-            <p className="text-[#5C636E]">vs yesterday</p>
-          </div>
-        </div>
+      <div className="flex md:hidden mb-[23px] md:mb-[9px]">
+        <WhiteButton
+          text="Export Report"
+          iconUrl={FileDownloadIcon}
+          shadow
+          className="mr-3"
+        />
+        <Button text="Withdraw Donations" />
       </div>
 
       {/* all campaigns x filters */}
+      <h2 className="md:hidden text-lg text-[#292A2E] mb-[9px]">
+        All Campaigns
+      </h2>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl text-[#292A2E]">All Campaigns</h2>
+        <h2 className="hidden md:block text-xl text-[#292A2E]">
+          All Campaigns
+        </h2>
+        <TextInput
+          value=""
+          onChange={() => null}
+          placeholder="Search campaigns"
+          icon={BiSearch}
+          styles={{
+            wrapper: "grow mr-[22px] block md:hidden",
+            input: "text-sm",
+          }}
+        />
         <GrayButton text="Filters" iconUrl={FilterIcon} />
       </div>
 
       {/* campaigns */}
-      <div className="grid grid-cols-[repeat(2,_minmax(0,_550px))] gap-x-[10px] gap-y-[40px]">
-        <CampaignCard />
-        <CampaignCard />
-        <CampaignCard />
-        <CampaignCard />
+      <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px]">
+        {campaigns.map(campaign => <CampaignCard key={campaign._id} campaign={campaign} />)}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Campaigns;
+export default Campaigns
