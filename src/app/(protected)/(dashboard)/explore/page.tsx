@@ -62,7 +62,7 @@ export default async function Explore () {
             totalAmount={campaign.fundraise.fundingGoalDetails[0].amount}
             currentAmount={6000}
             timePosted={campaign.fundraise.startOfFundraise}
-            slideImages={["https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg","https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg","https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg"]}
+            slideImages={campaign.campaignAdditionalImagesUrl}
             donateImage={
               'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
             }
