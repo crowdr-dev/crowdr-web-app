@@ -6,10 +6,12 @@ import { RFC } from '@/types/Component'
 import { Button } from './Button'
 import ProgressBar from './ProgressBar'
 import moment from 'moment'
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import { Carousel } from 'react-responsive-carousel'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 import Menu from '../../../../../public/svg/menu.svg'
+import Modal from '@/app/common/components/Modal'
 
 type ExploreCardProps = {
   name: string
@@ -41,11 +43,21 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
   } = props
 
   const [isCollapsed, setIsCollapsed] = useState(true)
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
 
   const toggleReadMore = () => {
     setIsCollapsed(!isCollapsed)
   }
 
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
   const wordsArray = subheader?.split(' ')
 
   const displayText = isCollapsed
@@ -54,6 +66,16 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
   const progress = currentAmount / totalAmount
 
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    adaptiveHeight: true,
+    arrows: true,
+    swipeToSlide: true
+  };
   return (
     <div className='p-6 rounded-xl border-[#393e4614] border mt-8'>
       <div className='flex items-center justify-between '>
@@ -73,21 +95,29 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
         <Image src={Menu} alt='menu' />
       </div>
 
+
+
       <div className='mt-4 mb-6'>
         {!!slideImages && (
           <div>
             {slideImages?.length > 1 ? (
-              <Carousel
-                autoPlay
-                useKeyboardArrows
-                showIndicators={false}
-                stopOnHover
-                swipeable
-                showStatus={false}
-                infiniteLoop
-              >
+              <Slider {...settings}>
                 {slideImages?.map((image, index) => (
                   <div key={index}>
+                    <Modal isOpen={modalIsOpen} onClose={closeModal}>
+                    <Image
+                      src={image}
+                      alt='donate'
+                      className='h-56 object-center object-cover rounded-lg'
+                      width={500}
+                      height={500}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover'
+                      }}
+                    />
+                    </Modal>
                     <Image
                       src={image}
                       alt='donate'
@@ -96,12 +126,17 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
                       height={400}
                       style={{
                         width: '100%',
+                        maxWidth: '100%',
+                        height: 'auto',
                         objectFit: 'cover'
+                      }}
+                      onClick={() => {
+                        openModal()
                       }}
                     />
                   </div>
                 ))}
-              </Carousel>
+              </Slider>
             ) : (
               <Image
                 src={!!slideImages && slideImages[0]}

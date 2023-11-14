@@ -54,7 +54,7 @@ export default function DynamicExplore() {
     };
     return (
         <>
-            <div className='grid grid-cols-2 gap-2.5 min-w-full'>
+            <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 '>
                 {Array.isArray(campaigns) && campaigns?.map((campaign: CampaignProps, index: number) => (
                     <ExploreCard
                         name='Nicholas'

@@ -52,7 +52,7 @@ export default async function Explore () {
         </div>
       </div>
 
-      <div className='grid grid-cols-2 gap-2.5 min-w-full'>
+      <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2'>
         {Array.isArray(campaigns) && campaigns?.map((campaign: CampaignProps, index: number) => (
           <ExploreCard
             name='Nicholas'
@@ -62,7 +62,7 @@ export default async function Explore () {
             totalAmount={campaign.fundraise.fundingGoalDetails[0].amount}
             currentAmount={6000}
             timePosted={campaign.fundraise.startOfFundraise}
-            slideImages={campaign.campaignAdditionalImagesUrl}
+            slideImages={["https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg","https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg","https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg"]}
             donateImage={
               'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
             }
