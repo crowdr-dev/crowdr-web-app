@@ -13,7 +13,7 @@ const Pill: RFC<PillProps> = ({text, textColor, bgColor, icon}) => {
   }
   
   return (
-    <div style={pillStyle} className="inline-flex shrink-0 justify-between items-center rounded-full px-[21px] py-[8px]">
+    <div style={pillStyle} className="inline-flex shrink-0 self-start items-center rounded-full px-[21px] py-[8px]">
       {icon && <Image src={`svg/emoji/${icon}.svg`} alt={icon} width={15} height={15} className="mr-[5px]" />}
       <span style={textStyle} className="text-sm">{text}</span>
     </div>
@@ -31,7 +31,8 @@ type PillProps = {
 
 const Education = <Pill text="Education" icon="books" textColor="#0B5351" bgColor="#FEF8E4" />
 const Business = <Pill text="Business" icon="toolbox" textColor="#101E51" bgColor="#E5EDFF" />
-const Art = <Pill text="Art" icon="artist-palette" textColor="#FFE7E3" bgColor="#4C160F" />
+const Arts = <Pill text="Arts" icon="artist-palette" textColor="#4C160F" bgColor="#FFE7E3" />
+const Events = <Pill text="Events" icon="artist-palette" textColor="#4C160F" bgColor="#FFE7E3" />
 const Sports = <Pill text="Sports" icon="man-swimming-light-skin-tone" textColor="#874100" bgColor="#FFF1E4" />
 const Politics = <Pill text="Politics" icon="balance-scale" textColor="#4C0E3E" bgColor="#FEE4FB" />
 const Climate = <Pill text="Climate" icon="books" textColor="#076C11" bgColor="#E3FFE6" />
@@ -48,10 +49,13 @@ export const pill = (type: string) => {
     case 'business':
       return Business
       
-    case 'art':
-      return Art
+    case 'arts':
+      return Arts
       
-    case 'sports':
+    case 'events':
+      return Events
+      
+    case 'sport':
       return Sports
       
     case 'politics':
