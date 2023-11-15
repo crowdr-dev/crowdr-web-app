@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from "next/image";
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types/Component";
 import { Button } from "./Button";
 import ProgressBar from "./ProgressBar";
 

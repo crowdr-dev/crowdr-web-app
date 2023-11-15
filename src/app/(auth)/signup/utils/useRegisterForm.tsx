@@ -2,7 +2,7 @@ import { useState, Dispatch, SetStateAction } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { UseFormReturn } from "react-hook-form/dist/types";
 
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types/Component";
 
 const RegisterFormContext: RFC = ({ children }) => {
   const [formPage, setFormPage] = useState<FormPage>("intro")

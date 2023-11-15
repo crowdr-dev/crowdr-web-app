@@ -4,7 +4,7 @@ import Sidebar from "./dashboard-components/Sidebar";
 import Page from "./dashboard-components/Page";
 import UserProvider from "./utils/useUser";
 
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types/Component";
 
 const DashboardLayout: RFC = (props) => {
   return (

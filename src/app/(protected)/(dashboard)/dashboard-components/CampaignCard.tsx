@@ -5,8 +5,8 @@ import { pill } from "./Pill"
 import { formatAmount } from "../utils/currency"
 import { getDuration } from "../utils/date"
 
-import { Campaign } from "@/types/Campaign"
-import { RFC } from "@/types/Component"
+import { Campaign } from "@/app/common/types/Campaign"
+import { RFC } from "@/app/common/types/Component"
 
 const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
   const {

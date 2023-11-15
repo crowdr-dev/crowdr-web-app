@@ -1,4 +1,4 @@
-import { RFC } from "@/types/Component"
+import { RFC } from "@/app/common/types/Component"
 import { FieldError, UseFormRegisterReturn } from "react-hook-form"
 
 const TextInput: RFC<TextInputProps> = ({

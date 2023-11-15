@@ -16,8 +16,8 @@ import { useUser } from "../utils/useUser"
 import makeRequest from "@/utils/makeRequest"
 
 import { campaignCategories } from "@/utils/campaignCategory"
-import { RFC } from "@/types/Component"
-import { Campaign } from "@/types/Campaign"
+import { RFC } from "@/app/common/types/Component"
+import { Campaign } from "@/app/common/types/Campaign"
 
 const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
   const {

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import {Control, FieldError, UseFormRegisterReturn, useFormContext, useWatch} from "react-hook-form"
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types/Component";
 
 const TextAreaInput: RFC<TextAreaInputProps> = ({ config, label, error, control, placeholder, characterLimit, optional, ariaLabelledBy }) => {
   const {setValue} = useFormContext()

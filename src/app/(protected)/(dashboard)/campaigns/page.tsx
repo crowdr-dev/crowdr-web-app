@@ -11,7 +11,7 @@ import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
-import { Campaign } from "@/types/Campaign"
+import { Campaign } from "@/app/common/types/Campaign"
 import { getUser } from "@/app/api/user/getUser"
 
 const Campaigns = () => {

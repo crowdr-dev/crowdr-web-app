@@ -1,4 +1,4 @@
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types/Component";
 
 const DrawerTrigger: RFC<DrawerTriggerProps> = ({ id, children, type, placement }) => {
   return (

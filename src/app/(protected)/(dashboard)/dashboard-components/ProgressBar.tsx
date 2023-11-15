@@ -1,4 +1,4 @@
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types/Component";
 
 const ProgressBar: RFC<ProgressBarProps> = ({ percent, bgColor, showValue }) => {
   return (

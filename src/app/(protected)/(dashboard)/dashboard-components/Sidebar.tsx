@@ -8,7 +8,7 @@ import { pageGroups } from "../pages";
 import Icon from "./Icon";
 import Cloud from "../../../../../public/svg/upload-cloud.svg"
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg";
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types/Component";
 
 const Sidebar: RFC<SidebarProps> = ({drawer}) => {
   const currentPath = usePathname()

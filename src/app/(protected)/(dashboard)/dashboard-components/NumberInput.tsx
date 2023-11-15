@@ -1,4 +1,4 @@
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types/Component";
 import CurrencyInput from "react-currency-input-field";
 import {
   useFormContext,

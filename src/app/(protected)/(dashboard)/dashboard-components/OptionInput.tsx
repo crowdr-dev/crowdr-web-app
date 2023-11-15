@@ -1,4 +1,4 @@
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types/Component";
 import { UseFormRegisterReturn } from "react-hook-form";
 
 const OptionInput: RFC<OptionInputProps> = ({
