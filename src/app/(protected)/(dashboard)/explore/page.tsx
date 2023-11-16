@@ -33,7 +33,7 @@ export type CampaignProps = {
   story: string
   campaignType: string
   campaignStatus: string
-  campaignCoverImage: CampaignImage[]
+  campaignCoverImage: CampaignImage
   campaignAdditionalImagesUrl: string[]
   campaignViews: number
   fundraise: {

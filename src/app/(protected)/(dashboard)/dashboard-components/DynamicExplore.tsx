@@ -18,7 +18,8 @@ type CampaignImage = {
     id: string
 }
 
-export type CampaignProps = {
+
+type CampaignProps = {
     _id: string
     userId: string
     category: string
@@ -26,7 +27,7 @@ export type CampaignProps = {
     story: string
     campaignType: string
     campaignStatus: string
-    campaignCoverImage: CampaignImage[]
+    campaignCoverImage: CampaignImage
     campaignAdditionalImagesUrl: string[]
     campaignViews: number
     fundraise: {
