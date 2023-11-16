@@ -64,7 +64,6 @@ const fetchSingleCampaign = async () => {
   setCampaign(singleCampaign)
 }
 
-console.log("campaign",campaign)
 useEffect(() => {
   fetchSingleCampaign()
 },[params.id])
@@ -74,11 +73,11 @@ useEffect(() => {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-2xl text-black font-semibold">
-            Donate or Volunteer
+            {campaign?.campaignType==="fundraise"? "Donate" : "Volunteer"}
           </h3>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-12 min-w-full">
+      <div className="grid grid-cols-1 gap-12 min-w-full md:grid-cols-2">
       <ExploreCard
             name='Nicholas'
             tier='Individual'
@@ -87,15 +86,18 @@ useEffect(() => {
             totalAmount={campaign?.fundraise.fundingGoalDetails[0].amount}
             currentAmount={6000}
             timePosted={campaign?.fundraise.startOfFundraise}
+            slideImages={[campaign?.campaignCoverImage?.url, ...(campaign?.campaignAdditionalImagesUrl || [])]}
             donateImage={
               campaign?.campaignCoverImage?.url
             }
             routeTo={`/explore/`}
             avatar={"https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg"}
+            campaignType={campaign?.campaignType}
           />
         <div>
           <div>
-            <span
+            {
+              campaign?.campaignType==="fundraise"?<span
               className={`text-sm p-3 ${
                 tab === "donate" ? activeTabStyle : inActiveTabStyle
               }`}
@@ -104,7 +106,7 @@ useEffect(() => {
               }}
             >
               Donate
-            </span>
+            </span>:
             <span
               className={`text-sm p-3 ml-4 ${
                 tab === "volunteer" ? activeTabStyle : inActiveTabStyle
@@ -115,6 +117,8 @@ useEffect(() => {
             >
               Volunteer
             </span>
+            }
+            
           </div>
           <hr className="mt-[9px]" />
 

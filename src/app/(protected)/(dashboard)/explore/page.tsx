@@ -17,6 +17,14 @@ type FundraisingGoalProps = {
   amount: number
   currency: string
 }
+
+type CampaignImage = {
+  _id: string
+  url: string
+  public_id: string
+  id: string
+}
+
 export type CampaignProps = {
   _id: string
   userId: string
@@ -25,7 +33,7 @@ export type CampaignProps = {
   story: string
   campaignType: string
   campaignStatus: string
-  campaignCoverImageUrl: string
+  campaignCoverImage: CampaignImage[]
   campaignAdditionalImagesUrl: string[]
   campaignViews: number
   fundraise: {
@@ -34,8 +42,9 @@ export type CampaignProps = {
     endOfFundraise: string
   }
 }
-export default async function Explore () {
+export default async function Explore() {
   const campaigns = await getCampaigns()
+
   return (
     <div>
       <div className='flex items-center justify-between mb-4'>
@@ -62,17 +71,18 @@ export default async function Explore () {
             totalAmount={campaign.fundraise.fundingGoalDetails[0].amount}
             currentAmount={6000}
             timePosted={campaign.fundraise.startOfFundraise}
-            slideImages={campaign.campaignAdditionalImagesUrl}
+            slideImages={[campaign.campaignCoverImage?.url, ...(campaign.campaignAdditionalImagesUrl || [])]}
             donateImage={
               'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
             }
             routeTo={`/explore/donate-or-volunteer/${campaign._id}`}
             avatar={Avatar}
             key={index}
+            campaignType={campaign.campaignType}
           />
         ))}
       </div>
-      <DynamicExplore/>
+      <DynamicExplore />
 
     </div>
   )
