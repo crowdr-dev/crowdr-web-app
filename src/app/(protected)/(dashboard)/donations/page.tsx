@@ -13,6 +13,7 @@ import { Campaign } from "@/app/common/types/Campaign"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
+import { Tab, Tabset } from "../dashboard-components/Tab"
 
 const Donations = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -31,7 +32,7 @@ const Donations = () => {
         }
         const { success, data } = await makeRequest<{
           success: boolean
-          data: {campaigns: Campaign[]}
+          data: { campaigns: Campaign[] }
         }>(endpoint, {
           headers,
           method: "GET",
@@ -53,9 +54,7 @@ const Donations = () => {
         <h1 className="text-lg md:text-2xl font-semibold text-[#101828] mb-[5px]">
           My Donations
         </h1>
-        <p className="text-[15px] text-[#667085]">
-          Manage your donations
-        </p>
+        <p className="text-[15px] text-[#667085]">Manage your donations</p>
       </hgroup>
 
       {/* action buttons */}
@@ -84,18 +83,10 @@ const Donations = () => {
       </div>
 
       {/* stats */}
-      <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[44px]">
+      <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[43px]">
         {/* TODO: get background image */}
-        <StatCard
-          title="Total Donations"
-          text="N235,880.70"
-          pattern
-        />
-        <StatCard
-          title="All Campaigns"
-          text="18"
-          colorScheme="light"
-        />
+        <StatCard title="Total Donations" text="N235,880.70" pattern />
+        <StatCard title="All Campaigns" text="18" colorScheme="light" />
         <StatCard
           title="My Badge"
           text="Saviour"
@@ -105,36 +96,15 @@ const Donations = () => {
         />
       </div>
 
-      <div className="flex md:hidden mb-[23px] md:mb-[9px]">
-        <WhiteButton
-          text="Export Report"
-          iconUrl={FileDownloadIcon}
-          shadow
-          className="mr-3"
-        />
-        <Button text="Withdraw Donations" />
-      </div>
-
-      {/* all campaigns x filters */}
-      <h2 className="md:hidden text-lg text-[#292A2E] mb-[9px]">
-        All Campaigns
-      </h2>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="hidden md:block text-xl text-[#292A2E]">
-          All Campaigns
-        </h2>
-        <TextInput
-          value=""
-          onChange={() => null}
-          placeholder="Search campaigns"
-          icon={BiSearch}
-          styles={{
-            wrapper: "grow mr-[22px] block md:hidden",
-            input: "text-sm",
-          }}
-        />
-        <GrayButton text="Filters" iconUrl={FilterIcon} />
-      </div>
+      {/* donations table */}
+      <Tabset>
+        <Tab heading="Volunteer">
+          <p>Volunteer!</p>
+        </Tab>
+        <Tab heading="Campaign">
+          <p>Campaign!</p>
+        </Tab>
+      </Tabset>
 
       {/* campaigns */}
       <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px]">
