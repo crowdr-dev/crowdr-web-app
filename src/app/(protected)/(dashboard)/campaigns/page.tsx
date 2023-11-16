@@ -5,14 +5,14 @@ import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
 import TextInput from "../dashboard-components/TextInput"
 import StatCard from "../dashboard-components/StatCard"
 import { useUser } from "../utils/useUser"
+import { getUser } from "@/app/api/user/getUser"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
+import { Campaign, CampaignResponse } from "@/app/common/types/Campaign"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
-import { Campaign } from "@/app/common/types/Campaign"
-import { getUser } from "@/app/api/user/getUser"
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -31,12 +31,12 @@ const Campaigns = () => {
         }
         const { success, data } = await makeRequest<{
           success: boolean
-          data: Campaign[]
+          data: CampaignResponse
         }>(endpoint, {
           headers,
           method: "GET",
         })
-        setCampaigns(data)
+        setCampaigns(data.campaigns)
       } catch (error) {
         const message = extractErrorMessage(error)
         // toast({ title: "Oops!", body: message, type: "error" })
@@ -50,10 +50,7 @@ const Campaigns = () => {
     <div>
       {/* page title x subtitle */}
       <hgroup className="mb-[5px]">
-        <h1 className="hidden md:block text-2xl font-semibold text-[#101828] mb-[5px]">
-          Campaigns
-        </h1>
-        <h1 className="md:hidden text-lg font-semibold text-[#101828] mb-[5px]">
+        <h1 className="text-lg md:text-2xl font-semibold text-[#101828] mb-[5px]">
           My Campaigns
         </h1>
         <p className="text-[15px] text-[#667085]">
@@ -63,6 +60,7 @@ const Campaigns = () => {
 
       {/* action buttons */}
       <div className="flex justify-between items-center mb-5 md:mb-10">
+        {/* button group */}
         <div className="inline-flex rounded-md" role="group">
           <button
             type="button"
@@ -100,22 +98,22 @@ const Campaigns = () => {
         {/* TODO: get background image */}
         <StatCard
           title="Total Raised"
-          figure="N235,880.70"
-          percentageChange={100}
+          text="N235,880.70"
+          percentage={100}
           time="yesterday"
           pattern
         />
         <StatCard
           title="Total Campaigns"
-          figure="2"
-          percentageChange={100}
+          text="2"
+          percentage={100}
           time="yesterday"
           colorScheme="light"
         />
         <StatCard
           title="Campaign Views"
-          figure="19,830"
-          percentageChange={100}
+          text="19,830"
+          percentage={100}
           time="yesterday"
           colorScheme="light"
         />
@@ -154,7 +152,9 @@ const Campaigns = () => {
 
       {/* campaigns */}
       <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px]">
-        {campaigns.map(campaign => <CampaignCard key={campaign._id} campaign={campaign} />)}
+        {campaigns.map((campaign) => (
+          <CampaignCard key={campaign._id} campaign={campaign} />
+        ))}
       </div>
     </div>
   )

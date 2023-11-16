@@ -1,4 +1,5 @@
 import { CampaignCategory } from "@/utils/campaignCategory";
+import { Pagination } from "./Common";
 
 export interface Campaign {
   _id:                      string;
@@ -33,6 +34,11 @@ export interface Fundraise {
 export interface FundingGoalDetail {
   amount:   number;
   currency: string;
+}
+
+export interface CampaignResponse {
+  campaigns: Campaign[]
+  pagination: Pagination
 }
 
 export type CampaignStatus = "completed" | "in-progress" | "declined" | "in-review"
