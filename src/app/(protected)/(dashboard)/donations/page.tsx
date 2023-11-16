@@ -13,7 +13,7 @@ import { Campaign } from "@/app/common/types/Campaign"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
-import { Tab, Tabset } from "../dashboard-components/Tab"
+import Tabs from "../dashboard-components/Tab"
 
 const Donations = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -97,14 +97,15 @@ const Donations = () => {
       </div>
 
       {/* donations table */}
-      <Tabset>
-        <Tab heading="Volunteer">
+      <Tabs>
+        <Tabs.Item heading="Volunteer">
           <p>Volunteer!</p>
-        </Tab>
-        <Tab heading="Campaign">
+        </Tabs.Item>
+        
+        <Tabs.Item heading="Campaign">
           <p>Campaign!</p>
-        </Tab>
-      </Tabset>
+        </Tabs.Item>
+      </Tabs>
 
       {/* campaigns */}
       <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px]">

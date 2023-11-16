@@ -8,7 +8,7 @@ import {
 } from "react"
 import { RFC } from "@/app/common/types/Component"
 
-const Tabset: RFC<TabsetProps> = ({ children, activeTab: initialTab }) => {
+const Tabs: (RFC<TabsProps> & {Item: RFC<TabItemProps>}) = ({ children, activeTab: initialTab }) => {
   const tabs = Children.map(children, (child) => child)
   const tabHeadings = tabs.map((tabElement) => tabElement.props.heading)
   const [activeTab, setActiveTab] = useState(
@@ -17,7 +17,7 @@ const Tabset: RFC<TabsetProps> = ({ children, activeTab: initialTab }) => {
 
   return (
     <div>
-      <div className="flex gap-4">
+      <div className="flex gap-4 border-b boder-[#E4E7EC]">
         {tabHeadings.map((heading) => (
           <TabHeading
             heading={heading}
@@ -26,7 +26,6 @@ const Tabset: RFC<TabsetProps> = ({ children, activeTab: initialTab }) => {
           />
         ))}
       </div>
-      <hr />
 
       {tabs.map((tab) => (
         <TabContent tab={tab} activeTab={activeTab} />
@@ -35,7 +34,7 @@ const Tabset: RFC<TabsetProps> = ({ children, activeTab: initialTab }) => {
   )
 }
 
-const Tab: RFC<TabProps> = ({ children }) => {
+Tabs.Item = ({ children }) => {
   return (
     <div className="mt-6">
       <div className="bg-[#F9F9F9] p-4">{children}</div>
@@ -71,14 +70,14 @@ const TabContent: RFC<TabContentProps> = ({ tab, activeTab }) => {
   ) : null
 }
 
-export { Tabset, Tab }
+export default Tabs
 
-type TabsetProps = {
+type TabsProps = {
   activeTab?: string
-  children: ReactElement<TabProps>[] | ReactElement<TabProps>
+  children: ReactElement<TabItemProps>[] | ReactElement<TabItemProps>
 }
 
-type TabProps = {
+type TabItemProps = {
   heading: string
   children: ReactNode
 }
@@ -91,5 +90,5 @@ type TabHeadingProps = {
 
 type TabContentProps = {
   activeTab: string
-  tab: ReactElement<TabProps>
+  tab: ReactElement<TabItemProps>
 }
