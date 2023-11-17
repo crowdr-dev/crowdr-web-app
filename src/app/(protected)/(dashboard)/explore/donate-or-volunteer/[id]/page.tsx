@@ -83,9 +83,9 @@ useEffect(() => {
             tier='Individual'
             header={campaign?.title}
             subheader={campaign?.story}
-            totalAmount={campaign?.fundraise.fundingGoalDetails[0].amount}
+            totalAmount={campaign?.fundraise?.fundingGoalDetails[0].amount}
             currentAmount={6000}
-            timePosted={campaign?.fundraise.startOfFundraise}
+            timePosted={campaign?.fundraise?.startOfFundraise}
             slideImages={[campaign?.campaignCoverImage?.url, ...(campaign?.campaignAdditionalImagesUrl || [])]}
             donateImage={
               campaign?.campaignCoverImage?.url
