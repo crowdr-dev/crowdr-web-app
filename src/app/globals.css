@@ -4,6 +4,7 @@
 @import '../app/common/styles/variable.css';
 @import '../../public/coolicons.css';
 @import './common/styles/variable.css';
+@import '../app//\(protected\)/\(dashboard\)/dashboard-styles/styles.css';
 
 * {
   margin: 0;

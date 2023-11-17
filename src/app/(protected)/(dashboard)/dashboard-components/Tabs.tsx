@@ -17,7 +17,7 @@ const Tabs: (RFC<TabsProps> & {Item: RFC<TabItemProps>}) = ({ children, activeTa
 
   return (
     <div>
-      <div className="flex gap-4 border-b boder-[#E4E7EC]">
+      <div className="flex gap-4 border-b boder-[#E4E7EC] mb-8">
         {tabHeadings.map((heading) => (
           <TabHeading
             heading={heading}
@@ -47,7 +47,7 @@ const TabHeading: RFC<TabHeadingProps> = ({
   activeTab,
   onSelectTab,
 }) => {
-  const activeTabStyle = "text-[#00B964] border-b-2 border-[#00B964]"
+  const activeTabStyle = "text-[#00B964] bg-[#FCFCFC] border-b-2 border-[#00B964]"
   const inActiveTabStyle = "text-[#667085]"
 
   return (
@@ -66,7 +66,7 @@ const TabHeading: RFC<TabHeadingProps> = ({
 
 const TabContent: RFC<TabContentProps> = ({ tab, activeTab }) => {
   return tab.props.heading == activeTab ? (
-    <div className="p-4 mt-6">{tab.props.children}</div>
+    <div>{tab.props.children}</div>
   ) : null
 }
 

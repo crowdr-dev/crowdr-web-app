@@ -13,7 +13,8 @@ import { Campaign } from "@/app/common/types/Campaign"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
-import Tabs from "../dashboard-components/Tab"
+import Tabs from "../dashboard-components/Tabs"
+import { Table } from "flowbite-react"
 
 const Donations = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -96,25 +97,69 @@ const Donations = () => {
         />
       </div>
 
-      {/* donations table */}
+      {/* donations x volunteering */}
       <Tabs>
-        <Tabs.Item heading="Volunteer">
-          <p>Volunteer!</p>
+        <Tabs.Item heading="Donations">
+          <Table className="table-component">
+            <Table.Head>
+              <Table.HeadCell className="table-head-cell">Campaign</Table.HeadCell>
+              <Table.HeadCell className="table-head-cell">Amount</Table.HeadCell>
+              <Table.HeadCell className="table-head-cell">Date & time</Table.HeadCell>
+              <Table.HeadCell className="table-head-cell">Status</Table.HeadCell>
+            </Table.Head>
+
+            <Table.Body>
+              {donations.map((donation, index) => (
+                <Table.Row key={index}>
+                  <Table.Cell>{donation.campaign}</Table.Cell>
+                  <Table.Cell>{donation.amount}</Table.Cell>
+                  <Table.Cell>{donation.date}</Table.Cell>
+                  <Table.Cell>{donation.status}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
         </Tabs.Item>
-        
-        <Tabs.Item heading="Campaign">
+
+        <Tabs.Item heading="Volunteering">
           <p>Campaign!</p>
         </Tabs.Item>
       </Tabs>
-
-      {/* campaigns */}
-      <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px]">
-        {campaigns.map((campaign) => (
-          <CampaignCard key={campaign._id} campaign={campaign} />
-        ))}
-      </div>
     </div>
   )
 }
 
 export default Donations
+
+const donations = [
+  {
+    campaign: "Help Tife pay her college fees",
+    amount: "N40,000.00",
+    date: "Tue 26 Jul, 2022; 10:14 PM",
+    status: "Success" 
+  },
+  {
+    campaign: "Support 400 kids get a backpack",
+    amount: "N40,000.00",
+    date: "Tue 26 Jul, 2022; 10:14 PM",
+    status: "Success" 
+  },
+  {
+    campaign: "Help Crowdr raise $300M",
+    amount: "N21,300.00",
+    date: "Tue 26 Jul, 2022; 10:14 PM",
+    status: "Success" 
+  },
+  {
+    campaign: "Film Documentary: Ocean Conservation",
+    amount: "N21,300.00",
+    date: "Tue 26 Jul, 2022; 10:14 PM",
+    status: "Success" 
+  },
+  {
+    campaign: "Support 400 kids get a backpack",
+    amount: "N21,300.00",
+    date: "Tue 26 Jul, 2022; 10:14 PM",
+    status: "Success" 
+  },
+]

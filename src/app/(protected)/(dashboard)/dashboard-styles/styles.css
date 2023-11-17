@@ -1,0 +1,11 @@
+@tailwind components;
+
+@layer components {
+  .table-component {
+    @apply border border-[#E4E7EC] rounded-lg bg-white !important
+  }
+  
+  .table-head-cell {
+    @apply text-xs text-[#667085] font-normal normal-case bg-white px-6 py-3 !important
+  }
+}
