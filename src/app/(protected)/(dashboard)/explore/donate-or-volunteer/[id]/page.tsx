@@ -55,8 +55,9 @@ const ageRange = [
 ];
 
 export default function DonateOrVolunteer({params}:{params: {id: string}}) {
-  const [tab, setTab] = useState("donate");
   const [campaign, setCampaign] = useState<any>()
+  const [tab, setTab] = useState(campaign?.campaignType==="fundraise" ? "donate" : "volunteer");
+
 
 
 const fetchSingleCampaign = async () => {
