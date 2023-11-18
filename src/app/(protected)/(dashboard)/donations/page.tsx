@@ -10,6 +10,7 @@ import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
 import { ICampaign } from "@/app/common/types/Campaign"
+import Label from "../dashboard-components/Label"
 
 const Donations = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -111,17 +112,25 @@ const Donations = () => {
                   <Table.Cell>{donation.campaign}</Table.Cell>
                   <Table.Cell>{donation.amount}</Table.Cell>
                   <Table.Cell>{donation.date}</Table.Cell>
-                  <Table.Cell>{donation.status}</Table.Cell>
+                  <Table.Cell>
+                    <Label text={donation.status} />
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
           </Table>
 
-          <Pagination total={50} currentPage={page} perPage={5} onPageChange={setPage} className="px-[18px] py-4" />
+          <Pagination
+            total={50}
+            currentPage={page}
+            perPage={5}
+            onPageChange={setPage}
+            className="px-[18px] py-4"
+          />
         </Tabs.Item>
 
         <Tabs.Item heading="Volunteering">
-          <p>Campaign!</p>
+          <p>Volunteering</p>
         </Tabs.Item>
       </Tabs>
     </div>
@@ -135,30 +144,30 @@ const donations = [
     campaign: "Help Tife pay her college fees",
     amount: "N40,000.00",
     date: "Tue 26 Jul, 2022; 10:14 PM",
-    status: "Success" 
+    status: "Success",
   },
   {
     campaign: "Support 400 kids get a backpack",
     amount: "N40,000.00",
     date: "Tue 26 Jul, 2022; 10:14 PM",
-    status: "Success" 
+    status: "Success",
   },
   {
     campaign: "Help Crowdr raise $300M",
     amount: "N21,300.00",
     date: "Tue 26 Jul, 2022; 10:14 PM",
-    status: "Success" 
+    status: "Success",
   },
   {
     campaign: "Film Documentary: Ocean Conservation",
     amount: "N21,300.00",
     date: "Tue 26 Jul, 2022; 10:14 PM",
-    status: "Success" 
+    status: "Success",
   },
   {
     campaign: "Support 400 kids get a backpack",
     amount: "N21,300.00",
     date: "Tue 26 Jul, 2022; 10:14 PM",
-    status: "Success" 
+    status: "Success",
   },
 ]
