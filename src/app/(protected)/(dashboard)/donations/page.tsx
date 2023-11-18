@@ -11,6 +11,7 @@ import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
 import { ICampaign } from "@/app/common/types/Campaign"
 import Label from "../dashboard-components/Label"
+import DonationDetail from "../dashboard-components/DonationDetail"
 
 const Donations = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -97,7 +98,6 @@ const Donations = () => {
       {/* donations x volunteering */}
       <Tabs>
         <Tabs.Item heading="Donations">
-          {/* TODO: CREATE LIST FOR MOBILE */}
           <Table className="hidden md:block mb-9">
             <Table.Head>
               <Table.HeadCell>Campaign</Table.HeadCell>
@@ -119,6 +119,10 @@ const Donations = () => {
               ))}
             </Table.Body>
           </Table>
+
+          <div className="flex flex-col md:hidden">
+            {donations.map((donation, index) => <DonationDetail key={index} {...donation} />)}
+          </div>
 
           <Pagination
             total={50}
