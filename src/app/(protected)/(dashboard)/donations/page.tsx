@@ -15,6 +15,7 @@ import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
 import Tabs from "../dashboard-components/Tabs"
 import Table from "../dashboard-components/Table"
+import Pagination from "../dashboard-components/Pagination"
 
 const Donations = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -93,14 +94,15 @@ const Donations = () => {
           text="Saviour"
           detail="Keep spreading love to unlock more badges!"
           colorScheme="light"
-          iconUrl="/svg/badge.png"
+          iconUrl="/svg/badge.svg"
         />
       </div>
 
       {/* donations x volunteering */}
       <Tabs>
         <Tabs.Item heading="Donations">
-          <Table className="mb-9">
+          {/* TODO: CREATE LIST FOR MOBILE */}
+          <Table className="hidden md:block mb-9">
             <Table.Head>
               <Table.HeadCell>Campaign</Table.HeadCell>
               <Table.HeadCell>Amount</Table.HeadCell>
@@ -119,6 +121,8 @@ const Donations = () => {
               ))}
             </Table.Body>
           </Table>
+
+          <Pagination totalPages={50} currentPage={1} pageCount={5} onPageChange={() => {}} className="px-[18px] py-4" />
         </Tabs.Item>
 
         <Tabs.Item heading="Volunteering">

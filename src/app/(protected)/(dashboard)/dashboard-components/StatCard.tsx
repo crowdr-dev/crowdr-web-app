@@ -14,7 +14,7 @@ const StatCard: RFC<StatCardProps> = ({title, text, percentage, changeType, time
   return (
     <div style={{backgroundColor, backgroundBlendMode: 'overlay'}} className="relative flex flex-col justify-center gap-2 rounded-[5px] py-[22.5px] px-[21px]">
       <p style={{color: titleColor}} className="text-sm">{title}</p>
-      <p style={{color: textColor}} className="flex text-2xl">{iconUrl && <Image src={iconUrl} width={30} height={30} alt='icon' />} {text}</p>
+      <p style={{color: textColor}} className={(iconUrl ? "" : "text-2xl") + " flex items-center"}>{iconUrl && <Image src={iconUrl} width={30} height={30} alt='icon' />} {text}</p>
       {percentage && <div className="flex items-center">
         <p className="flex items-center mr-[10px]">
           {changeType == 'rise' && <FaArrowUp style={{fill: changeColor}} className="text-[1.05rem] mr-1" />}

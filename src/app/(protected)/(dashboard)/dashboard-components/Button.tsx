@@ -109,7 +109,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   return (
     <>
       {icon}
-      <span style={textStyle}>{text}</span>
+      {text && <span style={textStyle}>{text}</span>}
       {loading && (
         <CgSpinner
           size="20px"
@@ -163,7 +163,7 @@ type ButtonProps = ButtonContentProps & {
 }
 
 type ButtonContentProps = {
-  text: string
+  text?: string
   textColor?: string
   icon?: IconType
   iconUrl?: string
