@@ -23,6 +23,7 @@ export const Button: RFC<ButtonProps> = ({
   loading,
   disabled,
   className,
+  iconPosition,
 }) => {
   const props = {
     text,
@@ -36,8 +37,10 @@ export const Button: RFC<ButtonProps> = ({
   }
 
   const buttonRef = useRef<any>(null)
+  const flexDirection = iconPosition == "right" ? "flex-row-reverse" : "flex-row"
   const buttonClasses =
-    "inline-flex justify-between items-center rounded-lg cursor-pointer text-sm transition px-[16px] py-[10px] " +
+    flexDirection +
+    " inline-flex justify-between items-center gap-2 rounded-lg cursor-pointer text-sm transition px-[16px] py-[10px] " +
     className
   const darkerBgColor = darken(bgColor!)
 
@@ -89,23 +92,28 @@ const ButtonContent: RFC<ButtonContentProps> = ({
     color: textColor || "inherit",
   }
 
+  let icon = null
+  if (props.icon) {
+    icon = <props.icon />
+  } else if (iconUrl) {
+    icon = (
+      <Image
+        src={iconUrl}
+        height={20}
+        width={20}
+        alt="button icon"
+      />
+    )
+  }
+
   return (
     <>
-      {iconUrl && (
-        <Image
-          src={iconUrl}
-          height={20}
-          width={20}
-          alt="button icon"
-          className="mr-2"
-        />
-      )}
-      {props.icon && <props.icon className="mr-2" />}
+      {icon}
       <span style={textStyle}>{text}</span>
       {loading && (
         <CgSpinner
           size="20px"
-          className="animate-spin icon opacity-100 ml-2.5"
+          className="animate-spin icon opacity-100"
         />
       )}
     </>
@@ -139,25 +147,27 @@ Button.defaultProps = {
   bgColor: "#00B964",
   textColor: "#FFF",
   buttonType: "button",
+  iconPosition: "left",
 }
 
 type ButtonProps = ButtonContentProps & {
   href?: string
   onClick?: () => void
   buttonType?: "button" | "submit" | "reset"
+  bgColor?: string
+  outlineColor?: string
+  shadow?: boolean
+  disabled?: boolean
+  className?: string
+  iconPosition?: "left" | "right"
 }
 
 type ButtonContentProps = {
   text: string
   textColor?: string
-  bgColor?: string
-  outlineColor?: string
-  iconUrl?: string
   icon?: IconType
-  shadow?: boolean
+  iconUrl?: string
   loading?: boolean
-  disabled?: boolean
-  className?: string
 }
 
 function darken(color: string) {
