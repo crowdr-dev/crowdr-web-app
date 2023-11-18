@@ -14,7 +14,7 @@ import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
 import Tabs from "../dashboard-components/Tabs"
-import { Table } from "flowbite-react"
+import Table from "../dashboard-components/Table"
 
 const Donations = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -100,12 +100,12 @@ const Donations = () => {
       {/* donations x volunteering */}
       <Tabs>
         <Tabs.Item heading="Donations">
-          <Table className="table-component">
+          <Table className="mb-9">
             <Table.Head>
-              <Table.HeadCell className="table-head-cell">Campaign</Table.HeadCell>
-              <Table.HeadCell className="table-head-cell">Amount</Table.HeadCell>
-              <Table.HeadCell className="table-head-cell">Date & time</Table.HeadCell>
-              <Table.HeadCell className="table-head-cell">Status</Table.HeadCell>
+              <Table.HeadCell>Campaign</Table.HeadCell>
+              <Table.HeadCell>Amount</Table.HeadCell>
+              <Table.HeadCell>Date & time</Table.HeadCell>
+              <Table.HeadCell>Status</Table.HeadCell>
             </Table.Head>
 
             <Table.Body>

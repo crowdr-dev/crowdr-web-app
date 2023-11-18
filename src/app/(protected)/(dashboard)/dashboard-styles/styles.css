@@ -2,7 +2,7 @@
 
 @layer components {
   .table-component {
-    @apply border border-[#E4E7EC] rounded-lg bg-white !important
+    @apply border border-[#E4E7EC] rounded-lg bg-white shadow-none !important
   }
   
   .table-head-cell {
