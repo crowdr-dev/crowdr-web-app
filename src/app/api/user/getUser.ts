@@ -28,7 +28,7 @@ export const getUser = async () => {
   const { data: user } = await makeRequest<{ data: User }>(endpoint, {
     headers,
     cache: "force-cache",
-    tags: [userTag] // for cache revalidation
+    tags: [userTag], // for cache revalidation
   });
   return user;
 };
