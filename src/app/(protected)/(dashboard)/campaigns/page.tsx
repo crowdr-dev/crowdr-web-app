@@ -21,7 +21,6 @@ const Campaigns = () => {
   const [pagination, setPagination] = useState<IPagination>()
   const [page, setPage] = useState(1)
   const user = useUser()
-  console.log(pagination)
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -164,7 +163,7 @@ const Campaigns = () => {
       </div>
 
       {/* pagination */}
-      {pagination && <Pagination currentPage={page} pageCount={pagination.perPage} totalPages={pagination.total} onPageChange={setPage} />}
+      {pagination && <Pagination currentPage={pagination.currentPage} pageCount={pagination.perPage} totalPages={pagination.total} onPageChange={setPage} />}
     </div>
   )
 }
