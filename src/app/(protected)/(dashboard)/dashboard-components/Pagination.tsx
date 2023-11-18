@@ -45,6 +45,7 @@ const Pagination: RFC<PaginationProps> = ({
       <div className="hidden md:flex gap-[6px]">
         {pages.map((page) => (
           <Page
+            key={page}
             page={page}
             currentPage={currentPage}
             onPageSelect={onPageChange}

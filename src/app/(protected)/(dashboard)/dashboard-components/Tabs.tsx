@@ -20,6 +20,7 @@ const Tabs: Tabs = ({ children, activeTab: initialTab }) => {
       <div className="flex gap-4 border-b boder-[#E4E7EC] mb-8">
         {tabHeadings.map((heading) => (
           <TabHeading
+            key={heading}
             heading={heading}
             activeTab={activeTab}
             onSelectTab={setActiveTab}
@@ -28,7 +29,7 @@ const Tabs: Tabs = ({ children, activeTab: initialTab }) => {
       </div>
 
       {tabs.map((tab) => (
-        <TabContent tab={tab} activeTab={activeTab} />
+        <TabContent key={tab.props.heading} tab={tab} activeTab={activeTab} />
       ))}
     </div>
   )
