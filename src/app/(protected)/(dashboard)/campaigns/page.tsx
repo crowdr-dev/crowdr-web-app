@@ -156,14 +156,14 @@ const Campaigns = () => {
       </div>
 
       {/* campaigns */}
-      <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px] mb-10">
+      <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px] mb-[30px] md:mb-10">
         {campaigns.map((campaign) => (
           <CampaignCard key={campaign._id} campaign={campaign} />
         ))}
       </div>
 
       {/* pagination */}
-      {pagination && <Pagination currentPage={pagination.currentPage} pageCount={pagination.perPage} totalPages={pagination.total} onPageChange={setPage} />}
+      {pagination && <Pagination currentPage={pagination.currentPage} pageCount={pagination.perPage} totalPages={pagination.total} onPageChange={setPage} className="px-4 py-3 md:p-0" />}
     </div>
   )
 }

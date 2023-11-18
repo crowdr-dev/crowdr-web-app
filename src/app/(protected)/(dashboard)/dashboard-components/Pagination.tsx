@@ -1,3 +1,4 @@
+import { useMediaQuery } from "usehooks-ts"
 import { WhiteButton } from "./Button"
 import { RFC } from "@/app/common/types/Component"
 
@@ -9,15 +10,16 @@ const Pagination: RFC<PaginationProps> = ({
   pageCount,
   totalPages,
   onPageChange,
-  className
+  className,
 }) => {
+  const isBigScreen = useMediaQuery("(min-width: 768px)")
   const noOfPages = Math.ceil(totalPages / pageCount)
   let pages = Array.from({ length: noOfPages }, (_, index) => index + 1)
 
   return (
     <div className={"flex justify-between items-center " + className}>
       <WhiteButton
-        text="Previous"
+        text={isBigScreen ? "Previous" : ""}
         iconUrl={ArrowLeftIcon}
         outlineColor="#D0D5DD"
         className="font-medium !border !p-2 md:!px-[14px]"
@@ -25,7 +27,7 @@ const Pagination: RFC<PaginationProps> = ({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage == 1}
       />
-      <div className="flex gap-[6px]">
+      <div className="hidden md:flex gap-[6px]">
         {pages.map((page) => (
           <Page
             page={page}
@@ -34,8 +36,11 @@ const Pagination: RFC<PaginationProps> = ({
           />
         ))}
       </div>
+      <div className="md:hidden text-sm font-medium">
+        Page {currentPage} of {noOfPages}
+      </div>
       <WhiteButton
-        text="Next"
+        text={isBigScreen ? "Next" : ""}
         iconUrl={ArrowRightIcon}
         outlineColor="#D0D5DD"
         iconPosition="right"
@@ -52,7 +57,9 @@ export default Pagination
 
 export const Page: RFC<PageProps> = ({ page, currentPage, onPageSelect }) => {
   const pageStyle =
-    page == currentPage ? "bg-primary text-white" : "hover:bg-[#F8F8F8] text-[#667085]"
+    page == currentPage
+      ? "bg-primary text-white"
+      : "hover:bg-[#F8F8F8] text-[#667085]"
 
   return (
     <div
