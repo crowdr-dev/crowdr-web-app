@@ -25,6 +25,7 @@ type ExploreCardProps = {
   routeTo?: string
   avatar: any
   timePosted?: string
+  campaignType?: string
 }
 
 const ExploreCard: RFC<ExploreCardProps> = props => {
@@ -39,7 +40,8 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
     currentAmount,
     donateImage,
     routeTo,
-    timePosted
+    timePosted,
+    campaignType
   } = props
 
   const [isCollapsed, setIsCollapsed] = useState(true)
@@ -177,7 +179,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
         </div>
       </div>
 
-      <Button text="Donate" className="w-full mt-4 !justify-center" href={routeTo} />
+      <Button text={campaignType === "fundraise" ?"Donate" : "Volunteer"} className="w-full mt-4 !justify-center" href={routeTo} />
     </div>
   )
 }
