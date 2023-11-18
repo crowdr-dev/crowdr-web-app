@@ -1,4 +1,5 @@
-import img from "../../assets/img.jpg";
+"use client";
+// import img from "../../assets/img.jpg";
 import React, { useCallback } from "react";
 
 const Profile = () => {
@@ -73,7 +74,7 @@ const Profile = () => {
               />
             ) : (
               <img
-                src={img}
+                // src={img}
                 className="w-[80%] h-[80%] rounded-[50%] object-cover"
               />
             )}
