@@ -1,53 +1,48 @@
 "use client"
 import { useEffect, useState } from "react"
-import CampaignCard from "../dashboard-components/CampaignCard"
-import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
-import TextInput from "../dashboard-components/TextInput"
 import StatCard from "../dashboard-components/StatCard"
+import Tabs from "../dashboard-components/Tabs"
+import Table from "../dashboard-components/Table"
+import Pagination from "../dashboard-components/Pagination"
 import { useUser } from "../utils/useUser"
 import { getUser } from "@/app/api/user/getUser"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
 import { ICampaign } from "@/app/common/types/Campaign"
-import { BiSearch } from "react-icons/bi"
-import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
-import FilterIcon from "../../../../../public/svg/filter.svg"
-import Tabs from "../dashboard-components/Tabs"
-import Table from "../dashboard-components/Table"
-import Pagination from "../dashboard-components/Pagination"
 
 const Donations = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
   const user = useUser()
+  const [page, setPage] = useState(1)
 
-  useEffect(() => {
-    const fetchCampaigns = async () => {
-      const query = new URLSearchParams({ page: "1", perPage: "10" })
-      const endpoint = `/api/v1/my-campaigns?${query}`
+  // useEffect(() => {
+  //   const fetchCampaigns = async () => {
+  //     const query = new URLSearchParams({ page: "1", perPage: "10" })
+  //     const endpoint = `/api/v1/my-campaigns?${query}`
 
-      try {
-        const user = await getUser()
-        const headers = {
-          "Content-Type": "multipart/form-data",
-          "x-auth-token": user?.token!,
-        }
-        const { success, data } = await makeRequest<{
-          success: boolean
-          data: { campaigns: ICampaign[] }
-        }>(endpoint, {
-          headers,
-          method: "GET",
-        })
-        setCampaigns(data.campaigns)
-      } catch (error) {
-        const message = extractErrorMessage(error)
-        // toast({ title: "Oops!", body: message, type: "error" })
-      }
-    }
+  //     try {
+  //       const user = await getUser()
+  //       const headers = {
+  //         "Content-Type": "multipart/form-data",
+  //         "x-auth-token": user?.token!,
+  //       }
+  //       const { success, data } = await makeRequest<{
+  //         success: boolean
+  //         data: { campaigns: ICampaign[] }
+  //       }>(endpoint, {
+  //         headers,
+  //         method: "GET",
+  //       })
+  //       setCampaigns(data.campaigns)
+  //     } catch (error) {
+  //       const message = extractErrorMessage(error)
+  //       // toast({ title: "Oops!", body: message, type: "error" })
+  //     }
+  //   }
 
-    fetchCampaigns()
-  }, [])
+  //   fetchCampaigns()
+  // }, [])
 
   return (
     <div>
@@ -122,7 +117,7 @@ const Donations = () => {
             </Table.Body>
           </Table>
 
-          <Pagination totalPages={50} currentPage={1} pageCount={5} onPageChange={() => {}} className="px-[18px] py-4" />
+          <Pagination total={50} currentPage={page} perPage={5} onPageChange={setPage} className="px-[18px] py-4" />
         </Tabs.Item>
 
         <Tabs.Item heading="Volunteering">

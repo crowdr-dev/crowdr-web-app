@@ -163,7 +163,7 @@ const Campaigns = () => {
       </div>
 
       {/* pagination */}
-      {pagination && <Pagination currentPage={pagination.currentPage} pageCount={pagination.perPage} totalPages={pagination.total} onPageChange={setPage} className="px-4 py-3 md:p-0" />}
+      {pagination && <Pagination currentPage={pagination.currentPage} perPage={pagination.perPage} total={pagination.total} onPageChange={setPage} className="px-4 py-3 md:p-0" />}
     </div>
   )
 }
