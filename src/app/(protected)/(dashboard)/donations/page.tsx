@@ -9,7 +9,7 @@ import { getUser } from "@/app/api/user/getUser"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
-import { Campaign } from "@/app/common/types/Campaign"
+import { ICampaign } from "@/app/common/types/Campaign"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
@@ -18,7 +18,7 @@ import Table from "../dashboard-components/Table"
 import Pagination from "../dashboard-components/Pagination"
 
 const Donations = () => {
-  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const [campaigns, setCampaigns] = useState<ICampaign[]>([])
   const user = useUser()
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const Donations = () => {
         }
         const { success, data } = await makeRequest<{
           success: boolean
-          data: { campaigns: Campaign[] }
+          data: { campaigns: ICampaign[] }
         }>(endpoint, {
           headers,
           method: "GET",

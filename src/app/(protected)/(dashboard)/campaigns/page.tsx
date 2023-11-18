@@ -4,23 +4,28 @@ import CampaignCard from "../dashboard-components/CampaignCard"
 import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
 import TextInput from "../dashboard-components/TextInput"
 import StatCard from "../dashboard-components/StatCard"
+import Pagination from "../dashboard-components/Pagination"
 import { useUser } from "../utils/useUser"
 import { getUser } from "@/app/api/user/getUser"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
-import { Campaign, CampaignResponse } from "@/app/common/types/Campaign"
+import { ICampaign, CampaignResponse } from "@/app/common/types/Campaign"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
+import { IPagination } from "@/app/common/types/Common"
 
 const Campaigns = () => {
-  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const [campaigns, setCampaigns] = useState<ICampaign[]>([])
+  const [pagination, setPagination] = useState<IPagination>()
+  const [page, setPage] = useState(1)
   const user = useUser()
+  console.log(pagination)
 
   useEffect(() => {
     const fetchCampaigns = async () => {
-      const query = new URLSearchParams({ page: "1", perPage: "10" })
+      const query = new URLSearchParams({ page: `${page}`, perPage: '4' })
       const endpoint = `/api/v1/my-campaigns?${query}`
 
       try {
@@ -37,6 +42,7 @@ const Campaigns = () => {
           method: "GET",
         })
         setCampaigns(data.campaigns)
+        setPagination(data.pagination)
       } catch (error) {
         const message = extractErrorMessage(error)
         // toast({ title: "Oops!", body: message, type: "error" })
@@ -44,7 +50,7 @@ const Campaigns = () => {
     }
 
     fetchCampaigns()
-  }, [])
+  }, [page])
 
   return (
     <div>
@@ -151,11 +157,14 @@ const Campaigns = () => {
       </div>
 
       {/* campaigns */}
-      <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px]">
+      <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px] mb-10">
         {campaigns.map((campaign) => (
           <CampaignCard key={campaign._id} campaign={campaign} />
         ))}
       </div>
+
+      {/* pagination */}
+      {pagination && <Pagination currentPage={page} pageCount={pagination.perPage} totalPages={pagination.total} onPageChange={setPage} />}
     </div>
   )
 }

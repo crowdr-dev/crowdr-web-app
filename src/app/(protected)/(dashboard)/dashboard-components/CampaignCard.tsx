@@ -5,7 +5,7 @@ import { pill } from "./Pill"
 import { formatAmount } from "../utils/currency"
 import { getDuration } from "../utils/date"
 
-import { Campaign } from "@/app/common/types/Campaign"
+import { ICampaign } from "@/app/common/types/Campaign"
 import { RFC } from "@/app/common/types/Component"
 
 const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
@@ -68,5 +68,5 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
 export default CampaignCard
 
 type CampaignCardProps = {
-  campaign: Campaign
+  campaign: ICampaign
 }

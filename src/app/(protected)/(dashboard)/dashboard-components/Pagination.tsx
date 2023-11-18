@@ -11,8 +11,9 @@ const Pagination: RFC<PaginationProps> = ({
   onPageChange,
   className
 }) => {
-  const noOfPages = Math.floor(totalPages / pageCount)
+  const noOfPages = Math.ceil(totalPages / pageCount)
   let pages = Array.from({ length: noOfPages }, (_, index) => index + 1)
+  console.log({noOfPages, pages})
 
   return (
     <div className={"flex justify-between items-center " + className}>

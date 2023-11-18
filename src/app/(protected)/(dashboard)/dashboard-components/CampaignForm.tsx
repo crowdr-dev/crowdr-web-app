@@ -17,7 +17,7 @@ import makeRequest from "@/utils/makeRequest"
 
 import { campaignCategories } from "@/utils/campaignCategory"
 import { RFC } from "@/app/common/types/Component"
-import { Campaign } from "@/app/common/types/Campaign"
+import { ICampaign } from "@/app/common/types/Campaign"
 
 const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
   const {
@@ -69,7 +69,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
           }
           const { success, data } = await makeRequest<{
             success: boolean
-            data: Campaign
+            data: ICampaign
           }>(endpoint, {
             headers,
             method: "GET",
@@ -511,7 +511,7 @@ const volunteerCommitment = [
   Option("flexible schedule", "Flexible schedule"),
 ]
 
-function mapResponseToForm(campaign: Campaign): Partial<FormFields> {
+function mapResponseToForm(campaign: ICampaign): Partial<FormFields> {
   const {
     title,
     category,
