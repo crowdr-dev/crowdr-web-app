@@ -11,10 +11,10 @@ import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
 import { ICampaign, CampaignResponse } from "@/app/common/types/Campaign"
+import { IPagination } from "@/app/common/types/Common"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
-import { IPagination } from "@/app/common/types/Common"
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -100,7 +100,6 @@ const Campaigns = () => {
 
       {/* stats */}
       <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[44px]">
-        {/* TODO: get background image */}
         <StatCard
           title="Total Raised"
           text="N235,880.70"
@@ -163,7 +162,7 @@ const Campaigns = () => {
       </div>
 
       {/* pagination */}
-      {pagination && <Pagination currentPage={pagination.currentPage} perPage={pagination.perPage} total={pagination.total} onPageChange={setPage} className="px-4 py-3 md:p-0" />}
+      {(pagination && campaigns.length != 0) && <Pagination currentPage={pagination.currentPage} perPage={pagination.perPage} total={pagination.total} onPageChange={setPage} className="px-4 py-3 md:p-0" />}
     </div>
   )
 }

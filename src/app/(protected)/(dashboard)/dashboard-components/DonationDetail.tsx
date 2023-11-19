@@ -9,7 +9,7 @@ const DonationDetail: RFC<DonationDetailProps> = ({
   status,
 }) => {
   return (
-    <details className="group border-b border-[#DDD] marker:hidden mb-5">
+    <details className="group border-b border-[#DDD] mb-5">
       <summary className="block pb-6">
         <div className="flex items-center group-open:items-end justify-between group-open:mb-4">
           <div className="flex flex-col gap-2">

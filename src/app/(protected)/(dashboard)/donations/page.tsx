@@ -83,7 +83,6 @@ const Donations = () => {
 
       {/* stats */}
       <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[43px]">
-        {/* TODO: get background image */}
         <StatCard title="Total Donations" text="N235,880.70" pattern />
         <StatCard title="All Campaigns" text="18" colorScheme="light" />
         <StatCard
