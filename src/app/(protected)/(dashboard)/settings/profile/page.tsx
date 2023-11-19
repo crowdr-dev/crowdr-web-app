@@ -1,5 +1,5 @@
 "use client";
-// import img from "../../assets/img.jpg";
+import img from "../../../../../../public/images/donate.png";
 import React, { useCallback } from "react";
 
 const Profile = () => {
@@ -49,6 +49,7 @@ const Profile = () => {
             </div>
           </label>
         </div>
+
         <div className="mt-[25px]">
           <label className="flex flex-col">
             <span className="text-[black] font-medium mb-3">Email Address</span>
@@ -74,7 +75,7 @@ const Profile = () => {
               />
             ) : (
               <img
-                // src={img}
+                src={img}
                 className="w-[80%] h-[80%] rounded-[50%] object-cover"
               />
             )}

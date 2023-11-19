@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Header from "./dashboard-components/Header";
 import Sidebar from "./dashboard-components/Sidebar";
 import Page from "./dashboard-components/Page";
