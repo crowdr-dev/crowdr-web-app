@@ -1,7 +1,10 @@
-import { RFC } from "@/app/common/types"
-import { FieldError, UseFormRegisterReturn } from "react-hook-form"
+import { useState } from "react"
 
-const TextInput: RFC<TextInputProps> = ({
+import { FieldError, UseFormRegisterReturn } from "react-hook-form"
+import { RFC } from "@/app/common/types"
+import { LuEye, LuEyeOff } from "react-icons/lu"
+
+const PasswordInput: RFC<PasswordInputProps> = ({
   config,
   label,
   error,
@@ -12,10 +15,9 @@ const TextInput: RFC<TextInputProps> = ({
   id,
   styles,
   value,
-  ...props
 }) => {
-  const inputStyle = props.icon ? "pl-9" : ""
-  
+  const [showPassword, setShowPassword] = useState(false)
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (config) {
       config.onChange(e)
@@ -24,6 +26,10 @@ const TextInput: RFC<TextInputProps> = ({
     if (onChange) {
       onChange(e)
     }
+  }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev)
   }
 
   return (
@@ -38,13 +44,8 @@ const TextInput: RFC<TextInputProps> = ({
         </label>
       )}
       <div className="relative">
-        {props.icon && (
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <props.icon className="text-[#667085]" />
-          </div>
-        )}
         <input
-          type="text"
+          type={showPassword ? "text" : "password"}
           {...config}
           id={id || config?.name}
           value={value}
@@ -52,8 +53,21 @@ const TextInput: RFC<TextInputProps> = ({
           onChange={handleChange}
           style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
           aria-labelledby={ariaLabelledBy}
-          className={inputStyle + " text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px] " + styles?.input}
+          className={
+            "text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] pl-[14px] pr-10 " +
+            styles?.input
+          }
         />
+        <span
+          onClick={togglePasswordVisibility}
+          className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+        >
+          {showPassword ? (
+            <LuEyeOff size="1.25rem" title="Hide password" />
+          ) : (
+            <LuEye size="1.25rem" title="Show password" />
+          )}
+        </span>
       </div>
       {error && (
         <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
@@ -64,16 +78,15 @@ const TextInput: RFC<TextInputProps> = ({
   )
 }
 
-export default TextInput
+export default PasswordInput
 
-type TextInputProps = {
+type PasswordInputProps = {
   config?: UseFormRegisterReturn
   label?: string
   error?: FieldError
   placeholder?: string
   optional?: boolean
   ariaLabelledBy?: string
-  icon?: any
   value?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   id?: string

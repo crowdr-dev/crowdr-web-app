@@ -1,4 +1,4 @@
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types";
 
 const Icon: RFC<IconProps> = ({ name, className }) => {
   return <i className={`ci-${name} ` +  className}></i>;

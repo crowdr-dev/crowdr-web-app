@@ -1,4 +1,4 @@
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types";
 import Image from "next/image"
 import FilterIcon from "../../../../../public/svg/filters.svg";
 

@@ -3,7 +3,7 @@ import { Merge, useFormContext } from "react-hook-form";
 import Image from "next/image";
 import imageCompression from "browser-image-compression";
 
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types";
 import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 import {HiMiniXCircle} from "react-icons/hi2"
 import UploadIcon from "../../../../../public/svg/upload-cloud.svg";
