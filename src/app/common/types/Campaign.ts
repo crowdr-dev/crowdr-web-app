@@ -1,5 +1,5 @@
 import { CampaignCategory } from "@/utils/campaignCategory";
-import { IPagination } from "./Common";
+import { IPagination } from ".";
 
 export interface ICampaign {
   _id:                      string;

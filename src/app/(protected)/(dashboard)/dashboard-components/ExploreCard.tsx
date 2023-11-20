@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Image from 'next/image'
-import { RFC } from '@/app/common/types/Component'
+import { RFC } from '@/app/common/types'
 import { Button } from './Button'
 import ProgressBar from './ProgressBar'
 import moment from 'moment'

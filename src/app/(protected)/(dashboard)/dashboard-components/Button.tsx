@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Color from "color"
 
-import { RFC } from "@/app/common/types/Component"
+import { RFC } from "@/app/common/types"
 import { IconType } from "react-icons/lib"
 
 import { CgSpinner } from "react-icons/cg"

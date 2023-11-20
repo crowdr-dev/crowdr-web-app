@@ -6,7 +6,7 @@ import DrawerTrigger from "./DrawerTrigger";
 import { pageGroups } from "../pages";
 import Icon from "./Icon";
 
-import { RFC } from "@/app/common/types/Component";
+import { RFC } from "@/app/common/types";
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg";
 
 const Sidebar: RFC<SidebarProps> = ({drawer}) => {

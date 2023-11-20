@@ -1,7 +1,7 @@
 import Select from "react-select";
 import { useFormContext } from "react-hook-form";
 import { FieldError, Controller, Control } from "react-hook-form";
-import { RFC } from "@/app/common/types/Component";
+import { RFC } from "@/app/common/types";
 
 const SelectInput: RFC<SelectInputProps> = ({
   options,

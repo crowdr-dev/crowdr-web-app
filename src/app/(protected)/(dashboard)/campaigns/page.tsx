@@ -11,7 +11,7 @@ import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
 import { ICampaign, CampaignResponse } from "@/app/common/types/Campaign"
-import { IPagination } from "@/app/common/types/Common"
+import { IPagination } from "@/app/common/types"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"

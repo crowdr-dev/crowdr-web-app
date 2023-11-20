@@ -2,7 +2,7 @@ import Image from 'next/image';
 import {FaArrowUp, FaArrowDown} from 'react-icons/fa6'
 import BgPattern from "../../../../../public/assets/stat-card-pattern.png"
 
-import { RFC } from "@/app/common/types/Component";
+import { RFC } from "@/app/common/types";
 
 const StatCard: RFC<StatCardProps> = ({title, text, percentage, changeType, time, pattern, colorScheme, iconUrl, detail}) => {
   const backgroundColor = colorScheme == 'dark' ? '#00B964' : '#F8F8F8'
@@ -12,7 +12,7 @@ const StatCard: RFC<StatCardProps> = ({title, text, percentage, changeType, time
   const textColor = colorScheme == 'dark' ? 'white' : '#0C0C0C'
 
   return (
-    <div style={{backgroundColor}} className="relative flex flex-col justify-center gap-2 rounded-[5px] py-[22.5px] px-[21px]">
+    <div style={{backgroundColor}} className="relative flex flex-col justify-center gap-2 rounded-[5px] h-[127px] py-[22.5px] px-[21px]">
       {pattern && <div style={{backgroundImage}} className="absolute opacity-[0.06] bg-blend-multiply inset-0" />}
       <p style={{color: titleColor}} className="text-sm z-10">{title}</p>
       <p style={{color: textColor}} className={(iconUrl ? "" : "text-2xl") + " flex items-center z-10"}>{iconUrl && <Image src={iconUrl} width={30} height={30} alt='icon' />} {text}</p>

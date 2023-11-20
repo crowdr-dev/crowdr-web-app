@@ -6,7 +6,7 @@ import { formatAmount } from "../utils/currency"
 import { getDuration } from "../utils/date"
 
 import { ICampaign } from "@/app/common/types/Campaign"
-import { RFC } from "@/app/common/types/Component"
+import { RFC } from "@/app/common/types"
 
 const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
   const {

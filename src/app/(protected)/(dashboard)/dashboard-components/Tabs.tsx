@@ -6,7 +6,7 @@ import {
   SetStateAction,
   useState,
 } from "react"
-import { RFC } from "@/app/common/types/Component"
+import { RFC } from "@/app/common/types"
 
 const Tabs: Tabs = ({ children, activeTab: initialTab }) => {
   const tabs = Children.map(children, (child) => child)

@@ -1,5 +1,5 @@
 import { CampaignStatus } from "@/app/common/types/Campaign";
-import { RFC } from "@/app/common/types/Component";
+import { RFC } from "@/app/common/types";
 
 const Label: RFC<LabelProps> = ({ text, textColor, bgColor, dotColor, className }) => {
   return (

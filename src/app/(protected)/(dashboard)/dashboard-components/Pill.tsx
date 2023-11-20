@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { RFC } from "@/app/common/types/Component";
+import { RFC } from "@/app/common/types";
 
 const Pill: RFC<PillProps> = ({text, textColor, bgColor, icon}) => {
   const pillStyle: React.CSSProperties = {

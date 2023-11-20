@@ -1,4 +1,4 @@
-import { RFC } from "@/app/common/types/Component";
+import { RFC } from "@/app/common/types";
 
 const Drawer: RFC<DrawerProps> = ({ id, children, ariaLabel }) => {
   // TODO: POSSIBLY USE FLOWBITE REACT FOR DRAWER

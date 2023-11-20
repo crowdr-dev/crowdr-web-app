@@ -1,7 +1,7 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { UseFormReturn } from "react-hook-form/dist/types";
 
-import { RFC } from "@/app/common/types/Component";
+import { RFC } from "@/app/common/types";
 import { CampaignCategory } from "@/utils/campaignCategory";
 import { CampaignType } from "@/app/common/types/Campaign";
 

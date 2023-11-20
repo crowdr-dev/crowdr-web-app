@@ -2,7 +2,7 @@
 import { useModal } from "@/app/common/hooks/useModal"
 import { Button, WhiteButton } from "./Button"
 
-import { RFC } from "@/app/common/types/Component"
+import { RFC } from "@/app/common/types"
 
 const CampaignModal: RFC<CampaignModalProps> = ({clearModal}) => {
   const boxShadow =

@@ -1,3 +1,4 @@
+// TODO: MAKE SURE FUNCTION IS RETURNING CORRECT DURATION
 export function getDuration(startDate: IDate, endDate: IDate) {
   [startDate, endDate] = [new Date(startDate), new Date(endDate)]
   const durationInMs = endDate.getTime() - startDate.getTime()

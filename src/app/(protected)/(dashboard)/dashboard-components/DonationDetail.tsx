@@ -1,5 +1,5 @@
 import Label from "./Label"
-import { RFC } from "@/app/common/types/Component"
+import { RFC } from "@/app/common/types"
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6"
 
 const DonationDetail: RFC<DonationDetailProps> = ({

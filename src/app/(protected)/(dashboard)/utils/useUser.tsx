@@ -1,5 +1,5 @@
 import { getUser } from "@/app/api/user/getUser"
-import { RFC } from "@/app/common/types/Component"
+import { RFC } from "@/app/common/types"
 import { createContext, useContext, useEffect, useState } from "react"
 
 const UserContext = createContext<IUser | null>({

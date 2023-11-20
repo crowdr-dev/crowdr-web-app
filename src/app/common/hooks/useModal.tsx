@@ -7,9 +7,9 @@ import {
   useRef,
   useState,
 } from "react"
-import { Modal } from "flowbite"
+import { initFlowbite, Modal } from "flowbite"
 
-import { RFC } from "@/app/common/types/Component"
+import { RFC } from "@/app/common/types"
 import type { ModalOptions } from "flowbite"
 
 const ModalContext = createContext({
@@ -24,6 +24,7 @@ const ModalProvider: RFC<ModalProviderProps> = ({ children }) => {
   const modalRef = useRef(null)
 
   useEffect(() => {
+    // initFlowbite()
     modal.current = new Modal(modalRef.current, modalOptions.current)
   }, [])
 

@@ -1,4 +1,4 @@
-import { RFC } from "@/app/common/types/Component";
+import { RFC } from "@/app/common/types";
 
 const DrawerTrigger: RFC<DrawerTriggerProps> = ({ id, children, type, placement }) => {
   const drawerProps: IDrawer = {"data-drawer-target": id}

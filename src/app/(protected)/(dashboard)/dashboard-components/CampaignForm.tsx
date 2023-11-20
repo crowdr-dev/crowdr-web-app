@@ -17,7 +17,7 @@ import { useUser } from "../utils/useUser"
 import makeRequest from "@/utils/makeRequest"
 
 import { campaignCategories } from "@/utils/campaignCategory"
-import { RFC } from "@/app/common/types/Component"
+import { RFC } from "@/app/common/types"
 import { ICampaign } from "@/app/common/types/Campaign"
 import CaretIcon from "../../../../../public/svg/caret.svg"
 

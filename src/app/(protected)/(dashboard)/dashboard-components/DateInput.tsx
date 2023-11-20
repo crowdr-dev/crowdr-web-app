@@ -6,7 +6,7 @@ import {
   FieldError,
   UseFormRegisterReturn,
 } from "react-hook-form"
-import { RFC } from "@/app/common/types/Component"
+import { RFC } from "@/app/common/types"
 
 import "flatpickr/dist/flatpickr.min.css"
 import { Instance as Flatpickr } from "flatpickr/dist/types/instance"
