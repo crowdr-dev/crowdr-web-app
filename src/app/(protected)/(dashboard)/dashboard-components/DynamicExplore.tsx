@@ -35,7 +35,7 @@ type CampaignProps = {
   }
 }
 
-export default function DynamicExplore ({
+export default function DynamicExplore({
   hasNextPage
 }: {
   hasNextPage?: boolean
@@ -73,28 +73,28 @@ export default function DynamicExplore ({
     <>
       <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 '>
         {Array.isArray(campaigns) &&
-          campaigns?.map((campaign: Campaign, index: number) => (
-            <ExploreCard
-              name='Nicholas'
-              tier='Individual'
-              header={campaign?.title}
-              subheader={campaign?.story}
-              totalAmount={campaign.fundraise?.fundingGoalDetails[0].amount}
-              currentAmount={400}
-              timePosted={campaign.fundraise?.startOfFundraise}
-              slideImages={[
-                campaign?.campaignCoverImage?.url,
-                ...(campaign.campaignAdditionalImagesUrl || [])
-              ]}
-              donateImage={
-                'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
-              }
-              routeTo={`/explore/donate-or-volunteer/${campaign._id}`}
-              avatar={Avatar}
-              key={index}
-              campaignType={campaign.campaignType}
-            />
-          ))}
+          campaigns?.map((campaign: Campaign, index: number) => {
+          const urlsOnly = campaign.campaignAdditionalImages.map(item => item.url);
+
+            return (
+              <ExploreCard
+                name='Nicholas'
+                tier='Individual'
+                header={campaign?.title}
+                subheader={campaign?.story}
+                totalAmount={campaign.fundraise?.fundingGoalDetails[0].amount}
+                currentAmount={400}
+                timePosted={campaign.fundraise?.startOfFundraise}
+                slideImages={[campaign?.campaignCoverImage?.url, ...(urlsOnly || [])]}
+                donateImage={
+                  'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
+                }
+                routeTo={`/explore/donate-or-volunteer/${campaign._id}`}
+                avatar={Avatar}
+                key={index}
+                campaignType={campaign.campaignType}
+              />)
+          })}
       </div>
       {hasNextPage && (
         <div className='flex justify-end items-center mt-4'>
