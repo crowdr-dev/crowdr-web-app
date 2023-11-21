@@ -99,8 +99,7 @@ const Campaigns = () => {
       </div>
 
       {/* stats */}
-      <div className="grid 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[44px]">
-        {/*  md:grid-cols-[repeat(3,_minmax(0,_350px))] */}
+      <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[44px]">
         <StatCard
           title="Total Raised"
           text="N235,880.70"
