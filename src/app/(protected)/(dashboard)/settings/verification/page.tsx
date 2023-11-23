@@ -1,4 +1,6 @@
+"use-client";
 import { Buttonprops } from "@/app/common/components/ButtonProps";
+import React, { useCallback } from "react";
 
 const Verification = () => {
   const [image, setImage] = React.useState<string | null>(null);
@@ -120,7 +122,7 @@ const Verification = () => {
                   className="text-[#FF5200] text-[16px] cursor-pointer">
                   Click to upload
                 </label>{" "}
-                or drag and drop <br /> SVG, PNG, JPG or GIF (max. 800x400px)
+                CAC certificate <br /> SVG, PNG, JPG or GIF (max. 800x400px)
               </div>
               <input
                 type="file"

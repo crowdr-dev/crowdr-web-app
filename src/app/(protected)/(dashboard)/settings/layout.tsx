@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Profile from "./profile/page";
 import Password from "./password/page";
+import Verification from "./verification/page";
 
 const SettingsLayout = () => {
   const [selectedSetting, setSelectedSetting] = useState("profile");
@@ -53,7 +54,7 @@ const SettingsLayout = () => {
         {selectedSetting === "password" && <Password />}
         {selectedSetting === "notification" && "Notification"}
         {selectedSetting === "payouts" && "Payouts"}
-        {selectedSetting === "verification" && "Verification"}
+        {selectedSetting === "verification" && <Verification />}
       </div>
     </div>
   );
