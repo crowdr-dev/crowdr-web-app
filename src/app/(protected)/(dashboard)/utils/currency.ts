@@ -1,3 +1,8 @@
 export function formatAmount(currency: string, amount: number) {
-  return Intl.NumberFormat().format(amount)
+  return symbol[currency] + Intl.NumberFormat().format(amount)
+}
+
+const symbol: any = {
+  naira: "₦",
+  dollar: "$"
 }

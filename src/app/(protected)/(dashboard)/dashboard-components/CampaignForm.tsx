@@ -26,15 +26,16 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
     register,
     control,
     setValue,
+    getValues,
     trigger,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
   } = useFormContext() as CampaignFormContext
   const user = useUser()
-  const [skillsNeeded, campaignType] = useWatch({
+  const [skillsNeeded, campaignType, currency] = useWatch({
     control,
-    name: ["skillsNeeded", "campaignType"],
+    name: ["skillsNeeded", "campaignType", "currency"],
   })
   const isIndividual = user?.userType == "individual"
   const showFundraiseSection =
@@ -44,7 +45,9 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
   const isEdit = Boolean(campaignId)
   const saveButtonText = isEdit ? "Save" : "Launch Campaign"
   const pageTitle = isEdit ? "Edit Campaign" : "Create Campaign"
-  const pageSubtext = isEdit ? "Enter correct details to update campaign" : "Now’s your chance to tell your story!"
+  const pageSubtext = isEdit
+    ? "Enter correct details to update campaign"
+    : "Now’s your chance to tell your story!"
 
   const otherSkillsEnabled = useMemo(() => {
     if ((skillsNeeded || [])?.includes("others")) {
@@ -56,6 +59,11 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
       return false
     }
   }, [skillsNeeded])
+
+  const currencySymbol = useMemo(() => {
+    const currencyLabel = currencies.find(c => c.value === currency)!
+    return (currencyLabel?.label?.match(/\((.)\)/) || [])[1]
+  }, [currency])
 
   useEffect(() => {
     if (campaignId) {
@@ -75,8 +83,8 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
             method: "GET",
           })
 
+          // TODO: NOT RETURNING CURRENCY, TELL JERRY
           const formData = mapResponseToForm(data)
-          console.log(formData)
           reset(formData)
         } catch (error) {
           // const message = extractErrorMessage(error)
@@ -94,9 +102,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
       <div className="flex justify-between mb-7 md:mb-5">
         <hgroup>
           <h1 className="text-lg mb-1">{pageTitle}</h1>
-          <p className="text-sm text-[#667085]">
-            {pageSubtext}
-          </p>
+          <p className="text-sm text-[#667085]">{pageSubtext}</p>
         </hgroup>
 
         <div className="hidden md:block">
@@ -204,12 +210,34 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
         >
           <summary
             hidden={isIndividual}
-            className={(isIndividual ? "hidden" : "flex") + " gap-[10px] text-primary cursor-pointer mb-2"}
+            className={
+              (isIndividual ? "hidden" : "flex") +
+              " gap-[10px] text-primary cursor-pointer mb-2"
+            }
           >
             Fundraise
-
             <Image src={CaretIcon} alt="" className="group-open:-scale-y-[1]" />
           </summary>
+
+          {/* currency */}
+          <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+            <InputTitle
+              title="Currency"
+              detail="Select the currency type for the fundraiser."
+            />
+            <div className="max-w-lg">
+              <SelectInput
+                name="currency"
+                options={currencies}
+                validation={{
+                  required: "Currency is required",
+                }}
+                error={errors.currency}
+                ariaLabelledBy="Currency"
+              />
+            </div>
+          </div>
+
           {/* set your funding goal */}
           <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
             <InputTitle
@@ -222,7 +250,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                   required: "Funding goal is required",
                 })}
                 error={errors.fundingGoal}
-                prefix="N"
+                prefix={currencySymbol}
               />
             </div>
           </div>
@@ -255,9 +283,13 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
 
             <div className="max-w-lg">
               <FileInput
-                config={isEdit ? register("campaignImages") : register("campaignImages", {
-                  required: "Campaign image is required",
-                })}
+                config={
+                  isEdit
+                    ? register("campaignImages")
+                    : register("campaignImages", {
+                        required: "Campaign image is required",
+                      })
+                }
                 error={errors.campaignImages}
                 multiple
                 showFileList
@@ -270,11 +302,8 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
       {/* CALL FOR VOLUNTEERS */}
       {showVolunteerSection && (
         <details open className="group mb-[34px] md:mb-10">
-          <summary
-            className="flex gap-[10px] text-primary cursor-pointer mb-2"
-          >
+          <summary className="flex gap-[10px] text-primary cursor-pointer mb-2">
             Call for Volunteers
-
             <Image src={CaretIcon} alt="" className="group-open:-scale-y-[1]" />
           </summary>
 
@@ -384,7 +413,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                 error={errors.timeCommitment}
                 mode="range"
                 enableTime
-                minDate={new Date()}
+                // minDate={new Date()}
               />
             </div>
           </div>
@@ -471,6 +500,12 @@ const campaignTypes = [
   Option("fundraise", "Fundraise"),
   Option("volunteer", "Volunteer"),
   Option("fundraiseAndVolunteer", "Fundraise and volunteer"),
+]
+
+const currencies = [
+  Option("", "Select a currency...", true),
+  Option("naira", "Naira (₦)"),
+  Option("dollar", "Dollar ($)"),
 ]
 
 const skillsList = [

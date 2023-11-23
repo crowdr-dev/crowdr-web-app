@@ -12,7 +12,8 @@ const SelectInput: RFC<SelectInputProps> = ({
   ariaLabelledBy,
   optional,
 }) => {
-  const {control} = useFormContext()
+  const { control } = useFormContext()
+
   return (
     <span>
       {label && (

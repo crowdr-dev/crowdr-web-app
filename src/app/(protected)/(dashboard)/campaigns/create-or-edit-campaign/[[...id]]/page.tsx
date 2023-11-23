@@ -28,6 +28,7 @@ const CreateEditCampaign = ({ params }: Route) => {
       campaignType,
       skillsNeeded,
       otherSkillsNeeded,
+      currency,
       fundingGoal,
       campaignDuration,
       ageRange,
@@ -47,7 +48,7 @@ const CreateEditCampaign = ({ params }: Route) => {
       campaignType: isIndividual ? "fundraise" : campaignType,
     }
 
-    if (!isIndividual) payload.campaignStatus = "in-progress"
+    // if (!isIndividual) payload.campaignStatus = "in-progress"
 
     if (isFundraiseRelated || isIndividual) {
       // TODO: MAKE objectToFormData handle converting nested objects to JSON
@@ -55,7 +56,7 @@ const CreateEditCampaign = ({ params }: Route) => {
         fundingGoalDetails: [
           {
             amount: fundingGoal,
-            currency: "naira",
+            currency,
           },
         ],
         startOfFundraise: campaignDuration[0],
