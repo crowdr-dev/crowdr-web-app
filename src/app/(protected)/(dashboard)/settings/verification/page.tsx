@@ -1,6 +1,7 @@
 "use-client";
 import { Buttonprops } from "@/app/common/components/ButtonProps";
 import React, { useCallback } from "react";
+import Image from "next/image";
 
 const Verification = () => {
   const [image, setImage] = React.useState<string | null>(null);
@@ -102,13 +103,14 @@ const Verification = () => {
             onDragOver={handleDragOver}>
             <div className="h-[50px] w-[50px] flex justify-center items-center">
               {image ? (
-                <img
+                <Image
                   src={image}
                   alt="User Avatar"
                   className="w-[80%] h-[80%] rounded-[50%] object-cover"
                 />
               ) : (
-                <img
+                <Image
+                  alt=""
                   src="../../../../../../public/images/donate.png"
                   className="w-[80%] h-[80%] rounded-[50%] object-cover"
                 />
