@@ -30,7 +30,7 @@ export type Campaign = {
   campaignType: string;
   campaignStatus: string;
   campaignCoverImage: CampaignImage;
-  campaignAdditionalImagesUrl: [string];
+  campaignAdditionalImages: CampaignImage[];
   fundraise: {
     fundingGoalDetails: [
       {

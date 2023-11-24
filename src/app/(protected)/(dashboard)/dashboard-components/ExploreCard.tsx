@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Image from 'next/image'
-import { RFC } from '@/types/Component'
+import { RFC } from '@/app/common/types'
 import { Button } from './Button'
 import ProgressBar from './ProgressBar'
 import moment from 'moment'
@@ -107,29 +107,27 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
                 {slideImages?.map((image, index) => (
                   <div key={index}>
                     <Modal isOpen={modalIsOpen} onClose={closeModal}>
-                    <Image
-                      src={image}
-                      alt='donate'
-                      className='h-56 object-center object-cover rounded-lg'
-                      width={500}
-                      height={500}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover'
-                      }}
-                    />
+                      <Image
+                        src={image}
+                        alt='donate'
+                        className='h-60 object-center object-cover rounded-lg'
+                        width={500}
+                        height={400}
+                        style={{
+                          width: '100%',
+                          objectFit: 'cover'
+                        }}
+                      />
                     </Modal>
                     <Image
                       src={image}
                       alt='donate'
-                      className='h-56 object-center object-cover rounded-lg'
+                      className='h-60 object-center object-cover rounded-lg'
                       width={500}
                       height={400}
                       style={{
                         width: '100%',
                         maxWidth: '100%',
-                        height: 'auto',
                         objectFit: 'cover'
                       }}
                       onClick={() => {
@@ -143,7 +141,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
               <Image
                 src={!!slideImages && slideImages[0]}
                 alt='donate'
-                className='h-56 object-center object-cover rounded-lg'
+                className='h-60 object-center object-cover rounded-lg'
                 width={500}
                 height={400}
                 style={{
@@ -156,7 +154,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
         )}
         <div className='my-5'>
           <h3 className='font-semibold text-lg'>{header}</h3>
-          <p className='text-sm mt-2 '>
+          <p className='text-sm mt-2 break-words'>
             {displayText}
             {isCollapsed && wordsArray && wordsArray.length > 30 && '... '}
             {wordsArray && wordsArray.length > 30 && (
@@ -179,7 +177,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
         </div>
       </div>
 
-      <Button text={campaignType === "fundraise" ?"Donate" : "Volunteer"} className="w-full mt-4 !justify-center" href={routeTo} />
+      <Button text={campaignType === "fundraiseAndVolunteer" ? "Donate and Volunteer" : campaignType === "fundraise" ? "Donate" : "Volunteer"} className="w-full mt-4 !justify-center" href={routeTo} />
     </div>
   )
 }

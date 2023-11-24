@@ -1,10 +1,11 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { UseFormReturn } from "react-hook-form/dist/types";
 
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types";
 import { CampaignCategory } from "@/utils/campaignCategory";
-import { CampaignType } from "@/types/Campaign";
+import { CampaignType } from "@/app/common/types/Campaign";
 
+// TODO: CREATE A useForm HOOK
 const CampaignFormContext: RFC = ({ children }) => {
   const formContext: CampaignFormContext = {
     ...useForm<FormFields>(config),

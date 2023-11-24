@@ -1,6 +1,10 @@
-// import Icon from "../../../../public/svg/upload-cloud.svg"
-
-import Icon from "./dashboard-components/Icon";
+import heart from "../../../../public/svg/heart.svg"
+import megaphone from "../../../../public/svg/megaphone.svg"
+import dollar from "../../../../public/svg/dollar.svg"
+import globe from "../../../../public/svg/globe.svg"
+import envelope from "../../../../public/svg/envelope.svg"
+import bell from "../../../../public/svg/bell.svg"
+import settings from "../../../../public/svg/settings.svg"
 
 class Page {
   constructor(
@@ -11,15 +15,15 @@ class Page {
 }
 
 export const pageGroups = [
-  [new Page("/explore", "Discover/Explore", 'Heart_01')],
+  [new Page("/explore", "Discover/Explore", heart)],
   [
-    new Page("/campaigns", "My Campaigns", 'Heart_01'),
-    new Page("/donations", "My Donations", 'Heart_01'),
-    new Page("/manage-webpage", "Manage Website Page", 'Heart_01'),
+    new Page("/campaigns", "My Campaigns", megaphone),
+    new Page("/donations", "My Donations", dollar),
+    new Page("/manage-webpage", "Manage Website Page", globe),
   ],
   [
-    new Page("/inbox", "Inbox", 'Heart_01'),
-    new Page("/notifications", "Notifications", 'Heart_01'),
-    new Page("/settings/profile", "Settings", 'Settings'),
+    new Page("/inbox", "Inbox", envelope),
+    new Page("/notifications", "Notifications", bell),
+    new Page("/settings/profile", "Settings", settings),
   ],
 ];

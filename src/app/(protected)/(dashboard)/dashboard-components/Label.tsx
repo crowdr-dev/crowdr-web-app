@@ -1,11 +1,11 @@
-import { CampaignStatus } from "@/types/Campaign";
-import { RFC } from "@/types/Component";
+import { CampaignStatus } from "@/app/common/types/Campaign";
+import { RFC } from "@/app/common/types";
 
-const Label: RFC<LabelProps> = ({ text, textColor, bgColor, dotColor }) => {
+const Label: RFC<LabelProps> = ({ text, textColor, bgColor, dotColor, className }) => {
   return (
     <div
       style={{ backgroundColor: bgColor, color: textColor }}
-      className="inline-flex shrink-0 self-start items-center rounded-full px-2.5 py-1"
+      className={"inline-flex shrink-0 self-start items-center rounded-full px-2.5 py-1 " + className}
     >
       {dotColor && (
         <span
@@ -30,6 +30,7 @@ type LabelProps = {
   textColor?: string;
   bgColor?: string;
   dotColor?: string;
+  className?: string
 };
 
 const Completed = <Label text="Completed" dotColor="#12B76A" />
