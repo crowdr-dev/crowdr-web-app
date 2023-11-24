@@ -10,7 +10,8 @@ class Page {
   constructor(
     public route: string,
     public title: string,
-    public icon: string
+    public icon: string,
+    public label?: string,
   ) {}
 }
 
@@ -19,10 +20,10 @@ export const pageGroups = [
   [
     new Page("/campaigns", "My Campaigns", megaphone),
     new Page("/donations", "My Donations", dollar),
-    new Page("/manage-webpage", "Manage Website Page", globe),
+    new Page("", "Manage Website Page", globe, "Coming Soon"),
   ],
   [
-    new Page("/inbox", "Inbox", envelope),
+    new Page("", "Inbox", envelope, "Coming Soon"),
     new Page("/notifications", "Notifications", bell),
     new Page("/settings/profile", "Settings", settings),
   ],
