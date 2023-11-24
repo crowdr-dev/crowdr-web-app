@@ -27,7 +27,7 @@ export type CampaignProps = {
   campaignType: string
   campaignStatus: string
   campaignCoverImage: CampaignImage
-  campaignAdditionalImagesUrl: string[]
+  campaignAdditionalImages: CampaignImage[]
   campaignViews: number
   fundraise: {
     fundingGoalDetails: FundraisingGoalProps[]
@@ -37,6 +37,8 @@ export type CampaignProps = {
 }
 export default async function Explore() {
   const campaigns = await getCampaigns(1)
+
+  console.log("cam", campaigns)
   return (
     <div>
       <div className='flex items-center justify-between mb-4'>
@@ -54,7 +56,10 @@ export default async function Explore() {
       </div>
 
       <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2'>
-        {Array.isArray(campaigns?.campaigns) && campaigns?.campaigns?.map((campaign: Campaign, index: number) => (
+        {Array.isArray(campaigns?.campaigns) && campaigns?.campaigns?.map((campaign: Campaign, index: number) => {
+
+          const urlsOnly = campaign.campaignAdditionalImages.map(item => item.url);
+          return(
           <ExploreCard
             name='Nicholas'
             tier='Individual'
@@ -63,7 +68,7 @@ export default async function Explore() {
             totalAmount={campaign.fundraise?.fundingGoalDetails[0].amount}
             currentAmount={400}
             timePosted={campaign.fundraise?.startOfFundraise}
-            slideImages={[campaign?.campaignCoverImage?.url, ...(campaign.campaignAdditionalImagesUrl || [])]}
+            slideImages={[campaign?.campaignCoverImage?.url, ...(urlsOnly || [])]}
             donateImage={
               'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
             }
@@ -71,8 +76,8 @@ export default async function Explore() {
             avatar={Avatar}
             key={index}
             campaignType={campaign.campaignType}
-          />
-        ))}
+          />)
+          })}
       </div>
       <DynamicExplore hasNextPage={campaigns?.pagination?.hasNextPage} />
 

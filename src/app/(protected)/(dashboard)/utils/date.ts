@@ -1,13 +1,12 @@
+import moment, { Moment } from "moment"
+
 export function getDuration(startDate: IDate, endDate: IDate) {
-  [startDate, endDate] = [new Date(startDate), new Date(endDate)]
-  const durationInMs = endDate.getTime() - startDate.getTime()
-  const days = Math.floor(durationInMs / (1000 * 60 * 60 * 24))
-  const hours = Math.floor(
-    (durationInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  )
+  [startDate, endDate] = [moment(startDate), moment(endDate)]
+  const days = moment(endDate).diff(startDate, 'days')
+  const hours = moment(endDate).diff(startDate, 'hours') % 24
   const formattedDuration = `${days}d ${hours}h`
 
   return formattedDuration
 }
 
-type IDate = Date | string
+type IDate = Date | Moment | string

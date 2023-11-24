@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef } from "react"
+import Image from "next/image"
 import { useFormContext, useWatch } from "react-hook-form"
 import CampaignFormContext, {
   FormFields,
@@ -16,8 +17,9 @@ import { useUser } from "../utils/useUser"
 import makeRequest from "@/utils/makeRequest"
 
 import { campaignCategories } from "@/utils/campaignCategory"
-import { RFC } from "@/types/Component"
-import { Campaign } from "@/types/Campaign"
+import { RFC } from "@/app/common/types"
+import { ICampaign } from "@/app/common/types/Campaign"
+import CaretIcon from "../../../../../public/svg/caret.svg"
 
 const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
   const {
@@ -35,8 +37,6 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
     name: ["skillsNeeded", "campaignType"],
   })
   const isIndividual = user?.userType == "individual"
-  const [fundraiseOpen, setFundraiseOpen] = useState(true)
-  const [volunteerOpen, setVolunteerCallOpen] = useState(true)
   const showFundraiseSection =
     Boolean(campaignType?.match(/fundraise/i)) || isIndividual
   const showVolunteerSection = Boolean(campaignType?.match(/volunteer/i))
@@ -69,7 +69,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
           }
           const { success, data } = await makeRequest<{
             success: boolean
-            data: Campaign
+            data: ICampaign
           }>(endpoint, {
             headers,
             method: "GET",
@@ -87,16 +87,6 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
       fetchCampaignData()
     }
   }, [])
-
-  const toggleFundraise = (e: React.MouseEvent) => {
-    e.preventDefault()
-    setFundraiseOpen((prev) => !prev)
-  }
-
-  const toggleVolunteer = (e: React.MouseEvent) => {
-    e.preventDefault()
-    setVolunteerCallOpen((prev) => !prev)
-  }
 
   return (
     <form>
@@ -208,16 +198,17 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
       {/* FUNDRAISE */}
       {showFundraiseSection && (
         <details
-          open={fundraiseOpen}
+          open
           style={{ paddingTop: isIndividual ? 8 : 0 }}
-          className={fundraiseOpen ? "mb-10 md:mb-14" : ""}
+          className="group open:mb-10 md:open:mb-14"
         >
           <summary
             hidden={isIndividual}
-            className="text-primary cursor-pointer mb-2"
-            onClick={toggleFundraise}
+            className={(isIndividual ? "hidden" : "flex") + " gap-[10px] text-primary cursor-pointer mb-2"}
           >
             Fundraise
+
+            <Image src={CaretIcon} alt="" className="group-open:-scale-y-[1]" />
           </summary>
           {/* set your funding goal */}
           <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
@@ -278,13 +269,13 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
 
       {/* CALL FOR VOLUNTEERS */}
       {showVolunteerSection && (
-        <details open={volunteerOpen} className="mb-[34px] md:mb-10">
-          {/* TODO: STYLE DETAIL DROPDOWN ICON TO LOOK LIKE FIGMA */}
+        <details open className="group mb-[34px] md:mb-10">
           <summary
-            className="text-primary cursor-pointer mb-2"
-            onClick={toggleVolunteer}
+            className="flex gap-[10px] text-primary cursor-pointer mb-2"
           >
             Call for Volunteers
+
+            <Image src={CaretIcon} alt="" className="group-open:-scale-y-[1]" />
           </summary>
 
           {/* skills needed */}
@@ -511,7 +502,7 @@ const volunteerCommitment = [
   Option("flexible schedule", "Flexible schedule"),
 ]
 
-function mapResponseToForm(campaign: Campaign): Partial<FormFields> {
+function mapResponseToForm(campaign: ICampaign): Partial<FormFields> {
   const {
     title,
     category,

@@ -20,6 +20,7 @@
        font-size: 24px;
        font-weight: 500;
        line-height: 40px;
+       max-width: -moz-fit-content;
        max-width: fit-content;
        padding: 50px 0;
       
