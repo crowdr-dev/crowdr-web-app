@@ -1,5 +1,5 @@
 "use client";
-import img from "../../../../../../public/images/donate.png";
+import { Buttonprops } from "@/app/common/components/ButtonProps";
 import React, { useCallback } from "react";
 
 const Profile = () => {
@@ -28,7 +28,7 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="w-[100%] h-[100vh] pl-[20px] pt-[10px]">
+    <div className="w-[100%] pb-20 pt-[10px]">
       <div className=" w-[60%]">
         <div className=" w-[100%] flex justify-between">
           <label className="flex flex-col w-[100%] justify-between">
@@ -37,7 +37,7 @@ const Profile = () => {
               <input
                 type="text"
                 name="name"
-                placeholder="Valerian"
+                placeholder="Crowdr"
                 className="bg-tertiary py-[13px] w-[48%] px-6 placeholder:text-[#667085] text-[black] rounded-lg outline-none border-[1px] font-medium InputHold"
               />
               <input
@@ -75,7 +75,7 @@ const Profile = () => {
               />
             ) : (
               <img
-                src={img}
+                src="../../../../../../public/images/donate.png"
                 className="w-[80%] h-[80%] rounded-[50%] object-cover"
               />
             )}
@@ -153,6 +153,25 @@ const Profile = () => {
                 className="bg-tertiary py-[13px] w-[100%] px-4 placeholder:text-[#667085] text-[black] outline-none border-[1px] font-medium InputHold rounded-r-[10px]"></input>
             </div>
           </label>
+        </div>
+
+        <div className="w-[100%] flex items-center justify-end mt-[30px]">
+          <div className=" w-[90%] flex items-center justify-end gap-[20px]">
+            <Buttonprops
+              text="Cancel"
+              bgColor="bg-white"
+              width="w-[100px]"
+              color="text-[black]"
+              border="border-[1px]"
+            />
+            <Buttonprops
+              text="Save Changes"
+              bgColor="bg-[green]"
+              width="w-[150px]"
+              color="text-[white]"
+              border=""
+            />
+          </div>
         </div>
       </div>
     </div>

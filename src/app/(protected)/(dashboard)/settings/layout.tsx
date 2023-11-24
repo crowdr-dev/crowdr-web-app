@@ -6,10 +6,12 @@ import Profile from "./profile/page";
 import Password from "./password/page";
 
 const SettingsLayout = () => {
-  const [selectedSetting, setSelectedSetting] = useState("Profile");
+  const [selectedSetting, setSelectedSetting] = useState("profile");
+  const [selectedpage, setSelectedPage] = useState(<Profile />);
 
   const handleClick = (setting: any) => {
     setSelectedSetting(setting);
+    setSelectedPage(setting);
   };
 
   return (
@@ -19,13 +21,11 @@ const SettingsLayout = () => {
         <div className="mr-5 ">
           {" "}
           <Link href="/settings/profile">
-            {/* <Profile /> */}
             <p onClick={() => handleClick("profile")}>Profile</p>
           </Link>
         </div>
         <div className="mr-5">
           <Link href="/settings/password">
-            {/* <Password /> */}
             <p onClick={() => handleClick("password")}>Password</p>
           </Link>
         </div>
