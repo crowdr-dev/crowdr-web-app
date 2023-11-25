@@ -5,6 +5,7 @@ import Page from "./dashboard-components/Page";
 import UserProvider from "./common/hooks/useUser";
 
 import { RFC } from "@/app/common/types";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const DashboardLayout: RFC = (props) => {
   return (
