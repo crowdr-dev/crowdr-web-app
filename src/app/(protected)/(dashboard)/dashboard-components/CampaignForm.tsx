@@ -555,6 +555,7 @@ function mapResponseToForm(campaign: ICampaign): Partial<FormFields> {
     category,
     campaignType,
     story,
+    currency: fundingGoalDetails[0].currency,
     fundingGoal: fundingGoalDetails[0].amount,
     campaignDuration: [startOfFundraise, endOfFundraise],
   }

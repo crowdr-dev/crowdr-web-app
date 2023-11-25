@@ -10,7 +10,7 @@ import { useModal } from "@/app/common/hooks/useModal"
 import { getUser } from "@/app/api/user/getUser"
 import { useToast } from "@/app/common/hooks/useToast"
 import CampaignForm from "../../../dashboard-components/CampaignForm"
-import CampaignToast from "../../../dashboard-components/CampaignModal"
+import CompletionCard from "../../../dashboard-components/CompletionCard"
 
 const CreateEditCampaign = ({ params }: Route) => {
   const router = useRouter()
@@ -110,7 +110,16 @@ const CreateEditCampaign = ({ params }: Route) => {
         if (isEdit) {
           toast({ title: "Well done!", body: message })
         } else {
-          modal.show(<CampaignToast clearModal={modal.hide} />)
+          modal.show(
+            <CompletionCard
+              title="Donation Campaign created successfully"
+              text="This donation campaign has been created successfully. You will be
+          able to edit this campaign and republish changes."
+              primaryButton={{ label: "Share on your Socials" }}
+              secondaryButton={{ label: "Cancel", onClick: modal.hide }}
+              clearModal={modal.hide}
+            />
+          )
         }
       }
     } catch (error: any) {
