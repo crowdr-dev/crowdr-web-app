@@ -5,6 +5,7 @@ import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
 import TextInput from "../dashboard-components/TextInput"
 import StatCard from "../dashboard-components/StatCard"
 import Pagination from "../dashboard-components/Pagination"
+import CampaignCardSkeleton from "../dashboard-components/skeletons/CampaignCardSkeleton"
 import { useUser } from "../common/hooks/useUser"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
@@ -166,7 +167,7 @@ const Campaigns = () => {
           ? campaigns.map((campaign) => (
               <CampaignCard key={campaign._id} campaign={campaign} />
             ))
-          : Array.from({ length: 4 }).map(() => <CampaignCard.Skeleton />)}
+          : Array.from({ length: 4 }).map(() => <CampaignCardSkeleton />)}
       </div>
 
       {/* pagination */}

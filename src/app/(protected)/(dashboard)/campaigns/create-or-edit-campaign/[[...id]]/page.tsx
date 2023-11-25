@@ -5,12 +5,11 @@ import objectToFormData from "@/utils/objectToFormData"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import CampaignFormContext, { FormFields } from "../utils/useCreateCampaign"
-import { useUser } from "../../../common/hooks/useUser"
-import { useModal } from "@/app/common/hooks/useModal"
-import { getUser } from "@/app/api/user/getUser"
-import { useToast } from "@/app/common/hooks/useToast"
 import CampaignForm from "../../../dashboard-components/CampaignForm"
 import CompletionCard from "../../../dashboard-components/CompletionCard"
+import { useUser } from "../../../common/hooks/useUser"
+import { useModal } from "@/app/common/hooks/useModal"
+import { useToast } from "@/app/common/hooks/useToast"
 
 const CreateEditCampaign = ({ params }: Route) => {
   const router = useRouter()
@@ -86,7 +85,6 @@ const CreateEditCampaign = ({ params }: Route) => {
     }
 
     try {
-      const user = await getUser()
       const headers = {
         "Content-Type": "multipart/form-data",
         "x-auth-token": user?.token!,

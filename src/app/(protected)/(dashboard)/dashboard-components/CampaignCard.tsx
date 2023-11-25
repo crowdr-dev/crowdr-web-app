@@ -9,7 +9,7 @@ import { getDuration } from "../common/utils/date"
 import { ICampaign } from "@/app/common/types/Campaign"
 import { RFC } from "@/app/common/types"
 
-const CampaignCard: CampaignCard = ({ campaign }) => {
+const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
   const {
     title,
     category,
@@ -68,36 +68,6 @@ const CampaignCard: CampaignCard = ({ campaign }) => {
 
 export default CampaignCard
 
-type CampaignCard = RFC<CampaignCardProps> & { Skeleton: RFC }
-
 type CampaignCardProps = {
   campaign: ICampaign
-}
-
-CampaignCard.Skeleton = () => {
-  return (
-    <div className="bg-white border border-[rgba(57, 62, 70, 0.08)] rounded-xl py-[26px] px-[24px]">
-      <div className="mb-2 md:mb-[10px]">
-        <Skeleton width={90} height={25} borderRadius={100} />
-      </div>
-
-      <div className="flex flex-col md:flex-row justify-between mb-8 md:mb-[19px]">
-        <Skeleton width={220} height={20} containerClassName="mb-2 md:mb-0" />
-        <Skeleton width={105} height={35} borderRadius={100} />
-      </div>
-
-      <div className="mb-[10px] md:mb-3">
-        <Skeleton height={80} borderRadius={8} />
-      </div>
-
-      <div className="flex flex-col md:flex-row justify-between md:items-end">
-        <div className="mb-2.5">
-          <Skeleton width={70} height={15} containerClassName="block" />
-          <Skeleton width={70} height={15} containerClassName="block" />
-          <Skeleton width={95} height={15} />
-        </div>
-        <Skeleton width={165} height={35} containerClassName="self-end" />
-      </div>
-    </div>
-  )
 }

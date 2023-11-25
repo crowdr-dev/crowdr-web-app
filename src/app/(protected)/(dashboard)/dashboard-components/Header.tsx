@@ -1,11 +1,11 @@
 "use client"
 import Image from "next/image"
-import Skeleton from "react-loading-skeleton"
 import { Button, GrayButton } from "./Button"
 import Label from "./Label"
 import DrawerTrigger from "./DrawerTrigger"
 import Drawer from "./Drawer"
 import Sidebar from "./Sidebar"
+import ProfileSkeleton from "./skeletons/ProfileSkeleton"
 import { useUser } from "../common/hooks/useUser"
 
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
@@ -73,23 +73,3 @@ const Header = () => {
 }
 
 export default Header
-
-const ProfileSkeleton = () => {
-  return (
-    <div className="hidden md:flex items-center">
-      <Skeleton
-        circle
-        height={43}
-        width={43}
-        baseColor="#F8F8F8"
-        containerClassName="mr-[15px]"
-        className=""
-      />
-
-      <div>
-        <Skeleton width={120} height={18} baseColor="#F8F8F8" />
-        <Skeleton width={80} height={20} baseColor="#F8F8F8" />
-      </div>
-    </div>
-  )
-}
