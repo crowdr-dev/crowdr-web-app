@@ -13,7 +13,7 @@ import NumberInput from "./NumberInput"
 import DateInput from "./DateInput"
 import OptionInput from "./OptionInput"
 import FileInput from "./FileInput"
-import { useUser } from "../utils/useUser"
+import { useUser } from "../common/hooks/useUser"
 import makeRequest from "@/utils/makeRequest"
 
 import { campaignCategories } from "@/utils/campaignCategory"

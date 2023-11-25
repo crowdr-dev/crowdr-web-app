@@ -5,7 +5,7 @@ import Label from "./Label";
 import DrawerTrigger from "./DrawerTrigger";
 import Drawer from "./Drawer";
 import Sidebar from "./Sidebar";
-import { useUser } from "../utils/useUser";
+import { useUser } from "../common/hooks/useUser";
 
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg";
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg";
