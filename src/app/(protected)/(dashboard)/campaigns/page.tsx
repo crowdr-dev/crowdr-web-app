@@ -15,6 +15,7 @@ import { IPagination } from "@/app/common/types"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
+import DateInput from "../dashboard-components/DateInput"
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -22,6 +23,7 @@ const Campaigns = () => {
   const [initialised, setInitialised] = useState(false)
   const [page, setPage] = useState(1)
   const user = useUser()
+  const [input, setInput] = useState<any>(["2023-11-25T11:00:00.000Z", "2023-11-29T11:00:00.000Z"])
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -148,14 +150,24 @@ const Campaigns = () => {
         <h2 className="hidden md:block text-xl text-[#292A2E]">
           All Campaigns
         </h2>
-        <TextInput
-          value=""
-          onChange={() => null}
+        {/* <TextInput
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value)
+            console.log(e.target.value)
+          }}
           placeholder="Search campaigns"
           icon={BiSearch}
           styles={{
             wrapper: "grow mr-[22px] block md:hidden",
             input: "text-sm",
+          }}
+        /> */}
+        <DateInput
+          value={input}
+          onChange={(e: any) => {
+            setInput(e)
+            console.log(e)
           }}
         />
         <GrayButton text="Filters" iconUrl={FilterIcon} />
@@ -167,7 +179,9 @@ const Campaigns = () => {
           ? campaigns.map((campaign) => (
               <CampaignCard key={campaign._id} campaign={campaign} />
             ))
-          : Array.from({ length: 4 }).map(() => <CampaignCardSkeleton />)}
+          : Array.from({ length: 4 }).map((_, index) => (
+              <CampaignCardSkeleton key={index} />
+            ))}
       </div>
 
       {/* pagination */}

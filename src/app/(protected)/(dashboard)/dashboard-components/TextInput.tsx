@@ -6,7 +6,7 @@ const TextInput: RFC<TextInputProps> = ({
   label,
   error,
   placeholder,
-  optional,
+  showOptionalLabel,
   ariaLabelledBy,
   onChange,
   id,
@@ -34,7 +34,7 @@ const TextInput: RFC<TextInputProps> = ({
           className="text-[14px] text-[#344054] mb-[6px]"
         >
           {label}{" "}
-          {optional && <span className="opacity-[0.44]">(Optional)</span>}
+          {showOptionalLabel && <span className="opacity-[0.44]">(Optional)</span>}
         </label>
       )}
       <div className="relative">
@@ -71,7 +71,7 @@ type TextInputProps = {
   label?: string
   error?: FieldError
   placeholder?: string
-  optional?: boolean
+  showOptionalLabel?: boolean
   ariaLabelledBy?: string
   icon?: any
   value?: string

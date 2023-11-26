@@ -22,7 +22,7 @@ const CampaignCardSkeleton = () => {
           <Skeleton width={70} height={15} borderRadius={100} containerClassName="block" />
           <Skeleton width={95} height={15} borderRadius={100} />
         </div>
-        <Skeleton width={165} height={35} containerClassName="self-end" />
+        <Skeleton width={165} height={40} containerClassName="self-end" />
       </div>
     </div>
   )
