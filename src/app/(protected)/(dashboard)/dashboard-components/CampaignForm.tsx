@@ -94,7 +94,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
       }
     }
 
-    if (user) {
+    if (user && campaignId) {
       fetchCampaignData()
     }
   }, [user])

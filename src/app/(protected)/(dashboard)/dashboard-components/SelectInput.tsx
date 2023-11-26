@@ -10,7 +10,7 @@ const SelectInput: RFC<SelectInputProps> = ({
   error,
   validation,
   ariaLabelledBy,
-  optional,
+  showOptionalLabel,
 }) => {
   const { control } = useFormContext()
 
@@ -19,7 +19,7 @@ const SelectInput: RFC<SelectInputProps> = ({
       {label && (
         <label htmlFor={name} className="text-[14px] text-[#344054] mb-[6px]">
           {label}{" "}
-          {optional && <span className="opacity-[0.44]">(Optional)</span>}
+          {showOptionalLabel && <span className="opacity-[0.44]">(Optional)</span>}
         </label>
       )}
       <Controller
@@ -58,7 +58,7 @@ type SelectInputProps = {
   error?: FieldError;
   validation?: any;
   placeholder?: string;
-  optional?: boolean;
+  showOptionalLabel?: boolean;
   ariaLabelledBy?: string
 };
 

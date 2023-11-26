@@ -16,6 +16,7 @@ import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
 import DateInput from "../dashboard-components/DateInput"
+import TextAreaInput from "../dashboard-components/TextAreaInput"
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -23,7 +24,7 @@ const Campaigns = () => {
   const [initialised, setInitialised] = useState(false)
   const [page, setPage] = useState(1)
   const user = useUser()
-  const [input, setInput] = useState<any>(["2023-11-25T11:00:00.000Z", "2023-11-29T11:00:00.000Z"])
+  const [input, setInput] = useState<any>('qwerty')
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -163,11 +164,11 @@ const Campaigns = () => {
             input: "text-sm",
           }}
         /> */}
-        <DateInput
+        <TextAreaInput
           value={input}
           onChange={(e: any) => {
-            setInput(e)
-            console.log(e)
+            setInput(e.target.value)
+            console.log(e.target.value)
           }}
         />
         <GrayButton text="Filters" iconUrl={FilterIcon} />

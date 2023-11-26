@@ -11,7 +11,7 @@ const NumberInput: RFC<NumberInputProps> = ({
   label,
   error,
   placeholder,
-  optional,
+  showOptionalLabel,
   prefix,
   suffix,
 }) => {
@@ -63,7 +63,7 @@ const NumberInput: RFC<NumberInputProps> = ({
           className="text-[14px] text-[#344054] mb-[6px]"
         >
           {label}{" "}
-          {optional && <span className="opacity-[0.44]">(Optional)</span>}
+          {showOptionalLabel && <span className="opacity-[0.44]">(Optional)</span>}
         </label>
       )}
       <CurrencyInput
@@ -107,7 +107,7 @@ type NumberInputProps = {
   placeholder?: string;
   prefix?: string;
   suffix?: string;
-  optional?: boolean;
+  showOptionalLabel?: boolean;
 };
 
 type InputEvent =
