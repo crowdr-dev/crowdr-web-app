@@ -19,6 +19,7 @@ import DateInput from "../dashboard-components/DateInput"
 import TextAreaInput from "../dashboard-components/TextAreaInput"
 import NumberInput from "../dashboard-components/NumberInput"
 import SelectInput from "../dashboard-components/SelectInput"
+import OptionInput from "../dashboard-components/OptionInput"
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -166,16 +167,38 @@ const Campaigns = () => {
             input: "text-sm",
           }}
         /> */}
-        <SelectInput
-        name="select"
-        options={[{value: "1", label: "item 1"}, {value: "2", label: "item 2"}]}
-          value={input}
-          onChange={(e) => {
-            setInput(e?.value)
-            console.log(e)
-          }}
-          controlled
-        />
+        <div>
+          <OptionInput
+            type="checkbox"
+            name="input"
+            value="item 1"
+            label="item 1"
+            onChange={(e) => {
+              setInput(e.target.value)
+              console.log(e.target.value)
+            }}
+          />
+          <OptionInput
+            type="checkbox"
+            name="input"
+            value="item 2"
+            label="item 2"
+            onChange={(e) => {
+              setInput(e.target.value)
+              console.log(e.target.value)
+            }}
+          />
+          <OptionInput
+            type="checkbox"
+            name="input"
+            value="item 3"
+            label="item 3"
+            onChange={(e) => {
+              setInput(e.target.value)
+              console.log(e.target.value)
+            }}
+          />
+        </div>
         <GrayButton text="Filters" iconUrl={FilterIcon} />
       </div>
 
