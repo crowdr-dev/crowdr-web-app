@@ -5,6 +5,7 @@ import {
   useFormContext,
   FieldError,
   UseFormRegisterReturn,
+  RegisterOptions,
 } from "react-hook-form"
 
 import { RFC } from "@/app/common/types"
@@ -25,7 +26,14 @@ const DateInput: RFC<DateInputProps> = ({
   value,
   onChange,
   name,
+  controlled,
+  rules
 }) => {
+  if (!controlled && !config && name) {
+    const {register} = useFormContext()
+    config = register(name, rules)
+  }
+
   if (config) {
     var { setValue, getValues, setError } = useFormContext()
     var dateRange = getValues(config.name)
@@ -127,6 +135,8 @@ type DateInputProps = {
   value?: IDate | null | undefined
   onChange?: (event: DateChangeEvent) => void
   name?: string
+  rules?: RegisterOptions
+  controlled?: boolean
 }
 
 type DateChangeEvent = {

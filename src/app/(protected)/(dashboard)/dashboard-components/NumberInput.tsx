@@ -4,6 +4,7 @@ import {
   useFormContext,
   FieldError,
   UseFormRegisterReturn,
+  RegisterOptions,
 } from "react-hook-form"
 
 const NumberInput: RFC<NumberInputProps> = ({
@@ -17,7 +18,14 @@ const NumberInput: RFC<NumberInputProps> = ({
   name,
   value,
   onChange,
+  rules,
+  controlled,
 }) => {
+  if (!controlled && !config && name) {
+    const {register} = useFormContext()
+    config = register(name, rules)
+  }
+
   if (config) {
     var { setValue, trigger, getValues } = useFormContext()
     value = getValues(config.name)
@@ -124,6 +132,8 @@ type NumberInputProps = {
   name?: string
   value?: number
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  rules?: RegisterOptions
+  controlled?: boolean
 }
 
 type InputEvent =

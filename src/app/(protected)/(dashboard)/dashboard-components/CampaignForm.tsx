@@ -135,11 +135,12 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
             />
             <div className="max-w-lg">
               <TextInput
-                config={register("title", {
+                name="title"
+                rules={{
                   required: "Title is required",
-                })}
+                }}
                 error={errors.title}
-                ariaLabelledBy="Title"
+                ariaLabel="Title"
               />
             </div>
           </div>
@@ -150,17 +151,16 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
               <InputTitle
                 title="Campaign Type"
                 detail="Choose the type that fits the needs of your campaign."
-                id="campaign-type"
               />
               <div className="max-w-lg">
                 <SelectInput
                   name="campaignType"
                   options={campaignTypes}
-                  validation={{
+                  rules={{
                     required: "Campaign type is required",
                   }}
                   error={errors.campaignType}
-                  ariaLabelledBy="campaign-type"
+                  ariaLabel="Campaign Type"
                 />
               </div>
             </div>
@@ -176,11 +176,11 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
               <SelectInput
                 name="category"
                 options={categories}
-                validation={{
+                rules={{
                   required: "Category is required",
                 }}
                 error={errors.category}
-                ariaLabelledBy="Category"
+                ariaLabel="Category"
               />
             </div>
           </div>
@@ -190,17 +190,16 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
             <InputTitle
               title="Tell Your Story"
               detail="The more details, the better."
-              id="your-story"
             />
             <div className="max-w-lg">
               <TextAreaInput
-                config={register("story", {
+                name="story"
+                rules={{
                   required: "Story is required",
-                })}
+                }}
                 characterLimit={250}
-                control={control}
                 error={errors.story}
-                ariaLabelledBy="your-story"
+                ariaLabel="Tell Your Story"
               />
             </div>
           </div>
@@ -238,11 +237,11 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                   <SelectInput
                     name="currency"
                     options={currencies}
-                    validation={{
+                    rules={{
                       required: "Currency is required",
                     }}
                     error={errors.currency}
-                    ariaLabelledBy="Currency"
+                    ariaLabel="Currency"
                   />
                 </div>
               </div>
@@ -255,9 +254,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                 />
                 <div className="max-w-lg">
                   <NumberInput
-                    config={register("fundingGoal", {
+                    name="fundingGoal"
+                    rules={{
                       required: "Funding goal is required",
-                    })}
+                    }}
                     error={errors.fundingGoal}
                     prefix={currencySymbol}
                   />
@@ -292,13 +292,13 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
 
                 <div className="max-w-lg">
                   <FileInput
-                    config={
-                      isEdit
-                        ? register("campaignImages")
-                        : register("campaignImages", {
-                            required: "Campaign image is required",
-                          })
-                    }
+                    name="campaignImages"
+                    rules={{
+                      required: {
+                        value: isEdit ? false : true,
+                        message: "Campaign image is required",
+                      },
+                    }}
                     error={errors.campaignImages}
                     multiple
                     showFileList
@@ -334,9 +334,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                       key={skill.value}
                       value={skill.value}
                       label={skill.label}
-                      config={register("skillsNeeded", {
+                      name="skillsNeeded"
+                      rules={{
                         required: "Skills needed is required",
-                      })}
+                      }}
                     />
                   ))}
                   <div className="flex">
@@ -344,7 +345,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                       type="checkbox"
                       value="others"
                       label="Other (please specify):"
-                      config={register("skillsNeeded")}
+                      name="skillsNeeded"
                     />
                     <input
                       {...register("otherSkillsNeeded", {
@@ -381,9 +382,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                       key={ageRange.value}
                       value={ageRange.value}
                       label={ageRange.label}
-                      config={register("ageRange", {
+                      name="ageRange"
+                      rules={{
                         required: "Age needed is required",
-                      })}
+                      }}
                     />
                   ))}
                   {errors.ageRange && (
@@ -405,9 +407,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                       key={genderPreference.value}
                       value={genderPreference.value}
                       label={genderPreference.label}
-                      config={register("genderPreference", {
+                      name="genderPreference"
+                      rules={{
                         required: "Gender preference is required",
-                      })}
+                      }}
                     />
                   ))}
                   {errors.genderPreference && (
@@ -424,9 +427,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
 
                 <div className="max-w-lg">
                   <DateInput
-                    config={register("timeCommitment", {
+                    name="timeCommitment"
+                    rules={{
                       required: "Time commitment is required",
-                    })}
+                    }}
                     error={errors.timeCommitment}
                     mode="range"
                     enableTime
@@ -446,9 +450,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                       key={commitment.value}
                       value={commitment.value}
                       label={commitment.label}
-                      config={register("volunteerCommitment", {
+                      name="volunteerCommitment"
+                      rules={{
                         required: "Volunteer commitment is required",
-                      })}
+                      }}
                     />
                   ))}
                   {errors.volunteerCommitment && (
@@ -468,9 +473,8 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
 
                 <div className="max-w-lg">
                   <TextAreaInput
-                    config={register("additionalNotes")}
+                    name="additionalNotes"
                     characterLimit={250}
-                    control={control}
                     error={errors.additionalNotes}
                     ariaLabelledBy="notes"
                   />

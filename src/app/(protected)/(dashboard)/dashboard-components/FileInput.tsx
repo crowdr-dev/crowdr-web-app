@@ -4,7 +4,7 @@ import Image from "next/image"
 import imageCompression from "browser-image-compression"
 
 import { RFC } from "@/app/common/types"
-import { FieldError, UseFormRegisterReturn } from "react-hook-form"
+import { FieldError, UseFormRegisterReturn, RegisterOptions } from "react-hook-form"
 import { HiMiniXCircle } from "react-icons/hi2"
 import UploadIcon from "../../../../../public/svg/upload-cloud.svg"
 import LoadingCircle from "../../../../../public/svg/loading-circle.svg"
@@ -21,7 +21,14 @@ const FileInput: RFC<FileInputProps> = ({
   name,
   onChange,
   value,
+  controlled,
+  rules,
 }) => {
+  if (!controlled && !config && name) {
+    const {register} = useFormContext()
+    config = register(name, rules)
+  }
+
   const fileInputRef = useRef<HTMLInputElement>(null)
   let files: File[] | undefined
   if (config) {
@@ -232,6 +239,8 @@ type FileInputProps = {
   name?: string
   onChange?: (e: { value: File[] | null }) => void
   value?: File[]
+  rules?: RegisterOptions
+  controlled?: boolean
 }
 
 function blobToFile(blob: Blob): FileList {

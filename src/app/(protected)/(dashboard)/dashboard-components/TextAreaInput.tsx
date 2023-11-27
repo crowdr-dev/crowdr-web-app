@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import {
   Control,
   FieldError,
+  RegisterOptions,
   UseFormRegisterReturn,
   useFormContext,
   useWatch,
@@ -12,7 +13,6 @@ const TextAreaInput: RFC<TextAreaInputProps> = ({
   config,
   label,
   error,
-  control,
   placeholder,
   characterLimit,
   showOptionalLabel,
@@ -21,7 +21,14 @@ const TextAreaInput: RFC<TextAreaInputProps> = ({
   value,
   onChange,
   name,
+  rules,
+  controlled,
 }) => {
+  if (!controlled && !config && name) {
+    const {register} = useFormContext()
+    config = register(name, rules)
+  }
+  
   const [charactersLeft, setCharactersLeft] = useState<number>()
   const [showCharactersLeft, setShowCharactersLeft] = useState<boolean>()
 
@@ -93,10 +100,11 @@ type TextAreaInputProps = {
   placeholder?: string
   showOptionalLabel?: boolean
   characterLimit?: number
-  control?: Control<any, any>
   ariaLabelledBy?: string
   ariaLabel?: string
   value?: string
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   name?: string
+  rules?: RegisterOptions
+  controlled?: boolean
 }

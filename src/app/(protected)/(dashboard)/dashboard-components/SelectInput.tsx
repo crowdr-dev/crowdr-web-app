@@ -1,5 +1,5 @@
 import Select, { SingleValue } from "react-select"
-import { useFormContext } from "react-hook-form"
+import { RegisterOptions, useFormContext } from "react-hook-form"
 import { FieldError, Controller, Control } from "react-hook-form"
 import { RFC } from "@/app/common/types"
 
@@ -8,11 +8,11 @@ const SelectInput: RFC<SelectInputProps> = ({
   name,
   label,
   error,
-  validation,
   ariaLabelledBy,
   showOptionalLabel,
   ariaLabel,
   value,
+  rules,
   onChange,
   controlled,
   isClearable,
@@ -55,9 +55,9 @@ const SelectInput: RFC<SelectInputProps> = ({
       )}
       {!controlled ? (
         <Controller
-          name={name}
+          name={name || ''}
           control={control}
-          rules={validation}
+          rules={rules}
           render={({ field: { onChange, value } }) => (
             <Select
               {...props}
@@ -90,15 +90,15 @@ export default SelectInput
 
 type SelectInputProps = {
   options: readonly Option[]
-  name: string
+  name?: string
   label?: string
   error?: FieldError
-  validation?: any
   placeholder?: string
   showOptionalLabel?: boolean
   ariaLabelledBy?: string
   ariaLabel?: string
   value?: string
+  rules?: RegisterOptions
   onChange?: (e: SingleValue<Option>) => void
   controlled?: boolean
   isClearable?: boolean

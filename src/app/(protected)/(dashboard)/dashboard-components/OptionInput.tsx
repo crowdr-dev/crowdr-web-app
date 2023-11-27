@@ -1,5 +1,5 @@
-import { RFC } from "@/app/common/types";
-import { UseFormRegisterReturn } from "react-hook-form";
+import { RFC } from "@/app/common/types"
+import { useFormContext, RegisterOptions, UseFormRegisterReturn } from "react-hook-form"
 
 const OptionInput: RFC<OptionInputProps> = ({
   config,
@@ -8,8 +8,15 @@ const OptionInput: RFC<OptionInputProps> = ({
   label,
   className,
   name,
+  rules,
   onChange,
+  controlled,
 }) => {
+  if (!controlled && !config && name) {
+    const { register } = useFormContext()
+    config = register(name, rules)
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (config) {
       config.onChange(e)
@@ -34,17 +41,19 @@ const OptionInput: RFC<OptionInputProps> = ({
 
       {label}
     </label>
-  );
-};
+  )
+}
 
-export default OptionInput;
+export default OptionInput
 
 type OptionInputProps = {
-  config?: UseFormRegisterReturn;
-  type: "radio" | "checkbox";
-  value: string;
-  label?: string;
-  className?: string;
+  config?: UseFormRegisterReturn
+  type: "radio" | "checkbox"
+  value: string
+  label?: string
+  className?: string
   name?: string
+  rules?: RegisterOptions
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-};
+  controlled?: boolean
+}

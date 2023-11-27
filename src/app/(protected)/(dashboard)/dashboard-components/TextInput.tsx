@@ -1,5 +1,7 @@
+import { useFormContext } from "react-hook-form"
+
 import { RFC } from "@/app/common/types"
-import { FieldError, UseFormRegisterReturn } from "react-hook-form"
+import { FieldError, RegisterOptions, UseFormRegisterReturn } from "react-hook-form"
 
 const TextInput: RFC<TextInputProps> = ({
   config,
@@ -12,8 +14,16 @@ const TextInput: RFC<TextInputProps> = ({
   id,
   styles,
   value,
+  name,
+  rules,
+  controlled,
+  ariaLabel,
   ...props
 }) => {
+  if (!controlled && !config && name) {
+    const {register} = useFormContext()
+    config = register(name, rules)
+  }
   const inputStyle = props.icon ? "pl-9" : ""
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +40,7 @@ const TextInput: RFC<TextInputProps> = ({
     <span className={styles?.wrapper}>
       {label && (
         <label
-          htmlFor={id || config?.name}
+          htmlFor={id || config?.name || name}
           className="text-[14px] text-[#344054] mb-[6px]"
         >
           {label}{" "}
@@ -46,11 +56,12 @@ const TextInput: RFC<TextInputProps> = ({
         <input
           type="text"
           {...config}
-          id={id || config?.name}
+          id={id || config?.name || name}
           value={value}
           placeholder={placeholder}
           onChange={handleChange}
           style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
+          aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
           className={inputStyle + " text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px] " + styles?.input}
         />
@@ -72,8 +83,11 @@ type TextInputProps = {
   error?: FieldError
   placeholder?: string
   showOptionalLabel?: boolean
+  ariaLabel?: string
   ariaLabelledBy?: string
   icon?: any
+  name?: string
+  rules?: RegisterOptions
   value?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   id?: string
@@ -81,4 +95,5 @@ type TextInputProps = {
     wrapper?: string
     input?: string
   }
+  controlled?: boolean
 }
