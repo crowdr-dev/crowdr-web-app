@@ -18,6 +18,7 @@ import FilterIcon from "../../../../../public/svg/filter.svg"
 import DateInput from "../dashboard-components/DateInput"
 import TextAreaInput from "../dashboard-components/TextAreaInput"
 import NumberInput from "../dashboard-components/NumberInput"
+import SelectInput from "../dashboard-components/SelectInput"
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -25,7 +26,7 @@ const Campaigns = () => {
   const [initialised, setInitialised] = useState(false)
   const [page, setPage] = useState(1)
   const user = useUser()
-  const [input, setInput] = useState<any>(123)
+  const [input, setInput] = useState<any>("2")
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -165,12 +166,15 @@ const Campaigns = () => {
             input: "text-sm",
           }}
         /> */}
-        <NumberInput
+        <SelectInput
+        name="select"
+        options={[{value: "1", label: "item 1"}, {value: "2", label: "item 2"}]}
           value={input}
-          onChange={(e: any) => {
-            setInput(e.target.value)
-            console.log(e.target.value)
+          onChange={(e) => {
+            setInput(e?.value)
+            console.log(e)
           }}
+          controlled
         />
         <GrayButton text="Filters" iconUrl={FilterIcon} />
       </div>
