@@ -17,6 +17,7 @@ import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
 import DateInput from "../dashboard-components/DateInput"
 import TextAreaInput from "../dashboard-components/TextAreaInput"
+import NumberInput from "../dashboard-components/NumberInput"
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -24,7 +25,7 @@ const Campaigns = () => {
   const [initialised, setInitialised] = useState(false)
   const [page, setPage] = useState(1)
   const user = useUser()
-  const [input, setInput] = useState<any>('qwerty')
+  const [input, setInput] = useState<any>(123)
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -164,7 +165,7 @@ const Campaigns = () => {
             input: "text-sm",
           }}
         /> */}
-        <TextAreaInput
+        <NumberInput
           value={input}
           onChange={(e: any) => {
             setInput(e.target.value)
