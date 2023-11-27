@@ -1,51 +1,69 @@
-import { useMemo, useRef, useState } from "react";
-import { Merge, useFormContext } from "react-hook-form";
-import Image from "next/image";
-import imageCompression from "browser-image-compression";
+import { useMemo, useRef, useState } from "react"
+import { Merge, useFormContext } from "react-hook-form"
+import Image from "next/image"
+import imageCompression from "browser-image-compression"
 
-import { RFC } from "@/app/common/types";
-import { FieldError, UseFormRegisterReturn } from "react-hook-form";
-import {HiMiniXCircle} from "react-icons/hi2"
-import UploadIcon from "../../../../../public/svg/upload-cloud.svg";
+import { RFC } from "@/app/common/types"
+import { FieldError, UseFormRegisterReturn } from "react-hook-form"
+import { HiMiniXCircle } from "react-icons/hi2"
+import UploadIcon from "../../../../../public/svg/upload-cloud.svg"
 import LoadingCircle from "../../../../../public/svg/loading-circle.svg"
 
-const FileInput: RFC<FileInputProps> = ({ config, label, error, placeholder, optional, multiple, showFileList, maxFileSize }) => {
-  const {
-    register,
-    control,
-    setValue,
-    setError,
-    watch,
-    trigger,
-    formState: { errors, isValid, isSubmitting },
-  } = useFormContext();
+const FileInput: RFC<FileInputProps> = ({
+  config,
+  label,
+  error,
+  placeholder,
+  optional,
+  multiple,
+  showFileList,
+  maxFileSize,
+  name,
+  onChange,
+  value,
+}) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const files: File[] | undefined = watch(config.name);
-  const imageUploaded =  files?.length && !error;
+  let files: File[] | undefined
+  if (config) {
+    var {
+      register,
+      control,
+      setValue,
+      setError,
+      watch,
+      trigger,
+      formState: { errors, isValid, isSubmitting },
+    } = useFormContext()
+    files = watch(config.name)
+  }
+  if (value) {
+    files = value
+  }
+  const imageUploaded = files?.length && !error
 
-  const [dragActive, setDragActive] = useState(false);
+  const [dragActive, setDragActive] = useState(false)
 
   const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
     if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
+      setDragActive(true)
     } else if (e.type === "dragleave") {
-      setDragActive(false);
+      setDragActive(false)
     }
-  };
+  }
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragActive(false);
+    e.preventDefault()
+    setDragActive(false)
     processFileSelection(e)
-  };
+  }
 
   const validateImage = async (fileList: FileList) => {
-    const image = fileList[0];
-    if (!image) return "Please select an image";
+    const image = fileList[0]
+    if (!image) return "Please select an image"
 
-    const maxSize = maxFileSize! * 1024 * 1024; // maxFileSize in bytes
+    const maxSize = maxFileSize! * 1024 * 1024 // maxFileSize in bytes
     if (image.size > maxSize) {
       const imageStatus = await new Promise<string | boolean>(
         async (resolve) => {
@@ -53,37 +71,45 @@ const FileInput: RFC<FileInputProps> = ({ config, label, error, placeholder, opt
             maxSizeMB: 2,
             maxWidthOrHeight: 800,
             useWebWorker: true,
-          });
+          })
 
           if (compressedBlob.size > maxSize) {
-            resolve(`Image size exceeds ${maxFileSize}MB`);
+            resolve(`Image size exceeds ${maxFileSize}MB`)
           } else {
-            setValue(config.name, blobToFile(compressedBlob));
-            resolve(true);
+            if (config) setValue(config.name, blobToFile(compressedBlob))
+            if (onChange) onChange({ value: blobToFile(compressedBlob) as any })
+            resolve(true)
           }
         }
-      );
-      return imageStatus;
+      )
+      return imageStatus
     } else {
-      return true;
+      return true
     }
-  };
+  }
 
   // BUG: DRAG & DROP IS ABLE TO BY-PASS FILE TYPE SPECIFIED
-  const processFileSelection = (e: React.ChangeEvent<HTMLInputElement> | React.DragEvent) => {
-    const selectedFiles = isChangeEvent(e) ? Array.from(e?.target?.files!) : Array.from(e.dataTransfer.files)
+  const processFileSelection = (
+    e: React.ChangeEvent<HTMLInputElement> | React.DragEvent
+  ) => {
+    const selectedFiles = isChangeEvent(e)
+      ? Array.from(e?.target?.files!)
+      : Array.from(e.dataTransfer.files)
 
-      if (showFileList && multiple) {
-        if (!files && selectedFiles?.length === 0) {
-          setError(config.name, {type: 'required'})
+    if (showFileList && multiple) {
+      if (!files && selectedFiles?.length === 0) {
+        if (config) setError(config.name, { type: "required" })
+      } else {
+        if (!files) {
+          if (config) setValue(config.name, selectedFiles)
+          if (onChange) onChange({ value: selectedFiles })
         } else {
-          if (!files) {
-            setValue(config.name, selectedFiles)
-          } else {
-            let fileListArray = Array.from(files)
-  
+          let fileListArray = Array.from(files)
+
           for (let selectedFile of selectedFiles) {
-            const fileIndex = fileListArray.findIndex(f => selectedFile.name == f.name)
+            const fileIndex = fileListArray.findIndex(
+              (f) => selectedFile.name == f.name
+            )
             const isAlreadyPicked = fileIndex > -1
             if (isAlreadyPicked) {
               files![fileIndex] = selectedFile
@@ -91,41 +117,48 @@ const FileInput: RFC<FileInputProps> = ({ config, label, error, placeholder, opt
               files!.push(selectedFile)
             }
           }
-          setValue(config.name, files)
-          }
-          
+          if (config) setValue(config.name, files)
+          if (onChange) onChange({ value: files })
         }
-      } else {
-        if (selectedFiles.length != 0) {
-          setValue(config.name, selectedFiles)
-        } else {
-          fileInputRef.current!.value = ""
-          setValue(config.name, null)
-        }
-        
       }
-      trigger(config.name)
+    } else {
+      if (selectedFiles.length != 0) {
+        if (config) setValue(config.name, selectedFiles)
+        if (onChange) onChange({ value: selectedFiles })
+      } else {
+        fileInputRef.current!.value = ""
+        if (config) setValue(config.name, null)
+        if (onChange) onChange({ value: null })
+      }
+    }
+    if (config) trigger(config.name)
   }
 
   const removeFile = (name: string) => {
-    const remainingFiles = files!.filter(file => file.name != name)
+    const remainingFiles = files!.filter((file) => file.name != name)
     if (remainingFiles.length > 0) {
-      setValue(config.name, remainingFiles)
+      if (config) setValue(config.name, remainingFiles)
+      if (onChange) onChange({ value: remainingFiles })
     } else {
       fileInputRef.current!.value = ""
-      setValue(config.name, null)
-      trigger(config.name)
+      if (config) {
+        setValue(config.name, null)
+        trigger(config.name)
+      }
+      if (onChange) onChange({ value: null })
     }
   }
 
-  const isChangeEvent = (event: React.ChangeEvent<HTMLInputElement> | React.DragEvent): event is React.ChangeEvent<HTMLInputElement> => {
-    return 'files' in event.target
+  const isChangeEvent = (
+    event: React.ChangeEvent<HTMLInputElement> | React.DragEvent
+  ): event is React.ChangeEvent<HTMLInputElement> => {
+    return "files" in event.target
   }
 
   return (
     <span>
       <label
-        htmlFor={config.name}
+        htmlFor={config?.name || name}
         onDragOver={handleDrag}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -158,7 +191,7 @@ const FileInput: RFC<FileInputProps> = ({ config, label, error, placeholder, opt
           {...config}
           type="file"
           ref={fileInputRef}
-          id={config.name}
+          id={config?.name || name}
           accept=".svg, .png, .jpg, .jpeg, .gif"
           multiple={multiple}
           onChange={processFileSelection}
@@ -167,20 +200,28 @@ const FileInput: RFC<FileInputProps> = ({ config, label, error, placeholder, opt
       </label>
       {error && (
         <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
-          {error?.message}
+          {error.message}
         </span>
       )}
 
-      {showFileList && files?.map((file) => <FileDetail key={file.name} name={file.name} size={file.size} removeFile={() => removeFile(file.name)} />)}
+      {showFileList &&
+        files?.map((file) => (
+          <FileDetail
+            key={file.name}
+            name={file.name}
+            size={file.size}
+            removeFile={() => removeFile(file.name)}
+          />
+        ))}
     </span>
-  );
-};
+  )
+}
 
-export default FileInput;
+export default FileInput
 
 type FileInputProps = {
-  config: UseFormRegisterReturn;
-  label?: string;
+  config?: UseFormRegisterReturn
+  label?: string
   error?: Merge<FieldError, (FieldError | undefined)[]>
   placeholder?: string
   optional?: boolean
@@ -188,24 +229,29 @@ type FileInputProps = {
   compressImage?: boolean
   multiple?: boolean
   showFileList?: boolean
+  name?: string
+  onChange?: (e: { value: File[] | null }) => void
+  value?: File[]
 }
 
 function blobToFile(blob: Blob): FileList {
-  const file = new File([blob], blob.name, { type: blob.type });
-  const dataTransfer = new DataTransfer();
-  dataTransfer.items.add(file);
-  return dataTransfer.files;
+  const file = new File([blob], blob.name, { type: blob.type })
+  const dataTransfer = new DataTransfer()
+  dataTransfer.items.add(file)
+  return dataTransfer.files
 }
 
 function toMB(bytes: number) {
   return (bytes / 1024 / 1024).toFixed(2)
 }
 
-const FileDetail: RFC<FileDetailProps> = ({name, size, removeFile}) => {
+const FileDetail: RFC<FileDetailProps> = ({ name, size, removeFile }) => {
   return (
     <div className="flex rounded-lg border border-[#D0D5DD] w-full mt-4">
       <div className="text-sm bg-[#F9FAFB] w-8/12 rounded-l-lg p-4 pl-[18px]">
-        <p className="whitespace-nowrap overflow-hidden text-ellipsis">{name}</p>
+        <p className="whitespace-nowrap overflow-hidden text-ellipsis">
+          {name}
+        </p>
         <p className="text-[#667085]">{toMB(size)} MB</p>
       </div>
       <div className="grow bg-white rounded-r-lg p-4">

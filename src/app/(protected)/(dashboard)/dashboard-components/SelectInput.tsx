@@ -20,7 +20,7 @@ const SelectInput: RFC<SelectInputProps> = ({
 }) => {
   let control
   if (!controlled) {
-    ;({ control } = useFormContext())
+    ({ control } = useFormContext())
   }
 
   const props = {

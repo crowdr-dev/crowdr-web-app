@@ -20,6 +20,7 @@ import TextAreaInput from "../dashboard-components/TextAreaInput"
 import NumberInput from "../dashboard-components/NumberInput"
 import SelectInput from "../dashboard-components/SelectInput"
 import OptionInput from "../dashboard-components/OptionInput"
+import FileInput from "../dashboard-components/FileInput"
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -27,7 +28,7 @@ const Campaigns = () => {
   const [initialised, setInitialised] = useState(false)
   const [page, setPage] = useState(1)
   const user = useUser()
-  const [input, setInput] = useState<any>("2")
+  const [input, setInput] = useState<any>()
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -154,7 +155,7 @@ const Campaigns = () => {
         <h2 className="hidden md:block text-xl text-[#292A2E]">
           All Campaigns
         </h2>
-        {/* <TextInput
+        <TextInput
           value={input}
           onChange={(e) => {
             setInput(e.target.value)
@@ -166,39 +167,7 @@ const Campaigns = () => {
             wrapper: "grow mr-[22px] block md:hidden",
             input: "text-sm",
           }}
-        /> */}
-        <div>
-          <OptionInput
-            type="checkbox"
-            name="input"
-            value="item 1"
-            label="item 1"
-            onChange={(e) => {
-              setInput(e.target.value)
-              console.log(e.target.value)
-            }}
-          />
-          <OptionInput
-            type="checkbox"
-            name="input"
-            value="item 2"
-            label="item 2"
-            onChange={(e) => {
-              setInput(e.target.value)
-              console.log(e.target.value)
-            }}
-          />
-          <OptionInput
-            type="checkbox"
-            name="input"
-            value="item 3"
-            label="item 3"
-            onChange={(e) => {
-              setInput(e.target.value)
-              console.log(e.target.value)
-            }}
-          />
-        </div>
+        />
         <GrayButton text="Filters" iconUrl={FilterIcon} />
       </div>
 
