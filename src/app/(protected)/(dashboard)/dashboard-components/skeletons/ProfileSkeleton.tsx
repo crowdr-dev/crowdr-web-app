@@ -11,8 +11,8 @@ const ProfileSkeleton = () => {
           containerClassName="mr-[15px]"
         />
         <div>
-          <Skeleton width={120} height={18} />
-          <Skeleton width={80} height={20} />
+          <Skeleton width={120} height={18} borderRadius={100} />
+          <Skeleton width={80} height={20} borderRadius={100} />
         </div>
       </div>
     </SkeletonTheme>
