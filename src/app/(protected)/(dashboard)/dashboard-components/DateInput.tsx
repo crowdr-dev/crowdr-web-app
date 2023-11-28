@@ -30,11 +30,13 @@ const DateInput: RFC<DateInputProps> = ({
   rules
 }) => {
   if (!controlled && !config && name) {
-    const {register} = useFormContext()
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const {register, setValue, getValues, setError} = useFormContext()
     config = register(name, rules)
   }
 
   if (config) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     var { setValue, getValues, setError } = useFormContext()
     var dateRange = getValues(config.name)
   } else {

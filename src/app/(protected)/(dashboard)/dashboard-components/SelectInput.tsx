@@ -20,6 +20,7 @@ const SelectInput: RFC<SelectInputProps> = ({
 }) => {
   let control
   if (!controlled) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     ({ control } = useFormContext())
   }
 

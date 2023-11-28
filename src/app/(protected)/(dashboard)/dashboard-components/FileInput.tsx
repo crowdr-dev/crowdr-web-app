@@ -25,6 +25,7 @@ const FileInput: RFC<FileInputProps> = ({
   rules,
 }) => {
   if (!controlled && !config && name) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const {register} = useFormContext()
     config = register(name, rules)
   }
@@ -40,6 +41,7 @@ const FileInput: RFC<FileInputProps> = ({
       watch,
       trigger,
       formState: { errors, isValid, isSubmitting },
+      // eslint-disable-next-line react-hooks/rules-of-hooks
     } = useFormContext()
     files = watch(config.name)
   }

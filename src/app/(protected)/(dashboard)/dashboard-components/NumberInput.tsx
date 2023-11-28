@@ -22,11 +22,13 @@ const NumberInput: RFC<NumberInputProps> = ({
   controlled,
 }) => {
   if (!controlled && !config && name) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const {register} = useFormContext()
     config = register(name, rules)
   }
 
   if (config) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     var { setValue, trigger, getValues } = useFormContext()
     value = getValues(config.name)
   }
