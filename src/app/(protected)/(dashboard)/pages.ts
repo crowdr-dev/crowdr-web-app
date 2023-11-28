@@ -20,10 +20,10 @@ export const pageGroups = [
   [
     new Page("/campaigns", "My Campaigns", megaphone),
     new Page("/donations", "My Donations", dollar),
-    new Page("", "Manage Website Page", globe, "Coming Soon"),
+    new Page("", "Manage Website Page", globe, "COMING SOON"),
   ],
   [
-    new Page("", "Inbox", envelope, "Coming Soon"),
+    new Page("", "Inbox", envelope, "COMING SOON"),
     new Page("/notifications", "Notifications", bell),
     new Page("/settings/profile", "Settings", settings),
   ],

@@ -15,12 +15,6 @@ import { IPagination } from "@/app/common/types"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
-import DateInput from "../dashboard-components/DateInput"
-import TextAreaInput from "../dashboard-components/TextAreaInput"
-import NumberInput from "../dashboard-components/NumberInput"
-import SelectInput from "../dashboard-components/SelectInput"
-import OptionInput from "../dashboard-components/OptionInput"
-import FileInput from "../dashboard-components/FileInput"
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])

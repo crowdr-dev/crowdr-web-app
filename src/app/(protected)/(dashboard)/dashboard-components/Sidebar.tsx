@@ -24,9 +24,9 @@ const Sidebar: RFC<SidebarProps> = ({drawer}) => {
         {index == 0 || <hr className=" border-[rgba(56, 56, 56, 0.08)]" />}
         <div className="py-[27px]">
           {pageGroup.map((page, index) => {
-            let pageLinkStyle = "relative flex items-center font-medium text-[0.96rem] rounded-[0.275rem] transition pl-[28px] pt-[14px] pb-[15px]"
+            let pageLinkStyle = "flex items-center flex-wrap gap-y-1 gap-x-2 font-medium text-[0.96rem] rounded-[0.275rem] transition pl-[28px] pt-[14px] pb-[15px] w-[220px]"
             let isCurrentPage = currentPath.startsWith("/"+page.route.split("/")[1])
-            let iconStyle = isCurrentPage ? "brightness-[200] mr-2" : "mr-2"
+            let iconStyle = isCurrentPage ? "brightness-[200]" : ""
 
             if (index != 0) pageLinkStyle += ' mt-[10px]'
             if (isCurrentPage) {
@@ -38,12 +38,13 @@ const Sidebar: RFC<SidebarProps> = ({drawer}) => {
             }
 
             return (
-              <DrawerTrigger key={index} id="sidebar" type="hide">
+              <DrawerTrigger key={index} id="sidebar_drawer" type="hide">
                 <Link key={index} href={page.route} className={pageLinkStyle}>
-                  {page.label && <span className="absolute right-0 -top-0.5 text-[0.55rem] text-green-400 bg-green-50 rounded-md py-0.5 px-1.5">{page.label}</span>}
+                  {/* {page.label && <span className="absolute right-0 -top-0.5 text-[0.55rem] text-green-400 bg-green-50 rounded-md py-0.5 px-1.5">{page.label}</span>} */}
                   {/* <Icon name={page.icon} className="text-inherit text-xl mr-2" /> */}
                   <Image src={page.icon} width={18} height={18} alt="" className={iconStyle} />
                   {page.title}
+                  {page.label && <span className="bg-green-100 text-green-400 text-[0.55rem] whitespace-nowrap font-semibold px-1.5 py-0.5 rounded">{page.label}</span>}
                 </Link>
               </DrawerTrigger>
             )

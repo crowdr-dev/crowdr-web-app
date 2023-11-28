@@ -56,7 +56,7 @@ const Header = () => {
         )}
 
         {/* burger icon */}
-        <DrawerTrigger id="sidebar">
+        <DrawerTrigger id="sidebar_drawer">
           <Image
             src={BurgerIcon}
             alt="burger icon"
@@ -65,7 +65,7 @@ const Header = () => {
         </DrawerTrigger>
       </div>
 
-      <Drawer id="sidebar" ariaLabel="Sidebar">
+      <Drawer id="sidebar_drawer" ariaLabel="Sidebar">
         <Sidebar drawer />
       </Drawer>
     </header>
