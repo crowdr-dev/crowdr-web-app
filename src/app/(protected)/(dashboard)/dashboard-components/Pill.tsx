@@ -39,6 +39,7 @@ const Climate = <Pill text="Climate" icon="books" textColor="#076C11" bgColor="#
 const Technology = <Pill text="Technology" icon="desktop-computer" textColor="#085D70" bgColor="#DEFAFF" />
 const Personal = <Pill text="Personal" icon="books" textColor="#960966" bgColor="#FFEBF2" />
 const Startup = <Pill text="Startup" icon="office-building" textColor="#606E09" bgColor="#FBFFE2" />
+const Family = <Pill text="Family" icon="family-man-woman-girl-boy" textColor="#4C160F" bgColor="#FFE7E3" />
 const Others = <Pill text="Others" icon="books" textColor="#0C0C0CA8" bgColor="#F5F5F5" />
 
 export const pill = (type: string) => {
@@ -54,6 +55,9 @@ export const pill = (type: string) => {
       
     case 'events':
       return Events
+
+    case 'family':
+      return Family
       
     case 'sport':
       return Sports

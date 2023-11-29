@@ -5,8 +5,8 @@ import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
 import TextInput from "../dashboard-components/TextInput"
 import StatCard from "../dashboard-components/StatCard"
 import Pagination from "../dashboard-components/Pagination"
-import { useUser } from "../utils/useUser"
-import { getUser } from "@/app/api/user/getUser"
+import CampaignCardSkeleton from "../dashboard-components/skeletons/CampaignCardSkeleton"
+import { useUser } from "../common/hooks/useUser"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
@@ -19,16 +19,17 @@ import FilterIcon from "../../../../../public/svg/filter.svg"
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
   const [pagination, setPagination] = useState<IPagination>()
+  const [initialised, setInitialised] = useState(false)
   const [page, setPage] = useState(1)
   const user = useUser()
+  const [input, setInput] = useState<any>()
 
   useEffect(() => {
     const fetchCampaigns = async () => {
-      const query = new URLSearchParams({ page: `${page}`, perPage: '4' })
+      const query = new URLSearchParams({ page: `${page}`, perPage: "4" })
       const endpoint = `/api/v1/my-campaigns?${query}`
 
       try {
-        const user = await getUser()
         const headers = {
           "Content-Type": "multipart/form-data",
           "x-auth-token": user?.token!,
@@ -40,16 +41,23 @@ const Campaigns = () => {
           headers,
           method: "GET",
         })
+
         setCampaigns(data.campaigns)
         setPagination(data.pagination)
+
+        if (!initialised) {
+          setInitialised(true)
+        }
       } catch (error) {
         const message = extractErrorMessage(error)
         // toast({ title: "Oops!", body: message, type: "error" })
       }
     }
 
-    fetchCampaigns()
-  }, [page])
+    if (user) {
+      fetchCampaigns()
+    }
+  }, [user, page])
 
   return (
     <div>
@@ -99,8 +107,7 @@ const Campaigns = () => {
       </div>
 
       {/* stats */}
-      <div className="grid 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[44px]">
-        {/*  md:grid-cols-[repeat(3,_minmax(0,_350px))] */}
+      <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[44px]">
         <StatCard
           title="Total Raised"
           text="N235,880.70"
@@ -143,8 +150,11 @@ const Campaigns = () => {
           All Campaigns
         </h2>
         <TextInput
-          value=""
-          onChange={() => null}
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value)
+            console.log(e.target.value)
+          }}
           placeholder="Search campaigns"
           icon={BiSearch}
           styles={{
@@ -157,13 +167,25 @@ const Campaigns = () => {
 
       {/* campaigns */}
       <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px] mb-[30px] md:mb-10">
-        {campaigns.map((campaign) => (
-          <CampaignCard key={campaign._id} campaign={campaign} />
-        ))}
+        {initialised
+          ? campaigns.map((campaign) => (
+              <CampaignCard key={campaign._id} campaign={campaign} />
+            ))
+          : Array.from({ length: 4 }).map((_, index) => (
+              <CampaignCardSkeleton key={index} />
+            ))}
       </div>
 
       {/* pagination */}
-      {(pagination && campaigns.length != 0) && <Pagination currentPage={pagination.currentPage} perPage={pagination.perPage} total={pagination.total} onPageChange={setPage} className="px-4 py-3 md:p-0" />}
+      {pagination && campaigns.length != 0 && (
+        <Pagination
+          currentPage={pagination.currentPage}
+          perPage={pagination.perPage}
+          total={pagination.total}
+          onPageChange={setPage}
+          className="px-4 py-3 md:p-0"
+        />
+      )}
     </div>
   )
 }

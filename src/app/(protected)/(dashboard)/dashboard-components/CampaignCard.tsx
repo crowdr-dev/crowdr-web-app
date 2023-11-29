@@ -1,9 +1,10 @@
 import ProgressBar from "./ProgressBar"
 import { GrayButton } from "./Button"
+import Skeleton from "react-loading-skeleton"
 import { label } from "./Label"
 import { pill } from "./Pill"
-import { formatAmount } from "../utils/currency"
-import { getDuration } from "../utils/date"
+import { formatAmount } from "../common/utils/currency"
+import { getDuration } from "../common/utils/date"
 
 import { ICampaign } from "@/app/common/types/Campaign"
 import { RFC } from "@/app/common/types"
@@ -32,8 +33,8 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
 
       <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[10px] md:mb-3">
         <p className="text-sm text-[#667085] mb-1">
-          <span className="text-[#292A2E]">Goal</span> N286,000/N
-          {formatAmount(fundingGoals.currency, fundingGoals.amount)}
+          <span className="text-[#292A2E]">Goal</span>{" "}
+          {formatAmount(fundingGoals.amount, fundingGoals.currency)}/N000,000
         </p>
         <ProgressBar percent={70} showValue />
       </div>

@@ -5,12 +5,11 @@ import objectToFormData from "@/utils/objectToFormData"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import CampaignFormContext, { FormFields } from "../utils/useCreateCampaign"
-import { useUser } from "../../../utils/useUser"
-import { useModal } from "@/app/common/hooks/useModal"
-import { getUser } from "@/app/api/user/getUser"
-import { useToast } from "@/app/common/hooks/useToast"
 import CampaignForm from "../../../dashboard-components/CampaignForm"
-import CampaignToast from "../../../dashboard-components/CampaignModal"
+import CompletionCard from "../../../dashboard-components/CompletionCard"
+import { useUser } from "../../../common/hooks/useUser"
+import { useModal } from "@/app/common/hooks/useModal"
+import { useToast } from "@/app/common/hooks/useToast"
 
 const CreateEditCampaign = ({ params }: Route) => {
   const router = useRouter()
@@ -28,6 +27,7 @@ const CreateEditCampaign = ({ params }: Route) => {
       campaignType,
       skillsNeeded,
       otherSkillsNeeded,
+      currency,
       fundingGoal,
       campaignDuration,
       ageRange,
@@ -47,7 +47,7 @@ const CreateEditCampaign = ({ params }: Route) => {
       campaignType: isIndividual ? "fundraise" : campaignType,
     }
 
-    if (!isIndividual) payload.campaignStatus = "in-progress"
+    // if (!isIndividual) payload.campaignStatus = "in-progress"
 
     if (isFundraiseRelated || isIndividual) {
       // TODO: MAKE objectToFormData handle converting nested objects to JSON
@@ -55,7 +55,7 @@ const CreateEditCampaign = ({ params }: Route) => {
         fundingGoalDetails: [
           {
             amount: fundingGoal,
-            currency: "naira",
+            currency,
           },
         ],
         startOfFundraise: campaignDuration[0],
@@ -85,7 +85,6 @@ const CreateEditCampaign = ({ params }: Route) => {
     }
 
     try {
-      const user = await getUser()
       const headers = {
         "Content-Type": "multipart/form-data",
         "x-auth-token": user?.token!,
@@ -109,7 +108,16 @@ const CreateEditCampaign = ({ params }: Route) => {
         if (isEdit) {
           toast({ title: "Well done!", body: message })
         } else {
-          modal.show(<CampaignToast clearModal={modal.hide} />)
+          modal.show(
+            <CompletionCard
+              title="Donation Campaign created successfully"
+              text="This donation campaign has been created successfully. You will be
+          able to edit this campaign and republish changes."
+              primaryButton={{ label: "Share on your Socials" }}
+              secondaryButton={{ label: "Cancel", onClick: modal.hide }}
+              clearModal={modal.hide}
+            />
+          )
         }
       }
     } catch (error: any) {

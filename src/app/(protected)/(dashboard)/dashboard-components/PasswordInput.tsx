@@ -1,6 +1,7 @@
 import { useState } from "react"
+import { useFormContext } from "react-hook-form"
 
-import { FieldError, UseFormRegisterReturn } from "react-hook-form"
+import { FieldError, RegisterOptions, UseFormRegisterReturn } from "react-hook-form"
 import { RFC } from "@/app/common/types"
 import { LuEye, LuEyeOff } from "react-icons/lu"
 
@@ -15,7 +16,16 @@ const PasswordInput: RFC<PasswordInputProps> = ({
   id,
   styles,
   value,
+  name,
+  rules,
+  controlled,
+  ariaLabel,
 }) => {
+  if (!controlled && !config && name) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const {register} = useFormContext()
+    config = register(name, rules)
+  }
   const [showPassword, setShowPassword] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +62,7 @@ const PasswordInput: RFC<PasswordInputProps> = ({
           placeholder={placeholder}
           onChange={handleChange}
           style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
+          aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
           className={
             "text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] pl-[14px] pr-10 " +
@@ -86,10 +97,14 @@ type PasswordInputProps = {
   error?: FieldError
   placeholder?: string
   optional?: boolean
+  ariaLabel?: string
   ariaLabelledBy?: string
+  name?: string
+  rules?: RegisterOptions
   value?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   id?: string
+  controlled?: boolean
   styles?: {
     wrapper?: string
     input?: string
