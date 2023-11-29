@@ -169,7 +169,7 @@ const Campaigns = () => {
       <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px] mb-[30px] md:mb-10">
         {initialised
           ? campaigns.map((campaign) => (
-              <CampaignCard key={campaign._id} campaign={campaign} />
+            campaign.campaignType !== "volunteer" && <CampaignCard key={campaign._id} campaign={campaign} />
             ))
           : Array.from({ length: 4 }).map((_, index) => (
               <CampaignCardSkeleton key={index} />
