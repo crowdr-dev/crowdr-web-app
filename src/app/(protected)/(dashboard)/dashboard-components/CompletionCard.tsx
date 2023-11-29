@@ -4,7 +4,13 @@ import { Button, WhiteButton } from "./Button"
 
 import { RFC } from "@/app/common/types"
 
-const CampaignModal: RFC<CampaignModalProps> = ({clearModal}) => {
+const CompletionCard: RFC<CompletionCardProps> = ({
+  title,
+  text,
+  primaryButton,
+  secondaryButton,
+  clearModal,
+}) => {
   const boxShadow =
     "0px 8px 8px -4px rgba(16, 24, 40, 0.03), 0px 20px 24px -4px rgba(16, 24, 40, 0.08)"
   const buttonClasses = "!justify-center font-semibold !text-base"
@@ -18,47 +24,57 @@ const CampaignModal: RFC<CampaignModalProps> = ({clearModal}) => {
         <CheckIcon />
 
         <div className="hidden md:flex flex-col gap-1 mb-6">
-        <p className="flex justify-between text-lg text-[#101828] font-semibold md:mb-1">
-          Donation Campaign created successfully
+          <p className="flex justify-between text-lg text-[#101828] font-semibold md:mb-1">
+            {title}
+            <XIcon onClick={clearModal} className="hidden md:inline" />
+          </p>
+          <p className="text-sm text-[#475467] md:text-justify md:pr-2">
+            {text}
+          </p>
+        </div>
 
-          <XIcon onClick={clearModal} className="hidden md:inline" />
-        </p>
-        <p className="text-sm text-[#475467] md:text-justify md:pr-2">
-          This donation campaign has been created successfully. You will be able
-          to edit this campaign and republish changes.
-        </p>
-      </div>
-      
         <XIcon onClick={clearModal} className="md:hidden" />
       </div>
 
       <div className="flex flex-col md:hidden gap-1 mb-6">
-        <p className="text-lg font-semibold">
-          Donation Campaign created successfully
-        </p>
-        <p className="text-sm text-[#475467]">
-          This donation campaign has been created successfully. You will be able
-          to edit this campaign and republish changes.
-        </p>
+        <p className="text-lg font-semibold">{title}</p>
+        <p className="text-sm text-[#475467]">{text}</p>
       </div>
 
       <div className="flex flex-col md:flex-row-reverse gap-3">
-        <Button text="Share on your Socials" className={buttonClasses} shadow />
+        <Button
+          text={primaryButton.label}
+          href={primaryButton.href}
+          onClick={primaryButton.onClick}
+          className={buttonClasses}
+          shadow
+        />
         <WhiteButton
-          text="Cancel"
+          text={secondaryButton.label}
+          href={secondaryButton.href}
+          onClick={secondaryButton.onClick}
           outlineColor="#D0D5DD"
           className={buttonClasses}
-          onClick={clearModal}
         />
       </div>
     </div>
   )
 }
 
-export default CampaignModal
+export default CompletionCard
 
-type CampaignModalProps = {
+type CompletionCardProps = {
+  title: string
+  text: string
+  primaryButton: Button
+  secondaryButton: Button
   clearModal: () => void
+}
+
+type Button = {
+  label: string
+  href?: string
+  onClick?: () => void
 }
 
 const CheckIcon = () => {
@@ -117,7 +133,7 @@ const CheckIcon = () => {
   )
 }
 
-const XIcon = ({onClick, className}: any) => {
+const XIcon = ({ onClick, className }: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

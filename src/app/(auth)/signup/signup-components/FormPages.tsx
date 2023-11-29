@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation"
 import setUserCookie from "@/app/api/user/setUser"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import makeRequest from "@/utils/makeRequest"
-import { User } from "@/app/api/user/getUser"
+import { IUser } from "@/app/api/user/getUser"
 
 const FormPages = () => {
   const { formPage, handleSubmit } = useFormContext() as RegisterFormContext
@@ -35,7 +35,7 @@ const FormPages = () => {
     )
 
     try {
-      const { data: user } = await makeRequest<{ data: User }>(endpoint, {
+      const { data: user } = await makeRequest<{ data: IUser }>(endpoint, {
         method: "POST",
         payload,
       })

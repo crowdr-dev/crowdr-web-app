@@ -1,8 +1,8 @@
-import { User } from "@/app/api/user/getUser";
+import { IUser } from "@/app/api/user/getUser";
 import { redirect } from "next/navigation";
 
 export const handleUserRedirection = (
-  user: User | null,
+  user: IUser | null,
   customRedirectFn?: Function
 ) => {
   if (!user) return;

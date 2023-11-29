@@ -1,42 +1,43 @@
-import { RFC } from "@/app/common/types";
+import { useEffect, useRef } from "react"
+import { Drawer, DrawerOptions } from "flowbite"
+import { RFC } from "@/app/common/types"
 
-const DrawerTrigger: RFC<DrawerTriggerProps> = ({ id, children, type, placement }) => {
-  const drawerProps: IDrawer = {"data-drawer-target": id}
+const DrawerTrigger: RFC<DrawerTriggerProps> = ({
+  id,
+  type = "show",
+  options = {},
+  children,
+  override,
+}) => {
+  let drawer = useRef<Drawer>()
 
-  if (type == 'show') drawerProps["data-drawer-show"] = id
-  else if (type == 'hide') drawerProps["data-drawer-hide"] = id
-  else if (type == 'toggle') drawerProps["data-drawer-toggle"] = id
+  useEffect(() => {
+    const $drawerEl = document.getElementById(id)
+    drawer.current = new Drawer($drawerEl, options)
+  }, [])
 
-  if (placement) drawerProps["data-drawer-placement"] = placement
+  const trigger = () => {
+    if (drawer.current) {
+      const $backdropEl = document.querySelector("[drawer-backdrop]")
+      drawer.current[type]()
 
-  return (
-    <span
-      {...drawerProps}
-      // TODO: IMPLEMENT PLACEMENT POSITIONING IN DRAWER COMPONENT
-    >
-      {children}
-    </span>
-  );
-};
+      if (type === "show") {
+        $backdropEl?.classList.remove("hidden")
+      } else if (type === "hide") {
+        $backdropEl?.classList.add("hidden")
+      }
+    }
+  }
 
-export default DrawerTrigger;
-
-DrawerTrigger.defaultProps = {
-  type: 'show',
-  placement: 'left'
+  return <span onClick={trigger}>{children}</span>
 }
 
-type DrawerTriggerProps = {
-  id: string;
-  children: React.ReactNode;
-  type?: "show" | "hide" | "toggle";
-  placement?: "left" | "right" | "top" | "bottom";
-};
+export default DrawerTrigger
 
-interface IDrawer {
-  "data-drawer-target": string
-  "data-drawer-show"?: string
-  "data-drawer-hide"?: string
-  "data-drawer-toggle"?: string
-  "data-drawer-placement"?: string
+type DrawerTriggerProps = {
+  id: string
+  children: React.ReactNode
+  type?: "show" | "hide" | "toggle"
+  options?: DrawerOptions
+  override?: boolean
 }

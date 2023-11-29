@@ -1,4 +1,4 @@
-import CampaignToast from "../dashboard-components/CampaignModal"
+import CampaignToast from "../dashboard-components/CompletionCard"
 
 const Notifications = () => {
   return (
