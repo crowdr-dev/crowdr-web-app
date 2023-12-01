@@ -35,7 +35,7 @@ const FormPages = () => {
     )
 
     try {
-      const { data: user } = await makeRequest<{ data: IUser }>(endpoint, {
+      const { data: user } = await makeRequest<IUser>(endpoint, {
         method: "POST",
         payload,
       })
