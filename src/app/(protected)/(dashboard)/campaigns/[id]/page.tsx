@@ -4,23 +4,19 @@ import { useUser } from "../../common/hooks/useUser"
 import makeRequest from "@/utils/makeRequest"
 import { mapCampaignResponseToView } from "../../common/utils/campaign"
 
-import {
-  Button,
-  GrayButton,
-  WhiteButton,
-} from "../../dashboard-components/Button"
+import { Button, GrayButton } from "../../dashboard-components/Button"
 import Detail from "../../dashboard-components/Detail"
-import Label, { label } from "../../dashboard-components/Label"
 import Pagination from "../../dashboard-components/Pagination"
 import Table from "../../dashboard-components/Table"
 import Tabs from "../../dashboard-components/Tabs"
+import ProgressBar from "../../dashboard-components/ProgressBar"
+import Text from "../../dashboard-components/Text"
+import { pill } from "../../dashboard-components/Pill"
 
 import { Route } from "@/app/common/types"
 import { ICampaign } from "@/app/common/types/Campaign"
 
 import FileDownloadIcon from "../../../../../../public/svg/file-download.svg"
-import { pill } from "../../dashboard-components/Pill"
-import ProgressBar from "../../dashboard-components/ProgressBar"
 
 const Campaign = ({ params }: Route) => {
   const [campaign, setCampaign] = useState<ICampaignView>()
@@ -66,7 +62,14 @@ const Campaign = ({ params }: Route) => {
               <div className="hidden md:block">{pill(campaign.category)}</div>
             </div>
 
-            <p className="text-[#667085] text-[15px] md:text-[13px] mb-[9px] md:mb-8">
+            <Text
+              characterLimit={127}
+              className="md:hidden text-[#667085] text-[15px] md:text-[13px] mb-[9px] md:mb-8"
+            >
+              {campaign.story}
+            </Text>
+
+            <p className="hidden md:block text-[#667085] text-[15px] md:text-[13px] mb-[9px] md:mb-8">
               {campaign.story}
             </p>
 
@@ -104,7 +107,7 @@ const Campaign = ({ params }: Route) => {
                   text="Update campaign"
                   textColor="#667085"
                   outlineColor="transparent"
-                  className="self-end !px-7"
+                  className="self-end !px-7 !h-[44px]"
                 />
               </div>
             </div>

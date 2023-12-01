@@ -26,14 +26,14 @@ const CompletionCard: RFC<CompletionCardProps> = ({
         <div className="hidden md:flex flex-col gap-1 mb-6">
           <p className="flex justify-between text-lg text-[#101828] font-semibold md:mb-1">
             {title}
-            <XIcon onClick={clearModal} className="hidden md:inline" />
+            <XIcon onClick={clearModal} className="hidden md:inline cursor-pointer" />
           </p>
           <p className="text-sm text-[#475467] md:text-justify md:pr-2">
             {text}
           </p>
         </div>
 
-        <XIcon onClick={clearModal} className="md:hidden" />
+        <XIcon onClick={clearModal} className="md:hidden cursor-pointer" />
       </div>
 
       <div className="flex flex-col md:hidden gap-1 mb-6">

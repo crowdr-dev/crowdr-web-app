@@ -62,7 +62,7 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
           text="Update campaign"
           textColor="#667085"
           outlineColor="transparent"
-          className="self-end !px-7"
+          className="self-end !px-7 !h-[44px]"
         />
       </div>
     </Link>

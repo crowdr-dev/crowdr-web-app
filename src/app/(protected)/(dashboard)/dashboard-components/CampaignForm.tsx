@@ -194,7 +194,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                 rules={{
                   required: "Story is required",
                 }}
-                characterLimit={250}
+                characterLimit={300}
                 error={errors.story}
                 ariaLabel="Tell Your Story"
               />
@@ -471,7 +471,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                 <div className="max-w-lg">
                   <TextAreaInput
                     name="additionalNotes"
-                    characterLimit={250}
+                    characterLimit={300}
                     error={errors.additionalNotes}
                     ariaLabelledBy="notes"
                   />
