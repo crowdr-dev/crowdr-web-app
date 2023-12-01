@@ -69,32 +69,29 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
   }, [currency])
 
   useEffect(() => {
-    const fetchCampaignData = async () => {
-      const endpoint = `/api/v1/my-campaigns/${campaignId}`
-
-      try {
-        const headers = {
-          "Content-Type": "multipart/form-data",
-          "x-auth-token": user?.token!,
-        }
-        const { success, data } = await makeRequest<{
-          success: boolean
-          data: ICampaign
-        }>(endpoint, {
-          headers,
-          method: "GET",
-        })
-
-        const formData = mapResponseToForm(data)
-        reset(formData)
-        setFormFetched(true)
-      } catch (error) {
-        // const message = extractErrorMessage(error)
-        // toast({ title: "Oops!", body: message, type: "error" })
-      }
-    }
-
     if (user && campaignId) {
+      const fetchCampaignData = async () => {
+        try {
+          const endpoint = `/api/v1/my-campaigns/${campaignId}`
+          const headers = {
+            "Content-Type": "multipart/form-data",
+            "x-auth-token": user.token,
+          }
+
+          const { data } = await makeRequest<ICampaign>(endpoint, {
+            headers,
+            method: "GET",
+          })
+
+          const formData = mapResponseToForm(data)
+          reset(formData)
+          setFormFetched(true)
+        } catch (error) {
+          // const message = extractErrorMessage(error)
+          // toast({ title: "Oops!", body: message, type: "error" })
+        }
+      }
+
       fetchCampaignData()
     }
   }, [user])

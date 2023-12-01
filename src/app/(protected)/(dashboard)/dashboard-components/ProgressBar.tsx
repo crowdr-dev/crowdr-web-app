@@ -5,7 +5,7 @@ const ProgressBar: RFC<ProgressBarProps> = ({ percent, bgColor, showValue }) => 
     <div className="flex items-center">
       <div className="grow bg-[#EBECEC] rounded-full h-2">
         <div
-          style={{ width: `${percent}%`, background: bgColor }}
+          style={{ width: `${percent <= 100 ? percent : 100}%`, background: bgColor }}
           className="bg-primary h-full rounded-full transition"
         ></div>
       </div>
