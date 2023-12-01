@@ -63,7 +63,7 @@ const Campaign = ({ params }: Route) => {
             </div>
 
             <Text
-              characterLimit={127}
+              characterLimit={128}
               className="md:hidden text-[#667085] text-[15px] md:text-[13px] mb-[9px] md:mb-8"
             >
               {campaign.story}

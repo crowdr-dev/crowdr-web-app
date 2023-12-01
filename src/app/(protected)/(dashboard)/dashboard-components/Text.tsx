@@ -48,7 +48,6 @@ const shortenText = (string: string, characterLimit: number) => {
 
   for (let stringItem of stringArray) {
     buffer = [buffer, stringItem].filter((string) => string).join(" ")
-
     if (buffer.length > characterLimit) break
     wordCount++
   }
@@ -57,6 +56,7 @@ const shortenText = (string: string, characterLimit: number) => {
   if (text.length > characterLimit) {
     text = text.slice(0, characterLimit)
   }
+  text = text.replace(/[^\w]$/, '')
 
   return text + "... "
 }
