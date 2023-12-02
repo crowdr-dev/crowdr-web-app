@@ -2,7 +2,7 @@ import { API_BASE_URL } from "@/config";
 import { extractErrorMessage } from "./extractErrorMessage";
 import { RequestOptions } from "https";
 
-export default async function makeRequest<T>(
+export default async function makeRequest<T = any>(
   endpoint: string,
   options: {
     method?: string;
@@ -11,7 +11,7 @@ export default async function makeRequest<T>(
     cache?: RequestCache;
     tags?: string[];
   } = {}
-): Promise<T> {
+): Promise<IResponse<T>> {
   const {
     method = "GET",
     payload = null,
@@ -53,8 +53,14 @@ export default async function makeRequest<T>(
       );
     }
 
-    return data as T;
+    return data;
   } catch (error) {
     throw new Error(extractErrorMessage(error));
   }
+}
+
+interface IResponse<T = any> {
+  data: T
+  success?: boolean
+  message?: string
 }

@@ -9,3 +9,7 @@ export interface IPagination {
   hasNextPage: boolean;
   hasPrevPage: boolean;
 }
+
+export interface Route {
+  params: { id: string }
+}

@@ -65,7 +65,7 @@ export const getCampaigns = async (page?: number) => {
     "x-auth-token": user.token
   };
 
-  const { data: campaigns } = await makeRequest<{ data: CampaignsResponse }>(
+  const { data: campaigns } = await makeRequest<CampaignsResponse>(
     endpoint,
     {
       headers,

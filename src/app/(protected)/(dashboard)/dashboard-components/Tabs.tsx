@@ -22,7 +22,7 @@ const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
   return (
     <div>
       <div
-        className={"flex gap-4 border-b boder-[#E4E7EC] mb-8 " + styles?.header}
+        className={"flex gap-4 border-b boder-[#E4E7EC] overflow-x-auto no-scrollbar mb-8 " + styles?.header}
       >
         {tabHeadings.map(({ heading, href }) => (
           <TabHeading

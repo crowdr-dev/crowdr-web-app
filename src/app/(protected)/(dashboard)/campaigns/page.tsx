@@ -34,10 +34,7 @@ const Campaigns = () => {
           "Content-Type": "multipart/form-data",
           "x-auth-token": user?.token!,
         }
-        const { success, data } = await makeRequest<{
-          success: boolean
-          data: CampaignResponse
-        }>(endpoint, {
+        const { success, data } = await makeRequest<CampaignResponse>(endpoint, {
           headers,
           method: "GET",
         })
@@ -131,12 +128,11 @@ const Campaigns = () => {
         />
       </div>
 
-      <div className="flex md:hidden mb-[23px] md:mb-[9px]">
+      <div className="flex md:hidden gap-3 mb-[23px] md:mb-[9px]">
         <WhiteButton
           text="Export Report"
           iconUrl={FileDownloadIcon}
           shadow
-          className="mr-3"
         />
         <Button text="Withdraw Donations" />
       </div>
@@ -177,7 +173,7 @@ const Campaigns = () => {
       </div>
 
       {/* pagination */}
-      {pagination && campaigns.length != 0 && (
+      {pagination && campaigns.length !== 0 && (
         <Pagination
           currentPage={pagination.currentPage}
           perPage={pagination.perPage}
