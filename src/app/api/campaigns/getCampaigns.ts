@@ -89,7 +89,6 @@ export const getSingleCampaign = async (id: string) => {
 
   const { data: campaign } = await makeRequest<{ data: Campaign }>(endpoint, {
     headers,
-    cache: "force-cache",
     tags: [campaignsTag]
   });
   return campaign;
