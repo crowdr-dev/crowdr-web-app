@@ -69,7 +69,6 @@ export const getCampaigns = async (page?: number) => {
     endpoint,
     {
       headers,
-      cache: "force-cache",
       tags: [campaignsTag]
     }
   );
