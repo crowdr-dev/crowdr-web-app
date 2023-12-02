@@ -2,31 +2,45 @@
 import { useMemo, useState } from "react"
 import { RFC } from "@/app/common/types"
 
-const Text: RFC<TextProps> = ({ children, className, characterLimit }) => {
-  const [isOpened, setIsOpened] = useState(false)
+const Text: RFC<TextProps> = ({
+  children,
+  className,
+  characterLimit,
+  expandText = "See more",
+  collaspseText = "See less",
+  expandTextClassName = "text-primary",
+  collaspseTextClassName = "text-primary",
+  toggle,
+}) => {
+  const [isCollapsed, setIsCollapsed] = useState(true)
 
   const text = useMemo(() => {
-    if (characterLimit && children.length > characterLimit && !isOpened) {
+    if (characterLimit && children.length > characterLimit && isCollapsed) {
       const shortenedText = shortenText(children, characterLimit)
       return (
         <>
-          {shortenedText} <span className="text-primary">Read more</span>
+          {shortenedText}{" "}
+          <span className={expandTextClassName}>{expandText}</span>
         </>
       )
     } else {
       return children
     }
-  }, [isOpened])
+  }, [isCollapsed])
 
-  const props: any = {}
+  const props: any = { className }
 
   if (characterLimit) {
-    props.onClick = () => setIsOpened(true)
+    props.onClick = () =>
+      toggle ? setIsCollapsed((prev) => !prev) : setIsCollapsed(false)
   }
 
   return (
-    <p {...props} className={className}>
-      {text}
+    <p {...props}>
+      {text}{" "}
+      {(toggle && !isCollapsed) && (
+        <span className={collaspseTextClassName}>{collaspseText}</span>
+      )}
     </p>
   )
 }
@@ -37,7 +51,11 @@ type TextProps = {
   children: string
   className?: string
   characterLimit?: number
-  enableToggle?: boolean
+  expandText?: string
+  collaspseText?: string
+  expandTextClassName?: string
+  collaspseTextClassName?: string
+  toggle?: boolean
 }
 
 const shortenText = (string: string, characterLimit: number) => {
@@ -56,7 +74,7 @@ const shortenText = (string: string, characterLimit: number) => {
   if (text.length > characterLimit) {
     text = text.slice(0, characterLimit)
   }
-  text = text.replace(/[^\w]$/, '')
+  text = text.replace(/[^\w]$/, "")
 
   return text + "... "
 }

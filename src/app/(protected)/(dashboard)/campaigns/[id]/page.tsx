@@ -64,6 +64,7 @@ const Campaign = ({ params }: Route) => {
 
             <Text
               characterLimit={128}
+              expandText="Read more"
               className="md:hidden text-[#667085] text-[15px] md:text-[13px] mb-[9px] md:mb-8"
             >
               {campaign.story}
