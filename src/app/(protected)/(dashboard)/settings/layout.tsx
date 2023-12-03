@@ -6,6 +6,7 @@ import Profile from "./profile/page";
 import Password from "./password/page";
 import Verification from "./verification/page";
 import Payouts from "./payouts/page";
+import Tabs from "../dashboard-components/Tabs";
 
 const SettingsLayout = () => {
   const [selectedSetting, setSelectedSetting] = useState("profile");
@@ -19,6 +20,14 @@ const SettingsLayout = () => {
   return (
     <div>
       <h2 className="text-2xl font-bold">Settings</h2>
+      <Tabs styles={{ header: "-mx-5 md:mx-0" }}>
+        {pages.map((page, index) => (
+          <Tabs.Item heading={page.title} href={page.route}>
+            {children}
+          </Tabs.Item>
+        ))}
+      </Tabs>
+
       <div className="flex py-2 mr-2 text-[17px] mt-3 ">
         <div className="mr-5 ">
           {" "}
@@ -62,3 +71,26 @@ const SettingsLayout = () => {
 };
 
 export default SettingsLayout;
+
+const pages = [
+  {
+    route: "/settings/profile",
+    title: "Profile",
+  },
+  {
+    route: "/settings/password",
+    title: "Password",
+  },
+  {
+    route: "/settings/verification",
+    title: "Verification",
+  },
+  {
+    route: "/settings/payouts",
+    title: "Payouts",
+  },
+  {
+    route: "/settings/notification",
+    title: "Notification",
+  },
+];

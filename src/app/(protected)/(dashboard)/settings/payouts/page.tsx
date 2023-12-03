@@ -1,8 +1,8 @@
-"use-client";
-import Tabs from "../dashboard-components/Tabs"
-import Table from "../dashboard-components/Table"
-import Label from "../dashboard-components/Label"
-import Detail from "../dashboard-components/Detail"
+"use client";
+import Tabs from "../../dashboard-components/Tabs";
+import Table from "../../dashboard-components/Table";
+import Label from "../../dashboard-components/Label";
+import Detail from "../../dashboard-components/Detail";
 
 const payouts = () => {
   return (
@@ -16,7 +16,7 @@ const payouts = () => {
         </div>
 
         {/* Table */}
-        <Tabs.Item>
+        <Tabs.Item heading="Reference">
           <Table className="hidden md:block mb-9">
             <Table.Head>
               <Table.HeadCell>Refernce No</Table.HeadCell>
@@ -32,7 +32,7 @@ const payouts = () => {
                   <Table.Cell>{donation.amount}</Table.Cell>
                   <Table.Cell>{donation.date}</Table.Cell>
                   <Table.Cell>
-                    {reference..match(/success/i) ? (
+                    {donation.status.match(/success/i) ? (
                       <Label text={donation.status} />
                     ) : (
                       <Label
