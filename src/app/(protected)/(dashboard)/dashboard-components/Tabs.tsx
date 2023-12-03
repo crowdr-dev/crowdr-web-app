@@ -7,9 +7,11 @@ import {
   useState,
 } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { RFC } from "@/app/common/types"
 
 const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
+  const currentRoute = usePathname()
   const tabs = Children.map(children, (child) => child)
   const tabHeadings = tabs.map(({ props }) => ({
     heading: props.heading,
@@ -24,15 +26,13 @@ const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
       <div
         className={"flex gap-4 border-b boder-[#E4E7EC] mb-8 " + styles?.header}
       >
-        {tabHeadings.map(({ heading, href }) => (
-          <TabHeading
-            key={heading}
-            heading={heading}
-            activeTab={activeTab}
-            onSelectTab={setActiveTab}
-            href={href}
-          />
-        ))}
+        {tabHeadings.map(({ heading, href }) => {
+          const props: any = href
+            ? { href, currentRoute }
+            : { activeTab, onSelectTab: setActiveTab }
+
+          return <TabHeading key={heading} heading={heading} {...props} />
+        })}
       </div>
 
       {tabs.map((tab) => (
@@ -55,16 +55,22 @@ const TabHeading: RFC<TabHeadingProps> = ({
   activeTab,
   onSelectTab,
   href,
+  currentRoute,
 }) => {
   const activeTabStyle =
     "text-[#00B964] bg-[#FCFCFC] border-b-2 border-[#00B964]"
   const inActiveTabStyle = "text-[#667085]"
 
-  const props = {
-    onClick: () => onSelectTab(tab),
+  const props: any = {
     className: `text-sm cursor-pointer p-3 ${
-      tab === activeTab ? activeTabStyle : inActiveTabStyle
+      (href || tab) === (currentRoute || activeTab)
+        ? activeTabStyle
+        : inActiveTabStyle
     }`,
+  }
+
+  if (onSelectTab) {
+    props.onClick = () => onSelectTab(tab)
   }
 
   return (
@@ -102,9 +108,10 @@ type TabItemProps = {
 
 type TabHeadingProps = {
   heading: string
-  activeTab: string
-  onSelectTab: Dispatch<SetStateAction<string>>
+  activeTab?: string
+  onSelectTab?: Dispatch<SetStateAction<string>>
   href?: string
+  currentRoute: string
 }
 
 type TabContentProps = {
