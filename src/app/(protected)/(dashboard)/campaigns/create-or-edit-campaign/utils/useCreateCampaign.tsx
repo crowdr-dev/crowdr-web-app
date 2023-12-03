@@ -28,6 +28,7 @@ type FormFields = {
   category: CampaignCategory;
   campaignType: CampaignType
   story: string;
+  currency: string;
   fundingGoal: number;
   campaignDuration: [string, string];
   campaignImages?: File[];
