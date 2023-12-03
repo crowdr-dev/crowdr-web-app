@@ -1,4 +1,4 @@
-"use-client";
+"use client";
 import { Buttonprops } from "@/app/common/components/ButtonProps";
 import React, { useCallback } from "react";
 import Image from "next/image";
@@ -111,7 +111,9 @@ const Verification = () => {
               ) : (
                 <Image
                   alt=""
-                  src="../../../../../../public/images/donate.png"
+                  src={require("../../../../../../public/images/donate.png")}
+                  width="10"
+                  height="10"
                   className="w-[80%] h-[80%] rounded-[50%] object-cover"
                 />
               )}
