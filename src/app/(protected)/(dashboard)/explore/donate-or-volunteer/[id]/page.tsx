@@ -158,7 +158,6 @@ export default function DonateOrVolunteer ({
     }
   }
 
-  console.log('camp', campaign)
   return (
     <div className='mb-6'>
       <div className='flex items-center justify-between mb-4'>
