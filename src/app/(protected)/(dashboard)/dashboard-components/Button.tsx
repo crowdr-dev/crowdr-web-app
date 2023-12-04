@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Color from "color"
 
-import { RFC } from "@/types/Component"
+import { RFC } from "@/app/common/types"
 import { IconType } from "react-icons/lib"
 
 import { CgSpinner } from "react-icons/cg"
@@ -23,6 +23,7 @@ export const Button: RFC<ButtonProps> = ({
   loading,
   disabled,
   className,
+  iconPosition,
 }) => {
   const props = {
     text,
@@ -36,9 +37,9 @@ export const Button: RFC<ButtonProps> = ({
   }
 
   const buttonRef = useRef<any>(null)
-  const buttonClasses =
-    "inline-flex justify-between items-center rounded-lg cursor-pointer text-sm transition px-[16px] py-[10px] " +
-    className
+  const flexDirection = iconPosition == "right" ? "flex-row-reverse" : "flex-row"
+  const cursorStyle = disabled || loading ? "cursor-default" : "cursor-pointer"
+  const buttonClasses = `inline-flex justify-between items-center gap-2 rounded-lg text-sm transition h-[46px] px-[16px] py-[10px] ${cursorStyle} ${flexDirection} ${className}`
   const darkerBgColor = darken(bgColor!)
 
   const buttonStyle: React.CSSProperties = {
@@ -89,23 +90,28 @@ const ButtonContent: RFC<ButtonContentProps> = ({
     color: textColor || "inherit",
   }
 
+  let icon = null
+  if (props.icon) {
+    icon = <props.icon width={24} height={24} />
+  } else if (iconUrl) {
+    icon = (
+      <Image
+        src={iconUrl}
+        height={24}
+        width={24}
+        alt="button icon"
+      />
+    )
+  }
+
   return (
     <>
-      {iconUrl && (
-        <Image
-          src={iconUrl}
-          height={20}
-          width={20}
-          alt="button icon"
-          className="mr-2"
-        />
-      )}
-      {props.icon && <props.icon className="mr-2" />}
-      <span style={textStyle}>{text}</span>
+      {icon}
+      {text && <span style={textStyle}>{text}</span>}
       {loading && (
         <CgSpinner
           size="20px"
-          className="animate-spin icon opacity-100 ml-2.5"
+          className="animate-spin icon opacity-100"
         />
       )}
     </>
@@ -139,25 +145,27 @@ Button.defaultProps = {
   bgColor: "#00B964",
   textColor: "#FFF",
   buttonType: "button",
+  iconPosition: "left",
 }
 
 type ButtonProps = ButtonContentProps & {
   href?: string
   onClick?: () => void
   buttonType?: "button" | "submit" | "reset"
+  bgColor?: string
+  outlineColor?: string
+  shadow?: boolean
+  disabled?: boolean
+  className?: string
+  iconPosition?: "left" | "right"
 }
 
 type ButtonContentProps = {
-  text: string
+  text?: string
   textColor?: string
-  bgColor?: string
-  outlineColor?: string
-  iconUrl?: string
   icon?: IconType
-  shadow?: boolean
+  iconUrl?: string
   loading?: boolean
-  disabled?: boolean
-  className?: string
 }
 
 function darken(color: string) {

@@ -1,6 +1,7 @@
 .accomplishments {
   display: block;
   margin: auto;
+  max-width: -moz-fit-content;
   max-width: fit-content;
   padding: 60px 0 40px 0;
   border-top: 2px solid black;

@@ -65,11 +65,10 @@ export const getCampaigns = async (page?: number) => {
     "x-auth-token": user.token
   };
 
-  const { data: campaigns } = await makeRequest<{ data: CampaignsResponse }>(
+  const { data: campaigns } = await makeRequest<CampaignsResponse>(
     endpoint,
     {
       headers,
-      cache: "force-cache",
       tags: [campaignsTag]
     }
   );
@@ -90,7 +89,6 @@ export const getSingleCampaign = async (id: string) => {
 
   const { data: campaign } = await makeRequest<{ data: Campaign }>(endpoint, {
     headers,
-    cache: "force-cache",
     tags: [campaignsTag]
   });
   return campaign;

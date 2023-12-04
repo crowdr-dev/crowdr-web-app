@@ -9,7 +9,7 @@ import {
 } from "react"
 import { Modal } from "flowbite"
 
-import { RFC } from "@/types/Component"
+import { RFC } from "@/app/common/types"
 import type { ModalOptions } from "flowbite"
 
 const ModalContext = createContext({

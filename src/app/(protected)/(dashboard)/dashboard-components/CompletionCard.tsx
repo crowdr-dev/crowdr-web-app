@@ -2,9 +2,15 @@
 import { useModal } from "@/app/common/hooks/useModal"
 import { Button, WhiteButton } from "./Button"
 
-import { RFC } from "@/types/Component"
+import { RFC } from "@/app/common/types"
 
-const CampaignModal: RFC<CampaignModalProps> = ({clearModal}) => {
+const CompletionCard: RFC<CompletionCardProps> = ({
+  title,
+  text,
+  primaryButton,
+  secondaryButton,
+  clearModal,
+}) => {
   const boxShadow =
     "0px 8px 8px -4px rgba(16, 24, 40, 0.03), 0px 20px 24px -4px rgba(16, 24, 40, 0.08)"
   const buttonClasses = "!justify-center font-semibold !text-base"
@@ -12,40 +18,63 @@ const CampaignModal: RFC<CampaignModalProps> = ({clearModal}) => {
   return (
     <div
       style={{ boxShadow }}
-      className="max-w-[342px] bg-white rounded-lg overflow-hidden p-4"
+      className="max-w-[342px] md:max-w-[544px] bg-white rounded-lg overflow-hidden p-4 md:p-6"
     >
-      <div className="flex justify-between mb-3">
+      <div className="flex justify-between md:gap-4 mb-3 md:mb-8">
         <CheckIcon />
-        <XIcon onClick={clearModal} />
+
+        <div className="hidden md:flex flex-col gap-1 mb-6">
+          <p className="flex justify-between text-lg text-[#101828] font-semibold md:mb-1">
+            {title}
+            <XIcon onClick={clearModal} className="hidden md:inline cursor-pointer" />
+          </p>
+          <p className="text-sm text-[#475467] md:text-justify md:pr-2">
+            {text}
+          </p>
+        </div>
+
+        <XIcon onClick={clearModal} className="md:hidden cursor-pointer" />
       </div>
 
-      <div className="flex flex-col gap-1 mb-6">
-        <p className="text-lg font-semibold">
-          Donation Campaign created successfully
-        </p>
-        <p className="text-sm text-[#475467]">
-          This donation campaign has been created successfully. You will be able
-          to edit this campaign and republish changes.
-        </p>
+      <div className="flex flex-col md:hidden gap-1 mb-6">
+        <p className="text-lg font-semibold">{title}</p>
+        <p className="text-sm text-[#475467]">{text}</p>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <Button text="Share on your Socials" className={buttonClasses} shadow />
+      <div className="flex flex-col md:flex-row-reverse gap-3">
+        <Button
+          text={primaryButton.label}
+          href={primaryButton.href}
+          onClick={primaryButton.onClick}
+          className={buttonClasses}
+          shadow
+        />
         <WhiteButton
-          text="Cancel"
+          text={secondaryButton.label}
+          href={secondaryButton.href}
+          onClick={secondaryButton.onClick}
           outlineColor="#D0D5DD"
           className={buttonClasses}
-          onClick={clearModal}
         />
       </div>
     </div>
   )
 }
 
-export default CampaignModal
+export default CompletionCard
 
-type CampaignModalProps = {
+type CompletionCardProps = {
+  title: string
+  text: string
+  primaryButton: Button
+  secondaryButton: Button
   clearModal: () => void
+}
+
+type Button = {
+  label: string
+  href?: string
+  onClick?: () => void
 }
 
 const CheckIcon = () => {
@@ -53,7 +82,7 @@ const CheckIcon = () => {
     "absolute scale border rounded-full border-[#D0D5DD] left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%] "
 
   return (
-    <div className="relative grid place-content-center rounded-full bg-[#DCFAE6] w-12 h-12">
+    <div className="relative grid place-content-center shrink-0 rounded-full bg-[#DCFAE6] w-12 h-12">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -104,7 +133,7 @@ const CheckIcon = () => {
   )
 }
 
-const XIcon = ({onClick}: any) => {
+const XIcon = ({ onClick, className }: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -113,6 +142,7 @@ const XIcon = ({onClick}: any) => {
       viewBox="0 0 24 24"
       fill="none"
       onClick={onClick}
+      className={className}
     >
       <path
         d="M18 6L6 18M6 6L18 18"

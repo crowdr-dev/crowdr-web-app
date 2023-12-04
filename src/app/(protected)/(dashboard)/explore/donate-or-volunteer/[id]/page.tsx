@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import Test from '../../../dashboard-components/Test'
 import { getUser } from '@/app/api/user/getUser'
 import ProgressBar from '../../../dashboard-components/ProgressBar'
 import ExploreCard from '../../../dashboard-components/ExploreCard'

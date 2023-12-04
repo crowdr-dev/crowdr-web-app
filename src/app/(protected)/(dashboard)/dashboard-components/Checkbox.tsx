@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { RFC } from "@/types/Component";
+import { RFC } from "@/app/common/types";
 
 
 type CheckboxProps = {

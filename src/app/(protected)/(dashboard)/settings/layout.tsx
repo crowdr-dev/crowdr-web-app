@@ -1,32 +1,53 @@
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import Profile from "./profile/page";
 import Password from "./password/page";
+import Verification from "./verification/page";
+import Payouts from "./payouts/page";
+import Tabs from "../dashboard-components/Tabs";
+import { RFC } from "@/app/common/types";
 
-const SettingsLayout = () => {
+const SettingsLayout: RFC = ({ children }) => {
   return (
-    <div className="flex mr-2">
-      <div>
-        {" "}
-        <Link href="/settings/profile">
-          <Profile />
-        </Link>
-      </div>
-      <div>
-        <Link href="/settings/password">
-          <Password />
-        </Link>
-      </div>
-      <div>
-        <Link href="/settings/notifications">Notifications</Link>
-      </div>
-      <div>
-        <Link href="/settings/payouts">Payout</Link>
-      </div>
-      <div>
-        <Link href="/settings/verification">Verification</Link>
-      </div>
+    <div>
+      <h2 className="text-2xl font-bold">Settings</h2>
+      <Tabs styles={{ header: "-mx-5 md:mx-0" }}>
+        {pages.map((page, index) => (
+          <Tabs.Item key={index} heading={page.title} href={page.route}>
+            {children}
+          </Tabs.Item>
+        ))}
+      </Tabs>
+
+      <hr className=" border-[rgba(56, 56, 56, 0.08)]" />
     </div>
   );
 };
 
 export default SettingsLayout;
+
+const pages = [
+  {
+    route: "/settings/profile",
+    title: "Profile",
+  },
+  {
+    route: "/settings/password",
+    title: "Password",
+  },
+
+  {
+    route: "/settings/notifications",
+    title: "Notifications",
+  },
+  {
+    route: "/settings/payouts",
+    title: "Payment and Payouts",
+  },
+  {
+    route: "/settings/verification",
+    title: "Verification",
+  },
+];

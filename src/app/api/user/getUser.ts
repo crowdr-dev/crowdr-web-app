@@ -3,12 +3,17 @@ import { cookies } from "next/headers";
 import makeRequest from "@/utils/makeRequest";
 import { userTag } from "@/tags";
 
-export type User = {
+export type IUser = {
   _id: string;
   token: string;
-  isEmailVerified: boolean;
   userType: "individual" | "non-profit";
   organizationId: string | null;
+  fullName: string
+  gender: string
+  email: string
+  interests: string[]
+  isEmailVerified: boolean
+  organizationName: string
 };
 
 // for getting user in server components, also a server action that can be called from client components
@@ -25,7 +30,7 @@ export const getUser = async () => {
     "x-auth-token": token,
   };
 
-  const { data: user } = await makeRequest<{ data: User }>(endpoint, {
+  const { data: user } = await makeRequest<IUser>(endpoint, {
     headers,
     cache: "force-cache",
     tags: [userTag], // for cache revalidation

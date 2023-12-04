@@ -8,7 +8,7 @@ import { useToast } from "@/app/common/hooks/useToast"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import { handleUserRedirection } from "@/utils/handleUserRedirection"
 import makeRequest from "@/utils/makeRequest"
-import { User } from "@/app/api/user/getUser"
+import { IUser } from "@/app/api/user/getUser"
 
 const FormPages = () => {
   const { handleSubmit } = useFormContext() as LoginFormContext
@@ -20,7 +20,7 @@ const FormPages = () => {
     let payload = JSON.stringify(_.pick(formFields, ["email", "password"]))
 
     try {
-      const { data: user } = await makeRequest<{ data: User }>(endpoint, {
+      const { data: user } = await makeRequest<IUser>(endpoint, {
         method: "POST",
         payload,
       })
