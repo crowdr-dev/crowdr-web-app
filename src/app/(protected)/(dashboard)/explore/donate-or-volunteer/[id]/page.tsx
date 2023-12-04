@@ -13,6 +13,9 @@ import Select from '../../../dashboard-components/Select'
 import { Button } from '../../../dashboard-components/Button'
 import { getSingleCampaign } from '@/app/api/campaigns/getCampaigns'
 import { CampaignProps } from '../../page'
+import makeRequest from '@/utils/makeRequest'
+import { extractErrorMessage } from '@/utils/extractErrorMessage'
+import { useToast } from '@/app/common/hooks/useToast'
 
 const PROGRESS_COUNT = 8
 
@@ -57,12 +60,52 @@ export default function DonateOrVolunteer ({
 }: {
   params: { id: string }
 }) {
+  const toast = useToast()
+  const [loading, setLoading] = useState(false)
   const [campaign, setCampaign] = useState<any>()
   const [tab, setTab] = useState('')
 
   const fetchSingleCampaign = async () => {
     const singleCampaign = await getSingleCampaign(params.id)
     setCampaign(singleCampaign)
+  }
+
+  interface initTypes {
+    amount?: string
+    fullName?: ''
+    email?: string
+  }
+
+  const initProps: initTypes = {
+    amount: '',
+    fullName: '',
+    email: ''
+  }
+
+  const [donationInputs, setDonationInputs] = useState(initProps)
+
+  const updateProps = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value
+    const inputName = event.target.name
+    setDonationInputs((prevState: initTypes) => {
+      return {
+        ...prevState,
+        [inputName]: newValue
+      }
+    })
+  }
+
+  const [checkboxValues, setCheckboxValues] = useState({
+    isAnonymous: false,
+    shouldShareDetails: false,
+    isSubscribedToPromo: false
+  })
+
+  const updateCheckbox = (key: string, value: boolean) => {
+    setCheckboxValues(prevState => ({
+      ...prevState,
+      [key]: value
+    }))
   }
 
   useEffect(() => {
@@ -84,6 +127,37 @@ export default function DonateOrVolunteer ({
   )
 
   const currency = campaign?.fundraise?.fundingGoalDetails[0].currency
+
+  const donate = async () => {
+    setLoading(true)
+    const endpoint = '/api/v1/payment/initiate'
+
+    const payload = {
+      campaignId: campaign.id,
+      campaignOwnerId: campaign.userId,
+      campaignDonorId: campaign.userId,
+      amount: donationInputs.amount,
+      email: donationInputs.email,
+      fullName: donationInputs.fullName,
+      currency: currency,
+      isAnonymous: checkboxValues.isAnonymous,
+      shouldShareDetails: checkboxValues.shouldShareDetails,
+      isSubscribedToPromo: checkboxValues.isSubscribedToPromo
+    }
+
+    try {
+      const { data } = await makeRequest(endpoint, {
+        method: 'POST',
+        payload
+      })
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      const message = extractErrorMessage(error)
+      toast({ title: 'Oops!', body: message, type: 'error' })
+    }
+  }
+
   console.log('camp', campaign)
   return (
     <div className='mb-6'>
@@ -245,39 +319,54 @@ export default function DonateOrVolunteer ({
                   bgColor='#00B964'
                   percent={(campaign?.donorsCount / totalDonationAmount) * 100}
                 />
-                <p className='mt-3 text-sm opacity-50'>{campaign?.donorsCount} applications</p>
+                <p className='mt-3 text-sm opacity-50'>
+                  {campaign?.donorsCount} applications
+                </p>
               </div>
 
               <div className='mt-4'>
-                <p className='text-base'>Donation Amount</p>
-                <div className='text-sm rounded-lg border border-[#D0D5DD] py-[10px] px-[14px] '>
-                  {currency?.toLowerCase() === 'naira' && 'N'}
-                  {totalDonationAmount}
-                </div>
-              </div>
-
-              <div className='mt-4'>
+                <Input
+                  label={'Donation Amount'}
+                  placeholder='N10.00'
+                  name='amount'
+                  id='amount'
+                  type='number'
+                  onChange={updateProps}
+                  value={donationInputs.amount}
+                />
                 <Input
                   label={'Full name'}
                   placeholder='Ajayi Akintomiwa G.'
                   name='fullName'
                   id='fullName'
+                  onChange={updateProps}
+                  value={donationInputs.fullName}
                 />
                 <Input
                   label={'Email address'}
                   placeholder='tomiwa@crowdr.com'
-                  name='emailAddress'
-                  id='emailAddress'
+                  name='email'
+                  id='email'
+                  onChange={updateProps}
+                  value={donationInputs.email}
                 />
                 <div className='flex flex-col mt-[30px]'>
                   <Checkbox
                     id={'1'}
                     label={"Don't display my name publicly on the fundraiser."}
+                    checked={checkboxValues.isAnonymous}
+                    onChange={newValue =>
+                      updateCheckbox('isAnonymous', newValue)
+                    }
                   />
                   <Checkbox
                     id={'2'}
                     label={
                       "I'm delighted to share my name and email with this charity to receive updates on other ways I can help."
+                    }
+                    checked={checkboxValues.shouldShareDetails}
+                    onChange={newValue =>
+                      updateCheckbox('shouldShareDetails', newValue)
                     }
                   />
                   <Checkbox
@@ -285,11 +374,20 @@ export default function DonateOrVolunteer ({
                     label={
                       'Get occasional marketing updates from Crowdr. You may unsubscribe at any time.'
                     }
+                    checked={checkboxValues.isSubscribedToPromo}
+                    onChange={newValue =>
+                      updateCheckbox('isSubscribedToPromo', newValue)
+                    }
                   />
                 </div>
               </div>
 
-              <Button text='Donate' className='w-full mt-4 !justify-center' />
+              <Button
+                text='Donate'
+                className='w-full mt-4 !justify-center'
+                onClick={donate}
+                loading={loading}
+              />
 
               <div className='mt-10'>
                 <div className='flex flex-row items-start justify-between'>
