@@ -59,7 +59,7 @@ export default function DonateOrVolunteer ({
   params: { id: string }
 }) {
   const [campaign, setCampaign] = useState<any>()
-  const [tab, setTab] = useState("")
+  const [tab, setTab] = useState('')
 
   const fetchSingleCampaign = async () => {
     const singleCampaign = await getSingleCampaign(params.id)
@@ -75,10 +75,17 @@ export default function DonateOrVolunteer ({
         ? 'donate'
         : 'volunteer'
     )
-  }, [params.id,campaign?.campaignType])
+  }, [params.id, campaign?.campaignType])
 
+  const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails.reduce(
+    (accumulator: number, current: { amount: number }) => {
+      return accumulator + current.amount
+    },
+    0
+  )
 
-  console.log("camp", campaign)
+  const currency = campaign?.fundraise?.fundingGoalDetails[0].currency
+  console.log('camp', campaign)
   return (
     <div className='mb-6'>
       <div className='flex items-center justify-between mb-4'>
@@ -95,7 +102,7 @@ export default function DonateOrVolunteer ({
           header={campaign?.title}
           subheader={campaign?.story}
           totalAmount={campaign?.fundraise?.fundingGoalDetails[0].amount}
-          currentAmount={6000}
+          currentAmount={campaign?.donorsCount}
           timePosted={campaign?.fundraise?.startOfFundraise}
           slideImages={[
             campaign?.campaignCoverImage?.url,
@@ -229,19 +236,24 @@ export default function DonateOrVolunteer ({
               <div className='bg-[#F9F9F9] p-4'>
                 <p className='text-sm text-[#667085]'>
                   {' '}
-                  <span className='text-[#000]'>Goal</span> 35/70 Volunteers
+                  <span className='text-[#000]'>Goal</span>{' '}
+                  {currency?.toLowerCase() === 'naira' && 'N'}
+                  {campaign?.donorsCount}/
+                  {currency?.toLowerCase() === 'naira' && 'N'}
+                  {totalDonationAmount}
                 </p>
                 <ProgressBar
                   bgColor='#00B964'
-                  percent={(PROGRESS_COUNT / 10) * 100}
+                  percent={(campaign?.donorsCount / totalDonationAmount) * 100}
                 />
-                <p className='mt-3 text-sm opacity-50'>240 applications</p>
+                <p className='mt-3 text-sm opacity-50'>{campaign?.donorsCount} applications</p>
               </div>
 
               <div className='mt-4'>
                 <p className='text-base'>Donation Amount</p>
                 <div className='text-sm rounded-lg border border-[#D0D5DD] py-[10px] px-[14px] '>
-                  N20,000.00
+                  {currency?.toLowerCase() === 'naira' && 'N'}
+                  {totalDonationAmount}
                 </div>
               </div>
 
@@ -282,7 +294,9 @@ export default function DonateOrVolunteer ({
 
               <div className='mt-10'>
                 <div className='flex flex-row items-start justify-between'>
-                  <p className='text-[#292A2E] text-base'>32 Total Donors</p>
+                  <p className='text-[#292A2E] text-base'>
+                    {campaign?.donorsCount} Total Donors
+                  </p>
 
                   <Filter query='Top Donors' />
                 </div>
