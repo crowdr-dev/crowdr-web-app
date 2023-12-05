@@ -23,6 +23,7 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
   const duration = getDuration(startOfFundraise, endOfFundraise)
 
   return (
+    // TODO: FIX LEFT-RIGHT PADDING FOR MOBILE/DESKTOP VIEW
     <div className="bg-white border border-[rgba(57, 62, 70, 0.08)] rounded-xl py-[26px] px-[24px]">
       <div className="mb-2 md:mb-[10px]">{label(campaignStatus)}</div>
 

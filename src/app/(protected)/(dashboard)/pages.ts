@@ -8,23 +8,23 @@ import settings from "../../../../public/svg/settings.svg"
 
 class Page {
   constructor(
-    public route: string,
+    public page: { route: string } | { modalId: string },
     public title: string,
     public icon: string,
-    public label?: string,
+    public label?: string
   ) {}
 }
 
 export const pageGroups = [
-  [new Page("/explore", "Discover/Explore", heart)],
+  [new Page({ route: "/explore" }, "Discover/Explore", heart)],
   [
-    new Page("/campaigns", "My Campaigns", megaphone),
-    new Page("/donations", "My Donations", dollar),
-    new Page("", "Manage Website Page", globe, "COMING SOON"),
+    new Page({ route: "/campaigns" }, "My Campaigns", megaphone),
+    new Page({ route: "/donations" }, "My Donations", dollar),
+    new Page({ route: "" }, "Manage Website Page", globe, "COMING SOON"),
   ],
   [
-    new Page("", "Inbox", envelope, "COMING SOON"),
-    new Page("/notifications", "Notifications", bell),
-    new Page("/settings/profile", "Settings", settings),
+    new Page({ route: "" }, "Inbox", envelope, "COMING SOON"),
+    new Page({ modalId: "notifications" }, "Notifications", bell),
+    new Page({ route: "/settings/profile" }, "Settings", settings),
   ],
-];
+]
