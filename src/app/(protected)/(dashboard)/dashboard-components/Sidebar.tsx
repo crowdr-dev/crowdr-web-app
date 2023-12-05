@@ -1,16 +1,17 @@
 "use client"
 import { usePathname } from "next/navigation"
-import { useAtom } from "jotai"
+import { atom, useAtom } from "jotai"
 import Link from "next/link"
 import Image from "next/image"
 import ModalTrigger from "./ModalTrigger"
 import DrawerTrigger from "./DrawerTrigger"
 import { pageGroups } from "../pages"
-import { pageDrawerAtom } from "../common/atoms/page"
 import Icon from "./Icon"
 
 import { RFC } from "@/app/common/types"
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
+
+const pageDrawerAtom = atom("")
 
 const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
   const [currentDrawer, setCurrentDrawer] = useAtom(pageDrawerAtom)
