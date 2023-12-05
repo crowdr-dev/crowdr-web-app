@@ -1,6 +1,6 @@
-import Label from "./Label"
-import { RFC } from "@/app/common/types"
-import { FaChevronDown, FaChevronUp } from "react-icons/fa6"
+import Label from "./Label";
+import { RFC } from "@/app/common/types";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
 const Detail: RFC<DetailProps> = ({ title, detail, date, status, label }) => {
   return (
@@ -35,15 +35,17 @@ const Detail: RFC<DetailProps> = ({ title, detail, date, status, label }) => {
         </div>
       </summary>
     </details>
-  )
-}
+  );
+};
 
-export default Detail
+export default Detail;
 
 type DetailProps = {
-  title: string
-  detail: string
-  date: string
-  status?: string
-  label?: string
-}
+  title?: string;
+  detail?: string;
+  date?: string;
+  status?: string;
+  label?: string;
+  refernceno?: string;
+  amount?: string;
+};

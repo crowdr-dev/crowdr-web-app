@@ -10,6 +10,7 @@ import CompletionCard from "../../../dashboard-components/CompletionCard"
 import { useUser } from "../../../common/hooks/useUser"
 import { useModal } from "@/app/common/hooks/useModal"
 import { useToast } from "@/app/common/hooks/useToast"
+import { Route } from "@/app/common/types"
 
 const CreateEditCampaign = ({ params }: Route) => {
   const router = useRouter()
@@ -142,7 +143,3 @@ const CreateEditCampaign = ({ params }: Route) => {
 }
 
 export default CreateEditCampaign
-
-interface Route {
-  params: { id: string }
-}

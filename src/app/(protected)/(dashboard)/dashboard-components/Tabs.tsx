@@ -1,3 +1,4 @@
+"use client"
 import {
   Children,
   Dispatch,
@@ -24,7 +25,7 @@ const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
   return (
     <div>
       <div
-        className={"flex gap-4 border-b boder-[#E4E7EC] mb-8 " + styles?.header}
+        className={"flex gap-4 border-b boder-[#E4E7EC] overflow-x-auto no-scrollbar mb-8 " + styles?.header}
       >
         {tabHeadings.map(({ heading, href }) => {
           const props: any = href
@@ -62,7 +63,7 @@ const TabHeading: RFC<TabHeadingProps> = ({
   const inActiveTabStyle = "text-[#667085]"
 
   const props: any = {
-    className: `text-sm cursor-pointer p-3 ${
+    className: `text-sm cursor-pointer whitespace-nowrap p-3 ${
       (href || tab) === (currentRoute || activeTab)
         ? activeTabStyle
         : inActiveTabStyle

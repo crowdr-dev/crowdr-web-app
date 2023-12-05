@@ -30,7 +30,7 @@ export const getUser = async () => {
     "x-auth-token": token,
   };
 
-  const { data: user } = await makeRequest<{ data: IUser }>(endpoint, {
+  const { data: user } = await makeRequest<IUser>(endpoint, {
     headers,
     cache: "force-cache",
     tags: [userTag], // for cache revalidation
