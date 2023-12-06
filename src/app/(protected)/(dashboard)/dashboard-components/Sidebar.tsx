@@ -11,7 +11,7 @@ import Icon from "./Icon"
 import { RFC } from "@/app/common/types"
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
 
-const pageDrawerAtom = atom("")
+export const pageDrawerAtom = atom("")
 
 const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
   const [currentDrawer, setCurrentDrawer] = useAtom(pageDrawerAtom)
@@ -96,8 +96,9 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
                   {...modalProps}
                   options={{
                     backdrop: "dynamic",
-                    onShow: () => toggleDrawer(isRoute ? "" : page.modalId),
                     onHide: () => toggleDrawer(""),
+                    onShow: () => toggleDrawer(isRoute ? "" : page.modalId),
+                    backdropClasses: "bg-[#50556F] bg-opacity-30 fixed inset-0 z-40"
                   }}
                 >
                   <DrawerTrigger id="sidebar_drawer" type="hide">

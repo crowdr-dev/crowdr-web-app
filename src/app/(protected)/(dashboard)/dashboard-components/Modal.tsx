@@ -1,5 +1,6 @@
-import Sidebar from "./Sidebar";
-import { RFC } from "@/app/common/types";
+import { useRef } from "react"
+import Sidebar from "./Sidebar"
+import { RFC } from "@/app/common/types"
 
 const Modal: RFC<ModalProps> = ({ id, children, ariaLabel }) => {
   return (
@@ -12,16 +13,16 @@ const Modal: RFC<ModalProps> = ({ id, children, ariaLabel }) => {
     >
       {children}
     </div>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal
 
 type ModalProps = {
-  id: string;
-  children: React.ReactNode;
+  id: string
+  children: React.ReactNode
   ariaLabel?: string
-};
+}
 
 export const SidebarModal: RFC<SidebarModalProps> = ({
   id,
@@ -37,12 +38,10 @@ export const SidebarModal: RFC<SidebarModalProps> = ({
       aria-hidden="true"
     >
       {/* <div className="fixed flex justify-end md:justify-between h-full w-full pointer-events-none z-[60]"> */}
-        <div className="hidden md:block h-full">
-          <Sidebar drawer />
-        </div>
-        <div className="w-min bg-white">
-          {children}
-        </div>
+      <div className="hidden md:block h-full">
+        <Sidebar drawer />
+      </div>
+      <SidebarModalContent>{children}</SidebarModalContent>
       {/* </div> */}
     </div>
   )
@@ -52,4 +51,20 @@ type SidebarModalProps = {
   id: string
   children: React.ReactNode
   ariaLabel?: string
+}
+
+const SidebarModalContent: RFC = ({ children }) => {
+  const modalContentRef = useRef<HTMLDivElement>(null)
+  const boxShadow =
+    "0px 8px 8px -4px rgba(16, 24, 40, 0.03), 0px 20px 24px -4px rgba(16, 24, 40, 0.08)"
+
+  return (
+    <div
+      ref={modalContentRef}
+      style={{ boxShadow }}
+      className="w-min bg-white h-full animate-[slide-in-right_0.1s_ease-in-out]"
+    >
+      {children}
+    </div>
+  )
 }

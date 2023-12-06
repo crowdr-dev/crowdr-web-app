@@ -43,6 +43,7 @@ export const Button: RFC<ButtonProps> = ({
   const darkerBgColor = darken(bgColor!)
 
   const buttonStyle: React.CSSProperties = {
+    color: textColor,
     background: bgColor,
   }
   if (outlineColor) buttonStyle.border = `1px solid ${outlineColor}`
@@ -107,7 +108,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   return (
     <>
       {icon}
-      {text && <span style={textStyle}>{text}</span>}
+      {text}
       {loading && (
         <CgSpinner
           size="20px"

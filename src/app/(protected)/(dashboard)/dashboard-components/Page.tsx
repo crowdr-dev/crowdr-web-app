@@ -1,4 +1,6 @@
 import { SidebarModal } from "./Modal"
+import Notifications from "./Notifications"
+
 import { RFC } from "@/app/common/types"
 
 const Page: RFC = ({ children }) => {
@@ -9,7 +11,7 @@ const Page: RFC = ({ children }) => {
       </main>
       
       <SidebarModal id="notifications">
-        <div className="w-64 bg-white text-6xl">hello world</div>
+        <Notifications />
       </SidebarModal>
     </>
   )
