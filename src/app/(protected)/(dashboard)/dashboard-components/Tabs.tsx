@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import {
   Children,
   Dispatch,
@@ -6,69 +6,73 @@ import {
   ReactNode,
   SetStateAction,
   useState,
-} from "react";
-import Link from "next/link";
-import { RFC } from "@/app/common/types";
+} from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { RFC } from "@/app/common/types"
 
 const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
-  const tabs = Children.map(children, (child) => child);
+  const currentRoute = usePathname()
+  const tabs = Children.map(children, (child) => child)
   const tabHeadings = tabs.map(({ props }) => ({
     heading: props.heading,
     href: props.href,
-  }));
+  }))
   const [activeTab, setActiveTab] = useState(
     initialTab ? initialTab : tabHeadings[0].heading
-  );
+  )
 
   return (
     <div>
       <div
-        className={
-          "flex gap-4 border-b boder-[#E4E7EC] overflow-x-auto no-scrollbar mb-8 " +
-          styles?.header
-        }>
-        {tabHeadings.map(({ heading, href }) => (
-          <TabHeading
-            key={heading}
-            heading={heading}
-            activeTab={activeTab}
-            onSelectTab={setActiveTab}
-            href={href}
-          />
-        ))}
+        className={"flex gap-4 border-b boder-[#E4E7EC] overflow-x-auto no-scrollbar mb-8 " + styles?.header}
+      >
+        {tabHeadings.map(({ heading, href }) => {
+          const props: any = href
+            ? { href, currentRoute }
+            : { activeTab, onSelectTab: setActiveTab }
+
+          return <TabHeading key={heading} heading={heading} {...props} />
+        })}
       </div>
 
       {tabs.map((tab) => (
         <TabContent key={tab.props.heading} tab={tab} activeTab={activeTab} />
       ))}
     </div>
-  );
-};
+  )
+}
 
 Tabs.Item = ({ children }) => {
   return (
     <div className="mt-6">
       <div className="bg-[#F9F9F9] p-4">{children}</div>
     </div>
-  );
-};
+  )
+}
 
 const TabHeading: RFC<TabHeadingProps> = ({
   heading: tab,
   activeTab,
   onSelectTab,
   href,
+  currentRoute,
 }) => {
   const activeTabStyle =
-    "text-[#00B964] bg-[#FCFCFC] border-b-2 border-[#00B964]";
-  const inActiveTabStyle = "text-[#667085]";
+    "text-[#00B964] bg-[#FCFCFC] border-b-2 border-[#00B964]"
+  const inActiveTabStyle = "text-[#667085]"
 
-  const props = {
-    onClick: () => onSelectTab(tab),
-    className: `text-sm cursor-pointer p-3 ${
-      tab === activeTab ? activeTabStyle : inActiveTabStyle
+  const props: any = {
+    className: `text-sm cursor-pointer whitespace-nowrap p-3 ${
+      (href || tab) === (currentRoute || activeTab)
+        ? activeTabStyle
+        : inActiveTabStyle
     }`,
-  };
+  }
+
+  if (onSelectTab) {
+    props.onClick = () => onSelectTab(tab)
+  }
 
   return (
     <>
@@ -80,39 +84,38 @@ const TabHeading: RFC<TabHeadingProps> = ({
         <span {...props}>{tab}</span>
       )}
     </>
-  );
-};
+  )
+}
 
 const TabContent: RFC<TabContentProps> = ({ tab, activeTab }) => {
-  return tab.props.heading == activeTab ? (
-    <div>{tab.props.children}</div>
-  ) : null;
-};
+  return tab.props.heading == activeTab ? <div>{tab.props.children}</div> : null
+}
 
-export default Tabs;
+export default Tabs
 
-type Tabs = RFC<TabsProps> & { Item: RFC<TabItemProps> };
+type Tabs = RFC<TabsProps> & { Item: RFC<TabItemProps> }
 
 type TabsProps = {
-  activeTab?: string;
-  children: ReactElement<TabItemProps>[] | ReactElement<TabItemProps>;
-  styles?: { header: string };
-};
+  activeTab?: string
+  children: ReactElement<TabItemProps>[] | ReactElement<TabItemProps>
+  styles?: { header: string }
+}
 
 type TabItemProps = {
-  heading: string;
-  children: ReactNode;
-  href?: string;
-};
+  heading: string
+  children: ReactNode
+  href?: string
+}
 
 type TabHeadingProps = {
-  heading: string;
-  activeTab: string;
-  onSelectTab: Dispatch<SetStateAction<string>>;
-  href?: string;
-};
+  heading: string
+  activeTab?: string
+  onSelectTab?: Dispatch<SetStateAction<string>>
+  href?: string
+  currentRoute: string
+}
 
 type TabContentProps = {
-  activeTab: string;
-  tab: ReactElement<TabItemProps>;
-};
+  activeTab: string
+  tab: ReactElement<TabItemProps>
+}

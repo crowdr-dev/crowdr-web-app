@@ -20,6 +20,12 @@ module.exports = {
       },
       colors: {
         primary: '#00B964',
+      },
+      keyframes: {
+        'slide-in-right': {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        }
       }
     },
   },

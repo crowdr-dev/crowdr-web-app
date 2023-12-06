@@ -24,26 +24,29 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
   } = mapCampaignResponseToView(campaign)
 
   return (
+    // TODO: FIX LEFT-RIGHT PADDING FOR MOBILE/DESKTOP VIEW
     <Link
       href={`campaigns/${_id}`}
-      className="bg-white border border-[rgba(57, 62, 70, 0.08)] rounded-xl py-[26px] px-[24px]"
+      className="bg-white border border-[rgba(57, 62, 70, 0.08)] rounded-xl px-[10px] pt-6 pb-[10px] md:py-[26px] md:px-6"
     >
-      <div className="mb-2 md:mb-[10px]">{label(status)}</div>
-
-      <div className="flex flex-col md:flex-row justify-between mb-8 md:mb-[19px]">
-        <p className="text-lg text-black mb-2 md:mb-0">{title}</p>
-        {pill(category)}
+      <div className="px-[7px] md:px-0">
+        <div className="mb-2 md:mb-[10px]">{label(status)}</div>
+        <div className="flex flex-col md:flex-row justify-between mb-8 md:mb-[19px]">
+          <p className="text-lg text-black mb-2 md:mb-0">{title}</p>
+          {pill(category)}
+        </div>
       </div>
 
       <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px] md:mb-3">
         <p className="text-sm text-[#667085] mb-1">
-          <span className="text-[#292A2E]">Goal</span> {fundingGoal}/{fundsGotten}
+          <span className="text-[#292A2E]">Goal</span> {fundingGoal}/
+          {fundsGotten}
         </p>
         <ProgressBar percent={percentage} showValue />
       </div>
 
       <div className="flex flex-col md:flex-row justify-between md:items-end">
-        <div className="text-[13px] text-[#5C636E] mb-2.5">
+        <div className="text-[13px] text-[#5C636E] px-[7px] md:px-0 mb-2.5">
           <p className="mb-2.5">
             <span className="text-black font-medium">Views:</span>{" "}
             <span className="text-[#5C636E] font">{views}</span>

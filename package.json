@@ -24,6 +24,7 @@
     "flowbite-react": "^0.6.3",
     "framer-motion": "^10.12.17",
     "hint": "^7.1.10",
+    "jotai": "^2.6.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "next": "13.4.7",
