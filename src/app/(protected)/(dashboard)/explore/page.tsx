@@ -38,7 +38,6 @@ export type CampaignProps = {
 export default async function Explore() {
   const campaigns = await getCampaigns(1)
 
-  console.log("cam", campaigns)
   return (
     <div>
       <div className='flex items-center justify-between mb-4'>

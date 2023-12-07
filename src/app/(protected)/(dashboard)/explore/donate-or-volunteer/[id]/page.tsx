@@ -55,7 +55,7 @@ const ageRange = [
   }
 ]
 
-export default function DonateOrVolunteer ({
+export default function DonateOrVolunteer({
   params
 }: {
   params: { id: string }
@@ -114,8 +114,8 @@ export default function DonateOrVolunteer ({
       campaign?.campaignType === 'fundraiseAndVolunteer'
         ? 'donate'
         : campaign?.campaignType === 'fundraise'
-        ? 'donate'
-        : 'volunteer'
+          ? 'donate'
+          : 'volunteer'
     )
   }, [params.id, campaign?.campaignType])
 
@@ -130,10 +130,20 @@ export default function DonateOrVolunteer ({
 
   const donate = async () => {
     setLoading(true)
-    const endpoint = '/api/v1/payment/initiate'
+    const user = await getUser();
+
+    console.log("user", user)
+    if (!user) {
+      return null;
+    }
+    const headers = {
+      "x-auth-token": user.token
+    };
+
+    const endpoint = '/api/v1/payments/initiate'
 
     const payload = {
-      campaignId: campaign.id,
+      campaignId: params.id,
       campaignOwnerId: campaign.userId,
       campaignDonorId: campaign.userId,
       amount: donationInputs.amount,
@@ -148,8 +158,10 @@ export default function DonateOrVolunteer ({
     try {
       const { data } = await makeRequest(endpoint, {
         method: 'POST',
-        payload
+          headers,
+        payload: JSON.stringify(payload)
       })
+      toast({ title: 'Success!', body: data.message, type: 'success' })
       setLoading(false)
     } catch (error) {
       setLoading(false)
@@ -192,9 +204,8 @@ export default function DonateOrVolunteer ({
             {campaign?.campaignType === 'fundraiseAndVolunteer' ? (
               <>
                 <span
-                  className={`text-sm p-3 cursor-pointer ${
-                    tab === 'donate' ? activeTabStyle : inActiveTabStyle
-                  }`}
+                  className={`text-sm p-3 cursor-pointer ${tab === 'donate' ? activeTabStyle : inActiveTabStyle
+                    }`}
                   onClick={() => {
                     setTab('donate')
                   }}
@@ -202,9 +213,8 @@ export default function DonateOrVolunteer ({
                   Donate
                 </span>
                 <span
-                  className={`text-sm p-3 ml-4 cursor-pointer ${
-                    tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
-                  }`}
+                  className={`text-sm p-3 ml-4 cursor-pointer ${tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
+                    }`}
                   onClick={() => {
                     setTab('volunteer')
                   }}
@@ -214,9 +224,8 @@ export default function DonateOrVolunteer ({
               </>
             ) : campaign?.campaignType === 'fundraise' ? (
               <span
-                className={`text-sm p-3 cursor-pointer ${
-                  tab === 'donate' ? activeTabStyle : inActiveTabStyle
-                }`}
+                className={`text-sm p-3 cursor-pointer ${tab === 'donate' ? activeTabStyle : inActiveTabStyle
+                  }`}
                 onClick={() => {
                   setTab('donate')
                 }}
@@ -225,9 +234,8 @@ export default function DonateOrVolunteer ({
               </span>
             ) : (
               <span
-                className={`text-sm p-3 ml-4 cursor-pointer ${
-                  tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
-                }`}
+                className={`text-sm p-3 ml-4 cursor-pointer ${tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
+                  }`}
                 onClick={() => {
                   setTab('volunteer')
                 }}
