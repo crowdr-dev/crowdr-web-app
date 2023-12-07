@@ -132,7 +132,6 @@ export default function DonateOrVolunteer({
     setLoading(true)
     const user = await getUser();
 
-    console.log("user", user)
     if (!user) {
       return null;
     }
