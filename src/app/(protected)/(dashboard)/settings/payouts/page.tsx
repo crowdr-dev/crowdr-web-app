@@ -8,9 +8,15 @@ import TextInput from "../../dashboard-components/TextInput";
 import { useState } from "react";
 import SelectInput from "../../dashboard-components/SelectInput";
 import InputTitle from "../../dashboard-components/InputTitle";
+import { WhiteButton } from "../../dashboard-components/Button";
+import Button from "@/app/common/components/Button";
+import { FormFields } from "@/app/common/hooks/useLoginForm";
 
-const Payouts: RFC = ({ children }) => {
+const Payouts: RFC<BankFormProps> = ({ BankId }) => {
   const [input, setInput] = useState<any>();
+
+  const isEdit = Boolean(BankId);
+  const saveButtonText = isEdit ? "Save Changes" : "Add Bank Details";
 
   return (
     <div>
@@ -40,16 +46,38 @@ const Payouts: RFC = ({ children }) => {
 
         <div className="flex w-[50%] flex-col  mb-6">
           <h2>Bank</h2>
-          <InputTitle title="Bank Type" detail="Bank" />
-          <div className="max-w-lg">
-            <SelectInput
-              name="BankType"
-              options={BankTypes}
-              rules={{
-                required: "Bank type is required",
-              }}
-              ariaLabel="Bank Type"
-            />
+          {/* <SelectInput
+            name="BankType"
+            options={BankTypes}
+            rules={{
+              required: "Bank type is required",
+            }}
+            ariaLabel="Bank Type"
+          /> */}
+        </div>
+
+        <div className="flex w-[50%] flex-col  mb-6">
+          <h2>Account Name</h2>
+          <TextInput
+            value={input}
+            onChange={(e) => {
+              setInput(e.target.value);
+            }}
+            placeholder="This should auto generate"
+            // icon={BiSearch}
+            styles={{
+              wrapper: "grow mr-[22px] block",
+              input: "text-sm",
+            }}
+          />
+        </div>
+
+        <div className="flex md:justify-end justify-center items-center w-[50%] mb-5">
+          <div className="">
+            <WhiteButton text="Cancel" href="/" shadow className="mr-3" />
+          </div>
+          <div className="flex items-center justify-center ">
+            <Button text={saveButtonText} />
           </div>
         </div>
 
@@ -130,6 +158,11 @@ const reference = [
     status: "Failed",
   },
 ];
+
+type BankFormProps = {
+  submit: (formFields: FormFields) => void;
+  BankId?: string;
+};
 
 function Option(value: string, label: string, isDisabled = false) {
   return { value, label, isDisabled };

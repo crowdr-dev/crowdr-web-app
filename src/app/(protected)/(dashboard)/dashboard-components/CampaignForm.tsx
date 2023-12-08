@@ -1,27 +1,27 @@
-import { useEffect, useMemo, useRef, useState } from "react"
-import Image from "next/image"
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
-import { useFormContext, useWatch } from "react-hook-form"
+import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { useFormContext, useWatch } from "react-hook-form";
 import CampaignFormContext, {
   FormFields,
-} from "../campaigns/create-or-edit-campaign/utils/useCreateCampaign"
-import { Button, WhiteButton } from "./Button"
-import TextInput from "./TextInput"
-import SelectInput from "./SelectInput"
-import InputTitle from "./InputTitle"
-import TextAreaInput from "./TextAreaInput"
-import NumberInput from "./NumberInput"
-import DateInput from "./DateInput"
-import OptionInput from "./OptionInput"
-import FileInput from "./FileInput"
-import FormSkeleton from "./skeletons/FormSkeleton"
-import { useUser } from "../common/hooks/useUser"
-import makeRequest from "@/utils/makeRequest"
+} from "../campaigns/create-or-edit-campaign/utils/useCreateCampaign";
+import { Button, WhiteButton } from "./Button";
+import TextInput from "./TextInput";
+import SelectInput from "./SelectInput";
+import InputTitle from "./InputTitle";
+import TextAreaInput from "./TextAreaInput";
+import NumberInput from "./NumberInput";
+import DateInput from "./DateInput";
+import OptionInput from "./OptionInput";
+import FileInput from "./FileInput";
+import FormSkeleton from "./skeletons/FormSkeleton";
+import { useUser } from "../common/hooks/useUser";
+import makeRequest from "@/utils/makeRequest";
 
-import { campaignCategories } from "@/utils/campaignCategory"
-import { RFC } from "@/app/common/types"
-import { ICampaign } from "@/app/common/types/Campaign"
-import CaretIcon from "../../../../../public/svg/caret.svg"
+import { campaignCategories } from "@/utils/campaignCategory";
+import { RFC } from "@/app/common/types";
+import { ICampaign } from "@/app/common/types/Campaign";
+import CaretIcon from "../../../../../public/svg/caret.svg";
 
 const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
   const {
@@ -33,68 +33,68 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useFormContext() as CampaignFormContext
-  const user = useUser()
+  } = useFormContext() as CampaignFormContext;
+  const user = useUser();
   const [skillsNeeded, campaignType, currency] = useWatch({
     control,
     name: ["skillsNeeded", "campaignType", "currency"],
-  })
-  const [formFetched, setFormFetched] = useState(false)
-  const isIndividual = user?.userType == "individual"
+  });
+  const [formFetched, setFormFetched] = useState(false);
+  const isIndividual = user?.userType == "individual";
   const showFundraiseSection =
-    Boolean(campaignType?.match(/fundraise/i)) || isIndividual
-  const showVolunteerSection = Boolean(campaignType?.match(/volunteer/i))
-  const otherSkillsRef = useRef<HTMLInputElement>(null)
-  const isEdit = Boolean(campaignId)
-  const saveButtonText = isEdit ? "Save" : "Launch Campaign"
-  const pageTitle = isEdit ? "Edit Campaign" : "Create Campaign"
+    Boolean(campaignType?.match(/fundraise/i)) || isIndividual;
+  const showVolunteerSection = Boolean(campaignType?.match(/volunteer/i));
+  const otherSkillsRef = useRef<HTMLInputElement>(null);
+  const isEdit = Boolean(campaignId);
+  const saveButtonText = isEdit ? "Save" : "Launch Campaign";
+  const pageTitle = isEdit ? "Edit Campaign" : "Create Campaign";
   const pageSubtext = isEdit
     ? "Enter correct details to update campaign"
-    : "Now’s your chance to tell your story!"
+    : "Now’s your chance to tell your story!";
 
   const otherSkillsEnabled = useMemo(() => {
     if ((skillsNeeded || [])?.includes("others")) {
       if (otherSkillsRef.current) {
-        setTimeout(() => otherSkillsRef.current!.focus(), 0)
+        setTimeout(() => otherSkillsRef.current!.focus(), 0);
       }
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
-  }, [skillsNeeded])
+  }, [skillsNeeded]);
 
   const currencySymbol = useMemo(() => {
-    const currencyLabel = currencies.find((c) => c.value === currency)!
-    return (currencyLabel?.label?.match(/\((.)\)/) || [])[1]
-  }, [currency])
+    const currencyLabel = currencies.find((c) => c.value === currency)!;
+    return (currencyLabel?.label?.match(/\((.)\)/) || [])[1];
+  }, [currency]);
 
   useEffect(() => {
     if (user && campaignId) {
       const fetchCampaignData = async () => {
         try {
-          const endpoint = `/api/v1/my-campaigns/${campaignId}`
+          const endpoint = `/api/v1/my-campaigns/${campaignId}`;
           const headers = {
             "Content-Type": "multipart/form-data",
             "x-auth-token": user.token,
-          }
+          };
 
           const { data } = await makeRequest<ICampaign>(endpoint, {
             headers,
             method: "GET",
-          })
+          });
 
-          const formData = mapResponseToForm(data)
-          reset(formData)
-          setFormFetched(true)
+          const formData = mapResponseToForm(data);
+          reset(formData);
+          setFormFetched(true);
         } catch (error) {
           // const message = extractErrorMessage(error)
           // toast({ title: "Oops!", body: message, type: "error" })
         }
-      }
+      };
 
-      fetchCampaignData()
+      fetchCampaignData();
     }
-  }, [user])
+  }, [user]);
 
   return (
     <form>
@@ -207,15 +207,13 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
             <details
               open
               style={{ paddingTop: isIndividual ? 8 : 0 }}
-              className="group open:mb-10 md:open:mb-14"
-            >
+              className="group open:mb-10 md:open:mb-14">
               <summary
                 hidden={isIndividual}
                 className={
                   (isIndividual ? "hidden" : "flex") +
                   " gap-[10px] text-primary cursor-pointer mb-2"
-                }
-              >
+                }>
                 Fundraise
                 <Image
                   src={CaretIcon}
@@ -351,8 +349,8 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                       })}
                       id="otherSkillsNeeded"
                       onChange={(e) => {
-                        setValue("otherSkillsNeeded", e.target.value)
-                        trigger("otherSkillsNeeded")
+                        setValue("otherSkillsNeeded", e.target.value);
+                        trigger("otherSkillsNeeded");
                       }}
                       ref={otherSkillsRef}
                       disabled={!otherSkillsEnabled}
@@ -487,7 +485,6 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
           <FormSkeleton />
         </div>
       )}
-
       <div className="flex md:justify-end mb-5">
         <div>
           <WhiteButton
@@ -505,44 +502,44 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
         </div>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default CampaignForm
+export default CampaignForm;
 
 type CampaignFormProps = {
-  submit: (formFields: FormFields) => void
-  campaignId?: string
-}
+  submit: (formFields: FormFields) => void;
+  campaignId?: string;
+};
 
 function Option(value: string, label: string, isDisabled = false) {
-  return { value, label, isDisabled }
+  return { value, label, isDisabled };
 }
 
 const categories = [
   Option("", "Select a category...", true),
   ...campaignCategories,
-]
+];
 
 const campaignTypes = [
   Option("", "Select a campaign type...", true),
   Option("fundraise", "Fundraise"),
   Option("volunteer", "Volunteer"),
   Option("fundraiseAndVolunteer", "Fundraise and volunteer"),
-]
+];
 
 const currencies = [
   Option("", "Select a currency...", true),
   Option("naira", "Naira (₦)"),
   Option("dollar", "Dollar ($)"),
-]
+];
 
 const skillsList = [
   Option("event planning", "Event Planning"),
   Option("marketing & social media", "Marketing & Social Media"),
   Option("photography & videography", "Photography & Videography"),
   Option("teaching & training", "Teaching & Training"),
-]
+];
 
 const ageRanges = [
   Option("18 - 25", "18 - 25"),
@@ -551,20 +548,20 @@ const ageRanges = [
   Option("46 - 55", "46 - 55"),
   Option("56 and above", "56 and above"),
   Option("no preference", "No preference"),
-]
+];
 
 const genderPreferences = [
   Option("female", "Female"),
   Option("male", "Male"),
   Option("no preference", "No preference"),
-]
+];
 
 const volunteerCommitment = [
   Option("one-time event", "One-time event"),
   Option("weekly commitment", "Weekly commitment"),
   Option("monthly commitment", "Monthly commitment"),
   Option("flexible schedule", "Flexible schedule"),
-]
+];
 
 function mapResponseToForm(campaign: ICampaign): Partial<FormFields> {
   const {
@@ -576,8 +573,8 @@ function mapResponseToForm(campaign: ICampaign): Partial<FormFields> {
     fundraise,
     campaignType,
     story,
-  } = campaign
-  const { fundingGoalDetails, startOfFundraise, endOfFundraise } = fundraise
+  } = campaign;
+  const { fundingGoalDetails, startOfFundraise, endOfFundraise } = fundraise;
 
   return {
     title,
@@ -587,5 +584,5 @@ function mapResponseToForm(campaign: ICampaign): Partial<FormFields> {
     currency: fundingGoalDetails[0].currency,
     fundingGoal: fundingGoalDetails[0].amount,
     campaignDuration: [startOfFundraise, endOfFundraise],
-  }
+  };
 }
