@@ -3,8 +3,15 @@ import Tabs from "../../dashboard-components/Tabs";
 import Table from "../../dashboard-components/Table";
 import Label from "../../dashboard-components/Label";
 import Detail from "../../dashboard-components/Detail";
+import { RFC } from "@/app/common/types";
+import TextInput from "../../dashboard-components/TextInput";
+import { useState } from "react";
+import SelectInput from "../../dashboard-components/SelectInput";
+import InputTitle from "../../dashboard-components/InputTitle";
 
-const payouts = () => {
+const Payouts: RFC = ({ children }) => {
+  const [input, setInput] = useState<any>();
+
   return (
     <div>
       <div className="w-[100%] pb-20 pt-[10px]">
@@ -13,6 +20,37 @@ const payouts = () => {
             You have no connected bank account yet.{" "}
             <span className="text-[#FF5200]">Click here to add</span>
           </p>
+        </div>
+
+        <div className="flex w-[50%] flex-col  mb-6">
+          <h2>Account Number</h2>
+          <TextInput
+            value={input}
+            onChange={(e) => {
+              setInput(e.target.value);
+            }}
+            placeholder="2267350360"
+            // icon={BiSearch}
+            styles={{
+              wrapper: "grow mr-[22px] block",
+              input: "text-sm",
+            }}
+          />
+        </div>
+
+        <div className="flex w-[50%] flex-col  mb-6">
+          <h2>Bank</h2>
+          <InputTitle title="Bank Type" detail="Bank" />
+          <div className="max-w-lg">
+            <SelectInput
+              name="BankType"
+              options={BankTypes}
+              rules={{
+                required: "Bank type is required",
+              }}
+              ariaLabel="Bank Type"
+            />
+          </div>
         </div>
 
         {/* Table */}
@@ -58,7 +96,7 @@ const payouts = () => {
   );
 };
 
-export default payouts;
+export default Payouts;
 
 const reference = [
   {
@@ -91,4 +129,15 @@ const reference = [
     date: "Tue 26 Jul, 2022; 10:14 PM",
     status: "Failed",
   },
+];
+
+function Option(value: string, label: string, isDisabled = false) {
+  return { value, label, isDisabled };
+}
+
+const BankTypes = [
+  Option("", "Select a Bank...", true),
+  Option("access", "Access"),
+  Option("zenith", "Zenith"),
+  Option("uba", "UBA"),
 ];

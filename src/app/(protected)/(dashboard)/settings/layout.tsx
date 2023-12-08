@@ -1,11 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import Profile from "./profile/page";
-import Password from "./password/page";
-import Verification from "./verification/page";
-import Payouts from "./payouts/page";
+import React from "react";
 import Tabs from "../dashboard-components/Tabs";
 import { RFC } from "@/app/common/types";
 
@@ -36,11 +31,6 @@ const pages = [
   {
     route: "/settings/password",
     title: "Password",
-  },
-
-  {
-    route: "/settings/notifications",
-    title: "Notifications",
   },
   {
     route: "/settings/payouts",
