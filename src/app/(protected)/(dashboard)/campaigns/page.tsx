@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import CampaignCard from "../dashboard-components/CampaignCard"
 import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
 import TextInput from "../dashboard-components/TextInput"
+import DateRange, { IDateRange } from "../dashboard-components/DateRange"
 import StatCard from "../dashboard-components/StatCard"
 import Pagination from "../dashboard-components/Pagination"
 import CampaignCardSkeleton from "../dashboard-components/skeletons/CampaignCardSkeleton"
@@ -56,6 +57,10 @@ const Campaigns = () => {
     }
   }, [user, page])
 
+  const handleRangeSelect = (dateRange: IDateRange) => {
+    console.log(dateRange)
+  }
+
   return (
     <div>
       {/* page title x subtitle */}
@@ -70,27 +75,7 @@ const Campaigns = () => {
 
       {/* action buttons */}
       <div className="flex justify-between items-center mb-5 md:mb-10">
-        {/* button group */}
-        <div className="inline-flex rounded-md" role="group">
-          <button
-            type="button"
-            className="px-4 py-[10px] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
-          >
-            Custom
-          </button>
-          <button
-            type="button"
-            className="px-4 py-[10px] text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
-          >
-            7 days
-          </button>
-          <button
-            type="button"
-            className="px-4 py-[10px] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
-          >
-            24 hours
-          </button>
-        </div>
+        <DateRange onChange={handleRangeSelect} />
 
         <div className="hidden md:flex">
           <WhiteButton

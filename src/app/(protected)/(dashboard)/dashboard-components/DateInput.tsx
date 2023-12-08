@@ -13,6 +13,7 @@ import { Instance as Flatpickr } from "flatpickr/dist/types/instance"
 import "flatpickr/dist/flatpickr.min.css"
 
 // TODO: INTERNATIONALIZE DATE VALUES; CONVERT TO AND FROM UTC WHEN SENDING AND RECEIVING DATE TO AND FROM SERVER
+// TODO: MAKE DATE PICKER LOOK LIKE FIGMA UI
 const DateInput: RFC<DateInputProps> = ({
   config,
   label,

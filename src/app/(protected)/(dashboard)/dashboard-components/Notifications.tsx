@@ -11,7 +11,7 @@ import { RFC } from "@/app/common/types"
 import { HiMiniXMark } from "react-icons/hi2"
 
 const Notifications = () => {
-  const setCurrentDrawer = useSetAtom(pageDrawerAtom)
+  const setCurrentDrawerId = useSetAtom(pageDrawerAtom)
 
   return (
     <div className="flex flex-col bg-white w-[400px] max-h-full pt-6">
@@ -19,7 +19,7 @@ const Notifications = () => {
         <h1 className="font-semibold text-2xl">Notifications</h1>
 
         <ModalTrigger id="notifications" type="hide">
-          <div onClick={() => setCurrentDrawer('')} className="relative hover:bg-[#F8F8F8] transition cursor-pointer rounded-full p-2 -top-1">
+          <div onClick={() => setCurrentDrawerId('')} className="relative hover:bg-[#F8F8F8] transition cursor-pointer rounded-full p-2 -top-1">
             <HiMiniXMark fill="#98A2B3" className="h-6 w-6" />
           </div>
         </ModalTrigger>

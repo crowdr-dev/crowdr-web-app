@@ -14,19 +14,19 @@ import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
 export const pageDrawerAtom = atom("")
 
 const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
-  const [currentDrawer, setCurrentDrawer] = useAtom(pageDrawerAtom)
+  const [currentDrawerId, setCurrentDrawerId] = useAtom(pageDrawerAtom)
   const currentPath = usePathname()
   const display = drawer ? "flex" : "hidden md:flex"
 
   const toggleDrawer = (drawerId: string) => {
     if (drawerId) {
-      if (currentDrawer === drawerId) {
-        setCurrentDrawer("")
+      if (currentDrawerId === drawerId) {
+        setCurrentDrawerId("")
       } else {
-        setCurrentDrawer(drawerId)
+        setCurrentDrawerId(drawerId)
       }
     } else {
-      setCurrentDrawer("")
+      setCurrentDrawerId("")
     }
   }
 
@@ -62,11 +62,11 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
               const isRoute = "route" in page
               let isCurrentPage = false
               if (isRoute) {
-                isCurrentPage = currentDrawer
+                isCurrentPage = currentDrawerId
                   ? false
                   : currentPath.startsWith("/" + page.route.split("/")[1])
               } else {
-                isCurrentPage = currentDrawer === page.modalId
+                isCurrentPage = currentDrawerId === page.modalId
               }
 
               let iconStyle = isCurrentPage ? "brightness-[200]" : ""
@@ -80,10 +80,14 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
                 pageLinkStyle += " cursor-default"
               }
 
-              const modalProps: any = {
-                id: isRoute ? currentDrawer : page.modalId,
-                type: isRoute || currentDrawer ? "hide" : "show",
+              let modalProps: any = {
+                id: isRoute ? currentDrawerId : page.modalId,
+                type: isRoute || currentDrawerId ? "hide" : "show",
               }
+
+              // if (!isRoute && isCurrentPage) {
+              //   modalProps = {}
+              // }
 
               const linkProps: any = {
                 href: isRoute ? page.route : "",
