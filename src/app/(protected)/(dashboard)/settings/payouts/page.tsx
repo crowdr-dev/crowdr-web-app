@@ -81,6 +81,23 @@ const Payouts: RFC<BankFormProps> = ({ BankId }) => {
           </div>
         </div>
 
+        <div className="flex w-[512px] h-[85px] items-center bg-[#F9FAFB] justify-between p-4">
+          <div className="flex flex-col justify-between">
+            <div className="text-black font-PolySans text-sm font-normal">
+              Guaranty Trust Bank
+            </div>
+            <div className="text-gray-500 font-PolySans text-sm font-normal leading-5">
+              210805002
+            </div>
+            <div className="text-gray-500 font-PolySans text-sm font-normal leading-5">
+              Crowdr Foundation
+            </div>
+          </div>
+          <div className="text-orange-500 font-PolySans text-sm font-normal leading-5 underline cursor-pointer">
+            Edit details
+          </div>
+        </div>
+
         {/* Table */}
         <Tabs.Item heading="Reference">
           <Table className="hidden md:block mb-9">
