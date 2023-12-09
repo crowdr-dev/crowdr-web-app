@@ -33,7 +33,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
   return (
     <nav
       className={
-        display + " flex-col overflow-y-auto min-w-[272px] h-full bg-white"
+        display + " flex-col overflow-y-auto max-w-[272px] shrink-0 h-full bg-white"
       }
     >
       <div

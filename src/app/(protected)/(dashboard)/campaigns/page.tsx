@@ -58,7 +58,8 @@ const Campaigns = () => {
   }, [user, page])
 
   const handleRangeSelect = (dateRange: IDateRange) => {
-    console.log(dateRange)
+    console.log(dateRange![0].format())
+    console.log(dateRange![1].format())
   }
 
   return (
