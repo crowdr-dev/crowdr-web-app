@@ -39,7 +39,7 @@ export const Button: RFC<ButtonProps> = ({
   const buttonRef = useRef<any>(null)
   const flexDirection = iconPosition == "right" ? "flex-row-reverse" : "flex-row"
   const cursorStyle = disabled || loading ? "cursor-default" : "cursor-pointer"
-  const buttonClasses = `inline-flex justify-between items-center gap-2 rounded-lg text-sm transition h-[46px] px-[16px] py-[10px] ${cursorStyle} ${flexDirection} ${className}`
+  const buttonClasses = `inline-flex justify-between items-center gap-2 rounded-lg text-sm transition h-[44px] px-[16px] py-[10px] ${cursorStyle} ${flexDirection} ${className}`
   const darkerBgColor = darken(bgColor!)
 
   const buttonStyle: React.CSSProperties = {

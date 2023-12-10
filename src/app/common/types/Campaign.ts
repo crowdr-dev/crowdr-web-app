@@ -43,3 +43,22 @@ export interface CampaignResponse {
 
 export type CampaignStatus = "completed" | "in-progress" | "declined" | "in-review"
 export type CampaignType = 'fundraise' | 'volunteer' | 'fundraiseAndVolunteer'
+
+
+
+export interface CampaignStatsResponse {
+  success: boolean;
+  message: string;
+  data:    ICampaignStats;
+}
+
+export interface ICampaignStats {
+  totalAmountDonated: TotalAmountDonated[];
+  totalNoOfCampaigns: number;
+  totalCampaignViews: number;
+}
+
+export interface TotalAmountDonated {
+  currency:    string;
+  totalAmount: number;
+}

@@ -9,6 +9,7 @@ import Detail from "../../dashboard-components/Detail"
 import Pagination from "../../dashboard-components/Pagination"
 import Table from "../../dashboard-components/Table"
 import Tabs from "../../dashboard-components/Tabs"
+import CampaignPageSkeleton from "../../dashboard-components/skeletons/CampaignPageSkeleton"
 import ProgressBar from "../../dashboard-components/ProgressBar"
 import Text from "../../dashboard-components/Text"
 import { pill } from "../../dashboard-components/Pill"
@@ -65,12 +66,12 @@ const Campaign = ({ params }: Route) => {
             <Text
               characterLimit={128}
               expandText="Read more"
-              className="md:hidden text-[#667085] text-[15px] md:text-[13px] mb-[9px] md:mb-8"
+              className="md:hidden text-[#667085] text-[15px] md:text-[13px] mb-[9px]"
             >
               {campaign.story}
             </Text>
 
-            <p className="hidden md:block text-[#667085] text-[15px] md:text-[13px] mb-[9px] md:mb-8">
+            <p className="hidden md:block text-[#667085] text-[15px] md:text-[13px] mb-8">
               {campaign.story}
             </p>
 
@@ -113,7 +114,7 @@ const Campaign = ({ params }: Route) => {
               </div>
             </div>
           </div>
-        ) : null}
+        ) : <CampaignPageSkeleton />}
         {/* TODO: ADD SKELETON LOADING */}
 
         <div className="flex items-start gap-3 mb-[23px] md:mb-[9px]">

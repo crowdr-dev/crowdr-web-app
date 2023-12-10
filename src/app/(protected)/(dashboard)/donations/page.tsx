@@ -4,14 +4,14 @@ import StatCard from "../dashboard-components/StatCard"
 import Tabs from "../dashboard-components/Tabs"
 import Table from "../dashboard-components/Table"
 import Pagination from "../dashboard-components/Pagination"
+import Label from "../dashboard-components/Label"
+import Detail from "../dashboard-components/Detail"
+import DateRange, { IDateRange } from "../dashboard-components/DateRange"
 import { useUser } from "../common/hooks/useUser"
-import { getUser } from "@/app/api/user/getUser"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
 import { ICampaign } from "@/app/common/types/Campaign"
-import Label from "../dashboard-components/Label"
-import Detail from "../dashboard-components/Detail"
 
 const Donations = () => {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -46,6 +46,8 @@ const Donations = () => {
   //   fetchCampaigns()
   // }, [])
 
+  const handleRangeSelect = (dateRange: IDateRange) => {}
+
   return (
     <div>
       {/* page title x subtitle */}
@@ -57,28 +59,8 @@ const Donations = () => {
       </hgroup>
 
       {/* action buttons */}
-      <div className="flex justify-between items-center mb-5 md:mb-10">
-        {/* button group */}
-        <div className="inline-flex rounded-md" role="group">
-          <button
-            type="button"
-            className="px-4 py-[10px] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
-          >
-            Custom
-          </button>
-          <button
-            type="button"
-            className="px-4 py-[10px] text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
-          >
-            7 days
-          </button>
-          <button
-            type="button"
-            className="px-4 py-[10px] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
-          >
-            24 hours
-          </button>
-        </div>
+      <div className="flex justify-between items-center mb-5 md:mb-10 py-[1px]">
+        <DateRange onChange={handleRangeSelect} />
       </div>
 
       {/* stats */}
