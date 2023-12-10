@@ -23,6 +23,7 @@ const FileInput: RFC<FileInputProps> = ({
   value,
   controlled,
   rules,
+  styles
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -165,7 +166,7 @@ const FileInput: RFC<FileInputProps> = ({
   }
 
   return (
-    <span>
+    <span className={styles?.wrapper}>
       <label
         htmlFor={config?.name || name}
         onDragOver={handleDrag}
@@ -243,6 +244,9 @@ type FileInputProps = {
   value?: File[]
   rules?: RegisterOptions
   controlled?: boolean
+  styles?: {
+    wrapper?: string
+  }
 }
 
 function blobToFile(blob: Blob): FileList {

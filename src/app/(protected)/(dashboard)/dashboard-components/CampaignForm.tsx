@@ -17,6 +17,7 @@ import FileInput from "./FileInput";
 import FormSkeleton from "./skeletons/FormSkeleton";
 import { useUser } from "../common/hooks/useUser";
 import makeRequest from "@/utils/makeRequest";
+import { Option } from "../common/utils/form";
 
 import { campaignCategories } from "@/utils/campaignCategory";
 import { RFC } from "@/app/common/types";
@@ -511,10 +512,6 @@ type CampaignFormProps = {
   submit: (formFields: FormFields) => void;
   campaignId?: string;
 };
-
-function Option(value: string, label: string, isDisabled = false) {
-  return { value, label, isDisabled };
-}
 
 const categories = [
   Option("", "Select a category...", true),

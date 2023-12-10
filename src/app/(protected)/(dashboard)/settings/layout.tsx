@@ -15,8 +15,6 @@ const SettingsLayout: RFC = ({ children }) => {
           </Tabs.Item>
         ))}
       </Tabs>
-
-      <hr className=" border-[rgba(56, 56, 56, 0.08)]" />
     </div>
   );
 };

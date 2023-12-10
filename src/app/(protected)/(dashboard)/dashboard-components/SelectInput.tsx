@@ -17,6 +17,7 @@ const SelectInput: RFC<SelectInputProps> = ({
   controlled,
   isClearable,
   isSearchable,
+  styles,
 }) => {
   let control
   if (!controlled) {
@@ -45,7 +46,7 @@ const SelectInput: RFC<SelectInputProps> = ({
   }
 
   return (
-    <span>
+    <span className={styles?.wrapper}>
       {label && (
         <label htmlFor={name} className="text-[14px] text-[#344054] mb-[6px]">
           {label}{" "}
@@ -104,6 +105,9 @@ type SelectInputProps = {
   controlled?: boolean
   isClearable?: boolean
   isSearchable?: boolean
+  styles?: {
+    wrapper?: string
+  }
 }
 
 interface Option {
