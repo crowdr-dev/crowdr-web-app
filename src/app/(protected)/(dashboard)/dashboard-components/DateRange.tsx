@@ -49,7 +49,7 @@ const DateRange: RFC<DateRangeProps> = ({ onChange }) => {
     } else {
       setRange(undefined)
       setSelectedRange(dateRange.label)
-      onChange([dateRange.startTime(), moment()])
+      onChange([dateRange.startTime().format(ISO_Format), moment().format(ISO_Format)])
     }
   }
 
@@ -84,7 +84,7 @@ const DateRange: RFC<DateRangeProps> = ({ onChange }) => {
                 onClick={() => {
                   if (range) {
                     setSelectedRange("Custom")
-                    onChange([moment(range[0]), moment(range[1]).endOf("day")])
+                    onChange([moment(range[0]).format(ISO_Format), moment(range[1]).endOf("day").format(ISO_Format)])
                     flatpickrInstance.current?.close()
                   }
                 }}
@@ -123,7 +123,7 @@ type DateRangeProps = {
   onChange: (dateRange: IDateRange | null) => void
 }
 
-export type IDateRange = [moment.Moment, moment.Moment] | null
+export type IDateRange = [string, string] | null
 type IRangeLabel = "Custom" | (typeof rangeOptions)[number]["label"]
 type IRangeOption = (typeof rangeOptions)[number]
 
@@ -141,3 +141,5 @@ const rangeOptions = [
     startTime: timeAgo(24, "hours"),
   },
 ] as const
+
+const ISO_Format = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'
