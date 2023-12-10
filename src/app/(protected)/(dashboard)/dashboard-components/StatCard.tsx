@@ -38,7 +38,7 @@ StatCard.defaultProps = {
 
 type StatCardProps = {
   title: string;
-  text: string;
+  text: string | number;
   percentage?: number;
   changeType?: "rise" | "fall";
   time?: string;
