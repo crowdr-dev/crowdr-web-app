@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
+import { useRouter } from "next/navigation"
 import { useFormContext, useWatch } from "react-hook-form"
 import CampaignFormContext, {
   FormFields,
@@ -35,6 +36,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
     formState: { errors, isSubmitting },
   } = useFormContext() as CampaignFormContext
   const user = useUser()
+  const router = useRouter()
   const [skillsNeeded, campaignType, currency] = useWatch({
     control,
     name: ["skillsNeeded", "campaignType", "currency"],
@@ -108,8 +110,8 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
         <div className="hidden md:block">
           <WhiteButton
             text="Cancel"
-            href="/campaigns"
             shadow
+            onClick={() => router.back()}
             className="mr-3"
           />
           <Button
@@ -492,8 +494,8 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
         <div>
           <WhiteButton
             text="Cancel"
-            href="/campaigns"
             shadow
+            onClick={() => router.back()}
             className="mr-3"
           />
           <Button

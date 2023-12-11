@@ -130,9 +130,9 @@ const CreateEditCampaign = ({ params }: Route) => {
   return (
     <div>
       <nav className="mb-[25px]">
-        <Link href="/campaigns" className="opacity-50">
+        <div onClick={() => router.back()} className="cursor-pointer opacity-50">
           Go back
-        </Link>
+        </div>
       </nav>
 
       <CampaignFormContext>
