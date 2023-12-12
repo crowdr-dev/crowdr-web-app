@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useUser } from "../../common/hooks/useUser"
+import moment from "moment"
 import makeRequest from "@/utils/makeRequest"
 import { mapCampaignResponseToView } from "../../common/utils/campaign"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
@@ -24,7 +25,6 @@ import {
 
 import FileDownloadIcon from "../../../../../../public/svg/file-download.svg"
 import { formatAmount } from "../../common/utils/currency"
-import moment from "moment"
 
 const Campaign = ({ params }: Route) => {
   const user = useUser()
