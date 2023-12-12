@@ -16,7 +16,6 @@ import { formatAmount } from "../common/utils/currency"
 import {
   ICampaign,
   CampaignResponse,
-  CampaignStatsResponse,
   ICampaignStats,
 } from "@/app/common/types/Campaign"
 import { IPagination } from "@/app/common/types"
@@ -202,7 +201,7 @@ const Campaigns = () => {
         {initialised
           ? campaigns.map(
               (campaign) =>
-                campaign.campaignType !== "volunteer" && (
+                campaign.campaignType !== "volunteer" && ( //TODO: REMOVE CHECK WHEN DESIGN FOR VOLUNTEER CAMPAIGNS IS READY
                   <CampaignCard key={campaign._id} campaign={campaign} />
                 )
             )

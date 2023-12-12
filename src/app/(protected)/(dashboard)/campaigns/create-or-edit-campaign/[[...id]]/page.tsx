@@ -1,6 +1,5 @@
 "use client"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import objectToFormData from "@/utils/objectToFormData"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
@@ -48,7 +47,13 @@ const CreateEditCampaign = ({ params }: Route) => {
       campaignType: isIndividual ? "fundraise" : campaignType,
     }
 
-    // if (!isIndividual) payload.campaignStatus = "in-progress"
+    if (campaignImages) {
+      payload.campaignCoverImage = campaignImages[0]
+    }
+
+    if (campaignImages && campaignImages?.length > 1) {
+      payload.campaignAdditionalImages = campaignImages.slice(1)
+    }
 
     if (isFundraiseRelated || isIndividual) {
       // TODO: MAKE objectToFormData handle converting nested objects to JSON
@@ -62,14 +67,6 @@ const CreateEditCampaign = ({ params }: Route) => {
         startOfFundraise: campaignDuration[0],
         endOfFundraise: campaignDuration[1],
       })
-
-      if (campaignImages) {
-        payload.campaignCoverImage = campaignImages[0]
-      }
-
-      if (campaignImages && campaignImages?.length > 1) {
-        payload.campaignAdditionalImages = campaignImages.slice(1)
-      }
     }
 
     if (isVolunteerRelated) {
@@ -105,7 +102,7 @@ const CreateEditCampaign = ({ params }: Route) => {
       })
 
       if (success) {
-        router.push("/campaigns")
+        router.back()
         if (isEdit) {
           toast({ title: "Well done!", body: message })
         } else {
@@ -130,7 +127,10 @@ const CreateEditCampaign = ({ params }: Route) => {
   return (
     <div>
       <nav className="mb-[25px]">
-        <div onClick={() => router.back()} className="cursor-pointer opacity-50">
+        <div
+          onClick={() => router.back()}
+          className="cursor-pointer opacity-50"
+        >
           Go back
         </div>
       </nav>

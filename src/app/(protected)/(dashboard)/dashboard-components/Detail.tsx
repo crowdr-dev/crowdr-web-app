@@ -41,11 +41,9 @@ const Detail: RFC<DetailProps> = ({ title, detail, date, status, label }) => {
 export default Detail;
 
 type DetailProps = {
-  title?: string;
-  detail?: string;
-  date?: string;
+  title: string;
+  detail: string;
+  date: string;
   status?: string;
   label?: string;
-  refernceno?: string;
-  amount?: string;
 };
