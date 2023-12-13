@@ -1,52 +1,130 @@
 "use client"
 import { useEffect, useState } from "react"
+import moment from "moment"
 import StatCard from "../dashboard-components/StatCard"
 import Tabs from "../dashboard-components/Tabs"
 import Table from "../dashboard-components/Table"
 import Pagination from "../dashboard-components/Pagination"
 import Label from "../dashboard-components/Label"
 import Detail from "../dashboard-components/Detail"
+import StatCardSkeleton from "../dashboard-components/skeletons/StatCardSkeleton"
 import DateRange, { IDateRange } from "../dashboard-components/DateRange"
+import { formatAmount } from "../common/utils/currency"
 import { useUser } from "../common/hooks/useUser"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
-import { ICampaign } from "@/app/common/types/Campaign"
+import {
+  IDonationResponse,
+  IDonationStats,
+  IVolunteeringResponse,
+} from "@/app/common/types/Campaign"
 
 const Donations = () => {
-  const [campaigns, setCampaigns] = useState<ICampaign[]>([])
+  const [stats, setStats] = useState<IDonationStats>()
+  const [dateRange, setDateRange] = useState<IDateRange>()
+  const [donations, setDonations] = useState<IDonationResponse>()
+  const [volunteering, setVolunteering] = useState<IVolunteeringResponse>()
+  const [donationsPage, setDonationsPage] = useState(1)
+  const [volunteeringPage, setVolunteeringPage] = useState(1)
   const user = useUser()
-  const [page, setPage] = useState(1)
 
-  // useEffect(() => {
-  //   const fetchCampaigns = async () => {
-  //     const query = new URLSearchParams({ page: "1", perPage: "10" })
-  //     const endpoint = `/api/v1/my-campaigns?${query}`
+  const userDonations = mapDonationsResponseToView(donations?.donations || [])
+  const userVolunteering = mapVolunteeringResponseToView(
+    volunteering?.volunteers || []
+  )
 
-  //     try {
-  //       const user = await getUser()
-  //       const headers = {
-  //         "Content-Type": "multipart/form-data",
-  //         "x-auth-token": user?.token!,
-  //       }
-  //       const { success, data } = await makeRequest<{
-  //         success: boolean
-  //         data: { campaigns: ICampaign[] }
-  //       }>(endpoint, {
-  //         headers,
-  //         method: "GET",
-  //       })
-  //       setCampaigns(data.campaigns)
-  //     } catch (error) {
-  //       const message = extractErrorMessage(error)
-  //       // toast({ title: "Oops!", body: message, type: "error" })
-  //     }
-  //   }
+  useEffect(() => {
+    if (user) {
+      const fetchStats = async () => {
+        const query = new URLSearchParams()
+        if (dateRange) {
+          query.set("startDate", dateRange[0])
+          query.set("endDate", dateRange[1])
+        }
 
-  //   fetchCampaigns()
-  // }, [])
+        const endpoint = `/api/v1/my-donations/summary?${query}`
 
-  const handleRangeSelect = (dateRange: IDateRange) => {}
+        try {
+          const headers = {
+            "Content-Type": "multipart/form-data",
+            "x-auth-token": user?.token!,
+          }
+          const { data } = await makeRequest<IDonationStats>(endpoint, {
+            headers,
+            method: "GET",
+          })
+
+          setStats(data)
+        } catch (error) {
+          const message = extractErrorMessage(error)
+          console.log(message)
+        }
+      }
+
+      fetchStats()
+    }
+  }, [user, dateRange])
+
+  useEffect(() => {
+    if (user) {
+      const fetchDonations = async () => {
+        try {
+          const query = new URLSearchParams({
+            page: `${donationsPage}`,
+            perPage: ITEMS_PER_PAGE,
+          })
+          const endpoint = `/api/v1/my-donations?${query}`
+
+          const headers = {
+            "Content-Type": "multipart/form-data",
+            "x-auth-token": user.token,
+          }
+
+          const { data } = await makeRequest<IDonationResponse>(endpoint, {
+            headers,
+            method: "GET",
+          })
+
+          setDonations(data)
+        } catch (error) {}
+      }
+
+      fetchDonations()
+    }
+  }, [user, donationsPage])
+
+  useEffect(() => {
+    if (user) {
+      const fetchVolunteering = async () => {
+        try {
+          const query = new URLSearchParams({
+            page: `${volunteeringPage}`,
+            perPage: ITEMS_PER_PAGE,
+          })
+          const endpoint = `/api/v1/my-volunteerings?${query}`
+
+          const headers = {
+            "Content-Type": "multipart/form-data",
+            "x-auth-token": user.token,
+          }
+
+          const { data } = await makeRequest<IVolunteeringResponse>(endpoint, {
+            headers,
+            method: "GET",
+          })
+
+          setVolunteering(data)
+        } catch (error) {}
+      }
+
+      fetchVolunteering()
+    }
+  }, [user, volunteeringPage])
+
+  const handleRangeSelect = (dateRange: IDateRange) => {
+    setDateRange(dateRange)
+  }
 
   return (
     <div>
@@ -65,15 +143,35 @@ const Donations = () => {
 
       {/* stats */}
       <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[43px]">
-        <StatCard title="Total Donations" text="N235,880.70" pattern />
-        <StatCard title="All Campaigns" text="18" colorScheme="light" />
-        <StatCard
-          title="My Badge"
-          text="Saviour"
-          detail="Keep spreading love to unlock more badges!"
-          colorScheme="light"
-          iconUrl="/svg/badge.svg"
-        />
+        {stats ? (
+          <>
+            <StatCard
+              title="Total Donations"
+              text={formatAmount(
+                stats.totalAmountDonated[0].totalAmount,
+                stats.totalAmountDonated[0].currency,
+                { minimumFractionDigits: 2 }
+              )}
+              pattern
+            />
+            <StatCard
+              title="All Campaigns"
+              text={stats.totalNoOfCampaigns}
+              colorScheme="light"
+            />
+            <StatCard
+              title="My Badge"
+              text="Saviour"
+              detail="Keep spreading love to unlock more badges!"
+              colorScheme="light"
+              iconUrl="/svg/badge.svg"
+            />
+          </>
+        ) : (
+          Array.from({ length: 3 }).map((_, index) => (
+            <StatCardSkeleton key={index} />
+          ))
+        )}
       </div>
 
       {/* donations x volunteering */}
@@ -88,16 +186,20 @@ const Donations = () => {
             </Table.Head>
 
             <Table.Body>
-              {donations.map((donation, index) => (
+              {userDonations.map((donation, index) => (
                 <Table.Row key={index}>
                   <Table.Cell>{donation.title}</Table.Cell>
                   <Table.Cell>{donation.detail}</Table.Cell>
                   <Table.Cell>{donation.date}</Table.Cell>
                   <Table.Cell>
-                    {donation.status.match(/success/i) ? (
+                    {/success/i.test(donation.status) ? (
                       <Label text={donation.status} />
                     ) : (
-                      <Label text={donation.status} textColor="#B42318" bgColor="#FEF3F2" />
+                      <Label
+                        text={donation.status}
+                        textColor="#B42318"
+                        bgColor="#FEF3F2"
+                      />
                     )}
                   </Table.Cell>
                 </Table.Row>
@@ -106,18 +208,20 @@ const Donations = () => {
           </Table>
 
           <div className="flex flex-col md:hidden">
-            {donations.map((donation, index) => (
+            {userDonations.map((donation, index) => (
               <Detail key={index} {...donation} />
             ))}
           </div>
 
-          <Pagination
-            total={50}
-            currentPage={page}
-            perPage={5}
-            onPageChange={setPage}
-            className="px-[18px] py-4"
-          />
+          {donations && userDonations.length !== 0 && (
+            <Pagination
+              currentPage={donations.pagination.currentPage}
+              perPage={donations.pagination.perPage}
+              total={donations.pagination.total}
+              onPageChange={setDonationsPage}
+              className="px-[18px] py-4"
+            />
+          )}
         </Tabs.Item>
 
         <Tabs.Item heading="Volunteering">
@@ -130,16 +234,20 @@ const Donations = () => {
             </Table.Head>
 
             <Table.Body>
-              {donations.map((donation, index) => (
+              {userVolunteering.map((volunteering, index) => (
                 <Table.Row key={index}>
-                  <Table.Cell>{donation.detail}</Table.Cell>
-                  <Table.Cell>{donation.skill}</Table.Cell>
-                  <Table.Cell>{donation.date}</Table.Cell>
+                  <Table.Cell>{volunteering.title}</Table.Cell>
+                  <Table.Cell>{volunteering.detail}</Table.Cell>
+                  <Table.Cell>{volunteering.date}</Table.Cell>
                   <Table.Cell>
-                  {donation.status.match(/success/i) ? (
-                      <Label text={donation.status} />
+                    {/success/i.test(volunteering.status) ? (
+                      <Label text={volunteering.status} />
                     ) : (
-                      <Label text={donation.status} textColor="#B42318" bgColor="#FEF3F2" />
+                      <Label
+                        text={volunteering.status}
+                        textColor="#B42318"
+                        bgColor="#FEF3F2"
+                      />
                     )}
                   </Table.Cell>
                 </Table.Row>
@@ -148,60 +256,47 @@ const Donations = () => {
           </Table>
 
           <div className="flex flex-col md:hidden">
-            {donations.map((donation, index) => (
+            {userVolunteering.map((donation, index) => (
               <Detail key={index} {...donation} />
             ))}
           </div>
 
-          <Pagination
-            total={50}
-            currentPage={page}
-            perPage={5}
-            onPageChange={setPage}
-            className="px-[18px] py-4"
-          />
+          {volunteering && userVolunteering.length !== 0 && (
+            <Pagination
+              currentPage={volunteering.pagination.currentPage}
+              perPage={volunteering.pagination.perPage}
+              total={volunteering.pagination.total}
+              onPageChange={setVolunteeringPage}
+              className="px-[18px] py-4"
+            />
+          )}
         </Tabs.Item>
       </Tabs>
     </div>
   )
 }
 
-export default Donations
+export default Donations // TODO: REMOVE
 
-const donations = [
-  {
-    title: "Help Tife pay her college fees",
-    detail: "N40,000.00",
-    date: "Tue 26 Jul, 2022; 10:14 PM",
-    skill: "Event Planning",
+function mapDonationsResponseToView(donations: IDonationResponse["donations"]) {
+  return donations.map((donation) => ({
+    title: donation.fullName,
+    detail: formatAmount(Number(donation.amount), donation.currency),
+    date: moment(donation.createdAt).format(DATE_FORMAT),
     status: "Success",
-  },
-  {
-    title: "Support 400 kids get a backpack",
-    detail: "N40,000.00",
-    date: "Tue 26 Jul, 2022; 10:14 PM",
-    skill: "Marketing & Social Media",
-    status: "Failed",
-  },
-  {
-    title: "Help Crowdr raise $300M",
-    detail: "N21,300.00",
-    date: "Tue 26 Jul, 2022; 10:14 PM",
-    skill: "Teaching & Training",
+  }))
+}
+
+function mapVolunteeringResponseToView(
+  volunteering: IVolunteeringResponse["volunteers"]
+) {
+  return volunteering.map((volunteer) => ({
+    title: volunteer.fullName,
+    detail: volunteer.gender,
+    date: moment(volunteer.createdAt).format(DATE_FORMAT),
     status: "Success",
-  },
-  {
-    title: "Film Documentary: Ocean Conservation",
-    detail: "N21,300.00",
-    date: "Tue 26 Jul, 2022; 10:14 PM",
-    skill: "Photography",
-    status: "Success",
-  },
-  {
-    title: "Support 400 kids get a backpack",
-    detail: "N21,300.00",
-    date: "Tue 26 Jul, 2022; 10:14 PM",
-    skill: "Event Planning",
-    status: "Success",
-  },
-]
+  }))
+}
+
+const ITEMS_PER_PAGE = "5"
+const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"

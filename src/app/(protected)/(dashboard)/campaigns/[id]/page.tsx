@@ -99,7 +99,7 @@ const Campaign = ({ params }: Route) => {
       const fetchVolunteers = async () => {
         try {
           const query = new URLSearchParams({
-            page: `${donorsPage}`,
+            page: `${volunteersPage}`,
             perPage: ITEMS_PER_PAGE,
           })
           const endpoint = `/api/v1/campaigns/${params.id}/volunteers?${query}`
