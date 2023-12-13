@@ -27,8 +27,9 @@ const FileInput: RFC<FileInputProps> = ({
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {register} = useFormContext()
+    const {register, formState: {errors}} = useFormContext()
     config = register(name, rules)
+    error = errors[name] as FieldError
   }
 
   const fileInputRef = useRef<HTMLInputElement>(null)

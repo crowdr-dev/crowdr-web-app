@@ -22,8 +22,9 @@ const TextInput: RFC<TextInputProps> = ({
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {register} = useFormContext()
+    const {register, formState: {errors}} = useFormContext()
     config = register(name, rules)
+    error = errors[name] as FieldError
   }
   const inputStyle = props.icon ? "pl-9" : ""
   

@@ -26,8 +26,9 @@ const TextAreaInput: RFC<TextAreaInputProps> = ({
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {register} = useFormContext()
+    const {register, formState: {errors}} = useFormContext()
     config = register(name, rules)
+    error = errors[name] as FieldError
   }
   
   const [charactersLeft, setCharactersLeft] = useState<number>()
