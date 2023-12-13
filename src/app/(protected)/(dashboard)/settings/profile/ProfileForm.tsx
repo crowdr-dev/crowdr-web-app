@@ -1,5 +1,6 @@
 import { useFormContext } from "react-hook-form"
 import TextInput from "../../dashboard-components/TextInput"
+import NumberInput from "../../dashboard-components/NumberInput"
 import SelectInput from "../../dashboard-components/SelectInput"
 import FileInput from "../../dashboard-components/FileInput"
 import { Button } from "../../dashboard-components/Button"
@@ -27,23 +28,30 @@ const ProfileForm = () => {
             label="Full name"
             styles={{ wrapper: "mb-[26px]" }}
           />
+
           <TextInput
             name="email"
             label="Email address"
             styles={{ wrapper: "mb-[26px]" }}
           />
-          <TextInput
+
+          <NumberInput
             name="cacNumber"
             label="CAC number"
+            disableGroupSeparators
             styles={{ wrapper: "mb-[33px]" }}
           />
+
+          {/* TODO: ADD IMAGE PREVIEW FEATURE TO FILEINPUT */}
           <FileInput name="profileImage" styles={{ wrapper: "mb-[20px]" }} />
+
           <SelectInput
-            options={[Option('', 'Select a state...', true), ...stateOptions]}
+            options={[Option("", "Select a state...", true), ...stateOptions]}
             name="organizationLocation"
             label="Where is your organization located?"
             styles={{ wrapper: "mb-[26px]" }}
           />
+
           <div className="flex flex-col">
             <label
               htmlFor="public_url"

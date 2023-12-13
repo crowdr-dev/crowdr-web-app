@@ -3,16 +3,16 @@ import { UseFormReturn } from "react-hook-form/dist/types";
 
 import { RFC } from "@/app/common/types";
 
-const ProfileFormContext: RFC = ({ children }) => {
-  const formContext: ProfileFormContext = {
+const PasswordFormContext: RFC = ({ children }) => {
+  const formContext: PasswordFormContext = {
     ...useForm<FormFields>(config),
   };
 
   return <FormProvider {...formContext}>{children}</FormProvider>;
 };
 
-export default ProfileFormContext;
-export type { ProfileFormContext, FormFields };
+export default PasswordFormContext;
+export type { PasswordFormContext, FormFields };
 
 const config: UseFormConfig = {
   defaultValues: {},
@@ -21,11 +21,8 @@ const config: UseFormConfig = {
 
 type UseFormConfig = Parameters<typeof useForm<FormFields>>[0];
 type FormFields = {
-  fullName: string;
-  email: string;
-  cacNumber: number;
-  organizationLocation: string;
-  publicUrl: string;
-  profileImage: File;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 };
-type ProfileFormContext = UseFormReturn<FormFields>;
+type PasswordFormContext = UseFormReturn<FormFields>;
