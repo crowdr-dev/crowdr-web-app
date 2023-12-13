@@ -31,11 +31,11 @@ const pages = [
     title: "Password",
   },
   {
-    route: "/settings/payouts",
+    route: "/settings/payment",
     title: "Payment and Payouts",
   },
-  {
-    route: "/settings/verification",
-    title: "Verification",
-  },
+  // {
+  //   route: "/settings/verification",
+  //   title: "Verification",
+  // },
 ];
