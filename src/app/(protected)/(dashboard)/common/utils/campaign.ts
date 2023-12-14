@@ -12,6 +12,7 @@ export const mapCampaignResponseToView = (data: ICampaign) => {
     campaignStatus,
     campaignViews,
     allDonors,
+    campaignType
   } = data
 
   const {
@@ -36,6 +37,7 @@ export const mapCampaignResponseToView = (data: ICampaign) => {
     donors: allDonors,
     fundingGoal,
     fundsGotten,
-    percentage
+    percentage,
+    campaignType,
   }
 }

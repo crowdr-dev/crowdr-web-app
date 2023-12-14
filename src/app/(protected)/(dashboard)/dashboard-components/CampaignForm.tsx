@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
+import { useRouter } from "next/navigation"
 import { useFormContext, useWatch } from "react-hook-form"
 import CampaignFormContext, {
   FormFields,
@@ -35,6 +36,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
     formState: { errors, isSubmitting },
   } = useFormContext() as CampaignFormContext
   const user = useUser()
+  const router = useRouter()
   const [skillsNeeded, campaignType, currency] = useWatch({
     control,
     name: ["skillsNeeded", "campaignType", "currency"],
@@ -55,7 +57,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
   const otherSkillsEnabled = useMemo(() => {
     if ((skillsNeeded || [])?.includes("others")) {
       if (otherSkillsRef.current) {
-        setTimeout(() => otherSkillsRef.current!.focus(), 0)
+        setTimeout(() => otherSkillsRef.current?.focus(), 0)
       }
       return true
     } else {
@@ -108,8 +110,8 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
         <div className="hidden md:block">
           <WhiteButton
             text="Cancel"
-            href="/campaigns"
             shadow
+            onClick={() => router.back()}
             className="mr-3"
           />
           <Button
@@ -143,7 +145,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
           </div>
 
           {/* campaign type */}
-          {!isIndividual && (
+          {!isIndividual && !isEdit && (
             <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
               <InputTitle
                 title="Campaign Type"
@@ -197,6 +199,29 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                 characterLimit={300}
                 error={errors.story}
                 ariaLabel="Tell Your Story"
+              />
+            </div>
+          </div>
+
+          {/* upload engaging media */}
+          <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+            <InputTitle
+              title="Upload Engaging Media"
+              detail="Visuals can make a significant impact on your campaign's success."
+            />
+
+            <div className="max-w-lg">
+              <FileInput
+                name="campaignImages"
+                rules={{
+                  required: {
+                    value: isEdit ? false : true,
+                    message: "Campaign image is required",
+                  },
+                }}
+                error={errors.campaignImages}
+                multiple
+                showFileList
               />
             </div>
           </div>
@@ -276,29 +301,6 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                     error={errors.campaignDuration as any}
                     mode="range"
                     enableTime
-                  />
-                </div>
-              </div>
-
-              {/* upload engaging media */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
-                <InputTitle
-                  title="Upload Engaging Media"
-                  detail="Visuals can make a significant impact on your campaign's success."
-                />
-
-                <div className="max-w-lg">
-                  <FileInput
-                    name="campaignImages"
-                    rules={{
-                      required: {
-                        value: isEdit ? false : true,
-                        message: "Campaign image is required",
-                      },
-                    }}
-                    error={errors.campaignImages}
-                    multiple
-                    showFileList
                   />
                 </div>
               </div>
@@ -492,8 +494,8 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
         <div>
           <WhiteButton
             text="Cancel"
-            href="/campaigns"
             shadow
+            onClick={() => router.back()}
             className="mr-3"
           />
           <Button
