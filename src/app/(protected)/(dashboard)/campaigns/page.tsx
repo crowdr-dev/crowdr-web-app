@@ -3,58 +3,105 @@ import { useEffect, useState } from "react"
 import CampaignCard from "../dashboard-components/CampaignCard"
 import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
 import TextInput from "../dashboard-components/TextInput"
+import DateRange, { IDateRange } from "../dashboard-components/DateRange"
 import StatCard from "../dashboard-components/StatCard"
 import Pagination from "../dashboard-components/Pagination"
+import StatCardSkeleton from "../dashboard-components/skeletons/StatCardSkeleton"
 import CampaignCardSkeleton from "../dashboard-components/skeletons/CampaignCardSkeleton"
 import { useUser } from "../common/hooks/useUser"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import { formatAmount } from "../common/utils/currency"
 
-import { ICampaign, CampaignResponse } from "@/app/common/types/Campaign"
+import {
+  ICampaign,
+  CampaignResponse,
+  CampaignStatsResponse,
+  ICampaignStats,
+} from "@/app/common/types/Campaign"
 import { IPagination } from "@/app/common/types"
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
 
 const Campaigns = () => {
+  const [stats, setStats] = useState<ICampaignStats>()
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
   const [pagination, setPagination] = useState<IPagination>()
+  const [dateRange, setDateRange] = useState<IDateRange>()
   const [initialised, setInitialised] = useState(false)
   const [page, setPage] = useState(1)
   const user = useUser()
   const [input, setInput] = useState<any>()
 
   useEffect(() => {
-    const fetchCampaigns = async () => {
-      const query = new URLSearchParams({ page: `${page}`, perPage: "4" })
-      const endpoint = `/api/v1/my-campaigns?${query}`
-
-      try {
-        const headers = {
-          "Content-Type": "multipart/form-data",
-          "x-auth-token": user?.token!,
-        }
-        const { success, data } = await makeRequest<CampaignResponse>(endpoint, {
-          headers,
-          method: "GET",
-        })
-
-        setCampaigns(data.campaigns)
-        setPagination(data.pagination)
-
-        if (!initialised) {
-          setInitialised(true)
-        }
-      } catch (error) {
-        const message = extractErrorMessage(error)
-        // toast({ title: "Oops!", body: message, type: "error" })
-      }
-    }
-
     if (user) {
+      const fetchStats = async () => {
+        const query = new URLSearchParams()
+        if (dateRange) {
+          query.set("startDate", dateRange[0])
+          query.set("endDate", dateRange[1])
+        }
+
+        const endpoint = `/api/v1/my-campaigns/summary?${query}`
+
+        try {
+          const headers = {
+            "Content-Type": "multipart/form-data",
+            "x-auth-token": user?.token!,
+          }
+          const { data } = await makeRequest<ICampaignStats>(endpoint, {
+            headers,
+            method: "GET",
+          })
+
+          setStats(data)
+        } catch (error) {
+          const message = extractErrorMessage(error)
+          console.log(message)
+        }
+      }
+
+      fetchStats()
+    }
+  }, [user, dateRange])
+
+  useEffect(() => {
+    if (user) {
+      const fetchCampaigns = async () => {
+        const query = new URLSearchParams({ page: `${page}`, perPage: "4" })
+        const endpoint = `/api/v1/my-campaigns?${query}`
+
+        try {
+          const headers = {
+            "Content-Type": "multipart/form-data",
+            "x-auth-token": user?.token!,
+          }
+          const { data } = await makeRequest<CampaignResponse>(endpoint, {
+            headers,
+            method: "GET",
+          })
+
+          setCampaigns(data.campaigns)
+          setPagination(data.pagination)
+
+          if (!initialised) {
+            setInitialised(true)
+          }
+        } catch (error) {
+          const message = extractErrorMessage(error)
+          console.log(message)
+          // toast({ title: "Oops!", body: message, type: "error" })
+        }
+      }
+
       fetchCampaigns()
     }
   }, [user, page])
+
+  const handleRangeSelect = (dateRange: IDateRange) => {
+    setDateRange(dateRange)
+  }
 
   return (
     <div>
@@ -70,27 +117,7 @@ const Campaigns = () => {
 
       {/* action buttons */}
       <div className="flex justify-between items-center mb-5 md:mb-10">
-        {/* button group */}
-        <div className="inline-flex rounded-md" role="group">
-          <button
-            type="button"
-            className="px-4 py-[10px] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
-          >
-            Custom
-          </button>
-          <button
-            type="button"
-            className="px-4 py-[10px] text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
-          >
-            7 days
-          </button>
-          <button
-            type="button"
-            className="px-4 py-[10px] text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
-          >
-            24 hours
-          </button>
-        </div>
+        <DateRange onChange={handleRangeSelect} />
 
         <div className="hidden md:flex">
           <WhiteButton
@@ -105,35 +132,44 @@ const Campaigns = () => {
 
       {/* stats */}
       <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[44px]">
-        <StatCard
-          title="Total Raised"
-          text="N235,880.70"
-          percentage={100}
-          time="yesterday"
-          pattern
-        />
-        <StatCard
-          title="Total Campaigns"
-          text="2"
-          percentage={100}
-          time="yesterday"
-          colorScheme="light"
-        />
-        <StatCard
-          title="Campaign Views"
-          text="19,830"
-          percentage={100}
-          time="yesterday"
-          colorScheme="light"
-        />
+        {stats ? (
+          <>
+            <StatCard
+              title="Total Raised"
+              text={formatAmount(
+                stats.totalAmountDonated[0].totalAmount,
+                stats.totalAmountDonated[0].currency,
+                { minimumFractionDigits: 2 }
+              )}
+              percentage={100}
+              time="yesterday"
+              pattern
+            />
+            <StatCard
+              title="Total Campaigns"
+              text={stats.totalNoOfCampaigns}
+              percentage={100}
+              time="yesterday"
+              colorScheme="light"
+            />
+            <StatCard
+              title="Campaign Views"
+              text={stats.totalCampaignViews}
+              percentage={100}
+              time="yesterday"
+              colorScheme="light"
+            />
+          </>
+        ) : (
+          Array.from({ length: 3 }).map((_, index) => (
+            <StatCardSkeleton key={index} />
+          ))
+        )}
       </div>
 
+      {/* export x withdraw buttons */}
       <div className="flex md:hidden gap-3 mb-[23px] md:mb-[9px]">
-        <WhiteButton
-          text="Export Report"
-          iconUrl={FileDownloadIcon}
-          shadow
-        />
+        <WhiteButton text="Export Report" iconUrl={FileDownloadIcon} shadow />
         <Button text="Withdraw Donations" />
       </div>
 
@@ -164,9 +200,12 @@ const Campaigns = () => {
       {/* campaigns */}
       <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px] mb-[30px] md:mb-10">
         {initialised
-          ? campaigns.map((campaign) => (
-            campaign.campaignType !== "volunteer" && <CampaignCard key={campaign._id} campaign={campaign} />
-            ))
+          ? campaigns.map(
+              (campaign) =>
+                campaign.campaignType !== "volunteer" && (
+                  <CampaignCard key={campaign._id} campaign={campaign} />
+                )
+            )
           : Array.from({ length: 4 }).map((_, index) => (
               <CampaignCardSkeleton key={index} />
             ))}

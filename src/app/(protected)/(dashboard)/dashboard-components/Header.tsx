@@ -56,7 +56,7 @@ const Header = () => {
         )}
 
         {/* burger icon */}
-        <DrawerTrigger id="sidebar_drawer">
+        <DrawerTrigger id="sidebar_drawer" options={{backdropClasses: 'bg-[#50556F] bg-opacity-30 fixed inset-0 z-30'}}>
           <Image
             src={BurgerIcon}
             alt="burger icon"

@@ -1,32 +1,37 @@
 import { useEffect, useRef } from "react"
-import { Drawer, DrawerOptions } from "flowbite"
+import { Modal, ModalOptions } from "flowbite"
+
 import { RFC } from "@/app/common/types"
 
-const DrawerTrigger: RFC<DrawerTriggerProps> = ({
+const ModalTrigger: RFC<ModalTriggerProps> = ({
   id,
   type = "show",
   options = {},
   children,
   override,
 }) => {
-  let drawer = useRef<Drawer>()
+  const modal = useRef<Modal>()
+  const modalEl = useRef<HTMLElement | null>()
 
   useEffect(() => {
     if (id) {
-      const $drawerEl = document.getElementById(id)
-      drawer.current = new Drawer($drawerEl, options)
+      const $modalEl = document.getElementById(id)
+      modal.current = new Modal($modalEl, options)
+      modalEl.current = $modalEl
     }
   }, [id])
 
   const trigger = () => {
-    if (drawer.current) {
-      const $backdropEl = document.querySelector("[drawer-backdrop]")
-      drawer.current[type]()
+    if (modal.current) {
+      const $backdropEl = document.querySelector("[modal-backdrop]")
+      modal.current[type]()
 
       if (type === "show") {
         $backdropEl?.classList.remove("hidden")
+        modalEl.current?.classList.replace("hidden", "flex")
       } else if (type === "hide") {
         $backdropEl?.classList.add("hidden")
+        modalEl.current?.classList.replace("flex", "hidden")
       } // TODO: HANDLE TOGGLE CASE
     }
   }
@@ -39,12 +44,12 @@ const DrawerTrigger: RFC<DrawerTriggerProps> = ({
   return <span {...props}>{children}</span>
 }
 
-export default DrawerTrigger
+export default ModalTrigger
 
-type DrawerTriggerProps = {
+type ModalTriggerProps = {
   id: string
   children: React.ReactNode
   type?: "show" | "hide" | "toggle"
-  options?: DrawerOptions
+  options?: ModalOptions
   override?: boolean
 }
