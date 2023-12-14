@@ -35,7 +35,7 @@ type CampaignProps = {
   }
 }
 
-export default function DynamicExplore({
+export default function DynamicExplore ({
   hasNextPage
 }: {
   hasNextPage?: boolean
@@ -74,18 +74,25 @@ export default function DynamicExplore({
       <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 '>
         {Array.isArray(campaigns) &&
           campaigns?.map((campaign: Campaign, index: number) => {
-          const urlsOnly = campaign.campaignAdditionalImages.map(item => item.url);
+            const urlsOnly = campaign.campaignAdditionalImages.map(
+              item => item.url
+            )
 
+            const userDetails = campaign?.user
+            const donatedAmount = campaign?.totalAmountDonated?.[0].amount
             return (
               <ExploreCard
-                name='Nicholas'
-                tier='Individual'
+                name={userDetails?.organizationName}
+                tier={userDetails?.userType}
                 header={campaign?.title}
                 subheader={campaign?.story}
                 totalAmount={campaign.fundraise?.fundingGoalDetails[0].amount}
-                currentAmount={400}
+                currentAmount={donatedAmount}
                 timePosted={campaign.fundraise?.startOfFundraise}
-                slideImages={[campaign?.campaignCoverImage?.url, ...(urlsOnly || [])]}
+                slideImages={[
+                  campaign?.campaignCoverImage?.url,
+                  ...(urlsOnly || [])
+                ]}
                 donateImage={
                   'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
                 }
@@ -93,7 +100,8 @@ export default function DynamicExplore({
                 avatar={Avatar}
                 key={index}
                 campaignType={campaign.campaignType}
-              />)
+              />
+            )
           })}
       </div>
       {hasNextPage && (

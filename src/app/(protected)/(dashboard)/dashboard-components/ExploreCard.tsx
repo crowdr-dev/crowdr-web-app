@@ -79,7 +79,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
     swipeToSlide: true
   };
   return (
-    <div className='p-6 rounded-xl border-[#393e4614] border mt-8'>
+    <div className='p-6 rounded-xl border-[#393e4614] border mt-8 h-fit'>
       <div className='flex items-center justify-between '>
         <div className='flex items-center'>
           <Image
@@ -177,7 +177,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
         </div>
       </div>
 
-      <Button text={campaignType === "fundraiseAndVolunteer" ? "Donate and Volunteer" : campaignType === "fundraise" ? "Donate" : "Volunteer"} className="w-full mt-4 !justify-center" href={routeTo} />
+      {!!routeTo &&<Button text={campaignType === "fundraiseAndVolunteer" ? "Donate and Volunteer" : campaignType === "fundraise" ? "Donate" : "Volunteer"} className="w-full mt-4 !justify-center" href={routeTo} />}
     </div>
   )
 }

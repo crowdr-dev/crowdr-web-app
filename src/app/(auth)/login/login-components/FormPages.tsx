@@ -19,8 +19,6 @@ const FormPages = () => {
     const endpoint = "/api/v1/users/signin"
     let payload = JSON.stringify(_.pick(formFields, ["email", "password"]))
 
-    console.log("payload",payload)
-
     try {
       const { data: user } = await makeRequest<IUser>(endpoint, {
         method: "POST",

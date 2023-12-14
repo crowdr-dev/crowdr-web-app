@@ -1,8 +1,6 @@
 'use client'
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useRef } from 'react'
 import { getUser } from '@/app/api/user/getUser'
 import ProgressBar from '../../../dashboard-components/ProgressBar'
 import ExploreCard from '../../../dashboard-components/ExploreCard'
@@ -65,6 +63,7 @@ export default function DonateOrVolunteer({
   const [campaign, setCampaign] = useState<any>()
   const [tab, setTab] = useState('')
 
+
   const fetchSingleCampaign = async () => {
     const singleCampaign = await getSingleCampaign(params.id)
     setCampaign(singleCampaign)
@@ -126,6 +125,11 @@ export default function DonateOrVolunteer({
     0
   )
 
+  console.log("campaign", campaign)
+  const userDetails = campaign?.user
+
+  const donatedAmount = campaign?.totalAmountDonated?.[0].amount
+
   const currency = campaign?.fundraise?.fundingGoalDetails[0].currency
 
   const donate = async () => {
@@ -160,6 +164,9 @@ export default function DonateOrVolunteer({
           headers,
         payload: JSON.stringify(payload)
       })
+
+      window.open(data.authorization_url, '_blank', 'noopener,noreferrer');
+      window.location.href = "/donations"
       toast({ title: 'Success!', body: data.message, type: 'success' })
       setLoading(false)
     } catch (error) {
@@ -180,19 +187,19 @@ export default function DonateOrVolunteer({
       </div>
       <div className='grid grid-cols-1 gap-12 min-w-full md:grid-cols-2'>
         <ExploreCard
-          name='Nicholas'
-          tier='Individual'
+          name={userDetails?.organizationName}
+          tier={userDetails?.userType}
           header={campaign?.title}
           subheader={campaign?.story}
           totalAmount={campaign?.fundraise?.fundingGoalDetails[0].amount}
-          currentAmount={campaign?.donorsCount}
+          currentAmount={donatedAmount}
           timePosted={campaign?.fundraise?.startOfFundraise}
           slideImages={[
             campaign?.campaignCoverImage?.url,
             ...(campaign?.campaignAdditionalImages || [])
           ]}
           donateImage={campaign?.campaignCoverImage?.url}
-          routeTo={`/explore/`}
+          routeTo={``}
           avatar={
             'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
           }
@@ -317,16 +324,16 @@ export default function DonateOrVolunteer({
                   {' '}
                   <span className='text-[#000]'>Goal</span>{' '}
                   {currency?.toLowerCase() === 'naira' && 'N'}
-                  {campaign?.donorsCount}/
+                  {donatedAmount}/
                   {currency?.toLowerCase() === 'naira' && 'N'}
                   {totalDonationAmount}
                 </p>
                 <ProgressBar
                   bgColor='#00B964'
-                  percent={(campaign?.donorsCount / totalDonationAmount) * 100}
+                  percent={(donatedAmount / totalDonationAmount) * 100}
                 />
                 <p className='mt-3 text-sm opacity-50'>
-                  {campaign?.donorsCount} applications
+                  {campaign?.campaignDonors?.length} Donation(s)
                 </p>
               </div>
 
