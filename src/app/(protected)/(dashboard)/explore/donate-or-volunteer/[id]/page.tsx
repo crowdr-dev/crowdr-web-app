@@ -1,8 +1,6 @@
 'use client'
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useRef } from 'react'
 import { getUser } from '@/app/api/user/getUser'
 import ProgressBar from '../../../dashboard-components/ProgressBar'
 import ExploreCard from '../../../dashboard-components/ExploreCard'
@@ -13,6 +11,9 @@ import Select from '../../../dashboard-components/Select'
 import { Button } from '../../../dashboard-components/Button'
 import { getSingleCampaign } from '@/app/api/campaigns/getCampaigns'
 import { CampaignProps } from '../../page'
+import makeRequest from '@/utils/makeRequest'
+import { extractErrorMessage } from '@/utils/extractErrorMessage'
+import { useToast } from '@/app/common/hooks/useToast'
 
 const PROGRESS_COUNT = 8
 
@@ -52,17 +53,58 @@ const ageRange = [
   }
 ]
 
-export default function DonateOrVolunteer ({
+export default function DonateOrVolunteer({
   params
 }: {
   params: { id: string }
 }) {
+  const toast = useToast()
+  const [loading, setLoading] = useState(false)
   const [campaign, setCampaign] = useState<any>()
-  const [tab, setTab] = useState("")
+  const [tab, setTab] = useState('')
+
 
   const fetchSingleCampaign = async () => {
     const singleCampaign = await getSingleCampaign(params.id)
     setCampaign(singleCampaign)
+  }
+
+  interface initTypes {
+    amount?: string
+    fullName?: ''
+    email?: string
+  }
+
+  const initProps: initTypes = {
+    amount: '',
+    fullName: '',
+    email: ''
+  }
+
+  const [donationInputs, setDonationInputs] = useState(initProps)
+
+  const updateProps = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value
+    const inputName = event.target.name
+    setDonationInputs((prevState: initTypes) => {
+      return {
+        ...prevState,
+        [inputName]: newValue
+      }
+    })
+  }
+
+  const [checkboxValues, setCheckboxValues] = useState({
+    isAnonymous: false,
+    shouldShareDetails: false,
+    isSubscribedToPromo: false
+  })
+
+  const updateCheckbox = (key: string, value: boolean) => {
+    setCheckboxValues(prevState => ({
+      ...prevState,
+      [key]: value
+    }))
   }
 
   useEffect(() => {
@@ -71,13 +113,69 @@ export default function DonateOrVolunteer ({
       campaign?.campaignType === 'fundraiseAndVolunteer'
         ? 'donate'
         : campaign?.campaignType === 'fundraise'
-        ? 'donate'
-        : 'volunteer'
+          ? 'donate'
+          : 'volunteer'
     )
-  }, [params.id,campaign?.campaignType])
+  }, [params.id, campaign?.campaignType])
 
+  const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails.reduce(
+    (accumulator: number, current: { amount: number }) => {
+      return accumulator + current.amount
+    },
+    0
+  )
 
-  console.log("camp", campaign)
+  console.log("campaign", campaign)
+  const userDetails = campaign?.user
+
+  const donatedAmount = campaign?.totalAmountDonated?.[0].amount
+
+  const currency = campaign?.fundraise?.fundingGoalDetails[0].currency
+
+  const donate = async () => {
+    setLoading(true)
+    const user = await getUser();
+
+    if (!user) {
+      return null;
+    }
+    const headers = {
+      "x-auth-token": user.token
+    };
+
+    const endpoint = '/api/v1/payments/initiate'
+
+    const payload = {
+      campaignId: params.id,
+      campaignOwnerId: campaign.userId,
+      campaignDonorId: campaign.userId,
+      amount: donationInputs.amount,
+      email: donationInputs.email,
+      fullName: donationInputs.fullName,
+      currency: currency,
+      isAnonymous: checkboxValues.isAnonymous,
+      shouldShareDetails: checkboxValues.shouldShareDetails,
+      isSubscribedToPromo: checkboxValues.isSubscribedToPromo
+    }
+
+    try {
+      const { data } = await makeRequest(endpoint, {
+        method: 'POST',
+          headers,
+        payload: JSON.stringify(payload)
+      })
+
+      window.open(data.authorization_url, '_blank', 'noopener,noreferrer');
+      window.location.href = "/donations"
+      toast({ title: 'Success!', body: data.message, type: 'success' })
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      const message = extractErrorMessage(error)
+      toast({ title: 'Oops!', body: message, type: 'error' })
+    }
+  }
+
   return (
     <div className='mb-6'>
       <div className='flex items-center justify-between mb-4'>
@@ -89,19 +187,19 @@ export default function DonateOrVolunteer ({
       </div>
       <div className='grid grid-cols-1 gap-12 min-w-full md:grid-cols-2'>
         <ExploreCard
-          name='Nicholas'
-          tier='Individual'
+          name={userDetails?.organizationName}
+          tier={userDetails?.userType}
           header={campaign?.title}
           subheader={campaign?.story}
           totalAmount={campaign?.fundraise?.fundingGoalDetails[0].amount}
-          currentAmount={6000}
+          currentAmount={donatedAmount}
           timePosted={campaign?.fundraise?.startOfFundraise}
           slideImages={[
             campaign?.campaignCoverImage?.url,
             ...(campaign?.campaignAdditionalImages || [])
           ]}
           donateImage={campaign?.campaignCoverImage?.url}
-          routeTo={`/explore/`}
+          routeTo={``}
           avatar={
             'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
           }
@@ -112,9 +210,8 @@ export default function DonateOrVolunteer ({
             {campaign?.campaignType === 'fundraiseAndVolunteer' ? (
               <>
                 <span
-                  className={`text-sm p-3 cursor-pointer ${
-                    tab === 'donate' ? activeTabStyle : inActiveTabStyle
-                  }`}
+                  className={`text-sm p-3 cursor-pointer ${tab === 'donate' ? activeTabStyle : inActiveTabStyle
+                    }`}
                   onClick={() => {
                     setTab('donate')
                   }}
@@ -122,9 +219,8 @@ export default function DonateOrVolunteer ({
                   Donate
                 </span>
                 <span
-                  className={`text-sm p-3 ml-4 cursor-pointer ${
-                    tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
-                  }`}
+                  className={`text-sm p-3 ml-4 cursor-pointer ${tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
+                    }`}
                   onClick={() => {
                     setTab('volunteer')
                   }}
@@ -134,9 +230,8 @@ export default function DonateOrVolunteer ({
               </>
             ) : campaign?.campaignType === 'fundraise' ? (
               <span
-                className={`text-sm p-3 cursor-pointer ${
-                  tab === 'donate' ? activeTabStyle : inActiveTabStyle
-                }`}
+                className={`text-sm p-3 cursor-pointer ${tab === 'donate' ? activeTabStyle : inActiveTabStyle
+                  }`}
                 onClick={() => {
                   setTab('donate')
                 }}
@@ -145,9 +240,8 @@ export default function DonateOrVolunteer ({
               </span>
             ) : (
               <span
-                className={`text-sm p-3 ml-4 cursor-pointer ${
-                  tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
-                }`}
+                className={`text-sm p-3 ml-4 cursor-pointer ${tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
+                  }`}
                 onClick={() => {
                   setTab('volunteer')
                 }}
@@ -228,44 +322,64 @@ export default function DonateOrVolunteer ({
               <div className='bg-[#F9F9F9] p-4'>
                 <p className='text-sm text-[#667085]'>
                   {' '}
-                  <span className='text-[#000]'>Goal</span> 35/70 Volunteers
+                  <span className='text-[#000]'>Goal</span>{' '}
+                  {currency?.toLowerCase() === 'naira' && 'N'}
+                  {donatedAmount}/
+                  {currency?.toLowerCase() === 'naira' && 'N'}
+                  {totalDonationAmount}
                 </p>
                 <ProgressBar
                   bgColor='#00B964'
-                  percent={(PROGRESS_COUNT / 10) * 100}
+                  percent={(donatedAmount / totalDonationAmount) * 100}
                 />
-                <p className='mt-3 text-sm opacity-50'>240 applications</p>
+                <p className='mt-3 text-sm opacity-50'>
+                  {campaign?.campaignDonors?.length} Donation(s)
+                </p>
               </div>
 
               <div className='mt-4'>
-                <p className='text-base'>Donation Amount</p>
-                <div className='text-sm rounded-lg border border-[#D0D5DD] py-[10px] px-[14px] '>
-                  N20,000.00
-                </div>
-              </div>
-
-              <div className='mt-4'>
+                <Input
+                  label={'Donation Amount'}
+                  placeholder='N10.00'
+                  name='amount'
+                  id='amount'
+                  type='number'
+                  onChange={updateProps}
+                  value={donationInputs.amount}
+                />
                 <Input
                   label={'Full name'}
                   placeholder='Ajayi Akintomiwa G.'
                   name='fullName'
                   id='fullName'
+                  onChange={updateProps}
+                  value={donationInputs.fullName}
                 />
                 <Input
                   label={'Email address'}
                   placeholder='tomiwa@crowdr.com'
-                  name='emailAddress'
-                  id='emailAddress'
+                  name='email'
+                  id='email'
+                  onChange={updateProps}
+                  value={donationInputs.email}
                 />
                 <div className='flex flex-col mt-[30px]'>
                   <Checkbox
                     id={'1'}
                     label={"Don't display my name publicly on the fundraiser."}
+                    checked={checkboxValues.isAnonymous}
+                    onChange={newValue =>
+                      updateCheckbox('isAnonymous', newValue)
+                    }
                   />
                   <Checkbox
                     id={'2'}
                     label={
                       "I'm delighted to share my name and email with this charity to receive updates on other ways I can help."
+                    }
+                    checked={checkboxValues.shouldShareDetails}
+                    onChange={newValue =>
+                      updateCheckbox('shouldShareDetails', newValue)
                     }
                   />
                   <Checkbox
@@ -273,15 +387,26 @@ export default function DonateOrVolunteer ({
                     label={
                       'Get occasional marketing updates from Crowdr. You may unsubscribe at any time.'
                     }
+                    checked={checkboxValues.isSubscribedToPromo}
+                    onChange={newValue =>
+                      updateCheckbox('isSubscribedToPromo', newValue)
+                    }
                   />
                 </div>
               </div>
 
-              <Button text='Donate' className='w-full mt-4 !justify-center' />
+              <Button
+                text='Donate'
+                className='w-full mt-4 !justify-center'
+                onClick={donate}
+                loading={loading}
+              />
 
               <div className='mt-10'>
                 <div className='flex flex-row items-start justify-between'>
-                  <p className='text-[#292A2E] text-base'>32 Total Donors</p>
+                  <p className='text-[#292A2E] text-base'>
+                    {campaign?.donorsCount} Total Donors
+                  </p>
 
                   <Filter query='Top Donors' />
                 </div>
