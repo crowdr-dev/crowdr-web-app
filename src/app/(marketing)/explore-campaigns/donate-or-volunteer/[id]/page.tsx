@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { getUser } from '@/app/api/user/getUser'
 import ProgressBar from '../../../../(protected)/(dashboard)/dashboard-components/ProgressBar'
 import ExploreCard from '../../../../(protected)/(dashboard)/dashboard-components/ExploreCard'

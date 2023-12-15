@@ -37,14 +37,12 @@ type CampaignProps = {
 export default function DynamicExplore ({
   hasNextPage, 
   isProtected, 
-  startPage,
 }: {
   hasNextPage?: boolean
   isProtected?: boolean
-  startPage?: number
 }) {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
-  const [page, setPage] = useState(startPage || 2)
+  const [page, setPage] = useState(2)
 
   const loadCampaigns = async () => {
     try {
