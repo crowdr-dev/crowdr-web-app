@@ -53,3 +53,8 @@ body {
 .flatpickr-wrapper {
   display: block !important;
 }
+
+.slick-prev::before,
+.slick-next::before {
+  color: #068645 !important;
+}

@@ -79,7 +79,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
     swipeToSlide: true
   };
   return (
-    <div className='p-6 rounded-xl border-[#393e4614] border mt-8 h-fit'>
+    <div className='p-6 rounded-xl border-[#393e4614] border mt-8 h-fit bg-white'>
       <div className='flex items-center justify-between '>
         <div className='flex items-center'>
           <Image

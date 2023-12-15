@@ -1,8 +1,12 @@
 'use client'
 
 import { Campaign, getCampaigns } from '@/app/api/campaigns/getCampaigns'
-import ExploreCard from '../dashboard-components/ExploreCard'
+import ExploreCard from '../../(protected)/(dashboard)/dashboard-components/ExploreCard'
 import { useState, useEffect } from 'react'
+import Navigation from '@/app/common/components/Navigation';
+import Footer from '@/app/common/components/Footer'
+import Modal from '@/app/common/components/Modal';
+import WaitlistForm from '@/app/home/home-components/WaitlistForm';
 
 type FundraisingGoalProps = {
   amount: number
@@ -44,7 +48,17 @@ export default function DynamicExplore ({
   startPage?: number
 }) {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
-  const [page, setPage] = useState(startPage || 2)
+  const [page, setPage] = useState(1)
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   const loadCampaigns = async () => {
     try {
@@ -73,8 +87,9 @@ export default function DynamicExplore ({
     loadCampaigns()
   }
   return (
-    <>
-      <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 '>
+    <div>
+     <Navigation openModal={openModal}/>
+      <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 p-8 bg-[#E7F0EE]'>
         {Array.isArray(campaigns) &&
           campaigns?.map((campaign: Campaign, index: number) => {
             const urlsOnly = campaign.campaignAdditionalImages.map(
@@ -114,6 +129,10 @@ export default function DynamicExplore ({
           </span>
         </div>
       )}
-    </>
+       <Footer />
+       <Modal isOpen={modalIsOpen} onClose={closeModal}>
+        <WaitlistForm />
+      </Modal>
+    </div>
   )
 }

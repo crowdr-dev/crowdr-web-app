@@ -96,7 +96,7 @@ export default async function Explore () {
             )
           })}
       </div>
-      <DynamicExplore hasNextPage={campaigns?.pagination?.hasNextPage} />
+      <DynamicExplore hasNextPage={campaigns?.pagination?.hasNextPage} isProtected={true}/>
     </div>
   )
 }
