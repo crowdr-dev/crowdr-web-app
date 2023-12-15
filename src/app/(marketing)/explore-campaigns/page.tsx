@@ -22,14 +22,11 @@ type CampaignImage = {
 
 
 
-export default function DynamicExplore ({
-  hasNextPage, 
-}: {
-  hasNextPage?: boolean
-}) {
+export default function DynamicExplore () {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [page, setPage] = useState(1)
 
+  const [hasNextPage, setHasNextPage] = useState<any>()
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const openModal = () => {
@@ -40,9 +37,11 @@ export default function DynamicExplore ({
     setModalIsOpen(false);
   };
 
+
   const loadCampaigns = async () => {
     try {
       const newCampaigns = await getCampaigns(page)
+      setHasNextPage(newCampaigns?.pagination.hasNextPage)
 
       const campaignsArray = newCampaigns?.campaigns as Campaign[]
 
@@ -101,14 +100,14 @@ export default function DynamicExplore ({
               />
             )
           })}
-      </div>
-      {hasNextPage && (
+          {hasNextPage && (
         <div className='flex justify-end items-center mt-4'>
           <span onClick={handleSeeMore} className={'cursor-pointer'}>
             See more
           </span>
         </div>
       )}
+      </div>
        <Footer />
        <Modal isOpen={modalIsOpen} onClose={closeModal}>
         <WaitlistForm />
