@@ -16,7 +16,6 @@ import { formatAmount } from "../common/utils/currency"
 import {
   ICampaign,
   CampaignResponse,
-  CampaignStatsResponse,
   ICampaignStats,
 } from "@/app/common/types/Campaign"
 import { IPagination } from "@/app/common/types"
@@ -26,13 +25,13 @@ import FilterIcon from "../../../../../public/svg/filter.svg"
 
 const Campaigns = () => {
   const [stats, setStats] = useState<ICampaignStats>()
+  const [dateRange, setDateRange] = useState<IDateRange>()
   const [campaigns, setCampaigns] = useState<ICampaign[]>([])
   const [pagination, setPagination] = useState<IPagination>()
-  const [dateRange, setDateRange] = useState<IDateRange>()
   const [initialised, setInitialised] = useState(false)
   const [page, setPage] = useState(1)
-  const user = useUser()
   const [input, setInput] = useState<any>()
+  const user = useUser()
 
   useEffect(() => {
     if (user) {
@@ -202,7 +201,7 @@ const Campaigns = () => {
         {initialised
           ? campaigns.map(
               (campaign) =>
-                campaign.campaignType !== "volunteer" && (
+                campaign.campaignType !== "volunteer" && ( //TODO: REMOVE CHECK WHEN DESIGN FOR VOLUNTEER CAMPAIGNS IS READY
                   <CampaignCard key={campaign._id} campaign={campaign} />
                 )
             )

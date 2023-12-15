@@ -22,6 +22,25 @@ type CampaignImage = {
   id: string;
 };
 
+export type DonatedAmount = {
+  currency: string;
+  amount: number;
+};
+
+export type CampaignDonors = {
+  _id: string;
+  amount: string;
+  campaignDonorId: string;
+  campaignId: string;
+  campaignOwnerId: string;
+  currency: string;
+  fullName: string;
+  isAnonymous: boolean;
+  isSubscribedToPromo: boolean;
+  shouldShareDetails: boolean;
+  transactionRef: string;
+};
+
 export type Campaign = {
   _id: string;
   category: string;
@@ -41,6 +60,7 @@ export type Campaign = {
     startOfFundraise: string;
     endOfFundraise: string;
   };
+  campaignDonors: CampaignDonors[];
   volunteer: {
     skillsNeeded: string;
     otherSkillsNeeded: string;
@@ -50,6 +70,14 @@ export type Campaign = {
     commitementEndDate: string;
     requiredCommitment: string;
     additonalNotes: string;
+  };
+  totalAmountDonated: DonatedAmount[];
+  user: {
+    _id: string;
+    interests: string[];
+    organizationId: string;
+    organizationName: string;
+    userType: string;
   };
 };
 
@@ -65,13 +93,10 @@ export const getCampaigns = async (page?: number) => {
     "x-auth-token": user.token
   };
 
-  const { data: campaigns } = await makeRequest<CampaignsResponse>(
-    endpoint,
-    {
-      headers,
-      tags: [campaignsTag]
-    }
-  );
+  const { data: campaigns } = await makeRequest<CampaignsResponse>(endpoint, {
+    headers,
+    tags: [campaignsTag]
+  });
   return campaigns;
 };
 

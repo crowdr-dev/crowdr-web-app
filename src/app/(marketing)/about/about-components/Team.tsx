@@ -18,7 +18,7 @@ export default function Team() {
         {teamMembers.map(({ name, photo, position}) => {
           return (
             <div className={styles.teamMember} key={name}>
-               <Image  className={styles.imagePlaceholder} src={photo} alt={name}/> 
+               <Image className={styles.imagePlaceholder + ' object-cover'} src={photo} alt={name}/> 
               <p className={styles.teamMemberName}>{name}</p>
               <p className={styles.teamMemberPosition}>{position}</p>
             </div>

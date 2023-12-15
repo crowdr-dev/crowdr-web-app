@@ -5,19 +5,25 @@ import {
   ReactElement,
   ReactNode,
   SetStateAction,
+  isValidElement,
   useState,
 } from "react"
+import _ from "lodash"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { RFC } from "@/app/common/types"
 
 const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
   const currentRoute = usePathname()
-  const tabs = Children.map(children, (child) => child)
-  const tabHeadings = tabs.map(({ props }) => ({
-    heading: props.heading,
-    href: props.href,
-  }))
+  const tabs = (Children.map(children, (child) => child)?.filter(
+    (child) => isValidElement<TabItemProps>(child) && child.props.heading
+  ) || []) as ReactElement<TabItemProps>[]
+  const tabHeadings = (tabs as ReactElement<TabItemProps>[]).map(
+    ({ props }) => ({
+      heading: props.heading,
+      href: props.href,
+    })
+  )
   const [activeTab, setActiveTab] = useState(
     initialTab ? initialTab : tabHeadings[0].heading
   )
@@ -25,7 +31,10 @@ const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
   return (
     <div>
       <div
-        className={"flex gap-4 border-b boder-[#E4E7EC] overflow-x-auto no-scrollbar mb-8 " + styles?.header}
+        className={
+          "flex gap-4 border-b boder-[#E4E7EC] overflow-x-auto no-scrollbar mb-8 " +
+          styles?.header
+        }
       >
         {tabHeadings.map(({ heading, href }) => {
           const props: any = href
@@ -97,7 +106,10 @@ type Tabs = RFC<TabsProps> & { Item: RFC<TabItemProps> }
 
 type TabsProps = {
   activeTab?: string
-  children: ReactElement<TabItemProps>[] | ReactElement<TabItemProps>
+  children:
+    | ReactElement<TabItemProps>[]
+    | ReactElement<TabItemProps>
+    | ReactNode
   styles?: { header: string }
 }
 
