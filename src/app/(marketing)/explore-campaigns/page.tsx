@@ -20,30 +20,12 @@ type CampaignImage = {
   id: string
 }
 
-type CampaignProps = {
-  _id: string
-  userId: string
-  category: string
-  title: string
-  story: string
-  campaignType: string
-  campaignStatus: string
-  campaignCoverImage: CampaignImage
-  campaignAdditionalImagesUrl: string[]
-  campaignViews: number
-  fundraise: {
-    fundingGoalDetails: FundraisingGoalProps[]
-    startOfFundraise: string
-    endOfFundraise: string
-  }
-}
+
 
 export default function DynamicExplore ({
   hasNextPage, 
-  isProtected, 
 }: {
   hasNextPage?: boolean
-  isProtected?: boolean
 }) {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [page, setPage] = useState(1)
@@ -112,7 +94,7 @@ export default function DynamicExplore ({
                 donateImage={
                   'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
                 }
-                routeTo={!isProtected  ? `/explore-campaigns/donate-or-volunteer/${campaign._id}`: `/explore/donate-or-volunteer/${campaign._id}`}
+                routeTo={`/explore-campaigns/donate-or-volunteer/${campaign._id}`}
                 avatar={'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'}
                 key={index}
                 campaignType={campaign.campaignType}

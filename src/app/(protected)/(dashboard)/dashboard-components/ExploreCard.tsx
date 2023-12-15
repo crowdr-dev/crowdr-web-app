@@ -6,9 +6,9 @@ import { RFC } from '@/app/common/types'
 import { Button } from './Button'
 import ProgressBar from './ProgressBar'
 import moment from 'moment'
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
+import Slider from 'react-slick'
 
 import Menu from '../../../../../public/svg/menu.svg'
 import Modal from '@/app/common/components/Modal'
@@ -45,28 +45,25 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
   } = props
 
   const [isCollapsed, setIsCollapsed] = useState(true)
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
+  const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const toggleReadMore = () => {
     setIsCollapsed(!isCollapsed)
   }
 
-
   const openModal = () => {
-    setModalIsOpen(true);
-  };
+    setModalIsOpen(true)
+  }
 
   const closeModal = () => {
-    setModalIsOpen(false);
-  };
+    setModalIsOpen(false)
+  }
   const wordsArray = subheader?.split(' ')
 
   const displayText = isCollapsed
     ? wordsArray?.slice(0, 30).join(' ')
     : subheader
   const progress = currentAmount / totalAmount
-
 
   const settings = {
     dots: true,
@@ -77,7 +74,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
     adaptiveHeight: true,
     arrows: true,
     swipeToSlide: true
-  };
+  }
   return (
     <div className='p-6 rounded-xl border-[#393e4614] border mt-8 h-fit bg-white'>
       <div className='flex items-center justify-between '>
@@ -96,8 +93,6 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
         </div>
         <Image src={Menu} alt='menu' />
       </div>
-
-
 
       <div className='mt-4 mb-6'>
         {!!slideImages && (
@@ -167,17 +162,31 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
             {moment(timePosted, 'YYYYMMDD').fromNow()}
           </h4>
         </div>
-        <div className='bg-[#F9F9F9] p-4'>
-          <p className='text-sm text-[#667085] mb-[10px]'>
-            {' '}
-            <span className='text-[#000]'>Goal</span> N{currentAmount}/N
-            {totalAmount}
-          </p>
-          <ProgressBar bgColor='#00B964' percent={progress * 100} />
-        </div>
+        {campaignType?.includes('fundraise') && (
+          <div className='bg-[#F9F9F9] p-4'>
+            <p className='text-sm text-[#667085] mb-[10px]'>
+              {' '}
+              <span className='text-[#000]'>Goal</span> N{currentAmount} / N
+              {totalAmount}
+            </p>
+            <ProgressBar bgColor='#00B964' percent={progress * 100} />
+          </div>
+        )}
       </div>
 
-      {!!routeTo &&<Button text={campaignType === "fundraiseAndVolunteer" ? "Donate and Volunteer" : campaignType === "fundraise" ? "Donate" : "Volunteer"} className="w-full mt-4 !justify-center" href={routeTo} />}
+      {!!routeTo && (
+        <Button
+          text={
+            campaignType === 'fundraiseAndVolunteer'
+              ? 'Donate and Volunteer'
+              : campaignType === 'fundraise'
+              ? 'Donate'
+              : 'Volunteer'
+          }
+          className='w-full mt-4 !justify-center'
+          href={routeTo}
+        />
+      )}
     </div>
   )
 }

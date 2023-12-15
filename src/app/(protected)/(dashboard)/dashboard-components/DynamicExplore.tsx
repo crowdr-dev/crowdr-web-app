@@ -36,10 +36,8 @@ type CampaignProps = {
 
 export default function DynamicExplore ({
   hasNextPage, 
-  isProtected, 
 }: {
   hasNextPage?: boolean
-  isProtected?: boolean
 }) {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [page, setPage] = useState(2)
@@ -97,7 +95,7 @@ export default function DynamicExplore ({
                 donateImage={
                   'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
                 }
-                routeTo={!isProtected  ? `/explore-campaigns/donate-or-volunteer/${campaign._id}`: `/explore/donate-or-volunteer/${campaign._id}`}
+                routeTo={`/explore/donate-or-volunteer/${campaign._id}`}
                 avatar={'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'}
                 key={index}
                 campaignType={campaign.campaignType}
