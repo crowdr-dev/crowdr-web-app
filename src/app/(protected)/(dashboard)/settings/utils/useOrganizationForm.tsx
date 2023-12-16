@@ -21,8 +21,9 @@ const config: UseFormConfig = {
 
 type UseFormConfig = Parameters<typeof useForm<FormFields>>[0];
 type FormFields = {
-  fullName: string;
-  organizationName: string
-  email: string;
+  cacNumber: number;
+  organizationLocation: string;
+  publicUrl: string;
+  profileImage: File;
 };
 type ProfileFormContext = UseFormReturn<FormFields>;
