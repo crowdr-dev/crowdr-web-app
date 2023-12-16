@@ -5,7 +5,7 @@ import { RequestOptions } from "https";
 export default async function makeRequest<T = any>(
   endpoint: string,
   options: {
-    method?: string;
+    method?: FetchMethod;
     payload?: Record<string, any> | null | any;
     headers?: Record<string, string | number> | null;
     cache?: RequestCache;
@@ -64,3 +64,5 @@ interface IResponse<T = any> {
   success?: boolean
   message?: string
 }
+
+type FetchMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS' | 'CONNECT' | 'TRACE';

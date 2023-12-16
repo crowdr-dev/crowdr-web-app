@@ -1,19 +1,59 @@
 import { useFormContext } from "react-hook-form"
 import { useUser } from "../../common/hooks/useUser"
-import TextInput from "../../dashboard-components/TextInput"
+import { useToast } from "@/app/common/hooks/useToast"
 import { Button } from "../../dashboard-components/Button"
+import TextInput from "../../dashboard-components/TextInput"
+import makeRequest from "@/utils/makeRequest"
 
 import ProfileFormContext, { FormFields } from "../utils/useProfileForm"
+import { useEffect } from "react"
 
 const ProfileForm = () => {
   const {
+    reset,
     handleSubmit,
     formState: { isSubmitting },
   } = useFormContext() as ProfileFormContext
   const user = useUser()
+  const toast = useToast()
+  const isIndividual = user?.userType === "individual"
+
+  useEffect(() => {
+    if (user) {
+      const { fullName, organizationName, email } = user
+      const fields = isIndividual ? { fullName } : { organizationName }
+      reset(fields)
+    }
+  }, [user])
 
   const submit = async (formFields: FormFields) => {
-    console.log(formFields)
+    if (user) {
+      const { userType } = user
+      const { fullName, organizationName } = formFields
+
+      const endpoint = "/api/v1/settings/edit-profile"
+      const headers = {
+        "x-auth-token": user.token,
+      }
+
+      const payload = isIndividual
+        ? { userType, fullName }
+        : { userType, organizationName }
+
+      try {
+        const { success, message } = await makeRequest(endpoint, {
+          headers,
+          method: "PATCH",
+          payload: JSON.stringify(payload),
+        })
+
+        if (success) {
+          toast({ title: "Well done!", body: message })
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 
   return (
@@ -21,7 +61,7 @@ const ProfileForm = () => {
       {user && (
         <form onSubmit={handleSubmit(submit)}>
           <div className="flex flex-col mb-[33px] md:mb-[38px]">
-            {user.userType === "individual" ? (
+            {isIndividual ? (
               <TextInput
                 name="fullName"
                 label="Full name"
