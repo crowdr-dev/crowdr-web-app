@@ -1,6 +1,5 @@
 import Select, { SingleValue } from "react-select"
-import { RegisterOptions, useFormContext } from "react-hook-form"
-import { FieldError, Controller, Control } from "react-hook-form"
+import { RegisterOptions, useFormContext, FieldError, Controller } from "react-hook-form"
 import { RFC } from "@/app/common/types"
 
 const SelectInput: RFC<SelectInputProps> = ({
@@ -17,11 +16,14 @@ const SelectInput: RFC<SelectInputProps> = ({
   controlled,
   isClearable,
   isSearchable,
+  styles,
 }) => {
   let control
-  if (!controlled) {
+  if (!controlled && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    ({ control } = useFormContext())
+    const { control: control_, formState: {errors}} = useFormContext()
+    control = control_
+    error = errors[name] as FieldError
   }
 
   const props = {
@@ -45,7 +47,7 @@ const SelectInput: RFC<SelectInputProps> = ({
   }
 
   return (
-    <span>
+    <span className={styles?.wrapper}>
       {label && (
         <label htmlFor={name} className="text-[14px] text-[#344054] mb-[6px]">
           {label}{" "}
@@ -104,6 +106,9 @@ type SelectInputProps = {
   controlled?: boolean
   isClearable?: boolean
   isSearchable?: boolean
+  styles?: {
+    wrapper?: string
+  }
 }
 
 interface Option {

@@ -20,11 +20,14 @@ const NumberInput: RFC<NumberInputProps> = ({
   onChange,
   rules,
   controlled,
+  styles,
+  disableGroupSeparators,
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {register} = useFormContext()
+    const {register, formState: {errors}} = useFormContext()
     config = register(name, rules)
+    error = errors[name] as FieldError
   }
 
   if (config) {
@@ -77,7 +80,7 @@ const NumberInput: RFC<NumberInputProps> = ({
   }
 
   return (
-    <span>
+    <span className={styles?.wrapper}>
       {label && (
         <label
           htmlFor={config?.name || name}
@@ -96,6 +99,7 @@ const NumberInput: RFC<NumberInputProps> = ({
         onKeyDown={handleInput}
         onPaste={handleInput}
         prefix={prefix}
+        disableGroupSeparators={disableGroupSeparators}
         value={value}
         style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
         className="text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px]"
@@ -121,6 +125,7 @@ export default NumberInput
 NumberInput.defaultProps = {
   prefix: "",
   suffix: "",
+  disableGroupSeparators: false,
 }
 
 type NumberInputProps = {
@@ -130,12 +135,17 @@ type NumberInputProps = {
   placeholder?: string
   prefix?: string
   suffix?: string
+  disableGroupSeparators?: boolean
   showOptionalLabel?: boolean
   name?: string
   value?: number
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   rules?: RegisterOptions
   controlled?: boolean
+  styles?: {
+    wrapper?: string
+    input?: string
+  }
 }
 
 type InputEvent =

@@ -32,8 +32,9 @@ const DateInput: RFC<DateInputProps> = ({
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {register, setValue, getValues, setError} = useFormContext()
+    const {register, formState: {errors}, setValue, getValues, setError} = useFormContext()
     config = register(name, rules)
+    error = errors[name] as FieldError
   }
 
   if (config) {

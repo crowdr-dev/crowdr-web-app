@@ -23,11 +23,13 @@ const FileInput: RFC<FileInputProps> = ({
   value,
   controlled,
   rules,
+  styles
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {register} = useFormContext()
+    const {register, formState: {errors}} = useFormContext()
     config = register(name, rules)
+    error = errors[name] as FieldError
   }
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -165,7 +167,7 @@ const FileInput: RFC<FileInputProps> = ({
   }
 
   return (
-    <span>
+    <span className={styles?.wrapper}>
       <label
         htmlFor={config?.name || name}
         onDragOver={handleDrag}
@@ -243,6 +245,9 @@ type FileInputProps = {
   value?: File[]
   rules?: RegisterOptions
   controlled?: boolean
+  styles?: {
+    wrapper?: string
+  }
 }
 
 function blobToFile(blob: Blob): FileList {

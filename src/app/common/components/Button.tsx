@@ -3,8 +3,8 @@ import { CgSpinner } from "react-icons/cg";
 
 interface Props {
   isValid?: boolean;
-  isSubmitting: boolean;
-  text: string;
+  isSubmitting?: boolean;
+  text?: string;
   type?: "submit" | "button" | "reset";
   className?: string;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
@@ -18,7 +18,7 @@ export default function Button({
   className,
   onClick,
 }: Props) {
-  const baseClassName = `flex items-center justify-center bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] mb-[21px]`;
+  const baseClassName = `flex items-center justify-center bg-[#068645] cursor-pointer text-white text-[14px] md:text-base font-[400] md:font-[500] leading-[24px] rounded-[10px] w-full py-[12px] px-[20px] `;
 
   // Combine the base class name with the additional class name if provided
   const combinedClassName = className
