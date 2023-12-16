@@ -3,7 +3,7 @@ import { useUser } from "../../common/hooks/useUser"
 import NumberInput from "../../dashboard-components/NumberInput"
 import SelectInput from "../../dashboard-components/SelectInput"
 import FileInput from "../../dashboard-components/FileInput"
-import FileInputContent from "../../dashboard-components/FileInputContent"
+import { FileInputContent } from "../../dashboard-components/FileInput"
 import { Button } from "../../dashboard-components/Button"
 
 import VerificationFormContext, {

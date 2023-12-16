@@ -1,6 +1,6 @@
-import { useMemo, useRef, useState } from "react"
+import { isValidElement, useEffect, useMemo, useRef, useState } from "react"
 import { Merge, useFormContext } from "react-hook-form"
-import Image from "next/image"
+import NextImage from "next/image"
 import imageCompression from "browser-image-compression"
 
 import { RFC } from "@/app/common/types"
@@ -11,7 +11,11 @@ import {
 } from "react-hook-form"
 import { HiMiniXCircle } from "react-icons/hi2"
 import UploadIcon from "../../../../../public/svg/upload-cloud.svg"
+import AttentionIcon from "../../../../../public/assets/warning-circle.png"
 import LoadingCircle from "../../../../../public/svg/loading-circle.svg"
+import { atom, useAtomValue, useSetAtom } from "jotai"
+
+const previewImageAtom = atom<string | null>(null)
 
 const FileInput: RFC<FileInputProps> = ({
   config,
@@ -30,6 +34,8 @@ const FileInput: RFC<FileInputProps> = ({
   children,
   styles,
 }) => {
+  const setPreviewImage = useSetAtom(previewImageAtom)
+
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const {
@@ -61,6 +67,20 @@ const FileInput: RFC<FileInputProps> = ({
   const imageUploaded = files?.length && !error
 
   const [dragActive, setDragActive] = useState(false)
+
+  // IF CHILDREN PROP IS FileInputContent COMPONENT AND IT HAS showPreview PROP,
+  // AUTOMATICALLY THE URL FOR THE SELECTED FILE FOR PREVIEW
+  if (isValidElement<FileInputContentProps>(children)) {
+    if (children.props.showPreview && files) {
+      const reader = new FileReader()
+
+      reader.onload = (e) => {
+        setPreviewImage(e.target?.result as string)
+      }
+
+      reader.readAsDataURL(files[0])
+    }
+  }
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault()
@@ -198,7 +218,7 @@ const FileInput: RFC<FileInputProps> = ({
                   : "bg-[#F2F4F7] border-[#F9FAFB]"
               } rounded-full border-[6px] p-[10px] mb-3`}
             >
-              <Image src={UploadIcon} alt="upload icon" width={24} />
+              <NextImage src={UploadIcon} alt="upload icon" width={24} />
             </div>
             <div className="text-center">
               <p className="text-primary text-sm mb-1">
@@ -297,4 +317,35 @@ type FileDetailProps = {
   name: string
   size: number
   removeFile: () => void
+}
+
+export const FileInputContent: RFC<FileInputContentProps> = ({
+  subtext,
+  showPreview,
+}) => {
+  const previewImage = useAtomValue(previewImageAtom)
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <NextImage
+        src={showPreview ? previewImage || AttentionIcon : AttentionIcon}
+        width={41.27}
+        height={40}
+        alt=""
+        className="object-cover rounded-full w-[41.27px] h-[40px]"
+      />
+
+      <div className="text-sm text-[#667085] text-center">
+        <p>
+          <span className="text-[#FF5200]">Click to upload</span> {subtext}
+        </p>
+        <p>SVG, PNG, JPG or GIF (max. 800x400px)</p>
+      </div>
+    </div>
+  )
+}
+
+type FileInputContentProps = {
+  subtext?: string
+  showPreview?: boolean
 }
