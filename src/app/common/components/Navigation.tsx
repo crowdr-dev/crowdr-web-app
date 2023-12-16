@@ -9,7 +9,7 @@ import { email } from "@/utils/openEmail";
 import "./component-styles/nav.css";
 
 type Props = {
-  openModal : () => void
+  openModal: () => void
 }
 
 export default function Navigation({openModal} : Props ) {
@@ -39,6 +39,11 @@ export default function Navigation({openModal} : Props ) {
         <li>
           <Link href="/about" className={isActive("/about")}>
             About us
+          </Link>
+        </li>
+        <li>
+          <Link href="/explore-campaigns" className={isActive("/explore-campaigns")}>
+            Explore
           </Link>
         </li>
         <li>
