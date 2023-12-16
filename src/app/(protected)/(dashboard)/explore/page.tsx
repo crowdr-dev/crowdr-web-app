@@ -3,7 +3,7 @@ import {
   DonatedAmount,
   getCampaigns
 } from '@/app/api/campaigns/getCampaigns'
-import Avatar from '../../../../../public/temp/avatar.png'
+import Avatar from '../../../../../public/assets/avatar.png'
 import Filter from '../dashboard-components/Filter'
 import ExploreCard from '../dashboard-components/ExploreCard'
 import DynamicExplore from '../dashboard-components/DynamicExplore'

@@ -11,7 +11,7 @@ import { useUser } from "../common/hooks/useUser"
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg"
 import BurgerIcon from "../../../../../public/svg/burger-icon.svg"
-import Avatar from "../../../../../public/temp/avatar.png"
+import Avatar from "../../../../../public/assets/avatar.png"
 
 const Header = () => {
   const user = useUser()

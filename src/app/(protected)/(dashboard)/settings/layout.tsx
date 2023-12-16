@@ -1,22 +1,30 @@
 "use client"
-import React from "react"
-import Tabs from "../dashboard-components/Tabs"
+import { useEffect, useState } from "react"
 import { useUser } from "../common/hooks/useUser"
+import Tabs from "../dashboard-components/Tabs"
 import { RFC } from "@/app/common/types"
 
 const SettingsLayout: RFC = ({ children }) => {
+  const [settingsPages, setSettingsPages] = useState<typeof pages>()
   const user = useUser()
 
-  if (user?.userType !== "non-profit") {
-    pages = pages.filter(page => page.title !== 'Organization')
-  }
+  useEffect(() => {
+    if (user && user.userType === "non-profit") {
+      setSettingsPages(pages)
+    } else {
+      const pagesToDisplay = pages.filter(
+        (page) => page.title !== "Organization"
+      )
+      setSettingsPages(pagesToDisplay)
+    }
+  }, [user])
 
   return (
     <div>
       <h2 className="text-2xl font-bold">Settings</h2>
-      {user && (
+      {settingsPages && (
         <Tabs styles={{ header: "-mx-5 md:mx-0" }}>
-          {pages.map((page, index) => (
+          {settingsPages.map((page, index) => (
             <Tabs.Item key={index} heading={page.title} href={page.route}>
               {children}
             </Tabs.Item>
