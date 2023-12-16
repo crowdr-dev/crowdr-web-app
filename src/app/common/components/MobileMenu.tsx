@@ -45,6 +45,11 @@ export default function MobileMenu({openModal} : Props) {
             </Link>
           </li>
           <li>
+            <Link href="/explore-campaigns" className={isActive("/explore-campaigns")}>
+              Explore campaigns
+            </Link>
+          </li>
+          <li>
             <a href={`mailto:${email}`} target="_blank">
               Contact Us
             </a>

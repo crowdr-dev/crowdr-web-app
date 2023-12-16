@@ -1,9 +1,12 @@
 'use client'
 
 import { Campaign, getCampaigns } from '@/app/api/campaigns/getCampaigns'
-import Avatar from '../../../../../public/assets/avatar.png'
-import ExploreCard from '../dashboard-components/ExploreCard'
+import ExploreCard from '../../(protected)/(dashboard)/dashboard-components/ExploreCard'
 import { useState, useEffect } from 'react'
+import Navigation from '@/app/common/components/Navigation';
+import Footer from '@/app/common/components/Footer'
+import Modal from '@/app/common/components/Modal';
+import WaitlistForm from '@/app/home/home-components/WaitlistForm';
 
 type FundraisingGoalProps = {
   amount: number
@@ -17,35 +20,28 @@ type CampaignImage = {
   id: string
 }
 
-type CampaignProps = {
-  _id: string
-  userId: string
-  category: string
-  title: string
-  story: string
-  campaignType: string
-  campaignStatus: string
-  campaignCoverImage: CampaignImage
-  campaignAdditionalImagesUrl: string[]
-  campaignViews: number
-  fundraise: {
-    fundingGoalDetails: FundraisingGoalProps[]
-    startOfFundraise: string
-    endOfFundraise: string
-  }
-}
 
-export default function DynamicExplore ({
-  hasNextPage, 
-}: {
-  hasNextPage?: boolean
-}) {
+
+export default function DynamicExplore () {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
-  const [page, setPage] = useState(2)
+  const [page, setPage] = useState(1)
+
+  const [hasNextPage, setHasNextPage] = useState<any>()
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
 
   const loadCampaigns = async () => {
     try {
       const newCampaigns = await getCampaigns(page)
+      setHasNextPage(newCampaigns?.pagination.hasNextPage)
 
       const campaignsArray = newCampaigns?.campaigns as Campaign[]
 
@@ -70,8 +66,9 @@ export default function DynamicExplore ({
     loadCampaigns()
   }
   return (
-    <>
-      <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 '>
+    <div>
+     <Navigation openModal={openModal}/>
+      <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 p-8 bg-[#E7F0EE]'>
         {Array.isArray(campaigns) &&
           campaigns?.map((campaign: Campaign, index: number) => {
             const urlsOnly = campaign.campaignAdditionalImages.map(
@@ -96,21 +93,25 @@ export default function DynamicExplore ({
                 donateImage={
                   'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
                 }
-                routeTo={`/explore/donate-or-volunteer/${campaign._id}`}
+                routeTo={`/explore-campaigns/donate-or-volunteer/${campaign._id}`}
                 avatar={'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'}
                 key={index}
                 campaignType={campaign.campaignType}
               />
             )
           })}
-      </div>
-      {hasNextPage && (
+          {hasNextPage && (
         <div className='flex justify-end items-center mt-4'>
           <span onClick={handleSeeMore} className={'cursor-pointer'}>
             See more
           </span>
         </div>
       )}
-    </>
+      </div>
+       <Footer />
+       <Modal isOpen={modalIsOpen} onClose={closeModal}>
+        <WaitlistForm />
+      </Modal>
+    </div>
   )
 }
