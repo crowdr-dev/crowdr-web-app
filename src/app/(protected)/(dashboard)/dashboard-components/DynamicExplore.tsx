@@ -1,6 +1,7 @@
 'use client'
 
 import { Campaign, getCampaigns } from '@/app/api/campaigns/getCampaigns'
+import Avatar from '../../../../../public/assets/avatar.png'
 import ExploreCard from '../dashboard-components/ExploreCard'
 import { useState, useEffect } from 'react'
 

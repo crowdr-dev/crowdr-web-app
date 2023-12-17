@@ -53,6 +53,7 @@ type SidebarModalProps = {
   ariaLabel?: string
 }
 
+// BUG: BACKGROUND CONTENT IS SCROLLED UP WHEN SIDEBAR MODAL IS ACTIVATED
 const SidebarModalContent: RFC = ({ children }) => {
   const modalContentRef = useRef<HTMLDivElement>(null)
   const boxShadow =
@@ -62,7 +63,7 @@ const SidebarModalContent: RFC = ({ children }) => {
     <div
       ref={modalContentRef}
       style={{ boxShadow }}
-      className="w-min bg-white h-full animate-[slide-in-right_0.1s_ease-in-out]"
+      className="w-min bg-white h-full animate-[slide-in-right_0.1s]"
     >
       {children}
     </div>

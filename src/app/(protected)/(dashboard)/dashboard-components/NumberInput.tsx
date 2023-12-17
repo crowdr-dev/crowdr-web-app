@@ -55,7 +55,7 @@ const NumberInput: RFC<NumberInputProps> = ({
     } else if (isKeyboardEvent(e)) {
       if (e.ctrlKey) {
       } else if (e.key == ".") {
-        if (currentInput.includes(".")) e.preventDefault()
+        if (currentInput.includes(".")) e.preventDefault() // BUG: CAN'T INPUT DECIMALS
         else if (currentInput.length === 0) e.preventDefault()
       } else if (e.key.match(/^[^0-9.]$/i)) {
         e.preventDefault()
