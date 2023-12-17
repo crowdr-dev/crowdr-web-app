@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://crowdr.onrender.com";
+const API_BASE_URL = "https://test-api.oncrowdr.com";
 
 // if you should ever change the jwt expiration time in the backedn also remember to change this 
 // this value should always be sligtly less than the jwt expiration time on the server
