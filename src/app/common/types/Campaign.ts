@@ -1,13 +1,15 @@
 import { CampaignCategory } from "@/utils/campaignCategory"
 import { IPagination } from "."
 
-export interface ICampaign {
+export type ICampaign = IFundraiseCampaign | IVolunteerCampaign
+
+export interface IFundraiseCampaign {
   _id: string
   userId: string
   category: CampaignCategory
   title: string
   story: string
-  campaignType: CampaignType
+  campaignType: 'fundraise'
   campaignStatus: CampaignStatus
   campaignCoverImage: CampaignCoverImage
   campaignAdditionalImages: any[]
@@ -17,6 +19,59 @@ export interface ICampaign {
   allVolunteers: number
   __v: number
 }
+
+export interface IVolunteerCampaign {
+  _id:                         string;
+  userId:                      string;
+  category:                    string;
+  title:                       string;
+  story:                       string;
+  campaignType:                'volunteer';
+  campaignStatus:              CampaignStatus;
+  campaignCoverImage:          CampaignCoverImage;
+  campaignAdditionalImages:    any[];
+  campaignViews:               number;
+  volunteer:                   Volunteer;
+  campaignVolunteers:          any[];
+  campaignDonors:              any[];
+  user:                        User;
+  photo:                       CampaignCoverImage;
+  totalNoOfCampaignDonors:     number;
+  totalNoOfCampaignVolunteers: number;
+  totalAmountDonated:          TotalAmountDonated[];
+}
+
+export interface CampaignCoverImage {
+  _id:       string;
+  url:       string;
+  public_id: string;
+  tags?:     string[];
+}
+
+export interface TotalAmountDonated {
+  currency: string;
+  amount:   number;
+}
+
+export interface User {
+  _id:              string;
+  organizationName: string;
+  organizationId:   string;
+  userType:         string;
+  interests:        string[];
+}
+
+export interface Volunteer {
+  skillsNeeded:         string[];
+  otherSkillsNeeded:    string;
+  ageRange:             string;
+  genderPreference:     string;
+  commitementStartDate: string;
+  commitementEndDate:   string;
+  requiredCommitment:   string;
+  additonalNotes:       string;
+}
+
 
 export interface CampaignCoverImage {
   _id: string

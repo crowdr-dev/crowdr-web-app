@@ -201,7 +201,7 @@ const Campaigns = () => {
         {initialised
           ? campaigns.map(
               (campaign) =>
-                campaign.campaignType !== "volunteer" && ( //TODO: REMOVE CHECK WHEN DESIGN FOR VOLUNTEER CAMPAIGNS IS READY
+                ( //TODO: REMOVE CHECK WHEN DESIGN FOR VOLUNTEER CAMPAIGNS IS READY
                   <CampaignCard key={campaign._id} campaign={campaign} />
                 )
             )
