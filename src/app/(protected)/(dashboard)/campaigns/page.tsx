@@ -1,106 +1,47 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { useQuery } from "react-query"
 import CampaignCard from "../dashboard-components/CampaignCard"
 import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
 import TextInput from "../dashboard-components/TextInput"
-import DateRange, { IDateRange } from "../dashboard-components/DateRange"
+import DateRange from "../dashboard-components/DateRange"
 import StatCard from "../dashboard-components/StatCard"
 import Pagination from "../dashboard-components/Pagination"
 import StatCardSkeleton from "../dashboard-components/skeletons/StatCardSkeleton"
 import CampaignCardSkeleton from "../dashboard-components/skeletons/CampaignCardSkeleton"
 import { useUser } from "../common/hooks/useUser"
-import makeRequest from "@/utils/makeRequest"
-import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import { formatAmount } from "../common/utils/currency"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import makeRequest from "@/utils/makeRequest"
+import { time } from "../utils/time"
 
-import {
-  ICampaign,
-  CampaignResponse,
-  ICampaignStats,
-} from "@/app/common/types/Campaign"
-import { IPagination } from "@/app/common/types"
+import { Doubt, QF } from "@/app/common/types"
+import { CampaignResponse, ICampaignStats } from "@/app/common/types/Campaign"
+import { IDateRange } from "../dashboard-components/DateRange"
+import { IUser } from "@/app/api/user/getUser"
+
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
 
 const Campaigns = () => {
-  const [stats, setStats] = useState<ICampaignStats>()
   const [dateRange, setDateRange] = useState<IDateRange>()
-  const [campaigns, setCampaigns] = useState<ICampaign[]>([])
-  const [pagination, setPagination] = useState<IPagination>()
-  const [initialised, setInitialised] = useState(false)
   const [page, setPage] = useState(1)
-  const [input, setInput] = useState<any>()
+  const [input, setInput] = useState('')
   const user = useUser()
 
-  useEffect(() => {
-    if (user) {
-      const fetchStats = async () => {
-        const query = new URLSearchParams()
-        if (dateRange) {
-          query.set("startDate", dateRange[0])
-          query.set("endDate", dateRange[1])
-        }
 
-        const endpoint = `/api/v1/my-campaigns/summary?${query}`
+  const { data: stats } = useQuery(["campaign-summary", user, dateRange], fetchStats, {
+    enabled: Boolean(user),
+    // staleTime: time.mins(2),
+  })
 
-        try {
-          const headers = {
-            "Content-Type": "multipart/form-data",
-            "x-auth-token": user?.token!,
-          }
-          const { data } = await makeRequest<ICampaignStats>(endpoint, {
-            headers,
-            method: "GET",
-          })
-
-          setStats(data)
-        } catch (error) {
-          const message = extractErrorMessage(error)
-          console.log(message)
-        }
-      }
-
-      fetchStats()
-    }
-  }, [user, dateRange])
-
-  useEffect(() => {
-    if (user) {
-      const fetchCampaigns = async () => {
-        const query = new URLSearchParams({ page: `${page}`, perPage: "4" })
-        const endpoint = `/api/v1/my-campaigns?${query}`
-
-        try {
-          const headers = {
-            "Content-Type": "multipart/form-data",
-            "x-auth-token": user?.token!,
-          }
-          const { data } = await makeRequest<CampaignResponse>(endpoint, {
-            headers,
-            method: "GET",
-          })
-
-          setCampaigns(data.campaigns)
-          setPagination(data.pagination)
-
-          if (!initialised) {
-            setInitialised(true)
-          }
-        } catch (error) {
-          const message = extractErrorMessage(error)
-          console.log(message)
-          // toast({ title: "Oops!", body: message, type: "error" })
-        }
-      }
-
-      fetchCampaigns()
-    }
-  }, [user, page])
-
-  const handleRangeSelect = (dateRange: IDateRange) => {
-    setDateRange(dateRange)
-  }
+  const {isPreviousData, data} = useQuery(['my-campaigns', user, page], fetchCampaigns, {
+    enabled: Boolean(user),
+    // keepPreviousData: true,
+    // staleTime: time.mins(10),
+    // refetchOnWindowFocus: false
+  })
 
   return (
     <div>
@@ -116,7 +57,7 @@ const Campaigns = () => {
 
       {/* action buttons */}
       <div className="flex justify-between items-center mb-5 md:mb-10">
-        <DateRange onChange={handleRangeSelect} />
+        <DateRange onChange={setDateRange} />
 
         <div className="hidden md:flex">
           <WhiteButton
@@ -198,24 +139,21 @@ const Campaigns = () => {
 
       {/* campaigns */}
       <div className="grid md:grid-cols-[repeat(2,_minmax(0,_550px))] 2xl:grid-cols-3 gap-x-[10px] gap-y-3 md:gap-y-[40px] mb-[30px] md:mb-10">
-        {initialised
-          ? campaigns.map(
-              (campaign) =>
-                ( //TODO: REMOVE CHECK WHEN DESIGN FOR VOLUNTEER CAMPAIGNS IS READY
-                  <CampaignCard key={campaign._id} campaign={campaign} />
-                )
-            )
+        {data
+          ? data.campaigns.map((campaign) => (
+              <CampaignCard key={campaign._id} campaign={campaign} />
+            ))
           : Array.from({ length: 4 }).map((_, index) => (
               <CampaignCardSkeleton key={index} />
             ))}
       </div>
 
       {/* pagination */}
-      {pagination && campaigns.length !== 0 && (
+      {data && data.campaigns.length !== 0 && (
         <Pagination
-          currentPage={pagination.currentPage}
-          perPage={pagination.perPage}
-          total={pagination.total}
+          currentPage={data.pagination.currentPage}
+          perPage={data.pagination.perPage}
+          total={data.pagination.total}
           onPageChange={setPage}
           className="px-4 py-3 md:p-0"
         />
@@ -225,3 +163,61 @@ const Campaigns = () => {
 }
 
 export default Campaigns
+
+
+export const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<IUser>, IDateRange?]> = async ({
+  queryKey,
+}) => {
+  const [_, user, dateRange] = queryKey
+
+  if (user) {
+    const query = new URLSearchParams()
+    if (dateRange) {
+      query.set("startDate", dateRange[0])
+      query.set("endDate", dateRange[1])
+    }
+
+    const endpoint = `/api/v1/my-campaigns/summary?${query}`
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      "x-auth-token": user.token,
+    }
+
+    try {
+      const { data } = await makeRequest<ICampaignStats>(endpoint, {
+        headers,
+        method: "GET",
+      })
+
+      return data
+    } catch (error) {
+      const message = extractErrorMessage(error)
+      throw new Error(message)
+    }
+  }
+}
+
+export const fetchCampaigns: QF<Doubt<CampaignResponse>, [Doubt<IUser>, number]> = async ({queryKey}) => {
+  const [_, user, page] = queryKey
+  
+  if (user) {
+    const query = new URLSearchParams({ page: `${page}`, perPage: "4" })
+    const endpoint = `/api/v1/my-campaigns?${query}`
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      "x-auth-token": user.token,
+    }
+  
+    try {
+      const { data } = await makeRequest<CampaignResponse>(endpoint, {
+        headers,
+        method: "GET",
+      })
+  
+      return data
+    } catch (error) {
+      const message = extractErrorMessage(error)
+      throw new Error(message)
+    }
+  }
+}

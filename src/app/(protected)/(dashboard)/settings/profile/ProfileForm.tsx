@@ -21,7 +21,9 @@ const ProfileForm = () => {
   useEffect(() => {
     if (user) {
       const { fullName, organizationName, email } = user
-      const fields = isIndividual ? { fullName } : { organizationName }
+      const fields = isIndividual
+        ? { fullName, email }
+        : { organizationName, email }
       reset(fields)
     }
   }, [user])
