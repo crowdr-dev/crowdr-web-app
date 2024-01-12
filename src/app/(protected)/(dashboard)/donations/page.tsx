@@ -55,10 +55,6 @@ const Donations = () => {
     }
   )
 
-  const handleRangeSelect = (dateRange: IDateRange) => {
-    setDateRange(dateRange)
-  }
-
   return (
     <div>
       {/* page title x subtitle */}
@@ -71,7 +67,7 @@ const Donations = () => {
 
       {/* action buttons */}
       <div className="flex justify-between items-center mb-5 md:mb-10 py-[1px]">
-        <DateRange onChange={handleRangeSelect} />
+        <DateRange onChange={setDateRange} />
       </div>
 
       {/* stats */}
