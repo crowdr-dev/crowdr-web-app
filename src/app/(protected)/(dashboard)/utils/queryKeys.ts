@@ -1,6 +1,6 @@
 export const keys = {
   myCampaigns: {
-    summary: 'campaign-summary',
+    stats: 'my-campaign-stats',
     campaigns: 'my-campaigns'
   },
   campaignPage: {
@@ -8,4 +8,9 @@ export const keys = {
     donors: 'campaign-donor-details',
     volunteers: 'campaign-volunteer-details'
   },
-}
+  myDonations: {
+    stats: 'my-donation-stats',
+    donations: 'my-donations',
+    volunteering: 'my-volunteering',
+  }
+} as const

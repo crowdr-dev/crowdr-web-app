@@ -32,7 +32,7 @@ const Campaigns = () => {
   const user = useUser()
 
 
-  const { data: stats } = useQuery([keys.myCampaigns.summary, user, dateRange], fetchStats, {
+  const { data: stats } = useQuery([keys.myCampaigns.stats, user, dateRange], fetchStats, {
     enabled: Boolean(user),
     // staleTime: time.mins(2),
   })
@@ -164,7 +164,6 @@ const Campaigns = () => {
 }
 
 export default Campaigns
-
 
 const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<IUser>, IDateRange?]> = async ({
   queryKey,

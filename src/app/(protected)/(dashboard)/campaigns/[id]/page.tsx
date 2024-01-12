@@ -30,9 +30,9 @@ import { formatAmount } from "../../common/utils/currency"
 import { IUser } from "@/app/api/user/getUser"
 
 const Campaign = ({ params }: Route) => {
-  const user = useUser()
   const [donorsPage, setDonorsPage] = useState(1)
   const [volunteersPage, setVolunteersPage] = useState(1)
+  const user = useUser()
 
   const { data: campaign } = useQuery(
     [keys.campaignPage.details, user, params.id],
@@ -85,13 +85,17 @@ const Campaign = ({ params }: Route) => {
             <div className="md:hidden mb-[5px]">{pill(campaign.category)}</div>
 
             <div className="px-[10px] py-3 md:px-0 md:py-0">
-              <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px] md:mb-3">
-                <p className="text-sm text-[#667085] mb-1">
-                  <span className="text-[#292A2E]">Goal</span>{" "}
-                  {campaign.fundingGoal}/{campaign.fundsGotten}
-                </p>
-                <ProgressBar percent={campaign.percentage!} showValue />
-              </div>
+              {campaign.percentage ? (
+                <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px] md:mb-3">
+                  <p className="text-sm text-[#667085] mb-1">
+                    <span className="text-[#292A2E]">Goal</span>{" "}
+                    {campaign.fundingGoal}/{campaign.fundsGotten}
+                  </p>
+                  <ProgressBar percent={campaign.percentage} showValue />
+                </div>
+              ) : (
+                <div className="h-20 m-3" />
+              )}
 
               <div className="flex flex-col md:flex-row justify-between md:items-end">
                 <div className="flex flex-col gap-2.5 text-[13px] text-[#5C636E] px-[7px] mb-[13px] md:px-0 md:mb-0">
@@ -298,8 +302,6 @@ const fetchDonors: QF<Doubt<IDonors>, [Doubt<IUser>, string, number]> = async ({
         method: "GET",
       })
 
-      console.log({data})
-
       return {
         donors: mapDonationsResponseToView(data.donations),
         pagination: data.pagination,
@@ -311,10 +313,7 @@ const fetchDonors: QF<Doubt<IDonors>, [Doubt<IUser>, string, number]> = async ({
   }
 }
 
-const fetchVolunteers: QF<
-  Doubt<IVolunteers>,
-  [Doubt<IUser>, string, number]
-> = async ({ queryKey }) => {
+const fetchVolunteers: QF<Doubt<IVolunteers>, [Doubt<IUser>, string, number]> = async ({ queryKey }) => {
   const [_, user, campaignId, volunteersPage] = queryKey
 
   if (user) {
@@ -334,8 +333,6 @@ const fetchVolunteers: QF<
         headers,
         method: "GET",
       })
-
-      console.log({data})
 
       return {
         volunteers: mapVolunteeringResponseToView(data.volunteers),
