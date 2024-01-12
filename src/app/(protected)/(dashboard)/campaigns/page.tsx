@@ -13,6 +13,7 @@ import { useUser } from "../common/hooks/useUser"
 import { formatAmount } from "../common/utils/currency"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import makeRequest from "@/utils/makeRequest"
+import { keys } from "../utils/queryKeys"
 import { time } from "../utils/time"
 
 import { Doubt, QF } from "@/app/common/types"
@@ -31,12 +32,12 @@ const Campaigns = () => {
   const user = useUser()
 
 
-  const { data: stats } = useQuery(["campaign-summary", user, dateRange], fetchStats, {
+  const { data: stats } = useQuery([keys.myCampaigns.summary, user, dateRange], fetchStats, {
     enabled: Boolean(user),
     // staleTime: time.mins(2),
   })
 
-  const {isPreviousData, data} = useQuery(['my-campaigns', user, page], fetchCampaigns, {
+  const {isPreviousData, data} = useQuery([keys.myCampaigns.campaigns, user, page], fetchCampaigns, {
     enabled: Boolean(user),
     // keepPreviousData: true,
     // staleTime: time.mins(10),
@@ -165,7 +166,7 @@ const Campaigns = () => {
 export default Campaigns
 
 
-export const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<IUser>, IDateRange?]> = async ({
+const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<IUser>, IDateRange?]> = async ({
   queryKey,
 }) => {
   const [_, user, dateRange] = queryKey
@@ -197,7 +198,7 @@ export const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<IUser>, IDateRange?]> 
   }
 }
 
-export const fetchCampaigns: QF<Doubt<CampaignResponse>, [Doubt<IUser>, number]> = async ({queryKey}) => {
+const fetchCampaigns: QF<Doubt<CampaignResponse>, [Doubt<IUser>, number]> = async ({queryKey}) => {
   const [_, user, page] = queryKey
   
   if (user) {
