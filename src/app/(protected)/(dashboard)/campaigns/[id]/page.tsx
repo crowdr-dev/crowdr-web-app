@@ -22,7 +22,7 @@ import { Doubt, QF, Route } from "@/app/common/types"
 import {
   ICampaign,
   IDonationResponse,
-  IVolunteeringResponse,
+  IVolunteerResponse,
 } from "@/app/common/types/Campaign"
 
 import FileDownloadIcon from "../../../../../../public/svg/file-download.svg"
@@ -35,26 +35,26 @@ const Campaign = ({ params }: Route) => {
   const user = useUser()
 
   const { data: campaign } = useQuery(
-    [keys.campaignPage.details, user, params.id],
+    [keys.campaignPage.details, user?.token, params.id],
     fetchCampaign,
     {
-      enabled: Boolean(user),
+      enabled: Boolean(user?.token),
     }
   )
 
-  const { data: donation } = useQuery(
-    [keys.campaignPage.donors, user, params.id, donorsPage],
+  const { data: donors } = useQuery(
+    [keys.campaignPage.donors, user?.token, params.id, donorsPage],
     fetchDonors,
     {
-      enabled: Boolean(user),
+      enabled: Boolean(user?.token),
     }
   )
 
-  const { data: volunteering } = useQuery(
-    [keys.campaignPage.volunteers, user, params.id, volunteersPage],
+  const { data: volunteers } = useQuery(
+    [keys.campaignPage.volunteers, user?.token, params.id, volunteersPage],
     fetchVolunteers,
     {
-      enabled: Boolean(user),
+      enabled: Boolean(user?.token),
     }
   )
 
@@ -147,7 +147,7 @@ const Campaign = ({ params }: Route) => {
         <Tabs>
           {/fundraise/i.test(campaign.campaignType) && (
             <Tabs.Item heading="Donors">
-              {donation && (
+              {donors && (
                 <>
                   <Table className="hidden md:block mb-9">
                     <Table.Head>
@@ -157,7 +157,7 @@ const Campaign = ({ params }: Route) => {
                     </Table.Head>
 
                     <Table.Body>
-                      {donation.donors.map((donation, index) => (
+                      {donors.donors.map((donation, index) => (
                         <Table.Row key={index}>
                           <Table.Cell>{donation.title}</Table.Cell>
                           <Table.Cell>{donation.detail}</Table.Cell>
@@ -168,18 +168,18 @@ const Campaign = ({ params }: Route) => {
                   </Table>
 
                   <div className="flex flex-col md:hidden">
-                    {donation.donors.map((donation, index) => (
+                    {donors.donors.map((donation, index) => (
                       <Detail key={index} {...donation} />
                     ))}
                   </div>
                 </>
               )}
 
-              {donation && donation.donors.length !== 0 && (
+              {donors && donors.donors.length !== 0 && (
                 <Pagination
-                  currentPage={donation.pagination.currentPage}
-                  perPage={donation.pagination.perPage}
-                  total={donation.pagination.total}
+                  currentPage={donors.pagination.currentPage}
+                  perPage={donors.pagination.perPage}
+                  total={donors.pagination.total}
                   onPageChange={setDonorsPage}
                   className="px-[18px] py-4"
                 />
@@ -189,7 +189,7 @@ const Campaign = ({ params }: Route) => {
 
           {/volunteer/i.test(campaign.campaignType) && (
             <Tabs.Item heading="Volunteers">
-              {volunteering && (
+              {volunteers && (
                 <>
                   <Table className="hidden md:block mb-9">
                     <Table.Head>
@@ -199,7 +199,7 @@ const Campaign = ({ params }: Route) => {
                     </Table.Head>
 
                     <Table.Body>
-                      {volunteering.volunteers.map((volunteer, index) => (
+                      {volunteers.volunteers.map((volunteer, index) => (
                         <Table.Row key={index}>
                           <Table.Cell>{volunteer.title}</Table.Cell>
                           <Table.Cell>{volunteer.detail}</Table.Cell>
@@ -210,18 +210,18 @@ const Campaign = ({ params }: Route) => {
                   </Table>
 
                   <div className="flex flex-col md:hidden">
-                    {volunteering.volunteers.map((volunteer, index) => (
+                    {volunteers.volunteers.map((volunteer, index) => (
                       <Detail key={index} {...volunteer} />
                     ))}
                   </div>
                 </>
               )}
 
-              {volunteering && volunteering.volunteers.length !== 0 && (
+              {volunteers && volunteers.volunteers.length !== 0 && (
                 <Pagination
-                  currentPage={volunteering.pagination.currentPage}
-                  perPage={volunteering.pagination.perPage}
-                  total={volunteering.pagination.total}
+                  currentPage={volunteers.pagination.currentPage}
+                  perPage={volunteers.pagination.perPage}
+                  total={volunteers.pagination.total}
                   onPageChange={setVolunteersPage}
                   className="px-[18px] py-4"
                 />
@@ -245,21 +245,21 @@ type IDonors = {
 
 type IVolunteers = {
   volunteers: ReturnType<typeof mapVolunteeringResponseToView>
-  pagination: IVolunteeringResponse["pagination"]
+  pagination: IVolunteerResponse["pagination"]
 }
 
 const ITEMS_PER_PAGE = "4"
 const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"
 
-const fetchCampaign: QF<Doubt<ICampaignView>, [Doubt<IUser>, string]> = async ({
+const fetchCampaign: QF<Doubt<ICampaignView>, [Doubt<string>, string]> = async ({
   queryKey,
 }) => {
-  const [_, user, campaignId] = queryKey
+  const [_, token, campaignId] = queryKey
 
-  if (user) {
+  if (token) {
     const headers = {
       "Content-Type": "multipart/form-data",
-      "x-auth-token": user.token,
+      "x-auth-token": token,
     }
 
     const endpoint = `/api/v1/my-campaigns/${campaignId}`
@@ -279,12 +279,12 @@ const fetchCampaign: QF<Doubt<ICampaignView>, [Doubt<IUser>, string]> = async ({
   }
 }
 
-const fetchDonors: QF<Doubt<IDonors>, [Doubt<IUser>, string, number]> = async ({
+const fetchDonors: QF<Doubt<IDonors>, [Doubt<string>, string, number]> = async ({
   queryKey,
 }) => {
-  const [_, user, campaignId, donorsPage] = queryKey
+  const [_, token, campaignId, donorsPage] = queryKey
 
-  if (user) {
+  if (token) {
     const query = new URLSearchParams({
       page: `${donorsPage}`,
       perPage: ITEMS_PER_PAGE,
@@ -293,7 +293,7 @@ const fetchDonors: QF<Doubt<IDonors>, [Doubt<IUser>, string, number]> = async ({
 
     const headers = {
       "Content-Type": "multipart/form-data",
-      "x-auth-token": user.token,
+      "x-auth-token": token,
     }
 
     try {
@@ -313,10 +313,10 @@ const fetchDonors: QF<Doubt<IDonors>, [Doubt<IUser>, string, number]> = async ({
   }
 }
 
-const fetchVolunteers: QF<Doubt<IVolunteers>, [Doubt<IUser>, string, number]> = async ({ queryKey }) => {
-  const [_, user, campaignId, volunteersPage] = queryKey
+const fetchVolunteers: QF<Doubt<IVolunteers>, [Doubt<string>, string, number]> = async ({ queryKey }) => {
+  const [_, token, campaignId, volunteersPage] = queryKey
 
-  if (user) {
+  if (token) {
     const query = new URLSearchParams({
       page: `${volunteersPage}`,
       perPage: ITEMS_PER_PAGE,
@@ -325,11 +325,11 @@ const fetchVolunteers: QF<Doubt<IVolunteers>, [Doubt<IUser>, string, number]> = 
 
     const headers = {
       "Content-Type": "multipart/form-data",
-      "x-auth-token": user.token,
+      "x-auth-token": token,
     }
 
     try {
-      const { data } = await makeRequest<IVolunteeringResponse>(endpoint, {
+      const { data } = await makeRequest<IVolunteerResponse>(endpoint, {
         headers,
         method: "GET",
       })
@@ -354,7 +354,7 @@ function mapDonationsResponseToView(donations: IDonationResponse["donations"]) {
 }
 
 function mapVolunteeringResponseToView(
-  volunteering: IVolunteeringResponse["volunteers"]
+  volunteering: IVolunteerResponse["volunteers"]
 ) {
   return volunteering.map((volunteer) => ({
     title: volunteer.fullName,

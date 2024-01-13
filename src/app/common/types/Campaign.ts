@@ -176,3 +176,23 @@ export interface IVolunteer {
   createdAt: string
   updatedAt: string
 }
+
+export interface IVolunteerResponse {
+  volunteers: IVolunteer[]
+  pagination: IPagination
+}
+
+// export interface IVolunteer {
+//   _id: string
+//   campaignId: string
+//   userId: string
+//   fullName: string
+//   email: string
+//   gender: string
+//   ageRange: string
+//   address: string
+//   about: string
+//   phoneNumber: string
+//   createdAt: string
+//   updatedAt: string
+// }

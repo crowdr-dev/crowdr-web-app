@@ -32,13 +32,13 @@ const Campaigns = () => {
   const user = useUser()
 
 
-  const { data: stats } = useQuery([keys.myCampaigns.stats, user, dateRange], fetchStats, {
-    enabled: Boolean(user),
+  const { data: stats } = useQuery([keys.myCampaigns.stats, user?.token, dateRange], fetchStats, {
+    enabled: Boolean(user?.token),
     // staleTime: time.mins(2),
   })
 
-  const {isPreviousData, data} = useQuery([keys.myCampaigns.campaigns, user, page], fetchCampaigns, {
-    enabled: Boolean(user),
+  const {isPreviousData, data} = useQuery([keys.myCampaigns.campaigns, user?.token, page], fetchCampaigns, {
+    enabled: Boolean(user?.token),
     // keepPreviousData: true,
     // staleTime: time.mins(10),
     // refetchOnWindowFocus: false
@@ -165,12 +165,12 @@ const Campaigns = () => {
 
 export default Campaigns
 
-const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<IUser>, IDateRange?]> = async ({
+const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<string>, IDateRange?]> = async ({
   queryKey,
 }) => {
-  const [_, user, dateRange] = queryKey
+  const [_, token, dateRange] = queryKey
 
-  if (user) {
+  if (token) {
     const query = new URLSearchParams()
     if (dateRange) {
       query.set("startDate", dateRange[0])
@@ -180,7 +180,7 @@ const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<IUser>, IDateRange?]> = async
     const endpoint = `/api/v1/my-campaigns/summary?${query}`
     const headers = {
       "Content-Type": "multipart/form-data",
-      "x-auth-token": user.token,
+      "x-auth-token": token,
     }
 
     try {
@@ -197,15 +197,15 @@ const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<IUser>, IDateRange?]> = async
   }
 }
 
-const fetchCampaigns: QF<Doubt<CampaignResponse>, [Doubt<IUser>, number]> = async ({queryKey}) => {
-  const [_, user, page] = queryKey
+const fetchCampaigns: QF<Doubt<CampaignResponse>, [Doubt<string>, number]> = async ({queryKey}) => {
+  const [_, token, page] = queryKey
   
-  if (user) {
+  if (token) {
     const query = new URLSearchParams({ page: `${page}`, perPage: "4" })
     const endpoint = `/api/v1/my-campaigns?${query}`
     const headers = {
       "Content-Type": "multipart/form-data",
-      "x-auth-token": user.token,
+      "x-auth-token": token,
     }
   
     try {

@@ -31,27 +31,27 @@ const Donations = () => {
   const user = useUser()
 
   const { data: stats } = useQuery(
-    [keys.myDonations.stats, user, dateRange],
+    [keys.myDonations.stats, user?.token, dateRange],
     fetchStats,
     {
-      enabled: Boolean(user),
+      enabled: Boolean(user?.token),
       // staleTime: time.mins(2),
     }
   )
 
   const { data: donations } = useQuery(
-    [keys.myDonations.donations, user, donationsPage],
+    [keys.myDonations.donations, user?.token, donationsPage],
     fetchDonations,
     {
-      enabled: Boolean(user),
+      enabled: Boolean(user?.token),
     }
   )
 
   const { data: volunteering } = useQuery(
-    [keys.myDonations.volunteering, user, volunteeringPage],
+    [keys.myDonations.volunteering, user?.token, volunteeringPage],
     fetchVolunteering,
     {
-      enabled: Boolean(user),
+      enabled: Boolean(user?.token),
     }
   )
 
@@ -230,11 +230,11 @@ const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"
 
 const fetchStats: QF<
   Doubt<IDonationStats>,
-  [Doubt<IUser>, IDateRange?]
+  [Doubt<string>, IDateRange?]
 > = async ({ queryKey }) => {
-  const [_, user, dateRange] = queryKey
+  const [_, token, dateRange] = queryKey
 
-  if (user) {
+  if (token) {
     const query = new URLSearchParams()
     if (dateRange) {
       query.set("startDate", dateRange[0])
@@ -244,7 +244,7 @@ const fetchStats: QF<
     const endpoint = `/api/v1/my-donations/summary?${query}`
     const headers = {
       "Content-Type": "multipart/form-data",
-      "x-auth-token": user.token,
+      "x-auth-token": token,
     }
 
     try {
@@ -261,12 +261,12 @@ const fetchStats: QF<
   }
 }
 
-const fetchDonations: QF<Doubt<IDonations>, [Doubt<IUser>, number]> = async ({
+const fetchDonations: QF<Doubt<IDonations>, [Doubt<string>, number]> = async ({
   queryKey,
 }) => {
-  const [_, user, donationsPage] = queryKey
+  const [_, token, donationsPage] = queryKey
 
-  if (user) {
+  if (token) {
     const query = new URLSearchParams({
       page: `${donationsPage}`,
       perPage: ITEMS_PER_PAGE,
@@ -275,7 +275,7 @@ const fetchDonations: QF<Doubt<IDonations>, [Doubt<IUser>, number]> = async ({
 
     const headers = {
       "Content-Type": "multipart/form-data",
-      "x-auth-token": user.token,
+      "x-auth-token": token,
     }
 
     try {
@@ -297,11 +297,11 @@ const fetchDonations: QF<Doubt<IDonations>, [Doubt<IUser>, number]> = async ({
 
 const fetchVolunteering: QF<
   Doubt<IVolunteering>,
-  [Doubt<IUser>, number]
+  [Doubt<string>, number]
 > = async ({ queryKey }) => {
-  const [_, user, volunteeringPage] = queryKey
+  const [_, token, volunteeringPage] = queryKey
 
-  if (user) {
+  if (token) {
     const query = new URLSearchParams({
       page: `${volunteeringPage}`,
       perPage: ITEMS_PER_PAGE,
@@ -310,7 +310,7 @@ const fetchVolunteering: QF<
 
     const headers = {
       "Content-Type": "multipart/form-data",
-      "x-auth-token": user.token,
+      "x-auth-token": token,
     }
 
     try {
