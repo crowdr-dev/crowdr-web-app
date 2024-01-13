@@ -158,45 +158,47 @@ const Donations = () => {
         </Tabs.Item>
 
         <Tabs.Item heading="Volunteering">
-          {volunteering && <>
-            <Table className="hidden md:block mb-9">
-              <Table.Head>
-                <Table.HeadCell>Campaign</Table.HeadCell>
-                <Table.HeadCell>Skill needed</Table.HeadCell>
-                <Table.HeadCell>Date & time</Table.HeadCell>
-                <Table.HeadCell>Status</Table.HeadCell>
-              </Table.Head>
+          {volunteering && (
+            <>
+              <Table className="hidden md:block mb-9">
+                <Table.Head>
+                  <Table.HeadCell>Campaign</Table.HeadCell>
+                  <Table.HeadCell>Skill needed</Table.HeadCell>
+                  <Table.HeadCell>Date & time</Table.HeadCell>
+                  <Table.HeadCell>Status</Table.HeadCell>
+                </Table.Head>
 
-              <Table.Body>
-                {volunteering.volunteering.map((volunteering, index) => (
-                  <Table.Row key={index}>
-                    <Table.Cell>{volunteering.title}</Table.Cell>
-                    <Table.Cell>{volunteering.detail}</Table.Cell>
-                    <Table.Cell>{volunteering.date}</Table.Cell>
-                    <Table.Cell>
-                      {/success/i.test(volunteering.status) ? (
-                        <Label text={volunteering.status} />
-                      ) : (
-                        <Label
-                          text={volunteering.status}
-                          textColor="#B42318"
-                          bgColor="#FEF3F2"
-                        />
-                      )}
-                    </Table.Cell>
-                  </Table.Row>
+                <Table.Body>
+                  {volunteering.volunteerings.map((volunteering, index) => (
+                    <Table.Row key={index}>
+                      <Table.Cell>{volunteering.title}</Table.Cell>
+                      <Table.Cell>{volunteering.detail}</Table.Cell>
+                      <Table.Cell>{volunteering.date}</Table.Cell>
+                      <Table.Cell>
+                        {/success/i.test(volunteering.status) ? (
+                          <Label text={volunteering.status} />
+                        ) : (
+                          <Label
+                            text={volunteering.status}
+                            textColor="#B42318"
+                            bgColor="#FEF3F2"
+                          />
+                        )}
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+
+              <div className="flex flex-col md:hidden">
+                {volunteering.volunteerings.map((donation, index) => (
+                  <Detail key={index} {...donation} />
                 ))}
-              </Table.Body>
-            </Table>
+              </div>
+            </>
+          )}
 
-            <div className="flex flex-col md:hidden">
-              {volunteering.volunteering.map((donation, index) => (
-                <Detail key={index} {...donation} />
-              ))}
-            </div>
-          </>}
-
-          {volunteering && volunteering.volunteering.length !== 0 && (
+          {volunteering && volunteering.volunteerings.length !== 0 && (
             <Pagination
               currentPage={volunteering.pagination.currentPage}
               perPage={volunteering.pagination.perPage}
@@ -219,7 +221,7 @@ type IDonations = {
 }
 
 type IVolunteering = {
-  volunteering: ReturnType<typeof mapVolunteeringResponseToView>
+  volunteerings: ReturnType<typeof mapVolunteeringResponseToView>
   pagination: IVolunteeringResponse["pagination"]
 }
 
@@ -282,8 +284,6 @@ const fetchDonations: QF<Doubt<IDonations>, [Doubt<IUser>, number]> = async ({
         method: "GET",
       })
 
-      console.log({ data })
-
       return {
         donations: mapDonationsResponseToView(data.donations),
         pagination: data.pagination,
@@ -320,7 +320,7 @@ const fetchVolunteering: QF<
       })
 
       return {
-        volunteering: mapVolunteeringResponseToView(data.volunteers),
+        volunteerings: mapVolunteeringResponseToView(data.volunteerings),
         pagination: data.pagination,
       }
     } catch (error) {
@@ -340,7 +340,7 @@ function mapDonationsResponseToView(donations: IDonationResponse["donations"]) {
 }
 
 function mapVolunteeringResponseToView(
-  volunteering: IVolunteeringResponse["volunteers"]
+  volunteering: IVolunteeringResponse["volunteerings"]
 ) {
   return volunteering.map((volunteer) => ({
     title: volunteer.fullName,

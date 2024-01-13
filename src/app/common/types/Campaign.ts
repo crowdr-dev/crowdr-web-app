@@ -158,7 +158,7 @@ export interface IDonation {
 }
 
 export interface IVolunteeringResponse {
-  volunteers: IVolunteer[]
+  volunteerings: IVolunteer[]
   pagination: IPagination
 }
 
