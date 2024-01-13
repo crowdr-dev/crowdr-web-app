@@ -21,7 +21,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
   const toggleDrawer = (drawerId: string) => {
     if (drawerId) {
       if (currentDrawerId === drawerId) {
-        setCurrentDrawerId("")
+        // setCurrentDrawerId("")
       } else {
         setCurrentDrawerId(drawerId)
       }
@@ -61,8 +61,8 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
 
               const isRoute = "route" in page
               let isCurrentPage = false
-              if (isRoute) {
-                isCurrentPage = currentDrawerId
+              if (isRoute) { // IF IT'S A ROUTE AND A DRAWER IS CURRENTLY ACTIVE, IT ISN'T THE CURRENT PAGE.
+                isCurrentPage = currentDrawerId // OR ELSE CHECK IF THE ROUTE PATH MATCHES WITH THE CURRENT URL PATH
                   ? false
                   : currentPath.startsWith("/" + page.route.split("/")[1])
               } else {
@@ -80,8 +80,8 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
                 pageLinkStyle += " cursor-default"
               }
 
-              let modalProps: any = {
-                id: isRoute ? currentDrawerId : page.modalId,
+              let modalProps: any = { // IF IT'S A ROUTE AND THERE'S AN ACTIVE DRAWER, HIDE THE DRAWER
+                id: isRoute ? currentDrawerId : (isCurrentPage ? '' : page.modalId),
                 type: isRoute || currentDrawerId ? "hide" : "show",
               }
 
