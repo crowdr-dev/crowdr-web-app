@@ -16,12 +16,9 @@ import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import { keys } from "../utils/queryKeys"
 
-import {
-  IDonationResponse,
-  IDonationStats,
-  IVolunteeringResponse,
-} from "@/app/common/types/Campaign"
 import { Doubt, QF } from "@/app/common/types"
+import { IDonationResponse, IVolunteeringResponse } from "@/app/common/types/DonationsVolunteering"
+import { IDonationStats } from "@/app/common/types/UserStats"
 import { IUser } from "@/app/api/user/getUser"
 
 const Donations = () => {

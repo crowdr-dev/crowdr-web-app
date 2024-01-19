@@ -17,13 +17,15 @@ import { keys } from "../utils/queryKeys"
 import { time } from "../utils/time"
 
 import { Doubt, QF } from "@/app/common/types"
-import { CampaignResponse, ICampaignStats } from "@/app/common/types/Campaign"
+// import { CampaignResponse, ICampaignStats } from "@/app/common/types/Campaign"
 import { IDateRange } from "../dashboard-components/DateRange"
 import { IUser } from "@/app/api/user/getUser"
 
 import { BiSearch } from "react-icons/bi"
 import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
+import { ICampaignStats } from "@/app/common/types/UserStats"
+import { ICampaignResponse } from "@/app/common/types/Campaign"
 
 const Campaigns = () => {
   const [dateRange, setDateRange] = useState<IDateRange>()
@@ -197,7 +199,7 @@ const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<string>, IDateRange?]> = asyn
   }
 }
 
-const fetchCampaigns: QF<Doubt<CampaignResponse>, [Doubt<string>, number]> = async ({queryKey}) => {
+const fetchCampaigns: QF<Doubt<ICampaignResponse>, [Doubt<string>, number]> = async ({queryKey}) => {
   const [_, token, page] = queryKey
   
   if (token) {
@@ -209,7 +211,7 @@ const fetchCampaigns: QF<Doubt<CampaignResponse>, [Doubt<string>, number]> = asy
     }
   
     try {
-      const { data } = await makeRequest<CampaignResponse>(endpoint, {
+      const { data } = await makeRequest<ICampaignResponse>(endpoint, {
         headers,
         method: "GET",
       })

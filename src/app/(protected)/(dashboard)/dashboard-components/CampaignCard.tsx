@@ -1,13 +1,12 @@
 import Link from "next/link"
 import { mapCampaignResponseToView } from "../common/utils/campaign"
-
 import ProgressBar from "./ProgressBar"
 import { GrayButton } from "./Button"
 import { label } from "./Label"
 import { pill } from "./Pill"
 
 import { RFC } from "@/app/common/types"
-import { ICampaign } from "@/app/common/types/Campaign"
+import { IFundraiseVolunteerCampaign } from "@/app/common/types/Campaign"
 
 const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
   const {
@@ -40,7 +39,7 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
         </div>
       </div>
 
-      {percentage ? (
+      {percentage !== undefined ? (
         <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px] md:mb-3">
           <p className="text-sm text-[#667085] mb-1">
             <span className="text-[#292A2E]">Goal</span> {fundingGoal}/
@@ -84,5 +83,5 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
 export default CampaignCard
 
 type CampaignCardProps = {
-  campaign: ICampaign
+  campaign: IFundraiseVolunteerCampaign
 }

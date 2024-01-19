@@ -19,15 +19,12 @@ import Text from "../../dashboard-components/Text"
 import { pill } from "../../dashboard-components/Pill"
 
 import { Doubt, QF, Route } from "@/app/common/types"
-import {
-  ICampaign,
-  IDonationResponse,
-  IVolunteerResponse,
-} from "@/app/common/types/Campaign"
+import { IFundraiseVolunteerCampaign } from "@/app/common/types/Campaign"
+import { IDonationResponse, IVolunteerResponse } from "@/app/common/types/DonationsVolunteering"
+import { IUser } from "@/app/api/user/getUser"
 
 import FileDownloadIcon from "../../../../../../public/svg/file-download.svg"
 import { formatAmount } from "../../common/utils/currency"
-import { IUser } from "@/app/api/user/getUser"
 
 const Campaign = ({ params }: Route) => {
   const [donorsPage, setDonorsPage] = useState(1)
@@ -85,7 +82,7 @@ const Campaign = ({ params }: Route) => {
             <div className="md:hidden mb-[5px]">{pill(campaign.category)}</div>
 
             <div className="px-[10px] py-3 md:px-0 md:py-0">
-              {campaign.percentage ? (
+              {campaign.percentage !== undefined ? (
                 <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px] md:mb-3">
                   <p className="text-sm text-[#667085] mb-1">
                     <span className="text-[#292A2E]">Goal</span>{" "}
@@ -265,7 +262,7 @@ const fetchCampaign: QF<Doubt<ICampaignView>, [Doubt<string>, string]> = async (
     const endpoint = `/api/v1/my-campaigns/${campaignId}`
 
     try {
-      const { data } = await makeRequest<ICampaign>(endpoint, {
+      const { data } = await makeRequest<IFundraiseVolunteerCampaign>(endpoint, {
         headers,
         method: "GET",
       })

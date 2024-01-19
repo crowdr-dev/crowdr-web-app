@@ -68,7 +68,7 @@ export const pill = (type: string) => {
     case 'climate':
       return Climate
       
-    case 'technology':
+    case 'tech':
       return Technology
       
     case 'personal':

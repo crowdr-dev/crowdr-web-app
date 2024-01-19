@@ -36,7 +36,7 @@ type FormFields = {
   otherSkillsNeeded: string;
   ageRange: string;
   genderPreference: string;
-  timeCommitment: string;
+  timeCommitment: [string, string];
   volunteerCommitment: string;
   additionalNotes: string;
 };

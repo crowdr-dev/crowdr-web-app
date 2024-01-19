@@ -1,9 +1,15 @@
 import { formatAmount } from "./currency"
 import { getDuration } from "./date"
 
-import { ICampaign } from "@/app/common/types/Campaign"
+import {
+  IFundraiseCampaign,
+  IFundraiseVolunteerCampaign,
+  IVolunteerCampaign,
+} from "@/app/common/types/Campaign"
 
-export const mapCampaignResponseToView = (data: ICampaign) => {
+export const mapCampaignResponseToView = (
+  campaign: IFundraiseVolunteerCampaign
+) => {
   const {
     _id,
     title,
@@ -12,34 +18,32 @@ export const mapCampaignResponseToView = (data: ICampaign) => {
     campaignStatus,
     campaignViews,
     campaignType,
-  } = data
+    campaignStartDate,
+    campaignEndDate,
+  } = campaign
 
   let fundingGoal,
     fundsGotten,
     percentage,
     allDonors,
     allVolunteers,
-    duration
+    duration = getDuration(campaignStartDate, campaignEndDate)
 
-  if (campaignType === "fundraise") {
-    const [fundingGoalDetail] = data.fundraise.fundingGoalDetails
+  if (isFundraise(campaign)) {
+    const [fundingGoalDetail] = campaign.fundraise.fundingGoalDetails
     fundingGoal = formatAmount(
       fundingGoalDetail.amount,
       fundingGoalDetail.currency
     )
     fundsGotten = `${fundingGoal[0]}5,000` // temporary
     percentage = Math.floor((5000 / fundingGoalDetail.amount) * 100)
-
+  } else if (isVolunteer(campaign)) {
     duration = getDuration(
-      data.fundraise.startOfFundraise,
-      data.fundraise.endOfFundraise
-    )
-  } else if (campaignType === 'volunteer') {
-    duration = getDuration(
-      data.volunteer.commitementStartDate,
-      data.volunteer.commitementEndDate
+      campaign.volunteer.commitementStartDate,
+      campaign.volunteer.commitementEndDate
     )
   }
+  console.log({campaign, percentage})
 
   return {
     _id,
@@ -56,4 +60,16 @@ export const mapCampaignResponseToView = (data: ICampaign) => {
     percentage,
     campaignType,
   }
+}
+
+export function isFundraise(
+  campaign: IFundraiseVolunteerCampaign
+): campaign is IFundraiseCampaign {
+  return "fundraise" in campaign
+}
+
+export function isVolunteer(
+  campaign: IFundraiseVolunteerCampaign
+): campaign is IVolunteerCampaign {
+  return "volunteer" in campaign
 }
