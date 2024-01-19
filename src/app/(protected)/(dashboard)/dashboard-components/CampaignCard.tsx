@@ -1,13 +1,12 @@
 import Link from "next/link"
 import { mapCampaignResponseToView } from "../common/utils/campaign"
-
 import ProgressBar from "./ProgressBar"
 import { GrayButton } from "./Button"
 import { label } from "./Label"
 import { pill } from "./Pill"
 
 import { RFC } from "@/app/common/types"
-import { ICampaign } from "@/app/common/types/Campaign"
+import { IFundraiseVolunteerCampaign } from "@/app/common/types/Campaign"
 
 const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
   const {
@@ -18,13 +17,16 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
     status,
     views,
     donors,
+    volunteers,
     fundingGoal,
     fundsGotten,
     percentage,
+    campaignType,
   } = mapCampaignResponseToView(campaign)
 
+  const isVolunteerCampaign = campaignType === "volunteer"
+
   return (
-    // TODO: FIX LEFT-RIGHT PADDING FOR MOBILE/DESKTOP VIEW
     <Link
       href={`campaigns/${_id}`}
       className="bg-white border border-[rgba(57, 62, 70, 0.08)] rounded-xl px-[10px] pt-6 pb-[10px] md:py-[26px] md:px-6"
@@ -37,13 +39,17 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
         </div>
       </div>
 
-      <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px] md:mb-3">
-        <p className="text-sm text-[#667085] mb-1">
-          <span className="text-[#292A2E]">Goal</span> {fundingGoal}/
-          {fundsGotten}
-        </p>
-        <ProgressBar percent={percentage} showValue />
-      </div>
+      {percentage !== undefined ? (
+        <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px] md:mb-3">
+          <p className="text-sm text-[#667085] mb-1">
+            <span className="text-[#292A2E]">Goal</span> {fundingGoal}/
+            {fundsGotten}
+          </p>
+          <ProgressBar percent={percentage} showValue />
+        </div>
+      ) : (
+        <div className="h-20 m-3" />
+      )}
 
       <div className="flex flex-col md:flex-row justify-between md:items-end">
         <div className="text-[13px] text-[#5C636E] px-[7px] md:px-0 mb-2.5">
@@ -52,8 +58,10 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
             <span className="text-[#5C636E] font">{views}</span>
           </p>
           <p className="mb-2.5">
-            <span className="text-black font-medium">Donors:</span>{" "}
-            <span>{donors}</span>
+            <span className="text-black font-medium">
+              {!isVolunteerCampaign ? "Donors:" : "Volunteers:"}
+            </span>{" "}
+            <span>{!isVolunteerCampaign ? donors : volunteers}</span>
           </p>
           <p>
             <span className="text-black font-medium">Duration:</span>{" "}
@@ -75,5 +83,5 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
 export default CampaignCard
 
 type CampaignCardProps = {
-  campaign: ICampaign
+  campaign: IFundraiseVolunteerCampaign
 }

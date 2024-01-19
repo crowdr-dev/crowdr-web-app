@@ -42,17 +42,19 @@ const CreateEditCampaign = ({ params }: Route) => {
 
     const payload: any = {
       title,
-      category: category,
-      story: story,
+      category,
+      story,
       campaignType: isIndividual ? "fundraise" : campaignType,
+      campaignStartDate: (campaignDuration[0] as any as Date).toISOString(),
+      campaignEndDate: (campaignDuration[1] as any as Date).toISOString(),
     }
 
     if (campaignImages) {
       payload.campaignCoverImage = campaignImages[0]
-    }
 
-    if (campaignImages && campaignImages?.length > 1) {
-      payload.campaignAdditionalImages = campaignImages.slice(1)
+      if (campaignImages.length > 1) {
+        payload.campaignAdditionalImages = campaignImages.slice(1)
+      }
     }
 
     if (isFundraiseRelated || isIndividual) {
@@ -64,8 +66,6 @@ const CreateEditCampaign = ({ params }: Route) => {
             currency,
           },
         ],
-        startOfFundraise: campaignDuration[0],
-        endOfFundraise: campaignDuration[1],
       })
     }
 
