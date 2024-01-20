@@ -12,5 +12,8 @@ export const keys = {
     stats: 'my-donation-stats',
     donations: 'my-donations',
     volunteering: 'my-volunteering',
+  },
+  settings: {
+    kyc: 'get-kyc',
   }
 } as const
