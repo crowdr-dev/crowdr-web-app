@@ -1,3 +1,4 @@
+import { useQuery } from "react-query"
 import { useFormContext } from "react-hook-form"
 import { useUser } from "../../common/hooks/useUser"
 import { useToast } from "@/app/common/hooks/useToast"
@@ -9,14 +10,13 @@ import { Button } from "../../dashboard-components/Button"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import objectToFormData from "@/utils/objectToFormData"
 import makeRequest from "@/utils/makeRequest"
-
+import { keys } from "../../utils/queryKeys"
+import { Option } from "../../common/utils/form"
 import VerificationFormContext, {
   FormFields,
 } from "../utils/useVerificationForm"
-import { Option } from "../../common/utils/form"
+
 import { QF } from "@/app/common/types"
-import { useQuery } from "react-query"
-import { keys } from "../../utils/queryKeys"
 
 const VerificationForm = () => {
   const {
@@ -28,7 +28,7 @@ const VerificationForm = () => {
   const user = useUser()
   const toast = useToast()
 
-  const { data, refetch } = useQuery(
+  const { data: customerDetails, refetch } = useQuery(
     [keys.settings.kyc, user?.token],
     fetchKyc,
     {
@@ -96,6 +96,7 @@ const VerificationForm = () => {
             label="BVN number"
             styles={{ wrapper: "mb-[33px]" }}
             rules={{
+              required: "BVN is required",
               pattern: {
                 value: /^\d{11}$/,
                 message: "Enter a valid BVN number",
@@ -110,6 +111,9 @@ const VerificationForm = () => {
               Option("", "Select a verification type...", true),
               ...verificationOptions,
             ]}
+            rules={{
+              required: "Verification type is required",
+            }}
             styles={{ wrapper: "mb-[26px]" }}
           />
 
@@ -117,9 +121,12 @@ const VerificationForm = () => {
             name="docImg"
             styles={{ wrapper: "mb-[50px]" }}
             disabled={!Boolean(verificationDocument)}
+            rules={{
+              required: "Document is required",
+            }}
           >
             <FileInputContent
-              previewImage={data?.docImg.url}
+              previewImage={customerDetails?.docImg.url}
               subtext={verificationDocument || "or drag and drop"}
               showPreview
             />
@@ -132,9 +139,15 @@ const VerificationForm = () => {
 
             <hr className="mb-5" />
 
-            <FileInput name="selfieImg" styles={{ wrapper: "mb-[20px]" }}>
+            <FileInput
+              name="selfieImg"
+              styles={{ wrapper: "mb-[20px]" }}
+              rules={{
+                required: "Selfie is required",
+              }}
+            >
               <FileInputContent
-                previewImage={data?.selfieImg.url}
+                previewImage={customerDetails?.selfieImg.url}
                 subtext="or drag and drop"
                 showPreview
               />
