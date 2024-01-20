@@ -98,6 +98,7 @@ const ProfileForm = () => {
               text="Save changes"
               buttonType="submit"
               disabled={isSubmitting}
+              loading={isSubmitting}
               className="grow md:grow-0 !justify-center"
             />
           </div>

@@ -23,7 +23,7 @@ type UseFormConfig = Parameters<typeof useForm<FormFields>>[0]
 type FormFields = {
   bvnNumber: number
   docType: string
-  docImg: File
-  selfieImg: File
+  docImg: [File]
+  selfieImg: [File]
 }
 type VerificationFormContext = UseFormReturn<FormFields>

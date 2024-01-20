@@ -1,10 +1,14 @@
 import { useFormContext } from "react-hook-form"
 import { useUser } from "../../common/hooks/useUser"
-import NumberInput from "../../dashboard-components/NumberInput"
+import { useToast } from "@/app/common/hooks/useToast"
+import TextInput from "../../dashboard-components/TextInput"
 import SelectInput from "../../dashboard-components/SelectInput"
 import FileInput from "../../dashboard-components/FileInput"
 import { FileInputContent } from "../../dashboard-components/FileInput"
 import { Button } from "../../dashboard-components/Button"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import objectToFormData from "@/utils/objectToFormData"
+import makeRequest from "@/utils/makeRequest"
 
 import VerificationFormContext, {
   FormFields,
@@ -18,24 +22,65 @@ const VerificationForm = () => {
     formState: { isSubmitting },
   } = useFormContext() as VerificationFormContext
   const user = useUser()
+  const toast = useToast()
 
   const verificationDocument = verificationOptions.find(
     (option) => option.value === watch("docType")
   )?.label
 
   const submit = async (formFields: FormFields) => {
-    console.log(formFields)
+    if (user) {
+      const {
+        bvnNumber,
+        docType,
+        docImg: [doc],
+        selfieImg: [selfie],
+      } = formFields
+
+      const endpoint = "/api/v1/settings/KYC"
+      const headers = {
+        "Content-Type": "multipart/form-data",
+        "x-auth-token": user.token,
+      }
+
+      const payload = {
+        BVN: bvnNumber,
+        docType,
+        docImg: doc,
+        selfieImg: selfie,
+      }
+
+      try {
+        const { success, message } = await makeRequest(endpoint, {
+          headers,
+          method: "PUT",
+          payload: objectToFormData(payload),
+        })
+
+        if (success) {
+          toast({ title: "Well done!", body: message })
+        }
+      } catch (error) {
+        const message = extractErrorMessage(error)
+        toast({ title: "Oops!", body: message, type: "error" })
+      }
+    }
   }
 
   return (
     <div className="max-w-[484px]">
       <form onSubmit={handleSubmit(submit)}>
         <div className="flex flex-col mb-[33px] md:mb-[38px]">
-          <NumberInput
+          <TextInput
             name="bvnNumber"
             label="BVN number"
-            disableGroupSeparators
             styles={{ wrapper: "mb-[33px]" }}
+            rules={{
+              pattern: {
+                value: /^\d{11}$/,
+                message: "Enter a valid BVN number",
+              },
+            }}
           />
 
           <SelectInput
@@ -53,7 +98,10 @@ const VerificationForm = () => {
             styles={{ wrapper: "mb-[50px]" }}
             disabled={!Boolean(verificationDocument)}
           >
-            <FileInputContent subtext={verificationDocument || "or drag and drop"} showPreview />
+            <FileInputContent
+              subtext={verificationDocument || "or drag and drop"}
+              showPreview
+            />
           </FileInput>
 
           <div>
@@ -82,6 +130,7 @@ const VerificationForm = () => {
             text="Save changes"
             buttonType="submit"
             disabled={isSubmitting}
+            loading={isSubmitting}
             className="grow md:grow-0 !justify-center"
           />
         </div>
