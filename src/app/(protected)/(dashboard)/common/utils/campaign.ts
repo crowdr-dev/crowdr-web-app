@@ -43,7 +43,6 @@ export const mapCampaignResponseToView = (
       campaign.volunteer.commitementEndDate
     )
   }
-  console.log({campaign, percentage})
 
   return {
     _id,

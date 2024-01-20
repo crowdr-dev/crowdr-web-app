@@ -24,5 +24,6 @@ type FormFields = {
   accountNumber: string;
   bankName: string;
   accountName: string;
+  accountType: string;
 };
 type AccountFormContext = UseFormReturn<FormFields>;

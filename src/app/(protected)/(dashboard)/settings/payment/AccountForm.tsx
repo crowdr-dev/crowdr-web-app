@@ -25,6 +25,7 @@ const AccountForm: RFC<AccountFormProps> = ({
       accountNumber: accountDetails.accountNumber,
       bankName: accountDetails.bankName,
       accountName: accountDetails.accountName,
+      accountType: accountDetails.accountType,
     })
   }, [accountDetails])
 
@@ -54,6 +55,16 @@ const AccountForm: RFC<AccountFormProps> = ({
           options={banks}
           label="Bank"
           ariaLabel="Bank"
+        />
+
+        <SelectInput
+          name="accountType"
+          rules={{
+            required: "Account type is required",
+          }}
+          options={accountTypes}
+          label="Account type"
+          ariaLabel="Account type"
         />
 
         <TextInput
@@ -97,8 +108,14 @@ type AccountFormProps = {
 
 const banks = [
   Option("", "Select a bank...", true),
-  Option("Access Bank", "Access"),
-  Option("Zenith Bank", "Zenith"),
-  Option("United Bank for Africa", "UBA"),
   Option("Guarantee Trust Bank", "GT Bank"),
+  Option("Access Bank", "Access"),
+  Option("United Bank for Africa", "UBA"),
+  Option("Chipper", "Chipper"),
+]
+
+const accountTypes = [
+  Option('', 'Select an account type', true),
+  Option('naira', 'Naira'),
+  Option('dollar', 'Dollar'),
 ]
