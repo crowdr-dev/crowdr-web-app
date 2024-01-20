@@ -21,9 +21,9 @@ const config: UseFormConfig = {
 
 type UseFormConfig = Parameters<typeof useForm<FormFields>>[0]
 type FormFields = {
-  bvnNumber: number
-  verficationType: string
-  verificationDocument: File
-  selfie: File
+  bvnNumber: string
+  docType: string
+  docImg: [File]
+  selfieImg: [File]
 }
 type VerificationFormContext = UseFormReturn<FormFields>

@@ -1,4 +1,4 @@
-import { isValidElement, useEffect, useMemo, useRef, useState } from "react"
+import { isValidElement, useEffect, useMemo, useRef, useState, cloneElement } from "react"
 import { Merge, useFormContext } from "react-hook-form"
 import NextImage from "next/image"
 import imageCompression from "browser-image-compression"
@@ -15,7 +15,7 @@ import AttentionIcon from "../../../../../public/assets/warning-circle.png"
 import LoadingCircle from "../../../../../public/svg/loading-circle.svg"
 import { atom, useAtomValue, useSetAtom } from "jotai"
 
-const previewImageAtom = atom<string | null>(null)
+// const previewImageAtom = atom<string | null>(null)
 
 const FileInput: RFC<FileInputProps> = ({
   config,
@@ -33,8 +33,10 @@ const FileInput: RFC<FileInputProps> = ({
   rules,
   children,
   styles,
+  disabled,
 }) => {
-  const setPreviewImage = useSetAtom(previewImageAtom)
+  // const setPreviewImage = useSetAtom(previewImageAtom)
+  const [previewProps, setPreviewProps] = useState<FileInputContentProps>()
 
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -72,7 +74,11 @@ const FileInput: RFC<FileInputProps> = ({
       const reader = new FileReader()
 
       reader.onload = (e) => {
-        setPreviewImage(e.target?.result as string)
+        // setPreviewImage(e.target?.result as string)
+        setPreviewProps({
+          previewImage: e.target?.result as string,
+          ...children.props
+        })
       }
 
       reader.readAsDataURL(files[0])
@@ -202,10 +208,10 @@ const FileInput: RFC<FileInputProps> = ({
         style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
         className={`${
           dragActive ? "border-green-200" : "border-[#e4e7ec]"
-        } flex flex-col items-center cursor-pointer rounded-lg border py-4 px-6 mb-1`}
+        } flex flex-col items-center cursor-pointer rounded-lg border py-4 px-6 mb-1 ${disabled && 'pointer-events-none'}`}
       >
         {children ? (
-          children
+          <FileInputContent {...(previewProps || (children as any).props)} />
         ) : (
           <>
             <div
@@ -280,6 +286,7 @@ type FileInputProps = {
   styles?: {
     wrapper?: string
   }
+  disabled?: boolean
 }
 
 function blobToFile(blob: Blob): FileList {
@@ -317,15 +324,16 @@ type FileDetailProps = {
 }
 
 export const FileInputContent: RFC<FileInputContentProps> = ({
+  previewImage,
   subtext,
   showPreview,
 }) => {
-  const previewImage = useAtomValue(previewImageAtom)
+  // const previewImage = useAtomValue(previewImageAtom)
 
   return (
     <div className="flex flex-col items-center gap-3">
       <NextImage
-        src={showPreview ? previewImage || AttentionIcon : AttentionIcon}
+        src={showPreview && previewImage ? previewImage : AttentionIcon}
         width={41.27}
         height={40}
         alt=""
@@ -343,6 +351,7 @@ export const FileInputContent: RFC<FileInputContentProps> = ({
 }
 
 type FileInputContentProps = {
+  previewImage?: string
   subtext?: string
   showPreview?: boolean
 }

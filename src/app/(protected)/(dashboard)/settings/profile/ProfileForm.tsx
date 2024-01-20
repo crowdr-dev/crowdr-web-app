@@ -81,6 +81,7 @@ const ProfileForm = () => {
               name="email"
               label="Email address"
               styles={{ wrapper: "mb-[26px]" }}
+              disabled
             />
           </div>
 
@@ -97,6 +98,7 @@ const ProfileForm = () => {
               text="Save changes"
               buttonType="submit"
               disabled={isSubmitting}
+              loading={isSubmitting}
               className="grow md:grow-0 !justify-center"
             />
           </div>
