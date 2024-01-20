@@ -50,6 +50,7 @@ export type Campaign = {
   campaignStatus: string;
   campaignCoverImage: CampaignImage;
   campaignAdditionalImages: CampaignImage[];
+  campaignStartDate: string;
   fundraise: {
     fundingGoalDetails: [
       {

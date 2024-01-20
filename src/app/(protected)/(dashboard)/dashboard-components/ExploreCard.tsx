@@ -12,6 +12,7 @@ import Slider from 'react-slick'
 
 import Menu from '../../../../../public/svg/menu.svg'
 import Modal from '@/app/common/components/Modal'
+import { formatAmount } from '../common/utils/currency'
 
 type ExploreCardProps = {
   name: string
@@ -75,6 +76,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
     arrows: true,
     swipeToSlide: true
   }
+
   return (
     <div className='p-6 rounded-xl border-[#393e4614] border mt-8 h-fit bg-white'>
       <div className='flex items-center justify-between '>
@@ -149,11 +151,11 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
         )}
         <div className='my-5'>
           <h3 className='font-semibold text-lg'>{header}</h3>
-          <p className='text-sm mt-2 break-words'>
+          <p className='text-base mt-2 break-words'>
             {displayText}
             {isCollapsed && wordsArray && wordsArray.length > 30 && '... '}
             {wordsArray && wordsArray.length > 30 && (
-              <span onClick={toggleReadMore} className='text-[#667085]'>
+              <span onClick={toggleReadMore} className='text-[#667085] cursor-pointer pl-1'>
                 {isCollapsed ? 'See More' : 'See Less'}
               </span>
             )}
@@ -166,8 +168,8 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
           <div className='bg-[#F9F9F9] p-4'>
             <p className='text-sm text-[#667085] mb-[10px]'>
               {' '}
-              <span className='text-[#000]'>Goal</span> N{currentAmount} / N
-              {totalAmount}
+              <span className='text-[#000]'>Goal</span> {formatAmount(currentAmount, "naira")} / 
+              {formatAmount(totalAmount,"naira")}
             </p>
             <ProgressBar bgColor='#00B964' percent={progress * 100} />
           </div>

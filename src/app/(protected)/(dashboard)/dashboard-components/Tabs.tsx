@@ -25,7 +25,7 @@ const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
     })
   )
   const [activeTab, setActiveTab] = useState(
-    initialTab ? initialTab : tabHeadings[0].heading
+    initialTab ? initialTab : tabHeadings[0]?.heading
   )
 
   return (
@@ -36,7 +36,7 @@ const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
           styles?.header
         }
       >
-        {tabHeadings.map(({ heading, href }) => {
+        {tabHeadings?.map(({ heading, href }) => {
           const props: any = href
             ? { href, currentRoute }
             : { activeTab, onSelectTab: setActiveTab }
@@ -45,7 +45,7 @@ const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
         })}
       </div>
 
-      {tabs.map((tab) => (
+      {tabs?.map((tab) => (
         <TabContent key={tab.props.heading} tab={tab} activeTab={activeTab} />
       ))}
     </div>

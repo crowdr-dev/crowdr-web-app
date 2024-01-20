@@ -31,6 +31,7 @@ export type CampaignProps = {
   campaignCoverImage: CampaignImage
   campaignAdditionalImages: CampaignImage[]
   campaignViews: number
+  campaignStartDate: string
   fundraise: {
     fundingGoalDetails: FundraisingGoalProps[]
     startOfFundraise: string
@@ -47,6 +48,7 @@ export type CampaignProps = {
 }
 export default async function Explore () {
   const campaigns = await getCampaigns(1)
+
 
   return (
     <div>
@@ -80,7 +82,7 @@ export default async function Explore () {
                 subheader={campaign?.story}
                 totalAmount={campaign.fundraise?.fundingGoalDetails[0].amount}
                 currentAmount={donatedAmount}
-                timePosted={campaign.fundraise?.startOfFundraise}
+                timePosted={campaign?.campaignStartDate}
                 slideImages={[
                   campaign?.campaignCoverImage?.url,
                   ...(urlsOnly || [])

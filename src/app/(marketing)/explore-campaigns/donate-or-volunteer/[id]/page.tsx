@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { getUser } from '@/app/api/user/getUser'
 import ProgressBar from '../../../../(protected)/(dashboard)/dashboard-components/ProgressBar'
 import ExploreCard from '../../../../(protected)/(dashboard)/dashboard-components/ExploreCard'
@@ -106,6 +106,10 @@ export default function DonateOrVolunteer ({
     })
   }
 
+  const areAllInputsFilled = () => {
+    return Object.values(donationInputs).every(value => value.trim() !== '');
+  };
+
   const [checkboxValues, setCheckboxValues] = useState({
     isAnonymous: false,
     shouldShareDetails: false,
@@ -138,9 +142,7 @@ export default function DonateOrVolunteer ({
   )
 
   const userDetails = campaign?.user
-
   const donatedAmount = campaign?.totalAmountDonated?.[0].amount
-
   const currency = campaign?.fundraise?.fundingGoalDetails[0].currency
 
   const donate = async () => {
@@ -158,7 +160,6 @@ export default function DonateOrVolunteer ({
 
     const payload = {
       campaignId: params.id,
-      campaignOwnerId: campaign.userId,
       campaignDonorId: campaign.userId,
       amount: donationInputs.amount,
       email: donationInputs.email,
@@ -187,6 +188,7 @@ export default function DonateOrVolunteer ({
     }
   }
 
+  
   return (
     <div>
       <Navigation openModal={openModal} />
@@ -418,6 +420,7 @@ export default function DonateOrVolunteer ({
                   className='w-full mt-4 !justify-center'
                   onClick={donate}
                   loading={loading}
+                  disabled={areAllInputsFilled()}
                 />
 
                 <div className='mt-10'>
