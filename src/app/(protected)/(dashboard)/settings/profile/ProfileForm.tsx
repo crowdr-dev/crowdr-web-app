@@ -81,6 +81,7 @@ const ProfileForm = () => {
               name="email"
               label="Email address"
               styles={{ wrapper: "mb-[26px]" }}
+              disabled
             />
           </div>
 
