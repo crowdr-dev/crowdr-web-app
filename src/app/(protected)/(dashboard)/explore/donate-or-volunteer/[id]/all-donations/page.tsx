@@ -1,6 +1,5 @@
 'use client'
-import { Fragment, useEffect, useState } from 'react'
-import moment from 'moment'
+import { useEffect, useState } from 'react'
 import Tabs from '../../../../dashboard-components/Tabs'
 import Table from '../../../../dashboard-components/Table'
 import { getSingleCampaign } from '@/app/api/campaigns/getCampaigns'
