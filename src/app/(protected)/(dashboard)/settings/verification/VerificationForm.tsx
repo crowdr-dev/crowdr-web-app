@@ -20,7 +20,7 @@ const VerificationForm = () => {
   const user = useUser()
 
   const verificationDocument = verificationOptions.find(
-    (option) => option.value === watch("verficationType")
+    (option) => option.value === watch("docType")
   )?.label
 
   const submit = async (formFields: FormFields) => {
@@ -39,17 +39,21 @@ const VerificationForm = () => {
           />
 
           <SelectInput
+            name="docType"
+            label="Verification type"
             options={[
               Option("", "Select a verification type...", true),
               ...verificationOptions,
             ]}
-            name="verficationType"
-            label="Verification type"
             styles={{ wrapper: "mb-[26px]" }}
           />
 
-          <FileInput name="selfie" styles={{ wrapper: "mb-[50px]" }}>
-            <FileInputContent subtext={verificationDocument} />
+          <FileInput
+            name="docImg"
+            styles={{ wrapper: "mb-[50px]" }}
+            disabled={!Boolean(verificationDocument)}
+          >
+            <FileInputContent subtext={verificationDocument || "or drag and drop"} showPreview />
           </FileInput>
 
           <div>
@@ -59,8 +63,8 @@ const VerificationForm = () => {
 
             <hr className="mb-5" />
 
-            <FileInput name="selfie" styles={{ wrapper: "mb-[20px]" }}>
-              <FileInputContent subtext="selfie" />
+            <FileInput name="selfieImg" styles={{ wrapper: "mb-[20px]" }}>
+              <FileInputContent subtext="or drag and drop" showPreview />
             </FileInput>
           </div>
         </div>
@@ -92,4 +96,5 @@ const verificationOptions = [
   Option("drivers_license", "Driver's license"),
   Option("voters_card", "Voter's card"),
   Option("international_passport", "International passport"),
+  Option("nin_card", "NIN card"),
 ]
