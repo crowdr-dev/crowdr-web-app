@@ -31,12 +31,21 @@ export const mapCampaignResponseToView = (
 
   if (isFundraise(campaign)) {
     const [fundingGoalDetail] = campaign.fundraise.fundingGoalDetails
+    const [totalAmountDonated] = campaign.totalAmountDonated
+
     fundingGoal = formatAmount(
       fundingGoalDetail.amount,
       fundingGoalDetail.currency
     )
-    fundsGotten = `${fundingGoal[0]}5,000` // temporary
-    percentage = Math.floor((5000 / fundingGoalDetail.amount) * 100)
+
+    fundsGotten = formatAmount(
+      totalAmountDonated.amount,
+      totalAmountDonated.currency
+    )
+    
+    percentage = Math.floor(
+      (totalAmountDonated.amount / fundingGoalDetail.amount) * 100
+    )
   } else if (isVolunteer(campaign)) {
     duration = getDuration(
       campaign.volunteer.commitementStartDate,

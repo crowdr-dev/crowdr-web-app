@@ -78,7 +78,13 @@ const PaymentPage = () => {
       title: bankDetail.accountName,
       detail: bankDetail.accountNumber,
       date: bankDetail.bankName,
-      button: <Button text="Edit" className="!h-9" onClick={() => editAccount(bankDetail)} />
+      button: (
+        <Button
+          text="Edit"
+          className="!h-9"
+          onClick={() => editAccount(bankDetail)}
+        />
+      ),
     }
   }
 
@@ -129,36 +135,44 @@ const PaymentPage = () => {
             </div>
           )}
 
-          <Table className="hidden md:block mb-9">
-            <Table.Head>
-              <Table.HeadCell>Account name</Table.HeadCell>
-              <Table.HeadCell>Account number</Table.HeadCell>
-              <Table.HeadCell>Bank</Table.HeadCell>
-              <Table.HeadCell></Table.HeadCell>
-            </Table.Head>
-            <Table.Body>
-              {bankDetails.map((bankDetail, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>{bankDetail.accountName}</Table.Cell>
-                  <Table.Cell>{bankDetail.accountNumber}</Table.Cell>
-                  <Table.Cell>{bankDetail.bankName}</Table.Cell>
-                  <Table.Cell>
-                    <Button text="Edit" className="!h-9" onClick={() => editAccount(bankDetail)} />
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+          {bankDetails.length !== 0 && (
+            <>
+              <Table className="hidden md:block mb-9">
+                <Table.Head>
+                  <Table.HeadCell>Account name</Table.HeadCell>
+                  <Table.HeadCell>Account number</Table.HeadCell>
+                  <Table.HeadCell>Bank</Table.HeadCell>
+                  <Table.HeadCell></Table.HeadCell>
+                </Table.Head>
+                <Table.Body>
+                  {bankDetails.map((bankDetail, index) => (
+                    <Table.Row key={index}>
+                      <Table.Cell>{bankDetail.accountName}</Table.Cell>
+                      <Table.Cell>{bankDetail.accountNumber}</Table.Cell>
+                      <Table.Cell>{bankDetail.bankName}</Table.Cell>
+                      <Table.Cell>
+                        <Button
+                          text="Edit"
+                          className="!h-9"
+                          onClick={() => editAccount(bankDetail)}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
 
-          <div className="flex flex-col md:hidden mb-6">
-            {bankDetails.map((bankDetail, index) => (
-              <Detail key={index} {...mapBankDetailToView(bankDetail)} />
-            ))}
-          </div>
+              <div className="flex flex-col md:hidden mb-6">
+                {bankDetails.map((bankDetail, index) => (
+                  <Detail key={index} {...mapBankDetailToView(bankDetail)} />
+                ))}
+              </div>
+            </>
+          )}
 
           <details className="group mb-[34px] md:mb-10">
             <summary className="flex gap-[10px] text-primary cursor-pointer mb-2">
-              Transactions
+              Withdrawals
               <Image
                 src={CaretIcon}
                 alt=""

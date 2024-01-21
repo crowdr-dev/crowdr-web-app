@@ -1,13 +1,13 @@
+import { useEffect } from "react"
 import { useFormContext } from "react-hook-form"
 import TextInput from "../../dashboard-components/TextInput"
-import { Button } from "../../dashboard-components/Button"
-import AccountFormContext, { FormFields } from "../utils/useAccountForm"
-import { RFC } from "@/app/common/types"
-import { Option } from "../../common/utils/form"
-import NumberInput from "../../dashboard-components/NumberInput"
 import SelectInput from "../../dashboard-components/SelectInput"
-import { useEffect } from "react"
+import AccountFormContext, { FormFields } from "../utils/useAccountForm"
+import { Option } from "../../common/utils/form"
+import { Button } from "../../dashboard-components/Button"
+
 import { IBankDetail } from "./page"
+import { RFC } from "@/app/common/types"
 
 const AccountForm: RFC<AccountFormProps> = ({
   onSubmit,
@@ -21,12 +21,17 @@ const AccountForm: RFC<AccountFormProps> = ({
   } = useFormContext() as AccountFormContext
 
   useEffect(() => {
-    if (accountDetails) reset({
-      accountNumber: accountDetails.accountNumber,
-      bankName: accountDetails.bankName,
-      accountName: accountDetails.accountName,
-      accountType: accountDetails.accountType,
-    })
+    if (accountDetails) {
+      const { accountNumber, bankName, accountName, accountType } =
+        accountDetails
+
+      reset({
+        accountNumber,
+        bankName,
+        accountName,
+        accountType,
+      })
+    }
   }, [accountDetails])
 
   return (
@@ -115,7 +120,7 @@ const banks = [
 ]
 
 const accountTypes = [
-  Option('', 'Select an account type', true),
-  Option('naira', 'Naira'),
-  Option('dollar', 'Dollar'),
+  Option("", "Select an account type", true),
+  Option("naira", "Naira"),
+  Option("dollar", "Dollar"),
 ]
