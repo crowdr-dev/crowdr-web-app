@@ -2,12 +2,15 @@
 import { useState } from "react"
 import { useQuery } from "react-query"
 import { useUser } from "../../common/hooks/useUser"
+import { useModal } from "@/app/common/hooks/useModal"
+import { useToast } from "@/app/common/hooks/useToast"
 import { Button } from "../../dashboard-components/Button"
 import Table from "../../dashboard-components/Table"
 import Detail from "../../dashboard-components/Detail"
 import Pagination from "../../dashboard-components/Pagination"
 import StatCard from "../../dashboard-components/StatCard"
 import StatCardSkeleton from "../../dashboard-components/skeletons/StatCardSkeleton"
+import CompletionCard from "../../dashboard-components/CompletionCard"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import { formatAmount } from "../../common/utils/currency"
@@ -24,6 +27,8 @@ import { ICampaignResponse } from "@/app/common/types/Campaign"
 const Withdrawal = () => {
   const [page, setPage] = useState(1)
   const user = useUser()
+  const modal = useModal()
+  const toast = useToast()
 
   const { data: stats } = useQuery(
     [keys.myCampaigns.stats, user?.token],
@@ -41,7 +46,67 @@ const Withdrawal = () => {
     }
   )
 
-  const withdraw = (campaignId: string) => {}
+  const withdraw = async (campaignId: string) => {
+    if (user) {
+      const endpoint = `/api/v1/withdrawals/request`
+      const headers = {
+        "x-auth-token": user.token,
+      }
+      const payload = { campaignId }
+
+      try {
+        const { success, message } = await makeRequest(endpoint, {
+          headers,
+          method: "POST",
+          payload: JSON.stringify(payload),
+        })
+
+        if (success) {
+          activateWithdrawalCompletionModal()
+        }
+      } catch (error) {
+        const message = extractErrorMessage(error)
+        toast({ title: "Oops!", body: message, type: "error" })
+      }
+    }
+  }
+
+  const activateWithdrawalModal = (campaign: ICampaignView) => {
+    modal.show(
+      <CompletionCard
+        title={`You’re making a withdrawal of ${campaign.fundsGotten}`}
+        text={
+          <p className="text-sm text-[#475467] md:text-justify md:pr-2">
+            You are making a withdrawal from the{" "}
+            <span className="text-[#00B964]">{campaign.title}</span> campaign.
+          </p>
+        }
+        primaryButton={{
+          label: "Withdraw Funds",
+          onClick: () => {
+            modal.hide()
+            withdraw(campaign._id)
+          },
+        }}
+        secondaryButton={{ label: "Cancel", onClick: modal.hide }}
+        clearModal={modal.hide}
+      />
+    )
+  }
+
+  const activateWithdrawalCompletionModal = () => {
+    modal.show(
+      <CompletionCard
+        title={`Your withdrawal has been submitted for review`}
+        text={`Your money is on its way to your bank account. Thank you for choosing Crowdr.`}
+        primaryButton={{
+          label: "Back to Dashboard",
+          onClick: modal.hide,
+        }}
+        clearModal={modal.hide}
+      />
+    )
+  }
 
   const mapCampaignToView = (campaign: ICampaignView) => {
     return {
@@ -53,7 +118,7 @@ const Withdrawal = () => {
           text="Withdraw"
           className="!h-9"
           disabled={!campaign.isCompleted}
-          onClick={() => withdraw(campaign._id)}
+          onClick={() => activateWithdrawalModal(campaign)}
         />
       ),
     }
@@ -121,7 +186,7 @@ const Withdrawal = () => {
                     <Button
                       text="Withdraw"
                       disabled={!campaign.isCompleted}
-                      onClick={() => withdraw(campaign._id)}
+                      onClick={() => activateWithdrawalModal(campaign)}
                     />
                   </Table.Cell>
                 </Table.Row>

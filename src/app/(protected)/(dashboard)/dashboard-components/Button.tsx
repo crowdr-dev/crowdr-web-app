@@ -166,11 +166,13 @@ type ButtonContentProps = {
 
 function whiten(color: string) {
   const colorObj = Color(color)
-  const brightness = colorObj.luminosity()
-  const whitenedColor =
-    brightness > 0.5 ? colorObj.whiten(0.04) : colorObj.whiten(5)
+  // const brightness = colorObj.luminosity()
+  // const whitenedColor =
+  //   brightness > 0.5 ? colorObj.fade(0.1) : colorObj.fade(0.9)
+  //   console.log(color, whitenedColor)
+  console.log(color, colorObj.fade(0.5))
 
-  return whitenedColor.hex()
+  return colorObj.fade(0.5).hex()
 }
 
 function darken(color: string) {

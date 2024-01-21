@@ -19,7 +19,6 @@ import { keys } from "../utils/queryKeys"
 import { Doubt, QF } from "@/app/common/types"
 import { IDonationResponse, IVolunteeringResponse } from "@/app/common/types/DonationsVolunteering"
 import { IDonationStats } from "@/app/common/types/UserStats"
-import { IUser } from "@/app/api/user/getUser"
 
 const Donations = () => {
   const [dateRange, setDateRange] = useState<IDateRange>()
