@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect,useRef } from 'react'
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { getUser } from '@/app/api/user/getUser'
 import ProgressBar from '../../../dashboard-components/ProgressBar'
 import ExploreCard from '../../../dashboard-components/ExploreCard'
@@ -10,12 +11,12 @@ import Checkbox from '../../../dashboard-components/Checkbox'
 import Select from '../../../dashboard-components/Select'
 import { Button } from '../../../dashboard-components/Button'
 import { getSingleCampaign } from '@/app/api/campaigns/getCampaigns'
-import { CampaignProps } from '../../page'
 import makeRequest from '@/utils/makeRequest'
 import { extractErrorMessage } from '@/utils/extractErrorMessage'
+import HeartHand from '../../../../../../../public/svg/hand-holding-heart.svg'
 import { useToast } from '@/app/common/hooks/useToast'
-
-const PROGRESS_COUNT = 8
+import { formatAmount } from '../../../common/utils/currency'
+import Link from 'next/link'
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
 const inActiveTabStyle = 'text-[#667085]'
@@ -53,7 +54,7 @@ const ageRange = [
   }
 ]
 
-export default function DonateOrVolunteer({
+export default function DonateOrVolunteer ({
   params
 }: {
   params: { id: string }
@@ -62,7 +63,6 @@ export default function DonateOrVolunteer({
   const [loading, setLoading] = useState(false)
   const [campaign, setCampaign] = useState<any>()
   const [tab, setTab] = useState('')
-
 
   const fetchSingleCampaign = async () => {
     const singleCampaign = await getSingleCampaign(params.id)
@@ -94,6 +94,41 @@ export default function DonateOrVolunteer({
     })
   }
 
+  interface initVolunteerTypes {
+    fullName: string
+    email?: string
+    phoneNumber: string
+    gender: string
+    ageRange: string
+    address: string
+    about: string
+  }
+
+  const initVolunteerProps: initVolunteerTypes = {
+    fullName: '',
+    email: '',
+    phoneNumber: '',
+    gender: '',
+    ageRange: '',
+    address: '',
+    about: ''
+  }
+
+  const [volunteerInputs, setVolunteerInputs] = useState(initVolunteerProps)
+
+  const updateVolunteerProps = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const newValue = event.target.value
+    const inputName = event.target.name
+    setVolunteerInputs((prevState: initVolunteerTypes) => {
+      return {
+        ...prevState,
+        [inputName]: newValue
+      }
+    })
+  }
+
   const [checkboxValues, setCheckboxValues] = useState({
     isAnonymous: false,
     shouldShareDetails: false,
@@ -107,15 +142,29 @@ export default function DonateOrVolunteer({
     }))
   }
 
+  const getCurrentUser = async () => {
+    const user = await getUser()
+    setDonationInputs({
+      ...donationInputs,
+      email: user?.email
+    })
+    setVolunteerInputs({
+      ...volunteerInputs,
+      email: user?.email,
+      phoneNumber: '+234'
+    })
+  }
+
   useEffect(() => {
     fetchSingleCampaign()
     setTab(
       campaign?.campaignType === 'fundraiseAndVolunteer'
         ? 'donate'
         : campaign?.campaignType === 'fundraise'
-          ? 'donate'
-          : 'volunteer'
+        ? 'donate'
+        : 'volunteer'
     )
+    getCurrentUser()
   }, [params.id, campaign?.campaignType])
 
   const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails.reduce(
@@ -124,30 +173,25 @@ export default function DonateOrVolunteer({
     },
     0
   )
-
-  console.log("campaign", campaign)
   const userDetails = campaign?.user
-
   const donatedAmount = campaign?.totalAmountDonated?.[0].amount
-
   const currency = campaign?.fundraise?.fundingGoalDetails[0].currency
 
   const donate = async () => {
     setLoading(true)
-    const user = await getUser();
+    const user = await getUser()
 
     if (!user) {
-      return null;
+      return null
     }
     const headers = {
-      "x-auth-token": user.token
-    };
+      'x-auth-token': user.token
+    }
 
     const endpoint = '/api/v1/payments/initiate'
 
     const payload = {
       campaignId: params.id,
-      campaignOwnerId: campaign.userId,
       campaignDonorId: campaign.userId,
       amount: donationInputs.amount,
       email: donationInputs.email,
@@ -161,12 +205,12 @@ export default function DonateOrVolunteer({
     try {
       const { data } = await makeRequest(endpoint, {
         method: 'POST',
-          headers,
+        headers,
         payload: JSON.stringify(payload)
       })
 
-      window.open(data.authorization_url, '_blank', 'noopener,noreferrer');
-      window.location.href = "/donations"
+      window.open(data.authorization_url, '_blank', 'noopener,noreferrer')
+      window.location.href = '/donations'
       toast({ title: 'Success!', body: data.message, type: 'success' })
       setLoading(false)
     } catch (error) {
@@ -176,12 +220,63 @@ export default function DonateOrVolunteer({
     }
   }
 
+  const volunteer = async () => {
+    setLoading(true)
+    const user = await getUser()
+
+    if (!user) {
+      return null
+    }
+    const headers = {
+      'x-auth-token': user.token
+    }
+
+    const endpoint = `/api/v1/campaigns/${params.id}/volunteer`
+
+    const payload = {
+      userId: campaign.userId,
+      phoneNumber: volunteerInputs.phoneNumber,
+      email: volunteerInputs.email,
+      fullName: volunteerInputs.fullName,
+      ageRange: volunteerInputs.ageRange,
+      gender: volunteerInputs.gender,
+      address: volunteerInputs.address,
+      about: volunteerInputs.about
+    }
+
+    try {
+      const { data } = await makeRequest(endpoint, {
+        method: 'POST',
+        headers,
+        payload: JSON.stringify(payload)
+      })
+      toast({ title: 'Success!', body: data.message, type: 'success' })
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      const message = extractErrorMessage(error)
+      toast({ title: 'Oops!', body: message, type: 'error' })
+    }
+  }
+
+  const urlsOnly = campaign?.campaignAdditionalImages.map(
+    (item: { url: string }) => item.url
+  )
+
+  const areAllInputsFilled = (input: any) => {
+    return Object.values(input).every(value => value !== '')
+  }
+
   return (
     <div className='mb-6'>
       <div className='flex items-center justify-between mb-4'>
         <div>
           <h3 className='text-2xl text-black font-semibold'>
-            {campaign?.campaignType === 'fundraise' ? 'Donate' : 'Volunteer'}
+            {campaign?.campaignType === 'fundraiseAndVolunteer'
+              ? 'Donate and Volunteer'
+              : campaign?.campaignType === 'fundraise'
+              ? 'Donate'
+              : 'volunteer'}
           </h3>
         </div>
       </div>
@@ -193,11 +288,8 @@ export default function DonateOrVolunteer({
           subheader={campaign?.story}
           totalAmount={campaign?.fundraise?.fundingGoalDetails[0].amount}
           currentAmount={donatedAmount}
-          timePosted={campaign?.fundraise?.startOfFundraise}
-          slideImages={[
-            campaign?.campaignCoverImage?.url,
-            ...(campaign?.campaignAdditionalImages || [])
-          ]}
+          timePosted={campaign?.campaignStartDate}
+          slideImages={[campaign?.campaignCoverImage?.url, ...(urlsOnly || [])]}
           donateImage={campaign?.campaignCoverImage?.url}
           routeTo={``}
           avatar={
@@ -210,8 +302,9 @@ export default function DonateOrVolunteer({
             {campaign?.campaignType === 'fundraiseAndVolunteer' ? (
               <>
                 <span
-                  className={`text-sm p-3 cursor-pointer ${tab === 'donate' ? activeTabStyle : inActiveTabStyle
-                    }`}
+                  className={`text-sm p-3 cursor-pointer ${
+                    tab === 'donate' ? activeTabStyle : inActiveTabStyle
+                  }`}
                   onClick={() => {
                     setTab('donate')
                   }}
@@ -219,8 +312,9 @@ export default function DonateOrVolunteer({
                   Donate
                 </span>
                 <span
-                  className={`text-sm p-3 ml-4 cursor-pointer ${tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
-                    }`}
+                  className={`text-sm p-3 ml-4 cursor-pointer ${
+                    tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
+                  }`}
                   onClick={() => {
                     setTab('volunteer')
                   }}
@@ -230,8 +324,9 @@ export default function DonateOrVolunteer({
               </>
             ) : campaign?.campaignType === 'fundraise' ? (
               <span
-                className={`text-sm p-3 cursor-pointer ${tab === 'donate' ? activeTabStyle : inActiveTabStyle
-                  }`}
+                className={`text-sm p-3 cursor-pointer ${
+                  tab === 'donate' ? activeTabStyle : inActiveTabStyle
+                }`}
                 onClick={() => {
                   setTab('donate')
                 }}
@@ -240,8 +335,9 @@ export default function DonateOrVolunteer({
               </span>
             ) : (
               <span
-                className={`text-sm p-3 ml-4 cursor-pointer ${tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
-                  }`}
+                className={`text-sm p-3 ml-4 cursor-pointer ${
+                  tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
+                }`}
                 onClick={() => {
                   setTab('volunteer')
                 }}
@@ -254,37 +350,46 @@ export default function DonateOrVolunteer({
 
           {tab === 'volunteer' ? (
             <div className='mt-6'>
-              <div className='bg-[#F9F9F9] p-4'>
-                <p className='text-sm text-[#667085]'>
-                  {' '}
-                  <span className='text-[#000]'>Goal</span> 35/70 Volunteers
+              <div className='bg-[#F9F9F9] p-4 mb-2'>
+                <p className='mt-1 text-sm opacity-50'>
+                  {campaign?.totalNoOfCampaignVolunteers} applications
                 </p>
-                <ProgressBar
-                  bgColor='#00B964'
-                  percent={(PROGRESS_COUNT / 10) * 100}
-                />
-                <p className='mt-3 text-sm opacity-50'>240 applications</p>
               </div>
 
-              <h3 className='mt-2 text-base'>Apply</h3>
+              <h3 className='mt-3 text-base text-[#292A2E]'>Apply</h3>
               <div className='mt-4'>
                 <Input
                   label={'Full name'}
                   placeholder='Ajayi Akintomiwa G.'
                   name='fullName'
                   id='fullName'
+                  value={volunteerInputs.fullName}
+                  onChange={updateVolunteerProps}
                 />
                 <Input
                   label={'Email address'}
                   placeholder='tomiwa@crowdr.com'
-                  name='emailAddress'
-                  id='emailAddress'
+                  name='email'
+                  id='email'
+                  value={volunteerInputs.email}
+                  onChange={updateVolunteerProps}
+                />
+
+                <Input
+                  label={'Phone number'}
+                  placeholder='08012345678'
+                  name='phoneNumber'
+                  id='phoneNumber'
+                  value={volunteerInputs.phoneNumber}
+                  onChange={updateVolunteerProps}
                 />
                 <Select
                   label={'Gender'}
                   name='gender'
                   id='gender'
                   options={genderOptions}
+                  value={volunteerInputs.gender}
+                  onChange={updateVolunteerProps}
                 />
 
                 <Select
@@ -292,6 +397,8 @@ export default function DonateOrVolunteer({
                   name='ageRange'
                   id='ageRange'
                   options={ageRange}
+                  value={volunteerInputs.ageRange}
+                  onChange={updateVolunteerProps}
                 />
 
                 <Input
@@ -299,34 +406,91 @@ export default function DonateOrVolunteer({
                   placeholder='Lagos, NG'
                   name='address'
                   id='address'
+                  value={volunteerInputs.address}
+                  onChange={updateVolunteerProps}
                 />
                 <div className='flex flex-col items-start w-full'>
                   <label
-                    htmlFor='bio'
+                    htmlFor='about'
                     className='text-[14px] text-[#344054] mb-[6px]'
                   >
                     Tell us a bit about yourself and why you’re interested in
                     this project!
                   </label>
                   <textarea
-                    id='bio'
+                    id='about'
                     className='w-full text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]'
+                    value={volunteerInputs.about}
+                    onChange={updateVolunteerProps}
+                    name='about'
                   />
                 </div>
               </div>
 
-              <Button text='Apply' className='w-full mt-4 !justify-center' />
+              <Button
+                text='Apply'
+                className='w-full mt-4 !justify-center'
+                disabled={!areAllInputsFilled(volunteerInputs)}
+                loading={loading}
+                onClick={volunteer}
+              />
+
+              <div className='mt-10'>
+                <div className='flex flex-row items-start justify-between mb-2'>
+                  <p className='text-[#292A2E] text-base'>
+                    {campaign?.totalNoOfCampaignVolunteers > 0 &&
+                      campaign?.totalNoOfCampaignVolunteers}{' '}
+                    Total Volunteer(s)
+                  </p>
+                </div>
+                <div className='flex items-start flex-col gap-5 mb-8'>
+                  {campaign?.campaignVolunteers
+                    ?.slice(0, 5)
+                    .map(
+                      (
+                        donor: { fullName: string; amount: string },
+                        index: number
+                      ) => {
+                        return (
+                          <div
+                            className='flex items-center flex-row justify-start'
+                            key={index}
+                          >
+                            <div className='p-2 bg-[#F8F8F8] rounded-full'>
+                              <Image
+                                src={HeartHand}
+                                alt='menu'
+                                className='bg-F8F8F8'
+                              />
+                            </div>
+                            <div className='flex flex-col gap-[1px] ml-4'>
+                              <p className='text-[#344054] text-sm'>
+                                {donor?.fullName}
+                              </p>
+                            </div>
+                          </div>
+                        )
+                      }
+                    )}
+                </div>
+                {campaign?.totalNoOfCampaignVolunteers > 0 && (
+                  <Link
+                    className='cursor-pointer p-4 bg-[#F8F8F8] text-[#344054] w-fit mt-8 rounded-lg'
+                    href={`/explore/donate-or-volunteer/${campaign._id}/all-donations`}
+                  >
+                    See all
+                  </Link>
+                )}
+              </div>
             </div>
           ) : (
             <div className='mt-6'>
               <div className='bg-[#F9F9F9] p-4'>
-                <p className='text-sm text-[#667085]'>
+                <p className='text-sm text-[#667085] mb-2'>
                   {' '}
                   <span className='text-[#000]'>Goal</span>{' '}
-                  {currency?.toLowerCase() === 'naira' && 'N'}
-                  {donatedAmount}/
-                  {currency?.toLowerCase() === 'naira' && 'N'}
-                  {totalDonationAmount}
+                  {formatAmount(donatedAmount, currency?.toLowerCase())} /{' '}
+                  {formatAmount(totalDonationAmount, currency?.toLowerCase())}
                 </p>
                 <ProgressBar
                   bgColor='#00B964'
@@ -400,16 +564,63 @@ export default function DonateOrVolunteer({
                 className='w-full mt-4 !justify-center'
                 onClick={donate}
                 loading={loading}
+                disabled={!areAllInputsFilled(donationInputs)}
               />
 
               <div className='mt-10'>
-                <div className='flex flex-row items-start justify-between'>
+                <div className='flex flex-row items-start justify-between mb-2'>
                   <p className='text-[#292A2E] text-base'>
-                    {campaign?.donorsCount} Total Donors
+                    {campaign?.totalNoOfCampaignDonors > 0 &&
+                      campaign?.totalNoOfCampaignDonors}{' '}
+                    Total Donor(s)
                   </p>
 
                   <Filter query='Top Donors' />
                 </div>
+                <div className='flex items-start flex-col gap-5 mb-8'>
+                  {campaign?.campaignDonors
+                    ?.slice(0, 5)
+                    .map(
+                      (
+                        donor: { fullName: string; amount: string },
+                        index: number
+                      ) => {
+                        return (
+                          <div
+                            className='flex items-center flex-row justify-start'
+                            key={index}
+                          >
+                            <div className='p-2 bg-[#F8F8F8] rounded-full'>
+                              <Image
+                                src={HeartHand}
+                                alt='menu'
+                                className='bg-F8F8F8'
+                              />
+                            </div>
+                            <div className='flex flex-col gap-[1px] ml-4'>
+                              <p className='text-[#344054] text-sm'>
+                                {donor?.fullName}
+                                {/* <span className="text-[#667085] text-[12px] ml-2">6 hours ago</span> */}
+                              </p>
+                              <span className='text-[13px] text-[#667085]'>
+                                Donated{' '}
+                                {formatAmount(parseInt(donor?.amount), 'naira')}{' '}
+                                to this campaign
+                              </span>
+                            </div>
+                          </div>
+                        )
+                      }
+                    )}
+                </div>
+                {campaign?.totalNoOfCampaignDonors > 0 && (
+                  <Link
+                    className='cursor-pointer p-4 bg-[#F8F8F8] text-[#344054] w-fit mt-8 rounded-lg'
+                    href={`/explore/donate-or-volunteer/${campaign._id}/all-donations`}
+                  >
+                    See all
+                  </Link>
+                )}
               </div>
             </div>
           )}

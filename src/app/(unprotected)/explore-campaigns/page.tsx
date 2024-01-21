@@ -8,20 +8,6 @@ import Footer from '@/app/common/components/Footer'
 import Modal from '@/app/common/components/Modal';
 import WaitlistForm from '@/app/home/home-components/WaitlistForm';
 
-type FundraisingGoalProps = {
-  amount: number
-  currency: string
-}
-
-type CampaignImage = {
-  _id: string
-  url: string
-  public_id: string
-  id: string
-}
-
-
-
 export default function DynamicExplore () {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [page, setPage] = useState(1)
@@ -68,7 +54,7 @@ export default function DynamicExplore () {
   return (
     <div>
      <Navigation openModal={openModal}/>
-      <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 p-8 bg-[#E7F0EE]'>
+      <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 p-10 bg-[#E7F0EE]'>
         {Array.isArray(campaigns) &&
           campaigns?.map((campaign: Campaign, index: number) => {
             const urlsOnly = campaign.campaignAdditionalImages.map(
@@ -85,7 +71,7 @@ export default function DynamicExplore () {
                 subheader={campaign?.story}
                 totalAmount={campaign.fundraise?.fundingGoalDetails[0].amount}
                 currentAmount={donatedAmount}
-                timePosted={campaign.fundraise?.startOfFundraise}
+                timePosted={campaign?.campaignStartDate}
                 slideImages={[
                   campaign?.campaignCoverImage?.url,
                   ...(urlsOnly || [])

@@ -7,6 +7,8 @@ import Avatar from '../../../../../public/assets/avatar.png'
 import Filter from '../dashboard-components/Filter'
 import ExploreCard from '../dashboard-components/ExploreCard'
 import DynamicExplore from '../dashboard-components/DynamicExplore'
+import { getUser } from '@/app/api/user/getUser'
+import { useEffect } from 'react'
 
 type FundraisingGoalProps = {
   amount: number
@@ -31,6 +33,7 @@ export type CampaignProps = {
   campaignCoverImage: CampaignImage
   campaignAdditionalImages: CampaignImage[]
   campaignViews: number
+  campaignStartDate: string
   fundraise: {
     fundingGoalDetails: FundraisingGoalProps[]
     startOfFundraise: string
@@ -47,13 +50,15 @@ export type CampaignProps = {
 }
 export default async function Explore () {
   const campaigns = await getCampaigns(1)
+  const user = await getUser()
 
+  
   return (
     <div>
       <div className='flex items-center justify-between mb-4'>
         <div>
           <h3 className='text-2xl text-black'>
-            Welcome to Crowdr, Akintomiwa! 💚
+            Welcome to Crowdr, {user?.organizationName}! 💚
           </h3>
           <p className='text-sm text-[#61656B]'>
             Explore campaigns and spread love by donating.{' '}
@@ -80,7 +85,7 @@ export default async function Explore () {
                 subheader={campaign?.story}
                 totalAmount={campaign.fundraise?.fundingGoalDetails[0].amount}
                 currentAmount={donatedAmount}
-                timePosted={campaign.fundraise?.startOfFundraise}
+                timePosted={campaign?.campaignStartDate}
                 slideImages={[
                   campaign?.campaignCoverImage?.url,
                   ...(urlsOnly || [])
