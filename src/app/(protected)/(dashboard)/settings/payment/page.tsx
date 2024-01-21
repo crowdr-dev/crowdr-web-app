@@ -7,6 +7,8 @@ import Image from "next/image"
 import Table from "../../dashboard-components/Table"
 import Label from "../../dashboard-components/Label"
 import Detail from "../../dashboard-components/Detail"
+import Pagination from "../../dashboard-components/Pagination"
+import { Button } from "../../dashboard-components/Button"
 import AccountForm from "./AccountForm"
 import AccountFormContext, { FormFields } from "../utils/useAccountForm"
 import makeRequest from "@/utils/makeRequest"
@@ -15,9 +17,11 @@ import { keys } from "../../utils/queryKeys"
 
 import { QF } from "@/app/common/types"
 import CaretIcon from "../../../../../../public/svg/caret.svg"
-import { Button } from "../../dashboard-components/Button"
+import { formatAmount } from "../../common/utils/currency"
+import moment from "moment"
 
 const PaymentPage = () => {
+  const [page, setPage] = useState(1)
   const [showForm, setShowForm] = useState(false)
   const [accountToEdit, setAccountToEdit] = useState<IBankDetail>()
   const user = useUser()
@@ -26,6 +30,14 @@ const PaymentPage = () => {
   const { data: bankDetails, refetch } = useQuery(
     [keys.settings.bankDetails, user?.token],
     fetchBankDetails,
+    {
+      enabled: Boolean(user?.token),
+    }
+  )
+
+  const { data: withdrawals } = useQuery(
+    [keys.settings.withdrawals, user?.token, page],
+    fetchWithdrawals,
     {
       enabled: Boolean(user?.token),
     }
@@ -85,6 +97,20 @@ const PaymentPage = () => {
           onClick={() => editAccount(bankDetail)}
         />
       ),
+    }
+  }
+
+  const mapWithdrawalToView = (
+    withdrawal: IWithdrawals["withdrawals"][number]
+  ) => {
+    return {
+      title: withdrawal.campaignId, // TODO: MAKE SURE TO REPLACE WITH ACTUAL WITHDRAWAL REFERENCE NO.
+      detail: formatAmount(
+        withdrawal.totalAmountDonated[0].amount,
+        withdrawal.totalAmountDonated[0].currency
+      ),
+      date: moment(withdrawal.createdAt).format(DATE_FORMAT),
+      status: withdrawal.status,
     }
   }
 
@@ -180,40 +206,62 @@ const PaymentPage = () => {
               />
             </summary>
 
-            <Table className="hidden md:block mb-9">
-              <Table.Head>
-                <Table.HeadCell>Reference No</Table.HeadCell>
-                <Table.HeadCell>Amount</Table.HeadCell>
-                <Table.HeadCell>Date & time</Table.HeadCell>
-                <Table.HeadCell>Status</Table.HeadCell>
-              </Table.Head>
-              <Table.Body>
-                {payments.map((donation, index) => (
-                  <Table.Row key={index}>
-                    <Table.Cell>{donation.title}</Table.Cell>
-                    <Table.Cell>{donation.detail}</Table.Cell>
-                    <Table.Cell>{donation.date}</Table.Cell>
-                    <Table.Cell>
-                      {donation.status.match(/success/i) ? (
-                        <Label text={donation.status} />
-                      ) : (
-                        <Label
-                          text={donation.status}
-                          textColor="#B42318"
-                          bgColor="#FEF3F2"
-                        />
-                      )}
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
+            {withdrawals && (
+              <>
+                <Table className="hidden md:block mb-9">
+                  <Table.Head>
+                    <Table.HeadCell>Reference No</Table.HeadCell>
+                    <Table.HeadCell>Amount</Table.HeadCell>
+                    <Table.HeadCell>Date & time</Table.HeadCell>
+                    <Table.HeadCell>Status</Table.HeadCell>
+                  </Table.Head>
+                  <Table.Body>
+                    {withdrawals.withdrawals.map((withdrawal, index) => (
+                      <Table.Row key={index}>
+                        <Table.Cell>{withdrawal.campaignId}</Table.Cell>
+                        <Table.Cell>
+                          {formatAmount(
+                            withdrawal.totalAmountDonated[0].amount,
+                            withdrawal.totalAmountDonated[0].currency
+                          )}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {moment(withdrawal.createdAt).format(DATE_FORMAT)}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {withdrawal.status.match(/success/i) ? (
+                            <Label text={withdrawal.status} />
+                          ) : (
+                            <Label
+                              text={withdrawal.status}
+                              textColor="#B42318"
+                              bgColor="#FEF3F2"
+                            />
+                          )}
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
 
-            <div className="flex flex-col md:hidden">
-              {payments.map((donation, index) => (
-                <Detail key={index} {...donation} />
-              ))}
-            </div>
+                <div className="flex flex-col md:hidden">
+                  {withdrawals.withdrawals.map((withdrawal, index) => (
+                    <Detail key={index} {...mapWithdrawalToView(withdrawal)} />
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* pagination */}
+            {withdrawals && withdrawals.withdrawals.length !== 0 && (
+              <Pagination
+                currentPage={withdrawals.pagination.currentPage}
+                perPage={withdrawals.pagination.perPage}
+                total={withdrawals.pagination.total}
+                onPageChange={setPage}
+                className="px-[18px] py-4"
+              />
+            )}
           </details>
         </>
       )}
@@ -223,7 +271,8 @@ const PaymentPage = () => {
 
 export default PaymentPage
 
-const ITEMS_PER_PAGE = '5'
+const ITEMS_PER_PAGE = "5"
+const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"
 
 const fetchBankDetails: QF<
   IBankDetail[] | undefined,
@@ -252,7 +301,7 @@ const fetchBankDetails: QF<
 }
 
 const fetchWithdrawals: QF<
-  IBankDetail[] | undefined,
+  IWithdrawals | undefined,
   [string | undefined, number]
 > = async ({ queryKey }) => {
   const [_, token, withdrawalsPage] = queryKey
@@ -269,7 +318,7 @@ const fetchWithdrawals: QF<
     }
 
     try {
-      const { data } = await makeRequest<IBankDetail[]>(endpoint, {
+      const { data } = await makeRequest<IWithdrawals>(endpoint, {
         headers,
         method: "GET",
       })
@@ -328,18 +377,52 @@ export interface IBankDetail {
   __v: number
 }
 
-// Generated by https://quicktype.io
-
 export interface IWithdrawals {
-  withdrawals: any[];
-  pagination:  Pagination;
+  withdrawals: Withdrawal[]
+  pagination: Pagination
 }
 
 export interface Pagination {
-  total:       number;
-  perPage:     number;
-  currentPage: number;
-  totalPages:  number;
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
+  total: number
+  perPage: number
+  currentPage: number
+  totalPages: number
+  hasNextPage: boolean
+  hasPrevPage: boolean
+}
+
+export interface Withdrawal {
+  _id: string
+  userId: string
+  campaignId: string
+  status: string
+  createdAt: string
+  updatedAt: string
+  campaign: Campaign
+  totalAmountDonated: TotalAmountDonated[]
+}
+
+export interface Campaign {
+  _id: string
+  userId: string
+  category: string
+  title: string
+  story: string
+  campaignType: string
+  campaignStatus: string
+  campaignCoverImage: string
+  campaignAdditionalImages: string[]
+  campaignStartDate: string
+  campaignEndDate: string
+  campaignViews: number
+  fundraise: Fundraise
+}
+
+export interface Fundraise {
+  fundingGoalDetails: TotalAmountDonated[]
+}
+
+export interface TotalAmountDonated {
+  amount: number
+  currency: string
 }

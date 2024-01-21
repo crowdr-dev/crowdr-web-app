@@ -45,6 +45,7 @@ export const Button: RFC<ButtonProps> = ({
   const buttonStyle: React.CSSProperties = {
     color: textColor,
     background: !disabled ? bgColor : whiten(bgColor), // TODO: FINISHED UP MAKING BUTTON LIGHTER WHEN DISABLED
+    opacity: disabled ? 0.7 : 1 // FIXME: TEMPORARY FIX, REMOVE
   }
   if (outlineColor) buttonStyle.border = `1px solid ${outlineColor}`
   if (shadow) {

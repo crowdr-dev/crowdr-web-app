@@ -16,5 +16,6 @@ export const keys = {
   settings: {
     kyc: 'get-kyc',
     bankDetails: 'get-bank-details',
+    withdrawals: 'get-withdrawals',
   }
 } as const

@@ -18,6 +18,10 @@ const Header = () => {
   const accountType =
     user?.userType === "individual" ? "Individual" : "Non-Profit"
 
+    const logout = () => {
+      document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    }
+
   return (
     <header className="flex justify-between items-center w-full min-h-[62px] md:min-h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
       <div>
@@ -42,7 +46,7 @@ const Header = () => {
 
         {/* profile */}
         {user ? (
-          <div className="hidden md:flex items-center">
+          <button type="button" className="group relative hidden md:flex items-center">
             <div className="mr-[15px]">
               <Image src={Avatar} alt="avatar" width={43} />
             </div>
@@ -50,7 +54,11 @@ const Header = () => {
               <p>{user.fullName || user.organizationName}</p>
               <Label text={accountType} />
             </div>
-          </div>
+
+            <div className="absolute hidden group-focus:flex">
+              <Button text="Logout" onClick={logout} />
+            </div>
+          </button>
         ) : (
           <ProfileSkeleton />
         )}
