@@ -28,20 +28,20 @@ export default function AllDonations ({ params }: { params: { id: string } }) {
       <hgroup className='mb-[5px]'>
         <h1 className='text-lg md:text-2xl font-semibold text-[#101828] mb-[5px]'>
           All{' '}
-          {headerTitle}
+          {headerTitle} for {campaign?.title}
         </h1>
         <p className='text-[15px] text-[#667085]'>View all {headerTitle}</p>
       </hgroup>
 
       {/* donations x volunteering */}
       {campaign?.campaignType === 'fundraiseAndVolunteer' ? (
-        <Tabs>
+        <Tabs activeTab={"Donors"}>
           <Tabs.Item heading='Donors'>
             <Table className='hidden md:block mb-9'>
               <Table.Head>
                 <Table.HeadCell>Full Name</Table.HeadCell>
                 <Table.HeadCell>Amount</Table.HeadCell>
-                <Table.HeadCell>currency</Table.HeadCell>
+                <Table.HeadCell>Currency</Table.HeadCell>
               </Table.Head>
 
               <Table.Body>
@@ -101,7 +101,7 @@ export default function AllDonations ({ params }: { params: { id: string } }) {
               <Table.Head>
                 <Table.HeadCell>Full Name</Table.HeadCell>
                 <Table.HeadCell>Amount</Table.HeadCell>
-                <Table.HeadCell>currency</Table.HeadCell>
+                <Table.HeadCell>Currency</Table.HeadCell>
               </Table.Head>
 
               <Table.Body>

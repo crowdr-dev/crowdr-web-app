@@ -7,6 +7,7 @@ import {
   SetStateAction,
   isValidElement,
   useState,
+  useEffect,
 } from "react"
 import _ from "lodash"
 import Link from "next/link"
@@ -28,6 +29,9 @@ const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
     initialTab ? initialTab : tabHeadings[0]?.heading
   )
 
+  useEffect(() => {
+      setActiveTab(tabHeadings[0]?.heading)
+  }, [])
   return (
     <div>
       <div

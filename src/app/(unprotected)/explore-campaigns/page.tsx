@@ -54,7 +54,7 @@ export default function DynamicExplore () {
   return (
     <div>
      <Navigation openModal={openModal}/>
-      <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 p-8 bg-[#E7F0EE]'>
+      <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 p-10 bg-[#E7F0EE]'>
         {Array.isArray(campaigns) &&
           campaigns?.map((campaign: Campaign, index: number) => {
             const urlsOnly = campaign.campaignAdditionalImages.map(
