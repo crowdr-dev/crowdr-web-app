@@ -303,10 +303,9 @@ const fetchVolunteering: QF<
       page: `${volunteeringPage}`,
       perPage: ITEMS_PER_PAGE,
     })
-    const endpoint = `/api/v1/my-volunteerings?${query}`
 
+    const endpoint = `/api/v1/my-volunteerings?${query}`
     const headers = {
-      "Content-Type": "multipart/form-data",
       "x-auth-token": token,
     }
 

@@ -20,6 +20,7 @@ export const mapCampaignResponseToView = (
     campaignType,
     campaignStartDate,
     campaignEndDate,
+    isCompleted,
   } = campaign
 
   let fundingGoal,
@@ -42,7 +43,7 @@ export const mapCampaignResponseToView = (
       totalAmountDonated.amount,
       totalAmountDonated.currency
     )
-    
+
     percentage = Math.floor(
       (totalAmountDonated.amount / fundingGoalDetail.amount) * 100
     )
@@ -67,8 +68,13 @@ export const mapCampaignResponseToView = (
     fundsGotten,
     percentage,
     campaignType,
+    startDate: campaignStartDate,
+    endDate: campaignEndDate,
+    isCompleted,
   }
 }
+
+export type ICampaignView = ReturnType<typeof mapCampaignResponseToView>
 
 export function isFundraise(
   campaign: IFundraiseVolunteerCampaign

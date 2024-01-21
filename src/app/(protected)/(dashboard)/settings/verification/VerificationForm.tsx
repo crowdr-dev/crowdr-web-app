@@ -63,8 +63,6 @@ const VerificationForm = () => {
       const payload = {
         BVN: bvnNumber,
         docType,
-        // docImg: docImg[0],
-        // selfieImg: selfieImg[0],
         ...(docImg ? {docImg: docImg[0]} : {}),
         ...(selfieImg ? {selfieImg: selfieImg[0]} : {}),
       }
