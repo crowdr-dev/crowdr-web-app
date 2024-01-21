@@ -69,7 +69,7 @@ const Campaigns = () => {
             shadow
             className="mr-3"
           />
-          <Button text="Withdraw Donations" />
+          <Button text="Withdraw Donations" href="/campaigns/withdrawal" />
         </div>
       </div>
 

@@ -15,15 +15,15 @@ export const Button: RFC<ButtonProps> = ({
   onClick,
   iconUrl,
   icon,
-  bgColor,
-  textColor,
+  bgColor = "#00B964",
+  textColor = "#FFF",
   outlineColor,
   shadow,
-  buttonType,
+  buttonType = "button",
   loading,
   disabled,
   className,
-  iconPosition,
+  iconPosition = "left",
 }) => {
   const props = {
     text,
@@ -44,7 +44,7 @@ export const Button: RFC<ButtonProps> = ({
 
   const buttonStyle: React.CSSProperties = {
     color: textColor,
-    background: bgColor,
+    background: !disabled ? bgColor : whiten(bgColor), // TODO: FINISHED UP MAKING BUTTON LIGHTER WHEN DISABLED
   }
   if (outlineColor) buttonStyle.border = `1px solid ${outlineColor}`
   if (shadow) {
@@ -52,11 +52,14 @@ export const Button: RFC<ButtonProps> = ({
     buttonStyle.border = `0.4px solid #D0D5DD`
   }
 
+  const onMouseEnter = !disabled ? () => (buttonRef.current.style.background = darkerBgColor) : nothing
+  const onMouseLeave = !disabled ? () => (buttonRef.current.style.background = bgColor!) : nothing
+
   return href ? (
     <Link
       ref={buttonRef}
-      onMouseEnter={() => (buttonRef.current.style.background = darkerBgColor)}
-      onMouseLeave={() => (buttonRef.current.style.background = bgColor!)}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       href={href}
       style={buttonStyle}
       className={buttonClasses}
@@ -66,8 +69,8 @@ export const Button: RFC<ButtonProps> = ({
   ) : (
     <button
       ref={buttonRef}
-      onMouseEnter={() => (buttonRef.current.style.background = darkerBgColor)}
-      onMouseLeave={() => (buttonRef.current.style.background = bgColor!)}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       type={buttonType}
       aria-label={text}
       onClick={onClick}
@@ -141,14 +144,6 @@ export const WhiteButton: RFC<ButtonProps> = ({ ...props }) => {
   )
 }
 
-// FIXME: DEFAULT PROPS SOON TO BE DEPRECATED
-Button.defaultProps = {
-  bgColor: "#00B964",
-  textColor: "#FFF",
-  buttonType: "button",
-  iconPosition: "left",
-}
-
 type ButtonProps = ButtonContentProps & {
   href?: string
   onClick?: () => void
@@ -169,6 +164,17 @@ type ButtonContentProps = {
   loading?: boolean
 }
 
+function whiten(color: string) {
+  const colorObj = Color(color)
+  // const brightness = colorObj.luminosity()
+  // const whitenedColor =
+  //   brightness > 0.5 ? colorObj.fade(0.1) : colorObj.fade(0.9)
+  //   console.log(color, whitenedColor)
+  console.log(color, colorObj.fade(0.5))
+
+  return colorObj.fade(0.5).hex()
+}
+
 function darken(color: string) {
   const colorObj = Color(color)
   const brightness = colorObj.luminosity()
@@ -177,3 +183,5 @@ function darken(color: string) {
 
   return darkenedColor.hex()
 }
+
+function nothing() {}

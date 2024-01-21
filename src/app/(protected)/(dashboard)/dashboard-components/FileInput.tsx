@@ -1,4 +1,11 @@
-import { isValidElement, useEffect, useMemo, useRef, useState, cloneElement } from "react"
+import {
+  isValidElement,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  cloneElement,
+} from "react"
 import { Merge, useFormContext } from "react-hook-form"
 import NextImage from "next/image"
 import imageCompression from "browser-image-compression"
@@ -40,7 +47,10 @@ const FileInput: RFC<FileInputProps> = ({
 
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { register, formState: { errors }} = useFormContext()
+    const {
+      register,
+      formState: { errors },
+    /*eslint-disable*/} = useFormContext()
     config = register(name, rules)
     error = errors[name] as FieldError
   }
@@ -57,7 +67,7 @@ const FileInput: RFC<FileInputProps> = ({
       trigger,
       formState: { errors, isValid, isSubmitting },
       // eslint-disable-next-line react-hooks/rules-of-hooks
-    } = useFormContext()
+    /*eslint-disable*/} = useFormContext()
     files = watch(config.name)
   }
   if (value) {
@@ -69,21 +79,23 @@ const FileInput: RFC<FileInputProps> = ({
 
   // IF CHILDREN PROP IS FileInputContent COMPONENT AND IT HAS showPreview PROP,
   // AUTOMATICALLY THE URL FOR THE SELECTED FILE FOR PREVIEW
-  if (isValidElement<FileInputContentProps>(children)) {
-    if (children.props.showPreview && files) {
-      const reader = new FileReader()
+  useEffect(() => {
+    if (isValidElement<FileInputContentProps>(children)) {
+      if (children.props.showPreview && files) {
+        const reader = new FileReader()
 
-      reader.onload = (e) => {
-        // setPreviewImage(e.target?.result as string)
-        setPreviewProps({
-          previewImage: e.target?.result as string,
-          ...children.props
-        })
+        reader.onload = (e) => {
+          // setPreviewImage(e.target?.result as string)
+          setPreviewProps({
+            ...children.props,
+            previewImage: e.target?.result as string,
+          })
+        }
+
+        reader.readAsDataURL(files[0])
       }
-
-      reader.readAsDataURL(files[0])
     }
-  }
+  }, [files])
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault()
@@ -208,7 +220,9 @@ const FileInput: RFC<FileInputProps> = ({
         style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
         className={`${
           dragActive ? "border-green-200" : "border-[#e4e7ec]"
-        } flex flex-col items-center cursor-pointer rounded-lg border py-4 px-6 mb-1 ${disabled && 'pointer-events-none'}`}
+        } flex flex-col items-center cursor-pointer rounded-lg border py-4 px-6 mb-1 ${
+          disabled && "pointer-events-none"
+        }`}
       >
         {children ? (
           <FileInputContent {...(previewProps || (children as any).props)} />
