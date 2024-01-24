@@ -30,6 +30,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <Head>
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
       </Head>
       
       <body className={inter.className}>

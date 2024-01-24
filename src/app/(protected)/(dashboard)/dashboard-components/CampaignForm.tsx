@@ -92,7 +92,6 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
           })
 
           const formData = mapResponseToForm(data)
-          console.log({data, formData})
           reset(formData)
           setFormFetched(true)
         } catch (error) {

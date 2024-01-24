@@ -1,29 +1,29 @@
 "use client"
 import Image from "next/image"
+import { useUser } from "../common/hooks/useUser"
 import { Button, GrayButton } from "./Button"
 import Label from "./Label"
 import DrawerTrigger from "./DrawerTrigger"
+import DropdownTrigger from "./DropdownTrigger"
 import Drawer from "./Drawer"
+import Dropdown from "./Dropdown"
 import Sidebar from "./Sidebar"
 import ProfileSkeleton from "./skeletons/ProfileSkeleton"
-import { useUser } from "../common/hooks/useUser"
+import deleteCookie from "@/app/api/deleteCookie"
 
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg"
 import BurgerIcon from "../../../../../public/svg/burger-icon.svg"
 import Avatar from "../../../../../public/assets/avatar.png"
-import { useRouter } from "next/navigation"
 
 const Header = () => {
-  const router = useRouter()
   const user = useUser()
   const accountType =
     user?.userType === "individual" ? "Individual" : "Non-Profit"
 
-  const logout = () => {
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + location.host
-    // location.replace("/")
-    console.log(location.host)
+  const logout = async () => {
+    await deleteCookie('token')
+    location.replace('/login')
   }
 
   return (
@@ -35,6 +35,7 @@ const Header = () => {
           className="w-[52px] md:w-[52px]"
         />
       </div>
+
       <div className="flex items-center">
         <div className="flex mr-6">
           <GrayButton
@@ -50,23 +51,28 @@ const Header = () => {
 
         {/* profile */}
         {user ? (
-          <div
-            tabIndex={-1}
-            className="group relative hidden md:flex items-center cursor-pointer open:pointer-events-none"
-            onClick={logout}
-          >
-            <div className="mr-[15px]">
-              <Image src={Avatar} alt="avatar" width={43} />
-            </div>
-            <div>
-              <p>{user.fullName || user.organizationName}</p>
-              <Label text={accountType} />
-            </div>
+          <>
+            <DropdownTrigger
+              triggerId="menu-dropdown-trigger"
+              targetId="menu-dropdown"
+              type="toggle"
+              className="hidden md:flex items-center cursor-pointer"
+            >
+              <div className="mr-[15px]">
+                <Image src={Avatar} alt="avatar" width={43} />
+              </div>
+              <div>
+                <p>{user.fullName || user.organizationName}</p>
+                <Label text={accountType} />
+              </div>
+            </DropdownTrigger>
 
-            <div className="absolute right-0 hidden group-focus:flex bg-white p-4 rounded-xl h-4 translate-y-full top-5">
-              <Button text="Logout" onClick={logout} />
-            </div>
-          </div>
+            <Dropdown id="menu-dropdown">
+              <div className="flex flex-col px-2 pt-2 pb-5">
+                <Button text="Logout" onClick={logout} />
+              </div>
+            </Dropdown>
+          </>
         ) : (
           <ProfileSkeleton />
         )}
