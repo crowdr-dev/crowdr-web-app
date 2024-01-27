@@ -1,4 +1,5 @@
 "use client"
+import Image from "next/image"
 import { useState } from "react"
 import { useQuery } from "react-query"
 import { useUser } from "../../common/hooks/useUser"
@@ -23,6 +24,7 @@ import { keys } from "../../utils/queryKeys"
 import { Doubt, IPagination, QF } from "@/app/common/types"
 import { ICampaignStats } from "@/app/common/types/UserStats"
 import { ICampaignResponse } from "@/app/common/types/Campaign"
+import DollarIcon from "../../../../../../public/svg/dollar.svg"
 
 const Withdrawal = () => {
   const [page, setPage] = useState(1)
@@ -90,6 +92,14 @@ const Withdrawal = () => {
         }}
         secondaryButton={{ label: "Cancel", onClick: modal.hide }}
         clearModal={modal.hide}
+        icon={
+          <div
+            style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
+            className="grid place-items-center rounded-[10px] border border-[#EAECF0] p-4"
+          >
+            <Image src={DollarIcon} alt="" />
+          </div>
+        }
       />
     )
   }
@@ -185,7 +195,7 @@ const Withdrawal = () => {
                   <Table.Cell>
                     <Button
                       text="Withdraw"
-                      disabled={!campaign.isCompleted}
+                      // disabled={!campaign.isCompleted}
                       onClick={() => activateWithdrawalModal(campaign)}
                     />
                   </Table.Cell>
