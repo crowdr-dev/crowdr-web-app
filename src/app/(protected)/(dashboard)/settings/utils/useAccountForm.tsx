@@ -22,7 +22,8 @@ const config: UseFormConfig = {
 type UseFormConfig = Parameters<typeof useForm<FormFields>>[0];
 type FormFields = {
   accountNumber: string;
-  bank: string;
+  bankName: string;
   accountName: string;
+  accountType: string;
 };
 type AccountFormContext = UseFormReturn<FormFields>;

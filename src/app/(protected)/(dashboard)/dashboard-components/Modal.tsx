@@ -63,7 +63,7 @@ const SidebarModalContent: RFC = ({ children }) => {
     <div
       ref={modalContentRef}
       style={{ boxShadow }}
-      className="w-min bg-white h-full animate-[slide-in-right_0.1s]"
+      className="w-min bg-white h-full animate-[slide-in-right_0.2s_ease]"
     >
       {children}
     </div>

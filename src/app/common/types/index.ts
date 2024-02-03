@@ -1,13 +1,26 @@
-type Props = { children?: React.ReactNode };
-export type RFC<T = Props> = React.FC<T>
+import { PropsWithChildren, FC } from "react"
+import { QueryFunctionContext, QueryFunction, QueryKey } from "react-query"
+
+export type RFC<T = {}> = FC<PropsWithChildren<T>>
+
+export type QFC<Keys extends any[] = []> = QueryFunctionContext<
+  [string, ...Keys]
+>
+
+export type QF<ReturnType, Keys extends any[] = []> = QueryFunction<
+  ReturnType,
+  [string, ...Keys]
+>
+
+export type Doubt<T> = T | undefined | null
 
 export interface IPagination {
-  total:       number;
-  perPage:     number;
-  currentPage: number;
-  totalPages:  number;
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
+  total: number
+  perPage: number
+  currentPage: number
+  totalPages: number
+  hasNextPage: boolean
+  hasPrevPage: boolean
 }
 
 export interface Route {

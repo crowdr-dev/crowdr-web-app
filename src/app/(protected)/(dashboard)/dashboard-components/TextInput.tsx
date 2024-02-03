@@ -18,6 +18,7 @@ const TextInput: RFC<TextInputProps> = ({
   rules,
   controlled,
   ariaLabel,
+  disabled,
   ...props
 }) => {
   if (!controlled && !config && name) {
@@ -66,6 +67,7 @@ const TextInput: RFC<TextInputProps> = ({
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
           className={inputStyle + " text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px] " + styles?.input}
+          disabled={disabled}
         />
       </div>
       {error && (
@@ -98,4 +100,5 @@ type TextInputProps = {
     input?: string
   }
   controlled?: boolean
+  disabled?: boolean
 }

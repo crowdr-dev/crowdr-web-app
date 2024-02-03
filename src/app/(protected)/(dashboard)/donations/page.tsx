@@ -1,5 +1,6 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { useQuery } from "react-query"
 import moment from "moment"
 import StatCard from "../dashboard-components/StatCard"
 import Tabs from "../dashboard-components/Tabs"
@@ -13,118 +14,42 @@ import { formatAmount } from "../common/utils/currency"
 import { useUser } from "../common/hooks/useUser"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import { keys } from "../utils/queryKeys"
 
-import {
-  IDonationResponse,
-  IDonationStats,
-  IVolunteeringResponse,
-} from "@/app/common/types/Campaign"
+import { Doubt, QF } from "@/app/common/types"
+import { IDonationResponse, IVolunteeringResponse } from "@/app/common/types/DonationsVolunteering"
+import { IDonationStats } from "@/app/common/types/UserStats"
 
 const Donations = () => {
-  const [stats, setStats] = useState<IDonationStats>()
   const [dateRange, setDateRange] = useState<IDateRange>()
-  const [donations, setDonations] = useState<IDonationResponse>()
-  const [volunteering, setVolunteering] = useState<IVolunteeringResponse>()
   const [donationsPage, setDonationsPage] = useState(1)
   const [volunteeringPage, setVolunteeringPage] = useState(1)
   const user = useUser()
 
-  const userDonations = mapDonationsResponseToView(donations?.donations || [])
-  const userVolunteering = mapVolunteeringResponseToView(
-    volunteering?.volunteers || []
+  const { data: stats } = useQuery(
+    [keys.myDonations.stats, user?.token, dateRange],
+    fetchStats,
+    {
+      enabled: Boolean(user?.token),
+      // staleTime: time.mins(2),
+    }
   )
 
-  useEffect(() => {
-    if (user) {
-      const fetchStats = async () => {
-        const query = new URLSearchParams()
-        if (dateRange) {
-          query.set("startDate", dateRange[0])
-          query.set("endDate", dateRange[1])
-        }
-
-        const endpoint = `/api/v1/my-donations/summary?${query}`
-
-        try {
-          const headers = {
-            "Content-Type": "multipart/form-data",
-            "x-auth-token": user?.token!,
-          }
-          const { data } = await makeRequest<IDonationStats>(endpoint, {
-            headers,
-            method: "GET",
-          })
-
-          setStats(data)
-        } catch (error) {
-          const message = extractErrorMessage(error)
-          console.log(message)
-        }
-      }
-
-      fetchStats()
+  const { data: donations } = useQuery(
+    [keys.myDonations.donations, user?.token, donationsPage],
+    fetchDonations,
+    {
+      enabled: Boolean(user?.token),
     }
-  }, [user, dateRange])
+  )
 
-  useEffect(() => {
-    if (user) {
-      const fetchDonations = async () => {
-        try {
-          const query = new URLSearchParams({
-            page: `${donationsPage}`,
-            perPage: ITEMS_PER_PAGE,
-          })
-          const endpoint = `/api/v1/my-donations?${query}`
-
-          const headers = {
-            "Content-Type": "multipart/form-data",
-            "x-auth-token": user.token,
-          }
-
-          const { data } = await makeRequest<IDonationResponse>(endpoint, {
-            headers,
-            method: "GET",
-          })
-
-          setDonations(data)
-        } catch (error) {}
-      }
-
-      fetchDonations()
+  const { data: volunteering } = useQuery(
+    [keys.myDonations.volunteering, user?.token, volunteeringPage],
+    fetchVolunteering,
+    {
+      enabled: Boolean(user?.token),
     }
-  }, [user, donationsPage])
-
-  useEffect(() => {
-    if (user) {
-      const fetchVolunteering = async () => {
-        try {
-          const query = new URLSearchParams({
-            page: `${volunteeringPage}`,
-            perPage: ITEMS_PER_PAGE,
-          })
-          const endpoint = `/api/v1/my-volunteerings?${query}`
-
-          const headers = {
-            "Content-Type": "multipart/form-data",
-            "x-auth-token": user.token,
-          }
-
-          const { data } = await makeRequest<IVolunteeringResponse>(endpoint, {
-            headers,
-            method: "GET",
-          })
-
-          setVolunteering(data)
-        } catch (error) {}
-      }
-
-      fetchVolunteering()
-    }
-  }, [user, volunteeringPage])
-
-  const handleRangeSelect = (dateRange: IDateRange) => {
-    setDateRange(dateRange)
-  }
+  )
 
   return (
     <div>
@@ -138,7 +63,7 @@ const Donations = () => {
 
       {/* action buttons */}
       <div className="flex justify-between items-center mb-5 md:mb-10 py-[1px]">
-        <DateRange onChange={handleRangeSelect} />
+        <DateRange onChange={setDateRange} />
       </div>
 
       {/* stats */}
@@ -177,43 +102,47 @@ const Donations = () => {
       {/* donations x volunteering */}
       <Tabs>
         <Tabs.Item heading="Donations">
-          <Table className="hidden md:block mb-9">
-            <Table.Head>
-              <Table.HeadCell>Campaign</Table.HeadCell>
-              <Table.HeadCell>Amount</Table.HeadCell>
-              <Table.HeadCell>Date & time</Table.HeadCell>
-              <Table.HeadCell>Status</Table.HeadCell>
-            </Table.Head>
+          {donations && (
+            <>
+              <Table className="hidden md:block mb-9">
+                <Table.Head>
+                  <Table.HeadCell>Campaign</Table.HeadCell>
+                  <Table.HeadCell>Amount</Table.HeadCell>
+                  <Table.HeadCell>Date & time</Table.HeadCell>
+                  <Table.HeadCell>Status</Table.HeadCell>
+                </Table.Head>
 
-            <Table.Body>
-              {userDonations.map((donation, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>{donation.title}</Table.Cell>
-                  <Table.Cell>{donation.detail}</Table.Cell>
-                  <Table.Cell>{donation.date}</Table.Cell>
-                  <Table.Cell>
-                    {/success/i.test(donation.status) ? (
-                      <Label text={donation.status} />
-                    ) : (
-                      <Label
-                        text={donation.status}
-                        textColor="#B42318"
-                        bgColor="#FEF3F2"
-                      />
-                    )}
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+                <Table.Body>
+                  {donations.donations.map((donation, index) => (
+                    <Table.Row key={index}>
+                      <Table.Cell>{donation.title}</Table.Cell>
+                      <Table.Cell>{donation.detail}</Table.Cell>
+                      <Table.Cell>{donation.date}</Table.Cell>
+                      <Table.Cell>
+                        {/success/i.test(donation.status) ? (
+                          <Label text={donation.status} />
+                        ) : (
+                          <Label
+                            text={donation.status}
+                            textColor="#B42318"
+                            bgColor="#FEF3F2"
+                          />
+                        )}
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
 
-          <div className="flex flex-col md:hidden">
-            {userDonations.map((donation, index) => (
-              <Detail key={index} {...donation} />
-            ))}
-          </div>
+              <div className="flex flex-col md:hidden">
+                {donations.donations.map((donation, index) => (
+                  <Detail key={index} {...donation} />
+                ))}
+              </div>
+            </>
+          )}
 
-          {donations && userDonations.length !== 0 && (
+          {donations && donations.donations.length !== 0 && (
             <Pagination
               currentPage={donations.pagination.currentPage}
               perPage={donations.pagination.perPage}
@@ -225,43 +154,47 @@ const Donations = () => {
         </Tabs.Item>
 
         <Tabs.Item heading="Volunteering">
-          <Table className="hidden md:block mb-9">
-            <Table.Head>
-              <Table.HeadCell>Campaign</Table.HeadCell>
-              <Table.HeadCell>Skill needed</Table.HeadCell>
-              <Table.HeadCell>Date & time</Table.HeadCell>
-              <Table.HeadCell>Status</Table.HeadCell>
-            </Table.Head>
+          {volunteering && (
+            <>
+              <Table className="hidden md:block mb-9">
+                <Table.Head>
+                  <Table.HeadCell>Campaign</Table.HeadCell>
+                  <Table.HeadCell>Skill needed</Table.HeadCell>
+                  <Table.HeadCell>Date & time</Table.HeadCell>
+                  <Table.HeadCell>Status</Table.HeadCell>
+                </Table.Head>
 
-            <Table.Body>
-              {userVolunteering.map((volunteering, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>{volunteering.title}</Table.Cell>
-                  <Table.Cell>{volunteering.detail}</Table.Cell>
-                  <Table.Cell>{volunteering.date}</Table.Cell>
-                  <Table.Cell>
-                    {/success/i.test(volunteering.status) ? (
-                      <Label text={volunteering.status} />
-                    ) : (
-                      <Label
-                        text={volunteering.status}
-                        textColor="#B42318"
-                        bgColor="#FEF3F2"
-                      />
-                    )}
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+                <Table.Body>
+                  {volunteering.volunteerings.map((volunteering, index) => (
+                    <Table.Row key={index}>
+                      <Table.Cell>{volunteering.title}</Table.Cell>
+                      <Table.Cell>{volunteering.detail}</Table.Cell>
+                      <Table.Cell>{volunteering.date}</Table.Cell>
+                      <Table.Cell>
+                        {/success/i.test(volunteering.status) ? (
+                          <Label text={volunteering.status} />
+                        ) : (
+                          <Label
+                            text={volunteering.status}
+                            textColor="#B42318"
+                            bgColor="#FEF3F2"
+                          />
+                        )}
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
 
-          <div className="flex flex-col md:hidden">
-            {userVolunteering.map((donation, index) => (
-              <Detail key={index} {...donation} />
-            ))}
-          </div>
+              <div className="flex flex-col md:hidden">
+                {volunteering.volunteerings.map((donation, index) => (
+                  <Detail key={index} {...donation} />
+                ))}
+              </div>
+            </>
+          )}
 
-          {volunteering && userVolunteering.length !== 0 && (
+          {volunteering && volunteering.volunteerings.length !== 0 && (
             <Pagination
               currentPage={volunteering.pagination.currentPage}
               perPage={volunteering.pagination.perPage}
@@ -276,7 +209,121 @@ const Donations = () => {
   )
 }
 
-export default Donations // TODO: REMOVE
+export default Donations
+
+type IDonations = {
+  donations: ReturnType<typeof mapDonationsResponseToView>
+  pagination: IDonationResponse["pagination"]
+}
+
+type IVolunteering = {
+  volunteerings: ReturnType<typeof mapVolunteeringResponseToView>
+  pagination: IVolunteeringResponse["pagination"]
+}
+
+const ITEMS_PER_PAGE = "5"
+const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"
+
+const fetchStats: QF<
+  Doubt<IDonationStats>,
+  [Doubt<string>, IDateRange?]
+> = async ({ queryKey }) => {
+  const [_, token, dateRange] = queryKey
+
+  if (token) {
+    const query = new URLSearchParams()
+    if (dateRange) {
+      query.set("startDate", dateRange[0])
+      query.set("endDate", dateRange[1])
+    }
+
+    const endpoint = `/api/v1/my-donations/summary?${query}`
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      "x-auth-token": token,
+    }
+
+    try {
+      const { data } = await makeRequest<IDonationStats>(endpoint, {
+        headers,
+        method: "GET",
+      })
+
+      return data
+    } catch (error) {
+      const message = extractErrorMessage(error)
+      throw new Error(message)
+    }
+  }
+}
+
+const fetchDonations: QF<Doubt<IDonations>, [Doubt<string>, number]> = async ({
+  queryKey,
+}) => {
+  const [_, token, donationsPage] = queryKey
+
+  if (token) {
+    const query = new URLSearchParams({
+      page: `${donationsPage}`,
+      perPage: ITEMS_PER_PAGE,
+    })
+    const endpoint = `/api/v1/my-donations?${query}`
+
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      "x-auth-token": token,
+    }
+
+    try {
+      const { data } = await makeRequest<IDonationResponse>(endpoint, {
+        headers,
+        method: "GET",
+      })
+
+      return {
+        donations: mapDonationsResponseToView(data.donations),
+        pagination: data.pagination,
+      }
+    } catch (error) {
+      const message = extractErrorMessage(error)
+      throw new Error(message)
+    }
+  }
+}
+
+const fetchVolunteering: QF<
+  Doubt<IVolunteering>,
+  [Doubt<string>, number]
+> = async ({ queryKey }) => {
+  const [_, token, volunteeringPage] = queryKey
+
+  if (token) {
+    const query = new URLSearchParams({
+      page: `${volunteeringPage}`,
+      perPage: ITEMS_PER_PAGE,
+    })
+
+    const endpoint = `/api/v1/my-volunteerings?${query}`
+    const headers = {
+      "x-auth-token": token,
+    }
+
+    try {
+      const { data } = await makeRequest<IVolunteeringResponse>(endpoint, {
+        headers,
+        method: "GET",
+      })
+
+      return {
+        volunteerings: mapVolunteeringResponseToView(data.volunteerings),
+        pagination: data.pagination,
+      }
+    } catch (error) {
+      const message = extractErrorMessage(error)
+      throw new Error(message)
+    }
+  }
+}
 
 function mapDonationsResponseToView(donations: IDonationResponse["donations"]) {
   return donations.map((donation) => ({
@@ -288,7 +335,7 @@ function mapDonationsResponseToView(donations: IDonationResponse["donations"]) {
 }
 
 function mapVolunteeringResponseToView(
-  volunteering: IVolunteeringResponse["volunteers"]
+  volunteering: IVolunteeringResponse["volunteerings"]
 ) {
   return volunteering.map((volunteer) => ({
     title: volunteer.fullName,
@@ -297,6 +344,3 @@ function mapVolunteeringResponseToView(
     status: "Success",
   }))
 }
-
-const ITEMS_PER_PAGE = "5"
-const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"

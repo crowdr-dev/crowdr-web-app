@@ -91,7 +91,7 @@ const DateRange: RFC<DateRangeProps> = ({ onChange }) => {
                 className="!h-9"
               />
             </div>,
-            document.querySelector(".flatpickr-calendar")!
+            flatpickrInstance.current.calendarContainer
           )}
       </div>
 

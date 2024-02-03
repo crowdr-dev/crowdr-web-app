@@ -3,6 +3,7 @@ import { useModal } from "@/app/common/hooks/useModal"
 import { Button, WhiteButton } from "./Button"
 
 import { RFC } from "@/app/common/types"
+import { ReactElement } from "react"
 
 const CompletionCard: RFC<CompletionCardProps> = ({
   title,
@@ -26,11 +27,18 @@ const CompletionCard: RFC<CompletionCardProps> = ({
         <div className="hidden md:flex flex-col gap-1 mb-6">
           <p className="flex justify-between text-lg text-[#101828] font-semibold md:mb-1">
             {title}
-            <XIcon onClick={clearModal} className="hidden md:inline cursor-pointer" />
+            <XIcon
+              onClick={clearModal}
+              className="hidden md:inline cursor-pointer"
+            />
           </p>
-          <p className="text-sm text-[#475467] md:text-justify md:pr-2">
-            {text}
-          </p>
+          {typeof text === "string" ? (
+            <p className="text-sm text-[#475467] md:text-justify md:pr-2">
+              {text}
+            </p>
+          ) : (
+            text
+          )}
         </div>
 
         <XIcon onClick={clearModal} className="md:hidden cursor-pointer" />
@@ -49,13 +57,15 @@ const CompletionCard: RFC<CompletionCardProps> = ({
           className={buttonClasses}
           shadow
         />
-        <WhiteButton
-          text={secondaryButton.label}
-          href={secondaryButton.href}
-          onClick={secondaryButton.onClick}
-          outlineColor="#D0D5DD"
-          className={buttonClasses}
-        />
+        {secondaryButton && (
+          <WhiteButton
+            text={secondaryButton.label}
+            href={secondaryButton.href}
+            onClick={secondaryButton.onClick}
+            outlineColor="#D0D5DD"
+            className={buttonClasses}
+          />
+        )}
       </div>
     </div>
   )
@@ -65,9 +75,9 @@ export default CompletionCard
 
 type CompletionCardProps = {
   title: string
-  text: string
+  text: string | ReactElement
   primaryButton: Button
-  secondaryButton: Button
+  secondaryButton?: Button
   clearModal: () => void
 }
 
