@@ -4,7 +4,7 @@ import { atom, useAtomValue } from "jotai"
 
 import { RFC } from "@/app/common/types"
 
-const modalStoreAtom = atom(new Map<string, Modal>())
+export const modalStoreAtom = atom(new Map<string, Modal>())
 
 const ModalTrigger: RFC<ModalTriggerProps> = ({
   id,
@@ -21,7 +21,7 @@ const ModalTrigger: RFC<ModalTriggerProps> = ({
     if (id) {
       const $modalEl = document.getElementById(id)
       modalEl.current = $modalEl
-      
+
       if (modalStore.has(id)) {
         modal.current = modalStore.get(id)
       } else {

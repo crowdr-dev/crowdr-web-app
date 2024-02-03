@@ -47,7 +47,9 @@ export const mapCampaignResponseToView = (
     percentage = Math.floor(
       (totalAmountDonated.amount / fundingGoalDetail.amount) * 100
     )
-  } else if (isVolunteer(campaign)) {
+  }
+  
+  if (isVolunteer(campaign)) {
     duration = getDuration(
       campaign.volunteer.commitementStartDate,
       campaign.volunteer.commitementEndDate

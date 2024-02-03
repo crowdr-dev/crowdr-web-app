@@ -588,7 +588,7 @@ function mapResponseToForm(
     otherSkillsNeeded,
     ageRange,
     genderPreference,
-    timeCommitment,
+    timeCommitment: [string, string] | undefined,
     volunteerCommitment,
     additionalNotes
   const campaignDuration: [string, string] = [
@@ -601,7 +601,9 @@ function mapResponseToForm(
     const [fundingGoalDetail] = fundraise.fundingGoalDetails
     fundingGoal = fundingGoalDetail.amount
     currency = fundingGoalDetail.currency
-  } else if (isVolunteer(campaign)) {
+  }
+  
+  if (isVolunteer(campaign)) {
     const { volunteer } = campaign
     skillsNeeded = volunteer.skillsNeeded
     ageRange = volunteer.ageRange
@@ -620,5 +622,12 @@ function mapResponseToForm(
     currency,
     fundingGoal,
     campaignDuration,
+    skillsNeeded,
+    otherSkillsNeeded,
+    ageRange,
+    genderPreference,
+    timeCommitment,
+    volunteerCommitment,
+    additionalNotes
   }
 }

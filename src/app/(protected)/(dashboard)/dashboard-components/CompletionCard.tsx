@@ -11,10 +11,11 @@ const CompletionCard: RFC<CompletionCardProps> = ({
   primaryButton,
   secondaryButton,
   clearModal,
+  icon,
 }) => {
   const boxShadow =
     "0px 8px 8px -4px rgba(16, 24, 40, 0.03), 0px 20px 24px -4px rgba(16, 24, 40, 0.08)"
-  const buttonClasses = "!justify-center font-semibold !text-base"
+  const buttonClasses = "!justify-center font-semibold !text-base "
 
   return (
     <div
@@ -22,11 +23,12 @@ const CompletionCard: RFC<CompletionCardProps> = ({
       className="max-w-[342px] md:max-w-[544px] bg-white rounded-lg overflow-hidden p-4 md:p-6"
     >
       <div className="flex justify-between md:gap-4 mb-3 md:mb-8">
-        <CheckIcon />
+        <Rings icon={icon} />
 
         <div className="hidden md:flex flex-col gap-1 mb-6">
           <p className="flex justify-between text-lg text-[#101828] font-semibold md:mb-1">
             {title}
+
             <XIcon
               onClick={clearModal}
               className="hidden md:inline cursor-pointer"
@@ -41,7 +43,9 @@ const CompletionCard: RFC<CompletionCardProps> = ({
           )}
         </div>
 
-        <XIcon onClick={clearModal} className="md:hidden cursor-pointer" />
+        <div className="md:pointer-events-none contents">
+          <XIcon onClick={clearModal} className="md:hidden cursor-pointer" wrapperClass="mr-4 md:mr-0" />
+        </div>
       </div>
 
       <div className="flex flex-col md:hidden gap-1 mb-6">
@@ -55,6 +59,7 @@ const CompletionCard: RFC<CompletionCardProps> = ({
           href={primaryButton.href}
           onClick={primaryButton.onClick}
           className={buttonClasses}
+          bgColor={primaryButton.bgColor}
           shadow
         />
         {secondaryButton && (
@@ -79,35 +84,45 @@ type CompletionCardProps = {
   primaryButton: Button
   secondaryButton?: Button
   clearModal: () => void
+  icon?: ReactElement
 }
 
 type Button = {
   label: string
   href?: string
   onClick?: () => void
+  bgColor?: string
 }
 
-const CheckIcon = () => {
+const Rings = ({ icon }: any) => {
   const ringClasses =
     "absolute scale border rounded-full border-[#D0D5DD] left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%] "
 
   return (
-    <div className="relative grid place-content-center shrink-0 rounded-full bg-[#DCFAE6] w-12 h-12">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-        <path
-          d="M7.5 12L10.5 15L16.5 9M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
-          stroke="#079455"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+    <div
+      className={`${
+        icon ? "" : "bg-[#DCFAE6]"
+      } relative grid place-content-center shrink-0 rounded-full w-12 h-12`}
+    >
+      {icon ? (
+        icon
+      ) : (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M7.5 12L10.5 15L16.5 9M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
+            stroke="#079455"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )}
 
       <div
         className={
@@ -143,24 +158,28 @@ const CheckIcon = () => {
   )
 }
 
-const XIcon = ({ onClick, className }: any) => {
+const XIcon = ({ onClick, className, wrapperClass }: any) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      onClick={onClick}
-      className={className}
-    >
-      <path
-        d="M18 6L6 18M6 6L18 18"
-        stroke="#98A2B3"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <div className={"relative " + wrapperClass}>
+      <div className="absolute grid place-items-center top-[50%] right-[50%] -translate-y-[50%] translate-x-[50%] rounded-full hover:bg-[#F8F8F8] transition h-10 w-10">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          onClick={onClick}
+          className={className}
+        >
+          <path
+            d="M18 6L6 18M6 6L18 18"
+            stroke="#98A2B3"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+    </div>
   )
 }
