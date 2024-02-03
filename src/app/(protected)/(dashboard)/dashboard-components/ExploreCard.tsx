@@ -11,6 +11,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import Slider from 'react-slick'
 
 import Menu from '../../../../../public/svg/menu.svg'
+import ArrowRight from '../../../../../public/svg/new-arrow.svg'
 import Modal from '@/app/common/components/Modal'
 import { formatAmount } from '../common/utils/currency'
 
@@ -47,6 +48,8 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
 
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [hover, setHover] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const toggleReadMore = () => {
     setIsCollapsed(!isCollapsed)
@@ -66,15 +69,21 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
     : subheader
   const progress = currentAmount / totalAmount
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    adaptiveHeight: true,
-    arrows: true,
-    swipeToSlide: true
+  const settings = (images: string[]) => {
+    return {
+      dots: true,
+      infinite: false,
+      speed: 500,
+      fade: true,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      adaptiveHeight: true,
+      arrows: hover ? true : false,
+      swipeToSlide: true,
+      nextArrow: <Image src={ArrowRight} alt="arrow-right" className={`${currentSlide === 0 && "slick-disabled"}`} onMouseEnter={() => setHover(true)} />,
+      prevArrow: <Image src={ArrowRight} alt="arrow-right" className={`${currentSlide === images.length - 1 && "slick-disabled"}`} onMouseEnter={() => setHover(true)} />,
+      afterChange: (current: number) => setCurrentSlide(current)
+    }
   }
 
   return (
@@ -100,10 +109,23 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
         {!!slideImages && (
           <div>
             {slideImages?.length > 1 ? (
-              <Slider {...settings}>
-                {slideImages?.map((image, index) => (
-                  <div key={index}>
-                    <Modal isOpen={modalIsOpen} onClose={closeModal}>
+              <Slider {...settings(slideImages)}>
+                {slideImages?.map((image, index) => {
+                  return (
+                    <div key={index}>
+                      <Modal isOpen={modalIsOpen} onClose={closeModal}>
+                        <Image
+                          src={slideImages[currentSlide]}
+                          alt='donate'
+                          className='h-60 object-center object-cover rounded-lg'
+                          width={500}
+                          height={400}
+                          style={{
+                            width: '100%',
+                            objectFit: 'cover'
+                          }}
+                        />
+                      </Modal>
                       <Image
                         src={image}
                         alt='donate'
@@ -112,27 +134,17 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
                         height={400}
                         style={{
                           width: '100%',
+                          maxWidth: '100%',
                           objectFit: 'cover'
                         }}
+                        onMouseEnter={() => setHover(true)}
+                        onMouseLeave={() => setHover(false)}
+                        onClick={() => {
+                          openModal()
+                        }}
                       />
-                    </Modal>
-                    <Image
-                      src={image}
-                      alt='donate'
-                      className='h-60 object-center object-cover rounded-lg'
-                      width={500}
-                      height={400}
-                      style={{
-                        width: '100%',
-                        maxWidth: '100%',
-                        objectFit: 'cover'
-                      }}
-                      onClick={() => {
-                        openModal()
-                      }}
-                    />
-                  </div>
-                ))}
+                    </div>)
+                })}
               </Slider>
             ) : (
               <Image
@@ -168,8 +180,8 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
           <div className='bg-[#F9F9F9] p-4'>
             <p className='text-sm text-[#667085] mb-[10px]'>
               {' '}
-              <span className='text-[#000]'>Goal</span> {formatAmount(currentAmount, "naira")} / 
-              {formatAmount(totalAmount,"naira")}
+              <span className='text-[#000]'>Goal</span> {formatAmount(currentAmount, "naira")} /
+              {formatAmount(totalAmount, "naira")}
             </p>
             <ProgressBar bgColor='#00B964' percent={progress * 100} />
           </div>
@@ -182,8 +194,8 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
             campaignType === 'fundraiseAndVolunteer'
               ? 'Donate and Volunteer'
               : campaignType === 'fundraise'
-              ? 'Donate'
-              : 'Volunteer'
+                ? 'Donate'
+                : 'Volunteer'
           }
           className='w-full mt-4 !justify-center'
           href={routeTo}
