@@ -9,7 +9,6 @@ import Drawer from "./Drawer"
 import Dropdown from "./Dropdown"
 import Sidebar from "./Sidebar"
 import ProfileSkeleton from "./skeletons/ProfileSkeleton"
-import deleteCookie from "@/app/api/deleteCookie"
 
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg"
@@ -20,11 +19,6 @@ const Header = () => {
   const user = useUser()
   const accountType =
     user?.userType === "individual" ? "Individual" : "Non-Profit"
-
-  const logout = async () => {
-    await deleteCookie('token')
-    location.replace('/login')
-  }
 
   return (
     <header className="flex justify-between items-center w-full min-h-[62px] md:min-h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
@@ -51,28 +45,15 @@ const Header = () => {
 
         {/* profile */}
         {user ? (
-          <>
-            <DropdownTrigger
-              triggerId="menu-dropdown-trigger"
-              targetId="menu-dropdown"
-              type="toggle"
-              className="hidden md:flex items-center cursor-pointer"
-            >
-              <div className="mr-[15px]">
-                <Image src={Avatar} alt="avatar" width={43} />
-              </div>
-              <div>
-                <p>{user.fullName || user.organizationName}</p>
-                <Label text={accountType} />
-              </div>
-            </DropdownTrigger>
-
-            <Dropdown id="menu-dropdown">
-              <div className="flex flex-col px-2 pt-2 pb-5">
-                <Button text="Logout" onClick={logout} />
-              </div>
-            </Dropdown>
-          </>
+          <div className="hidden md:flex items-center">
+            <div className="mr-[15px]">
+              <Image src={Avatar} alt="avatar" width={43} />
+            </div>
+            <div>
+              <p>{user.fullName || user.organizationName}</p>
+              <Label text={accountType} />
+            </div>
+          </div>
         ) : (
           <ProfileSkeleton />
         )}

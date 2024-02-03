@@ -42,8 +42,8 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign }) => {
       {percentage !== undefined ? (
         <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px] md:mb-3">
           <p className="text-sm text-[#667085] mb-1">
-            <span className="text-[#292A2E]">Goal</span> {fundingGoal}/
-            {fundsGotten}
+            <span className="text-[#292A2E]">Goal</span> {fundsGotten}/
+            {fundingGoal}
           </p>
           <ProgressBar percent={percentage} showValue />
         </div>

@@ -15,7 +15,7 @@ const CompletionCard: RFC<CompletionCardProps> = ({
 }) => {
   const boxShadow =
     "0px 8px 8px -4px rgba(16, 24, 40, 0.03), 0px 20px 24px -4px rgba(16, 24, 40, 0.08)"
-  const buttonClasses = "!justify-center font-semibold !text-base"
+  const buttonClasses = "!justify-center font-semibold !text-base "
 
   return (
     <div
@@ -59,6 +59,7 @@ const CompletionCard: RFC<CompletionCardProps> = ({
           href={primaryButton.href}
           onClick={primaryButton.onClick}
           className={buttonClasses}
+          bgColor={primaryButton.bgColor}
           shadow
         />
         {secondaryButton && (
@@ -90,6 +91,7 @@ type Button = {
   label: string
   href?: string
   onClick?: () => void
+  bgColor?: string
 }
 
 const Rings = ({ icon }: any) => {

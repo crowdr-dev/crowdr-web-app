@@ -86,7 +86,7 @@ const Campaign = ({ params }: Route) => {
                 <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px] md:mb-3">
                   <p className="text-sm text-[#667085] mb-1">
                     <span className="text-[#292A2E]">Goal</span>{" "}
-                    {campaign.fundingGoal}/{campaign.fundsGotten}
+                    {campaign.fundsGotten}/{campaign.fundingGoal}
                   </p>
                   <ProgressBar percent={campaign.percentage} showValue />
                 </div>
