@@ -63,7 +63,7 @@ export type Campaign = {
   };
   campaignDonors: CampaignDonors[];
   volunteer: {
-    skillsNeeded: string;
+    skillsNeeded: string[];
     otherSkillsNeeded: string;
     ageRange: string;
     genderPreference: string;

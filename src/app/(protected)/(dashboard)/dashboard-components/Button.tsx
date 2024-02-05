@@ -171,8 +171,6 @@ function whiten(color: string) {
   // const whitenedColor =
   //   brightness > 0.5 ? colorObj.fade(0.1) : colorObj.fade(0.9)
   //   console.log(color, whitenedColor)
-  console.log(color, colorObj.fade(0.5))
-
   return colorObj.fade(0.5).hex()
 }
 

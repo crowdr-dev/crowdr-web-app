@@ -77,15 +77,20 @@ export default async function Explore () {
             const urlsOnly = campaign.campaignAdditionalImages.map(
               item => item.url
             )
+
+            console.log('camp',campaign)
+           
             return (
               <ExploreCard
                 name={userDetails?.organizationName}
                 tier={userDetails?.userType}
                 header={campaign?.title}
                 subheader={campaign?.story}
+                category={campaign?.category}
                 totalAmount={campaign.fundraise?.fundingGoalDetails[0].amount}
                 currentAmount={donatedAmount}
                 timePosted={campaign?.campaignStartDate}
+                volunteer={campaign?.volunteer}
                 slideImages={[
                   campaign?.campaignCoverImage?.url,
                   ...(urlsOnly || [])
