@@ -65,7 +65,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
                 isCurrentPage = currentDrawerId // OR ELSE CHECK IF THE ROUTE PATH MATCHES WITH THE CURRENT URL PATH
                   ? false
                   : currentPath.startsWith("/" + page.route.split("/")[1])
-              } else {
+              } else if (!page.noHighlight) {
                 isCurrentPage = currentDrawerId === page.modalId
               }
 

@@ -8,7 +8,7 @@ const Drawer: RFC<DrawerProps> = ({ id, children, ariaLabel }) => {
       tabIndex={-1}
       aria-hidden="true"
       aria-label={ariaLabel}
-      className="fixed top-0 left-0 z-40 h-screen w-min overflow-y-auto transition-transform -translate-x-full bg-white"
+      className="fixed top-0 left-0 z-40 h-full w-min overflow-y-auto transition-transform -translate-x-full bg-white"
     >
       {children}
     </div>

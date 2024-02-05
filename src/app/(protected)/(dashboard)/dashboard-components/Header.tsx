@@ -1,12 +1,14 @@
 "use client"
 import Image from "next/image"
+import { useUser } from "../common/hooks/useUser"
 import { Button, GrayButton } from "./Button"
 import Label from "./Label"
 import DrawerTrigger from "./DrawerTrigger"
+import DropdownTrigger from "./DropdownTrigger"
 import Drawer from "./Drawer"
+import Dropdown from "./Dropdown"
 import Sidebar from "./Sidebar"
 import ProfileSkeleton from "./skeletons/ProfileSkeleton"
-import { useUser } from "../common/hooks/useUser"
 
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg"
@@ -18,10 +20,6 @@ const Header = () => {
   const accountType =
     user?.userType === "individual" ? "Individual" : "Non-Profit"
 
-    const logout = () => {
-      document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    }
-
   return (
     <header className="flex justify-between items-center w-full min-h-[62px] md:min-h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
       <div>
@@ -31,6 +29,7 @@ const Header = () => {
           className="w-[52px] md:w-[52px]"
         />
       </div>
+
       <div className="flex items-center">
         <div className="flex mr-6">
           <GrayButton
@@ -46,7 +45,7 @@ const Header = () => {
 
         {/* profile */}
         {user ? (
-          <button type="button" className="group relative hidden md:flex items-center">
+          <div className="hidden md:flex items-center">
             <div className="mr-[15px]">
               <Image src={Avatar} alt="avatar" width={43} />
             </div>
@@ -54,17 +53,18 @@ const Header = () => {
               <p>{user.fullName || user.organizationName}</p>
               <Label text={accountType} />
             </div>
-
-            <div className="absolute hidden group-focus:flex">
-              <Button text="Logout" onClick={logout} />
-            </div>
-          </button>
+          </div>
         ) : (
           <ProfileSkeleton />
         )}
 
         {/* burger icon */}
-        <DrawerTrigger id="sidebar_drawer" options={{backdropClasses: 'bg-[#50556F] bg-opacity-30 fixed inset-0 z-30'}}>
+        <DrawerTrigger
+          id="sidebar_drawer"
+          options={{
+            backdropClasses: "bg-[#50556F] bg-opacity-30 fixed inset-0 z-30",
+          }}
+        >
           <Image
             src={BurgerIcon}
             alt="burger icon"
