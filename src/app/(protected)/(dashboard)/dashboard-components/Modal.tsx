@@ -41,11 +41,11 @@ export const SidebarModal: RFC<SidebarModalProps> = ({
       aria-label={ariaLabel}
       aria-hidden="true"
       className={
-        `fixed top-0 left-0 hidden h-screen w-screen z-[45] ` + modalClasses
+        `fixed top-0 left-0 hidden h-full w-screen z-[45] ` + modalClasses
       }
     >
       {/* <div className="fixed flex justify-end md:justify-between h-full w-full pointer-events-none z-[60]"> */}
-      {position === "right" && (
+      {!isCenter && (
         <div className="hidden md:block h-full ">
           <Sidebar drawer />
         </div>
