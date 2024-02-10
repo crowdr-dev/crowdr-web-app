@@ -305,6 +305,7 @@ export default function DonateOrVolunteer ({
             totalAmount={campaign?.fundraise?.fundingGoalDetails[0].amount}
             currentAmount={donatedAmount}
             timePosted={campaign?.campaignStartDate}
+            volunteer={campaign?.volunteer}
             slideImages={[
               campaign?.campaignCoverImage?.url,
               ...(urlsOnly || [])

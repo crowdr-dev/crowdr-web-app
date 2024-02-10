@@ -9,7 +9,7 @@ const ProgressBar: RFC<ProgressBarProps> = ({ percent, bgColor, showValue }) => 
           className="bg-primary h-full rounded-full transition"
         ></div>
       </div>
-      {showValue && <p className="text-[#344054] ml-3">{percent}%</p>}
+      {showValue && <p className="text-[#344054] text-[14px] ml-3">{percent.toFixed(0)}%</p>}
     </div>
   );
 };

@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { RFC } from "@/app/common/types";
 import { ChangeEvent } from "react";
+import { ReactNode } from "react";
 
 
 type CheckboxProps = {
-    label: string
+    label: string | ReactNode
     id?: string
     onChange: (checked: boolean) => void;
     checked: boolean;

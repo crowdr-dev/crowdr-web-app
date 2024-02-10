@@ -54,7 +54,7 @@ const ageRange = [
   }
 ]
 
-export default function DonateOrVolunteer ({
+export default function DonateOrVolunteer({
   params
 }: {
   params: { id: string }
@@ -132,7 +132,9 @@ export default function DonateOrVolunteer ({
   const [checkboxValues, setCheckboxValues] = useState({
     isAnonymous: false,
     shouldShareDetails: false,
-    isSubscribedToPromo: false
+    isSubscribedToPromo: false,
+    agreeToTermsDonate: false,
+    agreeToTermsVolunteer: false,
   })
 
   const updateCheckbox = (key: string, value: boolean) => {
@@ -161,8 +163,8 @@ export default function DonateOrVolunteer ({
       campaign?.campaignType === 'fundraiseAndVolunteer'
         ? 'donate'
         : campaign?.campaignType === 'fundraise'
-        ? 'donate'
-        : 'volunteer'
+          ? 'donate'
+          : 'volunteer'
     )
     getCurrentUser()
   }, [params.id, campaign?.campaignType])
@@ -263,8 +265,8 @@ export default function DonateOrVolunteer ({
     (item: { url: string }) => item.url
   )
 
-  const areAllInputsFilled = (input: any) => {
-    return Object.values(input).every(value => value !== '')
+  const areAllInputsFilled = (input: initVolunteerTypes | initTypes, checked: boolean) => {
+    return Object.values(input).every(value => value !== '') && checked
   }
 
   return (
@@ -275,8 +277,8 @@ export default function DonateOrVolunteer ({
             {campaign?.campaignType === 'fundraiseAndVolunteer'
               ? 'Donate and Volunteer'
               : campaign?.campaignType === 'fundraise'
-              ? 'Donate'
-              : 'volunteer'}
+                ? 'Donate'
+                : 'volunteer'}
           </h3>
         </div>
       </div>
@@ -284,8 +286,10 @@ export default function DonateOrVolunteer ({
         <ExploreCard
           name={userDetails?.organizationName}
           tier={userDetails?.userType}
+          category={campaign?.category}
           header={campaign?.title}
           subheader={campaign?.story}
+          volunteer={campaign?.volunteer}
           totalAmount={campaign?.fundraise?.fundingGoalDetails[0].amount}
           currentAmount={donatedAmount}
           timePosted={campaign?.campaignStartDate}
@@ -302,9 +306,8 @@ export default function DonateOrVolunteer ({
             {campaign?.campaignType === 'fundraiseAndVolunteer' ? (
               <>
                 <span
-                  className={`text-sm p-3 cursor-pointer ${
-                    tab === 'donate' ? activeTabStyle : inActiveTabStyle
-                  }`}
+                  className={`text-sm p-3 cursor-pointer ${tab === 'donate' ? activeTabStyle : inActiveTabStyle
+                    }`}
                   onClick={() => {
                     setTab('donate')
                   }}
@@ -312,9 +315,8 @@ export default function DonateOrVolunteer ({
                   Donate
                 </span>
                 <span
-                  className={`text-sm p-3 ml-4 cursor-pointer ${
-                    tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
-                  }`}
+                  className={`text-sm p-3 ml-4 cursor-pointer ${tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
+                    }`}
                   onClick={() => {
                     setTab('volunteer')
                   }}
@@ -324,9 +326,8 @@ export default function DonateOrVolunteer ({
               </>
             ) : campaign?.campaignType === 'fundraise' ? (
               <span
-                className={`text-sm p-3 cursor-pointer ${
-                  tab === 'donate' ? activeTabStyle : inActiveTabStyle
-                }`}
+                className={`text-sm p-3 cursor-pointer ${tab === 'donate' ? activeTabStyle : inActiveTabStyle
+                  }`}
                 onClick={() => {
                   setTab('donate')
                 }}
@@ -335,9 +336,8 @@ export default function DonateOrVolunteer ({
               </span>
             ) : (
               <span
-                className={`text-sm p-3 ml-4 cursor-pointer ${
-                  tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
-                }`}
+                className={`text-sm p-3 ml-4 cursor-pointer ${tab === 'volunteer' ? activeTabStyle : inActiveTabStyle
+                  }`}
                 onClick={() => {
                   setTab('volunteer')
                 }}
@@ -350,9 +350,9 @@ export default function DonateOrVolunteer ({
 
           {tab === 'volunteer' ? (
             <div className='mt-6'>
-              <div className='bg-[#F9F9F9] p-4 mb-2'>
+              <div className='bg-[#F9F9F9] p-4 mb-2 rounded-[8px]'>
                 <p className='mt-1 text-sm opacity-50'>
-                  {campaign?.totalNoOfCampaignVolunteers} applications
+                  {campaign?.totalNoOfCampaignVolunteers} applicants
                 </p>
               </div>
 
@@ -419,18 +419,29 @@ export default function DonateOrVolunteer ({
                   </label>
                   <textarea
                     id='about'
-                    className='w-full text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]'
+                    className='w-full text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px] mb-4'
                     value={volunteerInputs.about}
                     onChange={updateVolunteerProps}
                     name='about'
                   />
                 </div>
+
+                <Checkbox
+                  id={'4'}
+                  label={
+                    <>By ticking this box, you agree with the <a className="text-[#00B964] underlined">Terms and Conditions provided</a> by Crowdr</>
+                  }
+                  checked={checkboxValues.agreeToTermsVolunteer}
+                  onChange={newValue =>
+                    updateCheckbox('agreeToTermsVolunteer', newValue)
+                  }
+                />
               </div>
 
               <Button
                 text='Apply'
                 className='w-full mt-4 !justify-center'
-                disabled={!areAllInputsFilled(volunteerInputs)}
+                disabled={!areAllInputsFilled(volunteerInputs, checkboxValues.agreeToTermsVolunteer)}
                 loading={loading}
                 onClick={volunteer}
               />
@@ -443,7 +454,7 @@ export default function DonateOrVolunteer ({
                     Total Volunteer(s)
                   </p>
                 </div>
-                <div className='flex items-start flex-col gap-5 mb-8'>
+                {/* <div className='flex items-start flex-col gap-5 mb-8'>
                   {campaign?.campaignVolunteers
                     ?.slice(0, 5)
                     .map(
@@ -480,12 +491,12 @@ export default function DonateOrVolunteer ({
                   >
                     See all
                   </Link>
-                )}
+                )} */}
               </div>
             </div>
           ) : (
             <div className='mt-6'>
-              <div className='bg-[#F9F9F9] p-4'>
+              <div className='bg-[#F9F9F9] p-4 rounded-[8px]'>
                 <p className='text-sm text-[#667085] mb-2'>
                   {' '}
                   <span className='text-[#000]'>Goal</span>{' '}
@@ -495,8 +506,9 @@ export default function DonateOrVolunteer ({
                 <ProgressBar
                   bgColor='#00B964'
                   percent={(donatedAmount / totalDonationAmount) * 100}
+                  showValue
                 />
-                <p className='mt-3 text-sm opacity-50'>
+                <p className='mt-2 text-sm opacity-50'>
                   {campaign?.campaignDonors?.length} Donation(s)
                 </p>
               </div>
@@ -556,6 +568,16 @@ export default function DonateOrVolunteer ({
                       updateCheckbox('isSubscribedToPromo', newValue)
                     }
                   />
+                  <Checkbox
+                    id={'4'}
+                    label={
+                      <>By ticking this box, you agree with the <a className="text-[#00B964] underlined">Terms and Conditions provided</a> by Crowdr</>
+                    }
+                    checked={checkboxValues.agreeToTermsDonate}
+                    onChange={newValue =>
+                      updateCheckbox('agreeToTermsDonate', newValue)
+                    }
+                  />
                 </div>
               </div>
 
@@ -564,7 +586,7 @@ export default function DonateOrVolunteer ({
                 className='w-full mt-4 !justify-center'
                 onClick={donate}
                 loading={loading}
-                disabled={!areAllInputsFilled(donationInputs)}
+                disabled={!areAllInputsFilled(donationInputs, checkboxValues.agreeToTermsDonate)}
               />
 
               <div className='mt-10'>
@@ -600,7 +622,6 @@ export default function DonateOrVolunteer ({
                             <div className='flex flex-col gap-[1px] ml-4'>
                               <p className='text-[#344054] text-sm'>
                                 {donor?.fullName}
-                                {/* <span className="text-[#667085] text-[12px] ml-2">6 hours ago</span> */}
                               </p>
                               <span className='text-[13px] text-[#667085]'>
                                 Donated{' '}

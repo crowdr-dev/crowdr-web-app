@@ -89,6 +89,8 @@ export default function DynamicExplore ({
                 totalAmount={campaign.fundraise?.fundingGoalDetails[0].amount}
                 currentAmount={donatedAmount}
                 timePosted={campaign?.campaignStartDate}
+                category={campaign?.category}
+                volunteer={campaign?.volunteer}
                 slideImages={[
                   campaign?.campaignCoverImage?.url,
                   ...(urlsOnly || [])
