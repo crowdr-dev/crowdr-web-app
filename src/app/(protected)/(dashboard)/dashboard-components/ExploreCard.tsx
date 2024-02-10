@@ -230,7 +230,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
             {moment(timePosted, 'YYYYMMDD').fromNow()}
           </h4>
         </div>
-        {campaignType?.includes('fundraise') && (
+        {!!routeTo && campaignType?.includes('fundraise') && (
           <div className='bg-[#F9F9F9] p-4 rounded-[8px]'>
             <p className='text-sm text-[#667085] mb-[4px]'>
               {' '}
