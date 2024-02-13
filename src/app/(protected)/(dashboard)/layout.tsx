@@ -7,14 +7,14 @@ import UserProvider from "./common/hooks/useUser"
 import { RFC } from "@/app/common/types"
 import "react-loading-skeleton/dist/skeleton.css"
 
-const DashboardLayout: RFC = (props) => {
+const DashboardLayout: RFC = ({ children }) => {
   return (
     <UserProvider>
       <div className="flex flex-col h-full">
         <Header />
         <div className="flex grow overflow-hidden">
           <Sidebar />
-          <Page {...props} />
+          <Page children={children} />
         </div>
       </div>
     </UserProvider>

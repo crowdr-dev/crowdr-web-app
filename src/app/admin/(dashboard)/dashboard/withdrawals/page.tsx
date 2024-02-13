@@ -1,7 +1,7 @@
 const Withdrawals = () => {
   return (
     <div>
-      Enter
+      Withdrawals
     </div>
   );
 }

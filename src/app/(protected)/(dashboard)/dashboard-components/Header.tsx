@@ -32,11 +32,11 @@ const Header = () => {
 
       <div className="flex items-center">
         <div className="flex mr-6">
-          <GrayButton
+          {/* <GrayButton
             text="Setup Guide"
             iconUrl={PuzzleIcon}
             className="hidden md:inline-flex mr-[6px]"
-          />
+          /> */}
           <Button
             text="Create Campaign"
             href="/campaigns/create-or-edit-campaign"
