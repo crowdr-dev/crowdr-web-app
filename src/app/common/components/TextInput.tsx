@@ -1,7 +1,12 @@
+import Image from "next/image"
 import { useFormContext } from "react-hook-form"
 
 import { RFC } from "@/app/common/types"
-import { FieldError, RegisterOptions, UseFormRegisterReturn } from "react-hook-form"
+import {
+  FieldError,
+  RegisterOptions,
+  UseFormRegisterReturn,
+} from "react-hook-form"
 
 const TextInput: RFC<TextInputProps> = ({
   config,
@@ -19,16 +24,20 @@ const TextInput: RFC<TextInputProps> = ({
   controlled,
   ariaLabel,
   disabled,
+  iconUrl,
   ...props
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {register, formState: {errors}} = useFormContext()
+    const {
+      register,
+      formState: { errors },
+    } = useFormContext()
     config = register(name, rules)
     error = errors[name] as FieldError
   }
-  const inputStyle = props.icon ? "pl-9" : ""
-  
+  const inputStyle = props.icon ? "pl-9" : iconUrl ? "pl-10" : ""
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (config) {
       config.onChange(e)
@@ -47,13 +56,16 @@ const TextInput: RFC<TextInputProps> = ({
           className="text-[14px] text-[#344054] mb-[6px]"
         >
           {label}{" "}
-          {showOptionalLabel && <span className="opacity-[0.44]">(Optional)</span>}
+          {showOptionalLabel && (
+            <span className="opacity-[0.44]">(Optional)</span>
+          )}
         </label>
       )}
       <div className="relative">
-        {props.icon && (
+        {(props.icon || iconUrl) && (
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <props.icon className="text-[#667085]" />
+            {props.icon && <props.icon className="text-[#667085]" />}
+            {iconUrl && <Image src={iconUrl} alt="" className="w-5" />}
           </div>
         )}
         <input
@@ -66,7 +78,11 @@ const TextInput: RFC<TextInputProps> = ({
           style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
-          className={inputStyle + " text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px] " + styles?.input}
+          className={
+            inputStyle +
+            " text-[13px] rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px] " +
+            styles?.input
+          }
           disabled={disabled}
         />
       </div>
@@ -90,6 +106,7 @@ type TextInputProps = {
   ariaLabel?: string
   ariaLabelledBy?: string
   icon?: any
+  iconUrl?: string
   name?: string
   rules?: RegisterOptions
   value?: string

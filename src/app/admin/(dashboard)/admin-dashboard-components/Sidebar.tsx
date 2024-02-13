@@ -1,63 +1,100 @@
 "use client"
+import { useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
+import TextInput from "@/app/common/components/TextInput"
 import { pages } from "../pages"
 
-import { RFC } from "@/app/common/types"
+import { FiSearch } from "react-icons/fi"
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
 import CrowdrLogoType from "../../../../../public/svg/crowdr-logo.svg"
+import SearchIcon from "../../../../../public/svg/search.svg"
+import LogoutIcon from "../../../../../public/svg/logout-2.svg"
 
 const Sidebar = () => {
+  const [searchText, setSearchText] = useState("")
   const currentPath = usePathname()
 
   return (
-    <nav className="flex-col overflow-y-auto max-w-[272px] shrink-0 h-full bg-white">
-      <div className="flex items-center min-h-[62px] md:min-h-[74px] px-[25px]">
-        <Image
-          src={CrowdrLogo}
-          alt="crowdr logo"
-          className="w-[52px] md:w-[52px]"
+    <nav className="flex flex-col justify-between overflow-y-auto max-w-[280px] shrink-0 h-full bg-white">
+      <div className="flex flex-col gap-y-6">
+        {/* logo */}
+        <div className="flex items-center min-h-[62px] md:min-h-[74px] px-6">
+          <Image src={CrowdrLogo} alt="crowdr logo" className="w-[50px]" />
+          <Image
+            src={CrowdrLogoType}
+            alt="crowdr logotype"
+            className="w-[77px]"
+          />
+        </div>
+
+        {/* search */}
+        <TextInput
+          value={searchText}
+          onChange={(e) => {
+            setSearchText(e.target.value)
+          }}
+          placeholder="Search"
+          iconUrl={SearchIcon}
+          styles={{
+            wrapper: "px-6",
+            input: "text-base",
+          }}
         />
-        <Image
-          src={CrowdrLogoType}
-          alt="crowdr logotype"
-          className="w-[52px] md:w-[52px]"
-        />
+
+        {/* pages */}
+        <div className="flex flex-col gap-y-1 px-4">
+          {pages.map(({ route, title, icon, label }, index) => {
+            let pageLinkStyle =
+              "flex items-center flex-wrap gap-x-3 font-semibold rounded-[6px] transition cursor-pointer px-3 py-2 w-[220px]"
+            const currentRoute = route.split("/")[3]
+            const isCurrentPage =
+              currentPath.startsWith(`/admin/dashboard/${currentRoute}`) ||
+              (route === "/admin/dashboard" &&
+                currentPath === "/admin/dashboard")
+            const iconStyle = isCurrentPage ? "brightness-[200]" : ""
+            if (isCurrentPage) {
+              pageLinkStyle += " text-white bg-[#00B964]"
+            } else {
+              pageLinkStyle += " hover:bg-[#F8F8F8]"
+            }
+            return (
+              <Link key={index} href={route} className={pageLinkStyle}>
+                <Image
+                  src={icon}
+                  width={18}
+                  height={18}
+                  alt=""
+                  className={iconStyle}
+                />
+                {title}
+                {label && (
+                  <span className="bg-green-100 text-green-400 text-[0.55rem] whitespace-nowrap font-semibold px-1.5 py-0.5 rounded">
+                    {label}
+                  </span>
+                )}
+              </Link>
+            )
+          })}
+        </div>
       </div>
 
-      {pages.map(({ route, title, icon, label }, index) => {
-        let pageLinkStyle =
-          "flex items-center flex-wrap gap-y-1 gap-x-2 font-medium text-[0.96rem] rounded-[0.275rem] transition cursor-pointer pl-[28px] pt-[14px] pb-[15px] w-[220px]"
-        const isCurrentPage = currentPath.startsWith("/" + route.split("/")[1])
+      {/* profile */}
+      <div className="flex justify-between border-t border-[#EAECF0] mx-4 pt-6 pb-8">
+        <div className="flex gap-3 pl-2">
+          <div className="bg-black/20 w-10 h-10 rounded-full"></div>
 
-        let iconStyle = isCurrentPage ? "brightness-[200]" : ""
-        if (index !== 0) pageLinkStyle += " mt-[10px]"
+          <div className="flex flex-col">
+            <p className="text-sm font-semibold">Admin</p>
+            <p className="text-sm text-[#475467]">Team Crowdr</p>
+          </div>
+        </div>
 
-        if (isCurrentPage) {
-          pageLinkStyle += " text-white bg-[#00B964]"
-        } else {
-          pageLinkStyle += " hover:bg-[#F8F8F8]"
-        }
-
-        return (
-          <Link key={index} href={route} className={pageLinkStyle}>
-            <Image
-              src={icon}
-              width={18}
-              height={18}
-              alt=""
-              className={iconStyle}
-            />
-            {title}
-            {label && (
-              <span className="bg-green-100 text-green-400 text-[0.55rem] whitespace-nowrap font-semibold px-1.5 py-0.5 rounded">
-                {label}
-              </span>
-            )}
-          </Link>
-        )
-      })}
+        <div className="pr-2">
+          <Image src={LogoutIcon} alt="logout button" />
+        </div>
+      </div>
     </nav>
   )
 }
