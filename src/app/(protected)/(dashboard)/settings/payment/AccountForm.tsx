@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useFormContext } from "react-hook-form"
-import TextInput from "../../dashboard-components/TextInput"
+import TextInput from "../../../../common/components/TextInput"
 import SelectInput from "../../dashboard-components/SelectInput"
 import AccountFormContext, { FormFields } from "../utils/useAccountForm"
 import { Option } from "../../common/utils/form"

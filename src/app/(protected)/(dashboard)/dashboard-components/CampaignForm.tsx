@@ -6,7 +6,7 @@ import CampaignFormContext, {
   FormFields,
 } from "../campaigns/create-or-edit-campaign/utils/useCreateCampaign"
 import { Button, WhiteButton } from "./Button"
-import TextInput from "./TextInput"
+import TextInput from "../../../common/components/TextInput"
 import SelectInput from "./SelectInput"
 import InputTitle from "./InputTitle"
 import TextAreaInput from "./TextAreaInput"
