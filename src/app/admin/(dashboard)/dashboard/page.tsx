@@ -1,17 +1,25 @@
 "use client"
 import { useState } from "react"
+import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/app/common/components/Button"
 import TextInput from "@/app/common/components/TextInput"
 import StatCard from "../admin-dashboard-components/StatCard"
+import ButtonGroup from "../admin-dashboard-components/ButtonGroup"
+import Table from "../admin-dashboard-components/Table"
+import Pagination from "../admin-dashboard-components/Pagination"
+import { label } from "../admin-dashboard-components/Label"
 
 import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
-import { Button as FlowButton } from "flowbite-react"
-import ButtonGroup from "../admin-dashboard-components/ButtonGroup"
+import TempLogo from "../../../../../public/temp/c-logo.png"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
   const [selectedTable, setSelectedTable] = useState("Campaigns")
+  const [campaignsPage, setCampaignsPage] = useState(1)
+  const [kycPage, setKycPage] = useState(1)
+  const [withdrawalsPage, setWithdrawalsPage] = useState(1)
 
   const tablePickerButtons = [
     {
@@ -61,7 +69,7 @@ const Dashboard = () => {
             iconUrl={SearchIcon}
             styles={{
               input: "text-base",
-              wrapper: "grow"
+              wrapper: "grow",
             }}
           />
 
@@ -74,6 +82,172 @@ const Dashboard = () => {
             className="font-semibold"
           />
         </div>
+      </div>
+      <hr className="mb-8" />
+
+      {/* table */}
+      <div className="px-8">
+        {/* Campaigns */}
+        {selectedTable === "Campaigns" && (
+          <Table>
+            <Table.Head>
+              <Table.HeadCell>Name</Table.HeadCell>
+              <Table.HeadCell>Campaign</Table.HeadCell>
+              <Table.HeadCell>Target Amount</Table.HeadCell>
+              <Table.HeadCell>Request Type</Table.HeadCell>
+            </Table.Head>
+            <Table.Body>
+              {items.map((item, index) => (
+                <Table.Row key={index}>
+                  <Table.Cell>
+                    <div className="flex items-center gap-3 font-medium">
+                      <Image src={item.imageUrl} alt="" />
+                      {item.title}
+                    </div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    {<div className="font-medium">{item.detail}</div>}
+                  </Table.Cell>
+                  <Table.Cell>{item.date}</Table.Cell>
+                  <Table.Cell>{item.extra}</Table.Cell>
+                  <Table.Cell>
+                    <div className="flex gap-3">
+                      <Link
+                        href={`/admin/view-campaign/${item.id}`}
+                        className="font-semibold text-sm text-[#475467] cursor-pointer"
+                      >
+                        View
+                      </Link>
+                      <button
+                        type="button"
+                        className="font-semibold text-sm text-[#6941C6]"
+                      >
+                        Approve
+                      </button>
+                    </div>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+            <Pagination
+              currentPage={campaignsPage}
+              perPage={5}
+              total={20}
+              onPageChange={setCampaignsPage}
+            />
+          </Table>
+        )}
+
+        {/* KYC */}
+        {selectedTable === "KYC" && (
+          <Table>
+            <Table.Head>
+              <Table.HeadCell>Name</Table.HeadCell>
+              <Table.HeadCell>Campaign</Table.HeadCell>
+              <Table.HeadCell>Target Amount</Table.HeadCell>
+              <Table.HeadCell>Status</Table.HeadCell>
+            </Table.Head>
+            <Table.Body>
+              {items.map((item, index) => (
+                <Table.Row key={index}>
+                  <Table.Cell>
+                    <div className="flex items-center gap-3 font-medium">
+                      <Image src={item.imageUrl} alt="" />
+                      {item.title}
+                    </div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    {<div className="font-medium">{item.detail}</div>}
+                  </Table.Cell>
+                  <Table.Cell>{item.date}</Table.Cell>
+                  <Table.Cell>
+                    {label(item.status)}
+                  </Table.Cell>
+                  <Table.Cell><div className="flex gap-3">
+                      <Link
+                        href={`/admin/view-campaign/${item.id}`}
+                        className="font-semibold text-sm text-[#475467] cursor-pointer"
+                      >
+                        View
+                      </Link>
+                      {item.status === "Approved" ? (
+                        <button
+                          type="button"
+                          className="font-semibold text-sm text-[#00B964]"
+                        >
+                          Approve
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="font-semibold text-sm text-[#F04438]"
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </div></Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+            <Pagination
+              currentPage={kycPage}
+              perPage={5}
+              total={20}
+              onPageChange={setKycPage}
+            />
+          </Table>
+        )}
+
+        {/* Withdrawals */}
+        {selectedTable === "Withdrawals" && (
+          <Table>
+            <Table.Head>
+              <Table.HeadCell>Name</Table.HeadCell>
+              <Table.HeadCell>Campaign</Table.HeadCell>
+              <Table.HeadCell>Withdrawal Amount</Table.HeadCell>
+              <Table.HeadCell>Request Type</Table.HeadCell>
+            </Table.Head>
+            <Table.Body>
+              {items.map((item, index) => (
+                <Table.Row key={index}>
+                  <Table.Cell>
+                    <div className="flex items-center gap-3 font-medium">
+                      <Image src={item.imageUrl} alt="" />
+                      {item.title}
+                    </div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    {<div className="font-medium">{item.detail}</div>}
+                  </Table.Cell>
+                  <Table.Cell>{item.date}</Table.Cell>
+                  <Table.Cell>{item.extra}</Table.Cell>
+                  <Table.Cell>
+                    <div className="flex gap-3">
+                      <Link
+                        href={`/admin/view-withdrawal/${item.id}`}
+                        className="font-semibold text-sm text-[#475467] cursor-pointer"
+                      >
+                        View
+                      </Link>
+                      <button
+                        type="button"
+                        className="font-semibold text-sm text-[#6941C6]"
+                      >
+                        Approve
+                      </button>
+                    </div>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+            <Pagination
+              currentPage={withdrawalsPage}
+              perPage={5}
+              total={20}
+              onPageChange={setWithdrawalsPage}
+            />
+          </Table>
+        )}
       </div>
     </div>
   )
@@ -93,5 +267,53 @@ const stats = [
   {
     title: "Total Users",
     value: "1000",
+  },
+]
+
+const items = [
+  {
+    id: "0",
+    title: "Crowdr Africa",
+    detail: "Help Makinde attend school",
+    date: "N4,000,000",
+    extra: "some",
+    imageUrl: TempLogo,
+    status: "Approved",
+  },
+  {
+    id: "1",
+    title: "Crowdr Africa",
+    detail: "Help Makinde attend school",
+    date: "N4,000,000",
+    extra: "some",
+    imageUrl: TempLogo,
+    status: "Pending",
+  },
+  {
+    id: "2",
+    title: "Crowdr Africa",
+    detail: "Help Makinde attend school",
+    date: "N4,000,000",
+    extra: "some",
+    imageUrl: TempLogo,
+    status: "Approved",
+  },
+  {
+    id: "3",
+    title: "Crowdr Africa",
+    detail: "Help Makinde attend school",
+    date: "N4,000,000",
+    extra: "some",
+    imageUrl: TempLogo,
+    status: "Approved",
+  },
+  {
+    id: "4",
+    title: "Crowdr Africa",
+    detail: "Help Makinde attend school",
+    date: "N4,000,000",
+    extra: "some",
+    imageUrl: TempLogo,
+    status: "Pending",
   },
 ]
