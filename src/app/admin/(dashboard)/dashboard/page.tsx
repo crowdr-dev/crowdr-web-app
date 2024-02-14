@@ -165,7 +165,7 @@ const Dashboard = () => {
                   </Table.Cell>
                   <Table.Cell><div className="flex gap-3">
                       <Link
-                        href={`/admin/view-campaign/${item.id}`}
+                        href={`/admin/view-kyc/${item.id}`}
                         className="font-semibold text-sm text-[#475467] cursor-pointer"
                       >
                         View
