@@ -17,10 +17,10 @@ const Sidebar = () => {
   const currentPath = usePathname()
 
   return (
-    <nav className="flex flex-col justify-between overflow-y-auto max-w-[280px] shrink-0 h-full bg-white">
+    <nav className="flex flex-col justify-between overflow-y-auto max-w-[280px] shrink-0 h-full bg-white py-8">
       <div className="flex flex-col gap-y-6">
         {/* logo */}
-        <div className="flex items-center min-h-[62px] md:min-h-[74px] px-6">
+        <div className="flex items-center px-6">
           <Image src={CrowdrLogo} alt="crowdr logo" className="w-[50px]" />
           <Image
             src={CrowdrLogoType}
@@ -59,6 +59,7 @@ const Sidebar = () => {
             } else {
               pageLinkStyle += " hover:bg-[#F8F8F8]"
             }
+
             return (
               <Link key={index} href={route} className={pageLinkStyle}>
                 <Image
@@ -70,7 +71,7 @@ const Sidebar = () => {
                 />
                 {title}
                 {label && (
-                  <span className="bg-green-100 text-green-400 text-[0.55rem] whitespace-nowrap font-semibold px-1.5 py-0.5 rounded">
+                  <span className="bg-[#F9FAFB] text-[0.55rem] whitespace-nowrap font-semibold border border-[#EAECF0] rounded-full px-2 py-0.5 ml-auto">
                     {label}
                   </span>
                 )}
@@ -81,9 +82,9 @@ const Sidebar = () => {
       </div>
 
       {/* profile */}
-      <div className="flex justify-between border-t border-[#EAECF0] mx-4 pt-6 pb-8">
+      <div className="flex justify-between border-t border-[#EAECF0] mx-4 pt-6">
         <div className="flex gap-3 pl-2">
-          <div className="bg-black/20 w-10 h-10 rounded-full"></div>
+          <div className="bg-black/20 w-10 h-10 rounded-full border border-black/10"></div>
 
           <div className="flex flex-col">
             <p className="text-sm font-semibold">Admin</p>
