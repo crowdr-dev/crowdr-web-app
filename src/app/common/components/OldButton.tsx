@@ -10,7 +10,7 @@ interface Props {
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function Button({
+export default function OldButton({
   isValid = true,
   isSubmitting,
   text,
