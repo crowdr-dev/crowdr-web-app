@@ -6,7 +6,6 @@ import Image from "next/image"
 import TextInput from "@/app/common/components/TextInput"
 import { pages } from "../pages"
 
-import { FiSearch } from "react-icons/fi"
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
 import CrowdrLogoType from "../../../../../public/svg/crowdr-logo.svg"
 import SearchIcon from "../../../../../public/svg/search.svg"
