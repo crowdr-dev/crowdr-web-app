@@ -205,7 +205,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                 })}
                 error={errors.campaignDuration as any}
                 mode="range"
-                enableTime
+                // enableTime
               />
             </div>
           </div>
@@ -439,7 +439,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                     }}
                     error={errors.timeCommitment as any}
                     mode="range"
-                    enableTime
+                    // enableTime
                     // minDate={new Date()}
                   />
                 </div>
