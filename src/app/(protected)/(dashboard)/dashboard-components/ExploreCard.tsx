@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { RFC } from '@/app/common/types'
-import { Button } from './Button'
+import { Button } from '../../../common/components/Button'
 import ProgressBar from './ProgressBar'
 import moment from 'moment'
 import 'slick-carousel/slick/slick.css'

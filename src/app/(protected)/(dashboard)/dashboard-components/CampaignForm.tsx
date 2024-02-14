@@ -5,7 +5,7 @@ import { useFormContext, useWatch } from "react-hook-form"
 import CampaignFormContext, {
   FormFields,
 } from "../campaigns/create-or-edit-campaign/utils/useCreateCampaign"
-import { Button, WhiteButton } from "./Button"
+import { Button, WhiteButton } from "../../../common/components/Button"
 import TextInput from "../../../common/components/TextInput"
 import SelectInput from "./SelectInput"
 import InputTitle from "./InputTitle"

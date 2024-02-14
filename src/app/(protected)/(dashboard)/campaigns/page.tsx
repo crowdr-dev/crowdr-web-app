@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { useQuery } from "react-query"
 import CampaignCard from "../dashboard-components/CampaignCard"
-import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
+import { Button, GrayButton, WhiteButton } from "../../../common/components/Button"
 import TextInput from "../../../common/components/TextInput"
 import DateRange from "../dashboard-components/DateRange"
 import StatCard from "../dashboard-components/StatCard"

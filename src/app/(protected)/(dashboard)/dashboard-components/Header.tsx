@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image"
 import { useUser } from "../common/hooks/useUser"
-import { Button, GrayButton } from "./Button"
+import { Button, GrayButton } from "../../../common/components/Button"
 import Label from "./Label"
 import DrawerTrigger from "./DrawerTrigger"
 import DropdownTrigger from "./DropdownTrigger"

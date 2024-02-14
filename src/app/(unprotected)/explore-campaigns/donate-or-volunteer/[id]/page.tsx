@@ -9,7 +9,7 @@ import Filter from '../../../../(protected)/(dashboard)/dashboard-components/Fil
 import Input from '../../../../(protected)/(dashboard)/dashboard-components/Input'
 import Checkbox from '../../../../(protected)/(dashboard)/dashboard-components/Checkbox'
 import Select from '../../../../(protected)/(dashboard)/dashboard-components/Select'
-import { Button } from '../../../../(protected)/(dashboard)/dashboard-components/Button'
+import { Button } from '../../../../common/components/Button'
 import { getSingleCampaign } from '@/app/api/campaigns/getCampaigns'
 import makeRequest from '@/utils/makeRequest'
 import { extractErrorMessage } from '@/utils/extractErrorMessage'

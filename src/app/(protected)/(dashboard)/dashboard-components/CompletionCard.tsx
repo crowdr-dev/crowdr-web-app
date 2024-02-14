@@ -1,6 +1,6 @@
 "use client"
 import { useModal } from "@/app/common/hooks/useModal"
-import { Button, WhiteButton } from "./Button"
+import { Button, WhiteButton } from "../../../common/components/Button"
 
 import { RFC } from "@/app/common/types"
 import { ReactElement } from "react"

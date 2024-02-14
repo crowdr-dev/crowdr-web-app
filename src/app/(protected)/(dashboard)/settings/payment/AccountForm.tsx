@@ -4,7 +4,7 @@ import TextInput from "../../../../common/components/TextInput"
 import SelectInput from "../../dashboard-components/SelectInput"
 import AccountFormContext, { FormFields } from "../utils/useAccountForm"
 import { Option } from "../../common/utils/form"
-import { Button } from "../../dashboard-components/Button"
+import { Button } from "../../../../common/components/Button"
 
 import { IBankDetail } from "./page"
 import { RFC } from "@/app/common/types"

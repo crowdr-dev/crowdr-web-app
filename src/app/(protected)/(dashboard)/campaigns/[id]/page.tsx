@@ -8,7 +8,7 @@ import { mapCampaignResponseToView } from "../../common/utils/campaign"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import { keys } from "../../utils/queryKeys"
 
-import { Button, GrayButton } from "../../dashboard-components/Button"
+import { Button, GrayButton } from "../../../../common/components/Button"
 import Detail from "../../dashboard-components/Detail"
 import Pagination from "../../dashboard-components/Pagination"
 import Table from "../../dashboard-components/Table"
