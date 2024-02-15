@@ -28,10 +28,10 @@ const TextInput: RFC<TextInputProps> = ({
   ...props
 }) => {
   if (!controlled && !config && name) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const {
       register,
       formState: { errors },
+      // eslint-disable-next-line react-hooks/rules-of-hooks
     } = useFormContext()
     config = register(name, rules)
     error = errors[name] as FieldError

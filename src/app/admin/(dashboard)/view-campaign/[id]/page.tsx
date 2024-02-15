@@ -9,6 +9,7 @@ import FormSkeleton from "@/app/(protected)/(dashboard)/dashboard-components/ske
 import CrowdrLogo from "../../../../../../public/images/brand/crowdr-logo.svg"
 import CaretIcon from "../../../../../../public/svg/caret.svg"
 import FileItem from "../../admin-dashboard-components/FileItem"
+import { Button, WhiteButton } from "@/app/common/components/Button"
 
 const ViewCampaign = () => {
   const [formData, setFormData] = useState("f")
@@ -33,7 +34,7 @@ const ViewCampaign = () => {
 
         <form>
           {formData ? (
-            <div>
+            <div className="mb-[222px]">
               {/* title */}
               <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Title" />
@@ -227,6 +228,22 @@ const ViewCampaign = () => {
               <FormSkeleton />
             </div>
           )}
+          <div className="flex md:justify-end mb-5">
+            <div>
+              <WhiteButton
+                text="View KYC"
+                shadow
+                onClick={() => {}}
+                className="mr-3"
+              />
+              <Button
+                text="Approve Campaign"
+                loading={true}
+                disabled={false}
+                onClick={() => {}}
+              />
+            </div>
+          </div>
         </form>
       </div>
     </div>
