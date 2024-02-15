@@ -8,6 +8,7 @@ import FormSkeleton from "@/app/(protected)/(dashboard)/dashboard-components/ske
 
 import CrowdrLogo from "../../../../../../public/images/brand/crowdr-logo.svg"
 import CaretIcon from "../../../../../../public/svg/caret.svg"
+import FileItem from "../../admin-dashboard-components/FileItem"
 
 const ViewCampaign = () => {
   const [formData, setFormData] = useState("f")
@@ -20,7 +21,7 @@ const ViewCampaign = () => {
         <Image src={CrowdrLogo} alt="crowdr logo" />
       </div>
 
-      <div className="px-[59px]">
+      <div className="px-[59px] pb-8">
         {/* page title x subtitle */}
         <hgroup className="pb-6 mb-3">
           <h1 className="text-2xl font-semibold text-black mb-0.5">
@@ -105,9 +106,7 @@ const ViewCampaign = () => {
               <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Upload Engaging Media" />
                 <div className="max-w-lg">
-                  {/* <FileInput
-                    name="campaignImages"
-                  /> */}
+                  <FileItem />
                 </div>
               </div>
               <hr className="mb-5" />
@@ -163,10 +162,9 @@ const ViewCampaign = () => {
                   <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                     <InputTitle
                       title="Skills Needed"
-                      detail="Select all that apply"
                     />
                     <div className="max-w-lg">
-                      <div className="flex flex-col">
+                      <div className="flex flex-col gap-1">
                         <p>Event Planning</p>
                         <p>Marketing & Social Media</p>
                       </div>
