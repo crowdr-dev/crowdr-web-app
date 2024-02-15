@@ -13,6 +13,7 @@ import { label } from "../admin-dashboard-components/Label"
 import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
+import UserIcon from "../../../../../public/svg/user-01.svg"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
@@ -152,7 +153,9 @@ const Dashboard = () => {
                 <Table.Row key={index}>
                   <Table.Cell>
                     <div className="flex items-center gap-3 font-medium">
-                      <Image src={item.imageUrl} alt="" />
+                      <div className="grid place-items-center h-10 w-10 shrink-0 border border-black/10 bg-[#F2F4F7] rounded-full">
+                        <Image src={item.altImageUrl} alt="" />
+                      </div>
                       {item.title}
                     </div>
                   </Table.Cell>
@@ -278,6 +281,7 @@ const items = [
     date: "N4,000,000",
     extra: "some",
     imageUrl: TempLogo,
+    altImageUrl: UserIcon,
     status: "Approved",
   },
   {
@@ -287,6 +291,7 @@ const items = [
     date: "N4,000,000",
     extra: "some",
     imageUrl: TempLogo,
+    altImageUrl: UserIcon,
     status: "Pending",
   },
   {
@@ -296,6 +301,7 @@ const items = [
     date: "N4,000,000",
     extra: "some",
     imageUrl: TempLogo,
+    altImageUrl: UserIcon,
     status: "Approved",
   },
   {
@@ -305,6 +311,7 @@ const items = [
     date: "N4,000,000",
     extra: "some",
     imageUrl: TempLogo,
+    altImageUrl: UserIcon,
     status: "Approved",
   },
   {
@@ -314,6 +321,7 @@ const items = [
     date: "N4,000,000",
     extra: "some",
     imageUrl: TempLogo,
+    altImageUrl: UserIcon,
     status: "Pending",
   },
 ]
