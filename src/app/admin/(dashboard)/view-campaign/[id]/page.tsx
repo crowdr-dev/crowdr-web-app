@@ -22,7 +22,7 @@ const ViewCampaign = () => {
         <Image src={CrowdrLogo} alt="crowdr logo" />
       </div>
 
-      <div className="px-[59px] pb-8">
+      <div className="px-[59px] pb-12">
         {/* page title x subtitle */}
         <hgroup className="pb-6 mb-3">
           <h1 className="text-2xl font-semibold text-black mb-0.5">
@@ -228,6 +228,8 @@ const ViewCampaign = () => {
               <FormSkeleton />
             </div>
           )}
+
+          {/* buttons */}
           <div className="flex md:justify-end mb-5">
             <div>
               <WhiteButton
@@ -238,7 +240,7 @@ const ViewCampaign = () => {
               />
               <Button
                 text="Approve Campaign"
-                loading={true}
+                loading={false}
                 disabled={false}
                 onClick={() => {}}
               />
