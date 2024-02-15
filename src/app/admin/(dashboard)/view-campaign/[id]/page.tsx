@@ -22,7 +22,7 @@ const ViewCampaign = () => {
         <Image src={CrowdrLogo} alt="crowdr logo" />
       </div>
 
-      <div className="px-[59px] pb-12">
+      <div className="px-[59px] pb-[238px]">
         {/* page title x subtitle */}
         <hgroup className="pb-6 mb-3">
           <h1 className="text-2xl font-semibold text-black mb-0.5">
