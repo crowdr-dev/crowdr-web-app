@@ -1,7 +1,7 @@
 import Image from "next/image"
 import moment, { Moment } from "moment"
 import { useSetAtom } from "jotai"
-import ModalTrigger from "./ModalTrigger"
+import ModalTrigger from "../../../common/components/ModalTrigger"
 import Dot from "./Dot"
 
 import { formatAmount } from "../common/utils/currency"
