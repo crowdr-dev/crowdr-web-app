@@ -1,8 +1,8 @@
 import { useFormContext } from "react-hook-form"
 import { useUser } from "../../common/hooks/useUser"
 import { useToast } from "@/app/common/hooks/useToast"
-import { Button } from "../../dashboard-components/Button"
-import TextInput from "../../dashboard-components/TextInput"
+import { Button } from "../../../../common/components/Button"
+import TextInput from "../../../../common/components/TextInput"
 import makeRequest from "@/utils/makeRequest"
 
 import ProfileFormContext, { FormFields } from "../utils/useProfileForm"

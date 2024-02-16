@@ -1,10 +1,10 @@
 import { useFormContext } from "react-hook-form"
 import { useUser } from "../../common/hooks/useUser"
-import NumberInput from "../../dashboard-components/NumberInput"
-import SelectInput from "../../dashboard-components/SelectInput"
-import FileInput from "../../dashboard-components/FileInput"
-import { FileInputContent } from "../../dashboard-components/FileInput"
-import { Button } from "../../dashboard-components/Button"
+import NumberInput from "../../../../common/components/NumberInput"
+import SelectInput from "../../../../common/components/SelectInput"
+import FileInput from "../../../../common/components/FileInput"
+import { FileInputContent } from "../../../../common/components/FileInput"
+import { Button } from "../../../../common/components/Button"
 
 import OrganizationFormContext, {
   FormFields,

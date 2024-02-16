@@ -1,7 +1,7 @@
 "use client";
 import { revalidate } from "@/app/api/revalidate";
 import { getUser } from "@/app/api/user/getUser";
-import Button from "@/app/common/components/Button";
+import OldButton from "@/app/common/components/OldButton";
 import { useToast } from "@/app/common/hooks/useToast";
 import { userTag } from "@/tags";
 import { extractErrorMessage } from "@/utils/extractErrorMessage";
@@ -37,7 +37,7 @@ export default function ResendConfirmationEmail() {
   };
   return (
     <>
-      <Button
+      <OldButton
         type="button"
         text="Resend confirmation email"
         isSubmitting={isSubmitting}

@@ -1,9 +1,9 @@
-import Modal, { SidebarModal } from "./Modal"
+import SidebarModal from "./SidebarModal"
 import { useAtomValue } from "jotai"
 import Notifications from "./Notifications"
 import CompletionCard from "./CompletionCard"
 import deleteCookie from "@/app/api/deleteCookie"
-import { modalStoreAtom } from "./ModalTrigger"
+import { modalStoreAtom } from "../../../common/components/ModalTrigger"
 
 import { RFC } from "@/app/common/types"
 

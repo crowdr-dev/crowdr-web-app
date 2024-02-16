@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import { LoginFormContext } from "@/app/common/hooks/useLoginForm";
-import Button from "@/app/common/components/Button";
+import OldButton from "@/app/common/components/OldButton";
 
 const ResetPassword = () => {
   const {
@@ -69,7 +69,7 @@ const ResetPassword = () => {
                 </span>
               )}
             </div>
-            <Button
+            <OldButton
               isValid={isValid}
               text="Continue"
               isSubmitting={isSubmitting}

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import moment from "moment"
 import flatpickr from "flatpickr"
-import { Button, GrayButton } from "./Button"
+import { Button, GrayButton } from "../../../common/components/Button"
 
 import { RFC } from "@/app/common/types"
 import { Instance as Flatpickr } from "flatpickr/dist/types/instance"

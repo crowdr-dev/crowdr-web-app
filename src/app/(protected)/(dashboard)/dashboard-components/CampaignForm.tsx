@@ -5,15 +5,15 @@ import { useFormContext, useWatch } from "react-hook-form"
 import CampaignFormContext, {
   FormFields,
 } from "../campaigns/create-or-edit-campaign/utils/useCreateCampaign"
-import { Button, WhiteButton } from "./Button"
-import TextInput from "./TextInput"
-import SelectInput from "./SelectInput"
-import InputTitle from "./InputTitle"
-import TextAreaInput from "./TextAreaInput"
-import NumberInput from "./NumberInput"
-import DateInput from "./DateInput"
-import OptionInput from "./OptionInput"
-import FileInput from "./FileInput"
+import { Button, WhiteButton } from "../../../common/components/Button"
+import TextInput from "../../../common/components/TextInput"
+import SelectInput from "../../../common/components/SelectInput"
+import InputTitle from "../../../common/components/InputTitle"
+import TextAreaInput from "../../../common/components/TextAreaInput"
+import NumberInput from "../../../common/components/NumberInput"
+import DateInput from "../../../common/components/DateInput"
+import OptionInput from "../../../common/components/OptionInput"
+import FileInput from "../../../common/components/FileInput"
 import FormSkeleton from "./skeletons/FormSkeleton"
 import { useUser } from "../common/hooks/useUser"
 import { useToast } from "@/app/common/hooks/useToast"
@@ -205,7 +205,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                 })}
                 error={errors.campaignDuration as any}
                 mode="range"
-                enableTime
+                // enableTime
               />
             </div>
           </div>
@@ -439,7 +439,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                     }}
                     error={errors.timeCommitment as any}
                     mode="range"
-                    enableTime
+                    // enableTime
                     // minDate={new Date()}
                   />
                 </div>

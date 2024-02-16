@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useFormContext } from "react-hook-form";
 import { LoginFormContext } from "@/app/common/hooks/useLoginForm";
-import Button from "@/app/common/components/Button";
+import OldButton from "@/app/common/components/OldButton";
 
 const ForgotPassword = () => {
   const {
@@ -53,7 +53,7 @@ const ForgotPassword = () => {
                 </span>
               )}
             </div>
-            <Button
+            <OldButton
               isValid={isValid}
               text="Continue"
               isSubmitting={isSubmitting}

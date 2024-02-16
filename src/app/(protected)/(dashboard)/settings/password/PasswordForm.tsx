@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form"
-import TextInput from "../../dashboard-components/TextInput"
-import InputTitle from "../../dashboard-components/InputTitle"
-import { Button } from "../../dashboard-components/Button"
+import TextInput from "../../../../common/components/TextInput"
+import InputTitle from "../../../../common/components/InputTitle"
+import { Button } from "../../../../common/components/Button"
 import PasswordFormContext, { FormFields } from "../utils/usePasswordForm"
 
 const PasswordForm = () => {

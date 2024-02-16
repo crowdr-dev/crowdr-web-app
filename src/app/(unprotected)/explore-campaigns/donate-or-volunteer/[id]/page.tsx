@@ -9,14 +9,14 @@ import Filter from '../../../../(protected)/(dashboard)/dashboard-components/Fil
 import Input from '../../../../(protected)/(dashboard)/dashboard-components/Input'
 import Checkbox from '../../../../(protected)/(dashboard)/dashboard-components/Checkbox'
 import Select from '../../../../(protected)/(dashboard)/dashboard-components/Select'
-import { Button } from '../../../../(protected)/(dashboard)/dashboard-components/Button'
+import { Button } from '../../../../common/components/Button'
 import { getSingleCampaign } from '@/app/api/campaigns/getCampaigns'
 import makeRequest from '@/utils/makeRequest'
 import { extractErrorMessage } from '@/utils/extractErrorMessage'
 import HeartHand from '../../../../../../public/svg/hand-holding-heart.svg'
 import { useToast } from '@/app/common/hooks/useToast'
 import Link from 'next/link'
-import Modal from '@/app/common/components/Modal'
+import OldModal from '@/app/common/components/OldModal'
 import WaitlistForm from '@/app/home/home-components/WaitlistForm'
 import Navigation from '@/app/common/components/Navigation'
 import { formatAmount } from '@/app/(protected)/(dashboard)/common/utils/currency'
@@ -652,9 +652,9 @@ export default function DonateOrVolunteer ({
         </div>
       </div>
       <Footer />
-      <Modal isOpen={modalIsOpen} onClose={closeModal}>
+      <OldModal isOpen={modalIsOpen} onClose={closeModal}>
         <WaitlistForm />
-      </Modal>
+      </OldModal>
     </div>
   )
 }

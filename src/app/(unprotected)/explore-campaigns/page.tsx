@@ -5,7 +5,7 @@ import ExploreCard from '../../(protected)/(dashboard)/dashboard-components/Expl
 import { useState, useEffect } from 'react'
 import Navigation from '@/app/common/components/Navigation';
 import Footer from '@/app/common/components/Footer'
-import Modal from '@/app/common/components/Modal';
+import OldModal from '@/app/common/components/OldModal';
 import WaitlistForm from '@/app/home/home-components/WaitlistForm';
 
 export default function DynamicExplore () {
@@ -96,9 +96,9 @@ export default function DynamicExplore () {
       )}
       </div>
        <Footer />
-       <Modal isOpen={modalIsOpen} onClose={closeModal}>
+       <OldModal isOpen={modalIsOpen} onClose={closeModal}>
         <WaitlistForm />
-      </Modal>
+      </OldModal>
     </div>
   )
 }

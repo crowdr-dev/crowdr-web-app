@@ -1,5 +1,5 @@
 import { useMediaQuery } from "usehooks-ts"
-import { WhiteButton } from "./Button"
+import { WhiteButton } from "../../../common/components/Button"
 import { RFC } from "@/app/common/types"
 
 import ArrowLeftIcon from "../../../../../public/svg/arrow-left.svg"

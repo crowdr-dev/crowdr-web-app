@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { mapCampaignResponseToView } from "../common/utils/campaign"
 import ProgressBar from "./ProgressBar"
-import { GrayButton } from "./Button"
+import { GrayButton } from "../../../common/components/Button"
 import { label } from "./Label"
 import { pill } from "./Pill"
 

@@ -1,12 +1,12 @@
 "use client"
 import Image from "next/image"
 import { useUser } from "../common/hooks/useUser"
-import { Button, GrayButton } from "./Button"
+import { Button, GrayButton } from "../../../common/components/Button"
 import Label from "./Label"
-import DrawerTrigger from "./DrawerTrigger"
-import DropdownTrigger from "./DropdownTrigger"
-import Drawer from "./Drawer"
-import Dropdown from "./Dropdown"
+import DrawerTrigger from "../../../common/components/DrawerTrigger"
+import DropdownTrigger from "../../../common/components/DropdownTrigger"
+import Drawer from "../../../common/components/Drawer"
+import Dropdown from "../../../common/components/Dropdown"
 import Sidebar from "./Sidebar"
 import ProfileSkeleton from "./skeletons/ProfileSkeleton"
 
@@ -32,11 +32,11 @@ const Header = () => {
 
       <div className="flex items-center">
         <div className="flex mr-6">
-          <GrayButton
+          {/* <GrayButton
             text="Setup Guide"
             iconUrl={PuzzleIcon}
             className="hidden md:inline-flex mr-[6px]"
-          />
+          /> */}
           <Button
             text="Create Campaign"
             href="/campaigns/create-or-edit-campaign"
