@@ -1,5 +1,6 @@
 import { RFC } from "@/app/common/types"
 
+// TODO: CHECK OUT WHY THIS ISN'T WORKING BUT SIDEBAR MODAL IS
 const Modal: RFC<ModalProps> = ({ id, children, ariaLabel }) => {
   return (
     <div

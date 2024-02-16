@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/app/common/components/Button"
@@ -8,7 +9,6 @@ import StatCard from "../admin-dashboard-components/StatCard"
 import ButtonGroup from "../admin-dashboard-components/ButtonGroup"
 import Table from "../admin-dashboard-components/Table"
 import Pagination from "../admin-dashboard-components/Pagination"
-import KycPopup from "../admin-dashboard-components/KycPopup"
 import ModalTrigger from "@/app/common/components/ModalTrigger"
 import { label } from "../admin-dashboard-components/Label"
 
@@ -19,23 +19,25 @@ import UserIcon from "../../../../../public/svg/user-01.svg"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
-  const [selectedTable, setSelectedTable] = useState("Campaigns")
   const [campaignsPage, setCampaignsPage] = useState(1)
   const [kycPage, setKycPage] = useState(1)
   const [withdrawalsPage, setWithdrawalsPage] = useState(1)
+  const searchParams = useSearchParams()
+  const route = useRouter()
 
+  const selectedTable = searchParams.get("view") || "Campaigns"
   const tablePickerButtons = [
     {
       label: "Campaigns",
-      onClick: () => setSelectedTable("Campaigns"),
+      onClick: () => route.push("/admin/dashboard?view=Campaigns"),
     },
     {
       label: "KYC",
-      onClick: () => setSelectedTable("KYC"),
+      onClick: () => route.push("/admin/dashboard?view=KYC"),
     },
     {
       label: "Withdrawals",
-      onClick: () => setSelectedTable("Withdrawals"),
+      onClick: () => route.push("/admin/dashboard?view=Withdrawals"),
     },
   ]
 
@@ -179,6 +181,7 @@ const Dashboard = () => {
                           <button
                             type="button"
                             className="font-semibold text-sm text-[#00B964]"
+                            onClick={() => route.push(`/admin/dashboard?view=${selectedTable}&kycId=blahblah`)}
                           >
                             Approve
                           </button>
@@ -256,10 +259,6 @@ const Dashboard = () => {
           </Table>
         )}
       </div>
-
-      {/* <div className="flex w-full">
-        <KycPopup />
-      </div> */}
     </div>
   )
 }
