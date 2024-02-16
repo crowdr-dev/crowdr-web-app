@@ -53,8 +53,8 @@ const KycPopup = () => {
             Verification Documents
           </p>
           <div className="flex flex-col gap-5 max-w-[480px]">
-            {files.map((file, next) => (
-              <FileItem />
+            {files.map((file, index) => (
+              <FileItem key={index} />
             ))}
           </div>
         </div>
