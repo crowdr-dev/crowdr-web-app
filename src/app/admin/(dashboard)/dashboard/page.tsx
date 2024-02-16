@@ -8,13 +8,14 @@ import StatCard from "../admin-dashboard-components/StatCard"
 import ButtonGroup from "../admin-dashboard-components/ButtonGroup"
 import Table from "../admin-dashboard-components/Table"
 import Pagination from "../admin-dashboard-components/Pagination"
+import KycPopup from "../admin-dashboard-components/KycPopup"
+import ModalTrigger from "@/app/common/components/ModalTrigger"
 import { label } from "../admin-dashboard-components/Label"
 
 import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
-import KycPopup from "../admin-dashboard-components/KycPopup"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
@@ -174,12 +175,14 @@ const Dashboard = () => {
                         View
                       </Link>
                       {item.status === "Approved" ? (
-                        <button
-                          type="button"
-                          className="font-semibold text-sm text-[#00B964]"
-                        >
-                          Approve
-                        </button>
+                        <ModalTrigger id="kycPopup">
+                          <button
+                            type="button"
+                            className="font-semibold text-sm text-[#00B964]"
+                          >
+                            Approve
+                          </button>
+                        </ModalTrigger>
                       ) : (
                         <button
                           type="button"
@@ -254,9 +257,9 @@ const Dashboard = () => {
         )}
       </div>
 
-      <div className="flex w-full">
+      {/* <div className="flex w-full">
         <KycPopup />
-      </div>
+      </div> */}
     </div>
   )
 }

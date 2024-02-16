@@ -2,6 +2,7 @@
 import Image from "next/image"
 import FileItem from "./FileItem"
 import { Button, GrayButton } from "@/app/common/components/Button"
+import ModalTrigger from "@/app/common/components/ModalTrigger"
 
 import XMark from "../../../../../public/svg/x-mark.svg"
 
@@ -10,10 +11,12 @@ const KycPopup = () => {
 
   if (kycData)
     return (
-      <div className="grow max-w-[1031px] px-[50px] py-10 mb-11 border">
+      <div className="grow max-w-[1031px] bg-white px-[50px] py-10 mb-11 border">
         <div className="flex justify-between items-center mb-11">
           <h2 className="font-semibold text-2xl text-black">KYC Information</h2>
-          <Image src={XMark} alt="" />
+          <ModalTrigger id="kycPopup" type="hide">
+            <Image src={XMark} alt="" />
+          </ModalTrigger>
         </div>
 
         <div className="flex flex-col gap-4 max-w-[440px] mb-6">

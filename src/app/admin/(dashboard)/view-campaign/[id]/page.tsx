@@ -5,11 +5,12 @@ import InputTitle from "@/app/common/components/InputTitle"
 import TextInput from "@/app/common/components/TextInput"
 import TextAreaInput from "@/app/common/components/TextAreaInput"
 import FormSkeleton from "@/app/(protected)/(dashboard)/dashboard-components/skeletons/FormSkeleton"
+import FileItem from "../../admin-dashboard-components/FileItem"
+import { Button, WhiteButton } from "@/app/common/components/Button"
+import ModalTrigger from "@/app/common/components/ModalTrigger"
 
 import CrowdrLogo from "../../../../../../public/images/brand/crowdr-logo.svg"
 import CaretIcon from "../../../../../../public/svg/caret.svg"
-import FileItem from "../../admin-dashboard-components/FileItem"
-import { Button, WhiteButton } from "@/app/common/components/Button"
 
 const ViewCampaign = () => {
   const [formData, setFormData] = useState("f")
@@ -232,12 +233,14 @@ const ViewCampaign = () => {
           {/* buttons */}
           <div className="flex md:justify-end mb-5">
             <div>
-              <WhiteButton
-                text="View KYC"
-                shadow
-                onClick={() => {}}
-                className="mr-3"
-              />
+              <ModalTrigger id="kycPopup">
+                <WhiteButton
+                  text="View KYC"
+                  shadow
+                  onClick={() => {}}
+                  className="mr-3"
+                />
+              </ModalTrigger>
               <Button
                 text="Approve Campaign"
                 loading={false}

@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react"
 import Modal from "../common/components/Modal"
+import SidebarModal from "../(protected)/(dashboard)/dashboard-components/SidebarModal"
 import KycPopup from "./(dashboard)/admin-dashboard-components/KycPopup"
 
 const AdminLayout = ({ children }: PropsWithChildren) => {
@@ -9,9 +10,9 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
         <>
           {children}
 
-          <Modal id="kycPopup">
+          <SidebarModal id="kycPopup" position="center">
             <KycPopup />
-          </Modal>
+          </SidebarModal>
         </>
       }
     </div>
