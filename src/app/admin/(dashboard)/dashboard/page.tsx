@@ -14,6 +14,7 @@ import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
+import KycPopup from "../admin-dashboard-components/KycPopup"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
@@ -163,10 +164,9 @@ const Dashboard = () => {
                     {<div className="font-medium">{item.detail}</div>}
                   </Table.Cell>
                   <Table.Cell>{item.date}</Table.Cell>
+                  <Table.Cell>{label(item.status)}</Table.Cell>
                   <Table.Cell>
-                    {label(item.status)}
-                  </Table.Cell>
-                  <Table.Cell><div className="flex gap-3">
+                    <div className="flex gap-3">
                       <Link
                         href={`/admin/view-kyc/${item.id}`}
                         className="font-semibold text-sm text-[#475467] cursor-pointer"
@@ -188,7 +188,8 @@ const Dashboard = () => {
                           Delete
                         </button>
                       )}
-                    </div></Table.Cell>
+                    </div>
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
@@ -251,6 +252,10 @@ const Dashboard = () => {
             />
           </Table>
         )}
+      </div>
+
+      <div className="flex w-full">
+        <KycPopup />
       </div>
     </div>
   )
