@@ -39,5 +39,5 @@ export const stateOptions = [
   { value: "Taraba", label: "Taraba" },
   { value: "Yobe", label: "Yobe" },
   { value: "Zamfara", label: "Zamfara" },
-  { value: "FCT", label: "FCT" },
+  { value: "Federal Capital Territory", label: "FCT" },
 ];
