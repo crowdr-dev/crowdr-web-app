@@ -1,4 +1,4 @@
-import Modal, { SidebarModal } from "./Modal"
+import Modal, { SidebarModal } from "../../../common/components/Modal"
 import { useAtomValue } from "jotai"
 import Notifications from "./Notifications"
 import CompletionCard from "./CompletionCard"

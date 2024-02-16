@@ -12,7 +12,7 @@ import Slider from 'react-slick'
 
 import Menu from '../../../../../public/svg/menu.svg'
 import ArrowRight from '../../../../../public/svg/new-arrow.svg'
-import Modal from '@/app/common/components/Modal'
+import OldModal from '@/app/common/components/OldModal'
 import { formatAmount } from '../common/utils/currency'
 import { camelCaseToSeparated } from '@/utils/seperateText'
 
@@ -153,7 +153,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
                 {slideImages?.map((image, index) => {
                   return (
                     <div key={index}>
-                      <Modal isOpen={modalIsOpen} onClose={closeModal}>
+                      <OldModal isOpen={modalIsOpen} onClose={closeModal}>
                         <Image
                           src={slideImages[currentSlide]}
                           alt='donate'
@@ -165,7 +165,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
                             objectFit: 'cover'
                           }}
                         />
-                      </Modal>
+                      </OldModal>
 
                       <Image
                         src={image}

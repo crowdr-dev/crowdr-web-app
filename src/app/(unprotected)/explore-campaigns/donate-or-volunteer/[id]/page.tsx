@@ -16,7 +16,7 @@ import { extractErrorMessage } from '@/utils/extractErrorMessage'
 import HeartHand from '../../../../../../public/svg/hand-holding-heart.svg'
 import { useToast } from '@/app/common/hooks/useToast'
 import Link from 'next/link'
-import Modal from '@/app/common/components/Modal'
+import OldModal from '@/app/common/components/OldModal'
 import WaitlistForm from '@/app/home/home-components/WaitlistForm'
 import Navigation from '@/app/common/components/Navigation'
 import { formatAmount } from '@/app/(protected)/(dashboard)/common/utils/currency'
@@ -652,9 +652,9 @@ export default function DonateOrVolunteer ({
         </div>
       </div>
       <Footer />
-      <Modal isOpen={modalIsOpen} onClose={closeModal}>
+      <OldModal isOpen={modalIsOpen} onClose={closeModal}>
         <WaitlistForm />
-      </Modal>
+      </OldModal>
     </div>
   )
 }
