@@ -6,7 +6,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: var(--PRIMARY_LIGHT_COLOR);
+  background-color: var(--BACKGROUND_WHITE);
 }
 
 .menu-icon {
@@ -20,7 +20,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: var(--PRIMARY_LIGHT_COLOR);
+  background-color: var(--BACKGROUND_WHITE);
 
   /* display: none; */
   padding: 10px;

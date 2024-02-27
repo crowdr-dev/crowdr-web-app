@@ -1,5 +1,6 @@
 "use client";
 import { openEmail } from "@/utils/openEmail";
+import Image from "next/image";
 import Collapsible from "react-collapsible";
 import "../home-styles/faq.css";
 
@@ -7,8 +8,8 @@ export default function Faq() {
   return (
     <section className="faq">
       <div className="faq-container">
-        <p className="faq-header-small">Frequently Asked Questions</p>
-        <p className="faq-header-big">Get to know more about us</p>
+        <p className="faq-header">Frequently Asked Questions</p>
+        <p className="faq-header-big mt-[20px]">We knew you would ask. See? We’re two peas in a pod.</p>
 
         <div>
           {faqArr.map((faq: { heading: string, text: string}, index) => (
@@ -17,13 +18,13 @@ export default function Faq() {
                 trigger={
                   <div className="flex justify-between">
                     <p className="faq-collapsible-header">{faq.heading}</p>
-                    <div className="faq-collapsible-icon-close" />
+                    <Image src="/svg/plus-circle.svg" width={24} height={24} alt='accordion'/>
                   </div>
                 }
                 triggerWhenOpen={
                   <div className="flex justify-between">
                     <p className="faq-collapsible-header">{faq.heading}</p>
-                    <div className="faq-collapsible-icon-close" />
+                    <Image src="/svg/minus-circle.svg" width={24} height={24} alt='accordion'/>
                   </div>
                 }
               >
@@ -32,12 +33,6 @@ export default function Faq() {
             </div>
           ))}
         </div>
-
-        <p className="faq-more-questions">
-          Have more questions? Our team is happy to assist you!
-        </p>
-
-        <button className="btn-outline" onClick={openEmail}>Contact Us</button>
       </div>
     </section>
   );

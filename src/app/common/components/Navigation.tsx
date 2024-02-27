@@ -50,7 +50,7 @@ export default function Navigation({openModal} : Props ) {
           <a href={`mailto:${email}`} target="_blank">Contact us</a>
         </li>
       </ul>
-      <button className="btn-outline hide-sm" onClick={openModal}>Join Private Beta</button>
+      <button className="btn-primary hide-sm" onClick={openModal}>Join Private Beta</button>
       <MobileMenu openModal={openModal}/>
       {/* <Modal isOpen={modalIsOpen} onClose={closeModal}>
        <div>heyyy</div> 

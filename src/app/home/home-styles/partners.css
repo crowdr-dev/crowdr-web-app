@@ -1,0 +1,20 @@
+.partners {
+  padding: 40px 10px 40px 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #1f2227;
+}
+
+@media screen and (min-width: 600px) {
+  .partners {
+    padding: 48px 30px 48px 30px;
+  }
+}
+
+@media screen and (min-width: 940px) {
+  .partners {
+    display: flex;
+    align-items: start;
+    justify-content: space-around;
+  }
+}

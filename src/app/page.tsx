@@ -10,6 +10,10 @@ import WaitlistForm from "./home/home-components/WaitlistForm";
 import Modal from "./common/components/Modal";
 import Footer from "./common/components/Footer";
 import Navigation from "./common/components/Navigation";
+import Todo from "./home/home-components/Todo";
+import WhyCrowdr from "./home/home-components/WhyCrowdr";
+import Happening from "./home/home-components/Happening";
+import Partners from "./home/home-components/Partners";
 
 export default function Home() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -26,9 +30,13 @@ export default function Home() {
       <Navigation openModal={openModal} />
       <main>
         <Header openModal={openModal} />
-        <OurFeaturesAnimation />
-        <Steps openModal={openModal} />
-        <Benefits />
+        {/* <OurFeaturesAnimation /> */}
+        <Todo />
+        {/* <Steps openModal={openModal} /> */}
+        <WhyCrowdr  />
+        <Happening/>
+        <Partners/>
+        {/* <Benefits /> */}
         <Faq />
         <Community openModal={openModal} />
         <Footer />
