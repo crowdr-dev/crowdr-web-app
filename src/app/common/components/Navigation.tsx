@@ -23,10 +23,10 @@ export default function Navigation({openModal} : Props ) {
     <nav>
       <Link href="/">
         <Image
-          src="/svg/crowdr-logo.svg"
+          src="/svg/new-crowdr-logo.svg"
           alt="crowdr logo"
-          width={76}
-          height={20}
+          width={120}
+          height={30}
           className="cursor"
         />
       </Link>

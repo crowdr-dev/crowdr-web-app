@@ -13,7 +13,7 @@ const Todo = () => {
                         <button className="btn-primary">Get started</button>
                     </div>
                     <Image
-                        src="/images/iphone.png"
+                        src="/svg/iphone.svg"
                         width={300}
                         height={500}
                         alt="hero-section"

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 import { usePathname } from "next/navigation";
 import { email } from "@/utils/openEmail";
@@ -29,7 +30,7 @@ export default function MobileMenu({openModal} : Props) {
     <div className="mobile-menu">
       <div className="container">
         <div className="menu-icon" onClick={toggleMenu}>
-          {isOpen ? <IoMdClose size={25} /> : <IoMdMenu size={25} />}
+          {isOpen ? <IoMdClose size={25} /> : <Image width={25} height={25} src="/svg/new-menu.svg" alt="menu" />}
         </div>
       </div>
       <div className={`menu ${isOpen ? "open" : ""}`} onClick={closeMenu}>
