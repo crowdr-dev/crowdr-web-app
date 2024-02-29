@@ -26,7 +26,6 @@ const AboutUs = () => {
     <div>
       <Navigation openModal={openModal} />
       <Header />
-      <Image src={People} alt="crowd" style={{ width: "100%" }} priority />
       <Details />
       <Accomplishments />
       <Team />
