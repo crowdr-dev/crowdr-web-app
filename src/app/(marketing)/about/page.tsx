@@ -11,6 +11,7 @@ import Navigation from "@/app/common/components/Navigation";
 import Footer from "@/app/common/components/Footer";
 import Modal from "@/app/common/components/Modal";
 import WaitlistForm from "@/app/home/home-components/WaitlistForm";
+import Values from "./about-components/Values";
 
 const AboutUs = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -27,8 +28,9 @@ const AboutUs = () => {
       <Navigation openModal={openModal} />
       <Header />
       <Details />
-      <Accomplishments />
+      {/* <Accomplishments /> */}
       <Team />
+      <Values/>
       <Contact />
       <Footer />
       <Modal isOpen={modalIsOpen} onClose={closeModal}>

@@ -1,57 +1,27 @@
 .contact {
-       max-width: 1200px;
-       background-color: var(--PRIMARY_COLOR);
-       color: white;
-       margin: auto;
-       padding: 40px;
-       margin-bottom: 91px;
-}
-
-.contactHeader {
-       color: #FFF;
-       font-size: 34px;
-       font-weight: 700;
-       line-height: 40px;
-       max-width: 744px;
-}
-
-.contactPara {
-       color: #FFF;
-       font-size: 24px;
-       font-weight: 500;
-       line-height: 40px;
-       max-width: -moz-fit-content;
-       max-width: fit-content;
-       padding: 50px 0;
-      
-     
-}
-.border {
-       border-bottom: 2px solid #FFF;
-       max-width: 850px;
-       margin-bottom: 50px;
+  padding: 32px 0px;
+  background-color: #004e2a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 @media screen and (min-width: 600px) {
-       .contact {
-              border-radius: 0px 0px 20px 20px;
+  .contact {
+    margin: 100px 32px 42px 32px;
+    border-radius: 64px 64px 0px 0px;
+    padding: 100px 54px 42px 54px;
+  }
 
-       }
+  .contactHeader {
+    font-size: 68px;
+    line-height: 78.5px;
+  }
 
-       .contactHeader {
-              font-size: 68px;
-              line-height: 78.5px;
-              
-       }
+  .contactPara {
+    font-size: 35px;
 
-       .contactPara {
-            
-              font-size: 35px;
-              
-              line-height: 78.5px;
-             
-             
-            
-       }
-       
+    line-height: 78.5px;
+  }
 }

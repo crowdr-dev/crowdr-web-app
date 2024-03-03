@@ -6,10 +6,8 @@ import { openEmail } from '@/utils/openEmail';
 export default function Contact() {
   return (
     <section className={styles.contact}>
-       <h1 className={styles.contactHeader}>Have a question? Our team is happy to assist you!</h1>
-       <p className={styles.contactPara}>Ask about app updates, services, partnerships and more.</p>
-       <div className={styles.border} />
-       <button className='btn-outline' onClick={openEmail}>Contact Us</button>
+       <h1 className='text-center text-[30px] md:text-[60px] text-[#EBECED] '>Interested in supporting our mission?</h1>
+       <button className='btn-primary !rounded-[8px] !mt-6' onClick={openEmail}>Schedule a meeting</button>
     </section>
   )
 }
