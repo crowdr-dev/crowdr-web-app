@@ -1,5 +1,5 @@
 .community {
-  padding: 40px 10px 40px 10px;
+  padding: 40px 0px 0px 0px;
   display: flex;
   flex-direction: column;
   background-color: #006637;
@@ -7,7 +7,7 @@
 
 @media screen and (min-width: 600px) {
   .community {
-    padding: 48px 30px 48px 30px;
+    padding: 48px 0px 0px 30px;
   }
 }
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import "../home-styles/community.css";
 
 type Props = {
@@ -8,13 +9,13 @@ type Props = {
 export default function Community({openModal} : Props) {
   return (
        <section className='community'>
-        <div className="flex flex-col md:flex-row justify-between ">
-          <div className='flex flex-col items-start gap-5'>
+        <div className="flex flex-col md:flex-row justify-between w-full">
+          <div className='flex flex-col items-start gap-5 px-4'>
             <h2 className="text-[24px] md:text-[48px] font-medium text-[#EBECED] leading-none">Be part of our <br/> community</h2>
             <p className="text-sm md:text-[18px] text-[#EBECED]">Get insider access to the Crowdr-verse, learn about the <br/>social-good ecosystem in Africa and more.</p>
             <button onClick={openModal} className="btn-primary !bg-[#F7CE50] !text-[#1F2227] w-full md:w-auto">Sign up</button>
           </div>
-          
+          <Image src='/svg/happening-design.svg' alt='community' width={500} height={500} className="mt-8 w-full md:w-[500px]" />
         </div>
      </section>
   )

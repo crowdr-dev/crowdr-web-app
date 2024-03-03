@@ -26,7 +26,7 @@ const WhyCrowdr = () => {
     ]
     return (
         <div className='bg-[#181A1D] py-16 flex flex-col items-center justify-center w-full relative'>
-            <div className='w-[80%] flex flex-col item-start'>
+            <div className='px-6 w-full md:w-[80%] flex flex-col item-start'>
                 <h2 className="text-white md:text-[42px]">Why Crowdr?</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
                     {

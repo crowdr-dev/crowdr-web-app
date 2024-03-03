@@ -13,7 +13,7 @@ import Image from "next/image";
 export default function Team() {
   return (
     <section className={styles.team}>
-      <h2 className="text-center text-[24px] md:text-[36px] text-[#101828] font-medium leading-[44px]">Meet our team</h2>
+      <h2 className="text-center text-[24px] md:text-[36px] text-[#101828] font-medium leading-[44px]">Meet the Crowdr Clan</h2>
       <p className="text-center text-sm md:text-[20px] text-[#475467] leading-[30px] mt-5">We’re a curious and diverse team passionate about making it <br/> easier for people to do good in their communities.</p>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16'>
         {teamMembers.map(({ name, photo, position,bio}) => {
