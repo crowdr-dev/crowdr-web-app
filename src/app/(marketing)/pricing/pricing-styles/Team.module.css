@@ -1,0 +1,13 @@
+.team {
+  padding: 64px 32px 64px 32px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+@media screen and (min-width: 600px) {
+  .teamHeading {
+    padding: 65px 0;
+    font-size: 68px;
+    line-height: 72px;
+  }
+}

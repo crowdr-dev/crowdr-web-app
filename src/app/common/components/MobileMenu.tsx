@@ -36,8 +36,8 @@ export default function MobileMenu({openModal} : Props) {
       <div className={`menu ${isOpen ? "open" : ""}`} onClick={closeMenu}>
         <ul>
           <li>
-            <Link href="/" className={isActive("/")}>
-              Home
+            <Link href="/pricing" className={isActive("/pricing")}>
+              About
             </Link>
           </li>
           <li>

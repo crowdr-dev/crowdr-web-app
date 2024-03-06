@@ -32,8 +32,8 @@ export default function Navigation({openModal} : Props ) {
       </Link>
       <ul>
         <li>
-          <Link href="/" className={isActive("/")}>
-            Home
+          <Link href="/pricing" className={isActive("/pricing")}>
+            Pricing
           </Link>
         </li>
         <li>
@@ -41,6 +41,7 @@ export default function Navigation({openModal} : Props ) {
             About us
           </Link>
         </li>
+        
         <li>
           <Link href="/explore-campaigns" className={isActive("/explore-campaigns")}>
             Explore

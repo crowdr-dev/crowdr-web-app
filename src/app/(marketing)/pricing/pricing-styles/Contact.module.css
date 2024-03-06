@@ -1,0 +1,27 @@
+.contact {
+  padding: 32px 0px;
+  background-color: #004e2a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (min-width: 600px) {
+  .contact {
+    margin: 100px 32px 42px 32px;
+    border-radius: 64px 64px 0px 0px;
+    padding: 100px 54px 42px 54px;
+  }
+
+  .contactHeader {
+    font-size: 68px;
+    line-height: 78.5px;
+  }
+
+  .contactPara {
+    font-size: 35px;
+
+    line-height: 78.5px;
+  }
+}
