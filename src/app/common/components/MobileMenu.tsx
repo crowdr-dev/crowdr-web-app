@@ -37,7 +37,7 @@ export default function MobileMenu({openModal} : Props) {
         <ul>
           <li>
             <Link href="/pricing" className={isActive("/pricing")}>
-              About
+              Pricing
             </Link>
           </li>
           <li>
