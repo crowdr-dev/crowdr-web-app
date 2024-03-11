@@ -181,7 +181,11 @@ const Dashboard = () => {
                           <button
                             type="button"
                             className="font-semibold text-sm text-[#00B964]"
-                            onClick={() => route.push(`/admin/dashboard?view=${selectedTable}&kycId=blahblah`)}
+                            onClick={() =>
+                              route.push(
+                                `/admin/dashboard?view=${selectedTable}&kycId=blahblah`
+                              )
+                            }
                           >
                             Approve
                           </button>
@@ -239,12 +243,20 @@ const Dashboard = () => {
                       >
                         View
                       </Link>
-                      <button
-                        type="button"
-                        className="font-semibold text-sm text-[#6941C6]"
-                      >
-                        Approve
-                      </button>
+
+                      <ModalTrigger id="withdrawalPopup">
+                        <button
+                          type="button"
+                          className="font-semibold text-sm text-[#6941C6]"
+                          onClick={() =>
+                            route.push(
+                              `/admin/dashboard?view=${selectedTable}&campaignId=blahblah`
+                            )
+                          }
+                        >
+                          Approve
+                        </button>
+                      </ModalTrigger>
                     </div>
                   </Table.Cell>
                 </Table.Row>
