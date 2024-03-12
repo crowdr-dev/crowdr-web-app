@@ -28,7 +28,7 @@ const VerificationForm = () => {
   const user = useUser()
   const toast = useToast()
 
-  const { data: customerDetails, refetch } = useQuery(
+  const { data: customerDetails, refetch: refetchCustomerDetails } = useQuery(
     [keys.settings.kyc, user?.token],
     fetchKyc,
     {
@@ -75,7 +75,7 @@ const VerificationForm = () => {
         })
 
         if (success) {
-          refetch()
+          refetchCustomerDetails()
           toast({ title: "Well done!", body: message })
         }
       } catch (error) {

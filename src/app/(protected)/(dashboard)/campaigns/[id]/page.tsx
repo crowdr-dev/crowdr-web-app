@@ -18,7 +18,7 @@ import ProgressBar from "../../dashboard-components/ProgressBar"
 import Text from "../../dashboard-components/Text"
 import { pill } from "../../dashboard-components/Pill"
 
-import { Doubt, QF, Route } from "@/app/common/types"
+import { Nullable, QF, Route } from "@/app/common/types"
 import { IFundraiseVolunteerCampaign } from "@/app/common/types/Campaign"
 import { IDonationResponse, IVolunteerResponse } from "@/app/common/types/DonationsVolunteering"
 import { IUser } from "@/app/api/user/getUser"
@@ -248,7 +248,7 @@ type IVolunteers = {
 const ITEMS_PER_PAGE = "4"
 const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"
 
-const fetchCampaign: QF<Doubt<ICampaignView>, [Doubt<string>, string]> = async ({
+const fetchCampaign: QF<Nullable<ICampaignView>, [Nullable<string>, string]> = async ({
   queryKey,
 }) => {
   const [_, token, campaignId] = queryKey
@@ -276,7 +276,7 @@ const fetchCampaign: QF<Doubt<ICampaignView>, [Doubt<string>, string]> = async (
   }
 }
 
-const fetchDonors: QF<Doubt<IDonors>, [Doubt<string>, string, number]> = async ({
+const fetchDonors: QF<Nullable<IDonors>, [Nullable<string>, string, number]> = async ({
   queryKey,
 }) => {
   const [_, token, campaignId, donorsPage] = queryKey
@@ -310,7 +310,7 @@ const fetchDonors: QF<Doubt<IDonors>, [Doubt<string>, string, number]> = async (
   }
 }
 
-const fetchVolunteers: QF<Doubt<IVolunteers>, [Doubt<string>, string, number]> = async ({ queryKey }) => {
+const fetchVolunteers: QF<Nullable<IVolunteers>, [Nullable<string>, string, number]> = async ({ queryKey }) => {
   const [_, token, campaignId, volunteersPage] = queryKey
 
   if (token) {

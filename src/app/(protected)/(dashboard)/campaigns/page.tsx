@@ -16,7 +16,7 @@ import makeRequest from "@/utils/makeRequest"
 import { keys } from "../utils/queryKeys"
 import { time } from "../utils/time"
 
-import { Doubt, QF } from "@/app/common/types"
+import { Nullable, QF } from "@/app/common/types"
 // import { CampaignResponse, ICampaignStats } from "@/app/common/types/Campaign"
 import { IDateRange } from "../dashboard-components/DateRange"
 import { IUser } from "@/app/api/user/getUser"
@@ -167,7 +167,7 @@ const Campaigns = () => {
 
 export default Campaigns
 
-const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<string>, IDateRange?]> = async ({
+const fetchStats: QF<Nullable<ICampaignStats>, [Nullable<string>, IDateRange?]> = async ({
   queryKey,
 }) => {
   const [_, token, dateRange] = queryKey
@@ -199,7 +199,7 @@ const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<string>, IDateRange?]> = asyn
   }
 }
 
-const fetchCampaigns: QF<Doubt<ICampaignResponse>, [Doubt<string>, number]> = async ({queryKey}) => {
+const fetchCampaigns: QF<Nullable<ICampaignResponse>, [Nullable<string>, number]> = async ({queryKey}) => {
   const [_, token, page] = queryKey
   
   if (token) {
