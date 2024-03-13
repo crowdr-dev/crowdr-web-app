@@ -10,7 +10,7 @@ import { isFundraise, isVolunteer } from "../common/utils/campaign"
 import { keys } from "../utils/queryKeys"
 import { campaignsTag } from "@/tags"
 
-import { Doubt, QF } from "@/app/common/types"
+import { Nullable, QF } from "@/app/common/types"
 import { ICampaignResponse } from "@/app/common/types/Campaign"
 import Avatar from "../../../../../public/assets/avatar.png"
 
@@ -97,9 +97,9 @@ const Explore = () => {
 
 export default Explore
 
-type Data = Doubt<ICampaignResponse>
-type Token = Doubt<string>
-type Page = Doubt<number>
+type Data = Nullable<ICampaignResponse>
+type Token = Nullable<string>
+type Page = Nullable<number>
 export const fetchCampaigns: QF<Data, [Token, Page]> = async ({ queryKey }) => {
   const [_, token, page] = queryKey
 
