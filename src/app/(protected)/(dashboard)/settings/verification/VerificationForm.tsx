@@ -34,6 +34,7 @@ const VerificationForm = () => {
     {
       enabled: Boolean(user?.token),
       retry: false,
+      refetchOnWindowFocus: false,
       onSuccess: (data) => {
         const fields = {
           bvnNumber: data?.BVN,

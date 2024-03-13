@@ -1,32 +1,99 @@
+import { useQuery } from "react-query"
 import { useFormContext } from "react-hook-form"
 import { useUser } from "../../common/hooks/useUser"
+import { useToast } from "@/app/common/hooks/useToast"
 import NumberInput from "../../../../common/components/NumberInput"
 import SelectInput from "../../../../common/components/SelectInput"
 import FileInput from "../../../../common/components/FileInput"
 import { FileInputContent } from "../../../../common/components/FileInput"
 import { Button } from "../../../../common/components/Button"
-
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import objectToFormData from "@/utils/objectToFormData"
+import makeRequest from "@/utils/makeRequest"
+import { keys } from "../../utils/queryKeys"
 import OrganizationFormContext, {
   FormFields,
 } from "../utils/useOrganizationForm"
 import { Option, stateOptions } from "../../common/utils/form"
 
+import { Nullable, QF } from "@/app/common/types"
+
 const OrganizationForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { isSubmitting },
   } = useFormContext() as OrganizationFormContext
   const user = useUser()
+  const toast = useToast()
+
+  const { data: orgDetails, refetch: refetchOrgDetails } = useQuery(
+    [keys.settings.organization, user?.token, user?.organizationId],
+    fetchOrgDetails,
+    {
+      enabled: Boolean(user?.token),
+      retry: false,
+      refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        const fields = {
+          cacNumber: data?.cacNumber,
+          orgLocation: data?.state,
+          publicUrl: data?.publicUrl,
+        }
+
+        reset(fields)
+      },
+    }
+  )
 
   const submit = async (formFields: FormFields) => {
-    console.log(formFields)
+    if (user) {
+      const {
+        cacNumber,
+        profileImage,
+        orgLocation,
+        publicUrl,
+      } = formFields
+
+      const endpoint = `/api/v1/organizations/${
+        orgDetails ? user.organizationId : "register"
+      }`
+      const headers = {
+        "Content-Type": "multipart/form-data",
+        "x-auth-token": user.token,
+      }
+
+      const payload = {
+        cacNumber,
+        state: orgLocation,
+        publicUrl,
+        ...(profileImage ? { image: profileImage } : {}),
+      }
+
+      try {
+        const { success, message } = await makeRequest(endpoint, {
+          headers,
+          method: orgDetails ? "PUT" : "POST",
+          payload: objectToFormData(payload),
+        })
+
+        if (success) {
+          refetchOrgDetails()
+          toast({ title: "Well done!", body: message })
+        }
+      } catch (error) {
+        const message = extractErrorMessage(error)
+        toast({ title: "Oops!", body: message, type: "error" })
+      }
+    }
   }
 
   return (
     <div className="max-w-[484px]">
       <form onSubmit={handleSubmit(submit)}>
         <div className="flex flex-col mb-[33px] md:mb-[38px]">
+          {/* cac number */}
           <NumberInput
             name="cacNumber"
             label="CAC number"
@@ -34,14 +101,19 @@ const OrganizationForm = () => {
             styles={{ wrapper: "mb-[33px]" }}
           />
 
-          {/* TODO: ADD IMAGE PREVIEW FEATURE TO FILEINPUT */}
-          <FileInput name="profileImage" styles={{ wrapper: "mb-[20px]" }}>
-            <FileInputContent subtext="or drag and drop" showPreview />
+          {/* profile image */}
+          <FileInput config={register("profileImage")} styles={{ wrapper: "mb-[20px]" }}>
+            <FileInputContent
+              previewImage={orgDetails?.imageId.url}
+              subtext="or drag and drop"
+              showPreview
+            />
           </FileInput>
 
+          {/* state */}
           <SelectInput
             options={[Option("", "Select a state...", true), ...stateOptions]}
-            name="organizationLocation"
+            name="orgLocation"
             label="Where is your organization located?"
             styles={{ wrapper: "mb-[26px]" }}
           />
@@ -83,6 +155,7 @@ const OrganizationForm = () => {
             text="Save changes"
             buttonType="submit"
             disabled={isSubmitting}
+            loading={isSubmitting}
             className="grow md:grow-0 !justify-center"
           />
         </div>
@@ -92,3 +165,45 @@ const OrganizationForm = () => {
 }
 
 export default OrganizationForm
+
+type Token = Nullable<string>
+type ID = Nullable<string>
+type Data = Nullable<IOrganization>
+const fetchOrgDetails: QF<Data, [Token, ID]> = async ({ queryKey }) => {
+  const [_, token, id] = queryKey
+
+  if (token) {
+    const endpoint = `/api/v1/organizations/${id}`
+    const headers = {
+      "x-auth-token": token,
+    }
+
+    try {
+      const { data } = await makeRequest<any>(endpoint, {
+        headers,
+        method: "GET",
+      })
+
+      return data
+    } catch (error) {
+      const message = extractErrorMessage(error)
+      throw new Error(message)
+    }
+  }
+}
+
+export interface IOrganization {
+  _id: string
+  imageId: ImageID
+  cacNumber: string
+  state: string
+  publicUrl: string
+  userId: string
+  __v: number
+}
+
+export interface ImageID {
+  _id: string
+  url: string
+  id: string
+}
