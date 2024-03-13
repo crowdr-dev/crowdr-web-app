@@ -1,5 +1,4 @@
 'use client'
-
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { RFC } from '@/app/common/types'
@@ -15,34 +14,6 @@ import ArrowRight from '../../../../../public/svg/new-arrow.svg'
 import OldModal from '@/app/common/components/OldModal'
 import { formatAmount } from '../common/utils/currency'
 import { camelCaseToSeparated } from '@/utils/seperateText'
-
-
-type VolunteerDetails = {
-  skillsNeeded: string[],
-  otherSkillsNeeded: string,
-  ageRange: string,
-  genderPreference: string,
-  commitementStartDate: string,
-  commitementEndDate: string,
-  requiredCommitment: string,
-  additonalNotes: string
-}
-type ExploreCardProps = {
-  name: string
-  tier: string
-  header?: string
-  subheader?: string
-  totalAmount: number
-  currentAmount: number
-  donateImage: any
-  slideImages?: string[]
-  routeTo?: string
-  avatar: any
-  timePosted?: string
-  campaignType?: string
-  category?: string
-  volunteer: VolunteerDetails
-}
 
 const ExploreCard: RFC<ExploreCardProps> = props => {
   const {
@@ -106,7 +77,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
   const displayText = isCollapsed
     ? wordsArray?.slice(0, 30).join(' ')
     : subheader
-  const progress = currentAmount / totalAmount
+  const progress = totalAmount ? currentAmount / totalAmount : 0
 
   const settings = (images: string[]) => {
     return {
@@ -230,7 +201,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
             {moment(timePosted, 'YYYYMMDD').fromNow()}
           </h4>
         </div>
-        {!!routeTo && campaignType?.includes('fundraise') && (
+        {!!routeTo && campaignType?.includes('fundraise') && totalAmount && (
           <div className='bg-[#F9F9F9] p-4 rounded-[8px]'>
             <p className='text-sm text-[#667085] mb-[4px]'>
               {' '}
@@ -272,3 +243,30 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
 }
 
 export default ExploreCard
+
+type VolunteerDetails = {
+  skillsNeeded: string[],
+  otherSkillsNeeded?: string,
+  ageRange: string,
+  genderPreference: string,
+  commitementStartDate: string,
+  commitementEndDate: string,
+  requiredCommitment: string,
+  additonalNotes: string
+}
+type ExploreCardProps = {
+  name: string
+  tier: string
+  header?: string
+  subheader?: string
+  totalAmount?: number
+  currentAmount: number
+  donateImage: any
+  slideImages?: string[]
+  routeTo?: string
+  avatar: any
+  timePosted?: string
+  campaignType?: string
+  category?: string
+  volunteer?: VolunteerDetails
+}
