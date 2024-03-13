@@ -206,7 +206,6 @@ const fetchCampaigns: QF<Nullable<ICampaignResponse>, [Nullable<string>, number]
     const query = new URLSearchParams({ page: `${page}`, perPage: "4" })
     const endpoint = `/api/v1/my-campaigns?${query}`
     const headers = {
-      "Content-Type": "multipart/form-data",
       "x-auth-token": token,
     }
   

@@ -1,4 +1,7 @@
 export const keys = {
+  explore: {
+    campaigns: "explore-campaigns",
+  },
   myCampaigns: {
     stats: 'my-campaign-stats',
     campaigns: 'my-campaigns'
