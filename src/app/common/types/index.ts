@@ -12,7 +12,7 @@ export type QF<ReturnType, Keys extends any[] = []> = QueryFunction<
   [string, ...Keys]
 >
 
-export type Doubt<T> = T | undefined | null
+export type Nullable<T> = T | undefined | null
 
 export interface IPagination {
   total: number

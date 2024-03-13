@@ -28,12 +28,13 @@ const VerificationForm = () => {
   const user = useUser()
   const toast = useToast()
 
-  const { data: customerDetails, refetch } = useQuery(
+  const { data: customerDetails, refetch: refetchCustomerDetails } = useQuery(
     [keys.settings.kyc, user?.token],
     fetchKyc,
     {
       enabled: Boolean(user?.token),
       retry: false,
+      refetchOnWindowFocus: false,
       onSuccess: (data) => {
         const fields = {
           bvnNumber: data?.BVN,
@@ -75,7 +76,7 @@ const VerificationForm = () => {
         })
 
         if (success) {
-          refetch()
+          refetchCustomerDetails()
           toast({ title: "Well done!", body: message })
         }
       } catch (error) {
