@@ -97,10 +97,10 @@ const Explore = () => {
 
 export default Explore
 
-type Data = Nullable<ICampaignResponse>
-type Token = Nullable<string>
-type Page = Nullable<number>
-export const fetchCampaigns: QF<Data, [Token, Page]> = async ({ queryKey }) => {
+type Data = ICampaignResponse | undefined
+type Token = string | undefined
+type Page = number
+const fetchCampaigns: QF<Data, [Token, Page]> = async ({ queryKey }) => {
   const [_, token, page] = queryKey
 
   if (token) {

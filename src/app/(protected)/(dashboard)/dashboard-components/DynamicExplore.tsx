@@ -3,11 +3,14 @@ import { useState } from "react"
 import { useQuery } from "react-query"
 import { useUser } from "../common/hooks/useUser"
 import ExploreCard from "../dashboard-components/ExploreCard"
-import { fetchCampaigns } from "../explore/page"
+import makeRequest from "@/utils/makeRequest"
 import { isFundraise, isVolunteer } from "../common/utils/campaign"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import { keys } from "../utils/queryKeys"
+import { campaignsTag } from "@/tags"
 
-import { IFundraiseVolunteerCampaign } from "@/app/common/types/Campaign"
+import { ICampaignResponse, IFundraiseVolunteerCampaign } from "@/app/common/types/Campaign"
+import { QF } from "@/app/common/types"
 
 export default function DynamicExplore({
   hasNextPage,
@@ -80,7 +83,7 @@ export default function DynamicExplore({
             )
           })}
       </div>
-      
+
       {hasNextPage && (
         <div className="flex justify-end items-center mt-4">
           <span onClick={handleSeeMore} className={"cursor-pointer"}>
@@ -90,4 +93,30 @@ export default function DynamicExplore({
       )}
     </>
   )
+}
+
+type Data = ICampaignResponse | undefined
+type Token = string | undefined
+type Page = number
+const fetchCampaigns: QF<Data, [Token, Page]> = async ({ queryKey }) => {
+  const [_, token, page] = queryKey
+
+  if (token) {
+    const endpoint = `/api/v1/campaigns?page=${page}&perPage=10`
+    const headers = {
+      "x-auth-token": token,
+    }
+
+    try {
+      const { data } = await makeRequest<ICampaignResponse>(endpoint, {
+        headers,
+        tags: [campaignsTag],
+      })
+
+      return data
+    } catch (error) {
+      const message = extractErrorMessage(error)
+      throw new Error(message)
+    }
+  }
 }
