@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <main>
       <Navigation openModal={openModal} />
-      <main>
+      <main className="font-satoshi">
         <Header openModal={openModal} />
         {/* <OurFeaturesAnimation /> */}
         <Todo />

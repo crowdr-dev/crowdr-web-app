@@ -5,9 +5,7 @@
 }
 
 @media screen and (min-width: 600px) {
-  .teamHeading {
-    padding: 65px 0;
-    font-size: 68px;
-    line-height: 72px;
+  .team {
+    padding: 96px 32px 96px 32px;
   }
 }

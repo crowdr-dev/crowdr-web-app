@@ -15,7 +15,7 @@ export default function Team() {
     <section className={styles.team}>
       <h2 className="text-center text-[24px] md:text-[36px] text-[#101828] font-medium leading-[44px]">Meet the Crowdr Clan</h2>
       <p className="text-center text-sm md:text-[20px] text-[#475467] leading-[30px] mt-5">We’re a curious and diverse team passionate about making it <br/> easier for people to do good in their communities.</p>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16'>
         {teamMembers.map(({ name, photo, position,bio}) => {
           return (
             <div className="h-[330px] min-w-[240px] p-6 bg-[#F9FAFB] flex flex-col items-center justify-start" key={name}>
@@ -39,12 +39,12 @@ const teamMembers = [
   { name: "Adaobi Ajegbo", position: "Founder, CEO", photo: Ada, bio: "Ex-Orca Live. Product designer with 3+ years of experience." },
   { name: "Tritima Achigbu", position: "Co-Founder, CMO", photo: Tritima, bio: "Finance and marketing professional with 5+ years of experience." },
   { name: "Jerry Chibuokem", position: "Full-Stack Dev, CTO", photo: Jerry, bio: "Ex-Andela, Ex-Coursera. Software engineer with 4+ years of experience."},
-  { name: "Akintomiwa Ajayi", position: "Product Designer", photo: Tomiwa, bio: "Product designer with 4+ years of experience." },
-  { name: "Ayomide Yusuf", position: "Product Designer", photo: Tomiwa, bio: "Product designer with 3+ years of experience." },
-  { name: "Rokiat Sulaimon", position: "Product Manager", photo: Tomiwa, bio: "Project manager with 2+ years of experience." },
-  { name: "Daniel Arikawe", position: "Frontend Developer", photo: Daniel, bio: "Senior frontend engineer with 4+ years of experience." },
-  { name: "Idris Abdul-Lateef", position: "Frontend Developer", photo: Idris, bio: "Lead CX at Wealthsimple. Former PagerDuty and Sqreen."},
-  { name: "Oluchi", position: "Backend Developer", photo: Idris, bio: "Lead backend dev at Clearbit. Former Clearbit and Loom."},
-  { name: "Tochi Nwachukwu", position: "Backend Developer", photo: Idris, bio: "Lead backend dev at Clearbit. Former Clearbit and Loom."},
-  { name: "Sylvia Adimike", position: "Backend Developer", photo: Idris, bio: "Lead backend dev at Clearbit. Former Clearbit and Loom."},
+  // { name: "Akintomiwa Ajayi", position: "Product Designer", photo: Tomiwa, bio: "Product designer with 4+ years of experience." },
+  // { name: "Ayomide Yusuf", position: "Product Designer", photo: Tomiwa, bio: "Product designer with 3+ years of experience." },
+  // { name: "Rokiat Sulaimon", position: "Product Manager", photo: Tomiwa, bio: "Project manager with 2+ years of experience." },
+  // { name: "Daniel Arikawe", position: "Frontend Developer", photo: Daniel, bio: "Senior frontend engineer with 4+ years of experience." },
+  // { name: "Idris Abdul-Lateef", position: "Frontend Developer", photo: Idris, bio: "Lead CX at Wealthsimple. Former PagerDuty and Sqreen."},
+  // { name: "Oluchi", position: "Backend Developer", photo: Idris, bio: "Lead backend dev at Clearbit. Former Clearbit and Loom."},
+  // { name: "Tochi Nwachukwu", position: "Backend Developer", photo: Idris, bio: "Lead backend dev at Clearbit. Former Clearbit and Loom."},
+  // { name: "Sylvia Adimike", position: "Backend Developer", photo: Idris, bio: "Lead backend dev at Clearbit. Former Clearbit and Loom."},
 ];

@@ -24,7 +24,7 @@ const AboutUs = () => {
     setModalIsOpen(false);
   };
   return (
-    <div>
+    <div className="font-satoshi" >
       <Navigation openModal={openModal} />
       <Header />
       <Details />

@@ -17,7 +17,7 @@ export default function Policies() {
          setModalIsOpen(false);
        };
   return (
-    <div>
+    <div className="font-satoshi">
        <Navigation openModal={openModal}/>
        <OurPolicies />
        <Footer />

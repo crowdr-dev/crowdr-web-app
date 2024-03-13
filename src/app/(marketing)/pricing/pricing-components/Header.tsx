@@ -39,11 +39,12 @@ export default function Header () {
 
   return (
     <section className={styles.headerContainer}>
-      <div className='gap-4  flex flex-col items-center md:w-full mx-auto my-0'>
+      <div className='gap-4 md:gap-3  flex flex-col items-center md:w-full mx-auto my-0'>
         <span className='flex flex-row items-center border-[1px] border-[#EBECED] rounded-[50px] text-[13px] gap-2 leading-[20px] px-8 py-4'>
           <Image src='/svg/ticket.svg' alt='ticket' width={24} height={24} />
           Pricing
         </span>
+        <div className="flex flex-col items-center gap-4 md:gap-6">
         <h2 className='text-[32px] md:text-[48px] font-medium text-[#1F2227] leading-[52px] md:leading-[60px] text-center'>
           Low fees, Great impact
         </h2>
@@ -53,6 +54,7 @@ export default function Header () {
           questions or concerns, please email us at{' '}
           <a className='text-[#00B964]'>info@oncrowdr.com</a>.
         </p>
+        </div>
         <div className='flex flex-col md:flex-row items-start gap-3 mt-16'>
         {
           pricingDetails.map(({id, title, description, percentageCharge, percentageDescription, bgColor, textColor}) => (

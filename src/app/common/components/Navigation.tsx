@@ -31,23 +31,23 @@ export default function Navigation({openModal} : Props ) {
         />
       </Link>
       <ul>
-        <li>
-          <Link href="/pricing" className={isActive("/pricing")}>
+        <li className="font-satoshi">
+          <Link href="/pricing" className={isActive("/pricing")} >
             Pricing
           </Link>
         </li>
-        <li>
+        <li className="font-satoshi">
           <Link href="/about" className={isActive("/about")}>
             About us
           </Link>
         </li>
         
-        <li>
+        <li className="font-satoshi">
           <Link href="/explore-campaigns" className={isActive("/explore-campaigns")}>
             Explore
           </Link>
         </li>
-        <li>
+        <li className="font-satoshi">
           <a href={`mailto:${email}`} target="_blank">Contact us</a>
         </li>
       </ul>
