@@ -5,14 +5,14 @@ import useWindowSize from '@/app/common/hooks/useWindowSize'
 
 const WhyCrowdr = () => {
 
-    const tabs = ['For Individuals', 'For Non-profits', 'For Businesses']
+    const tabs = ['Individuals', 'Non-profits', 'Businesses']
     const [activeTab, setActiveTab] = useState(tabs[0])
 
 
   const width = useWindowSize(768)
   const content = [
     {
-      tab: 'For Individuals',
+      tab: 'Individuals',
       items: [
         {
           id: 1,
@@ -42,7 +42,7 @@ const WhyCrowdr = () => {
 
     },
     {
-        tab: 'For Non-profits',
+        tab: 'Non-profits',
         items: [
             {
             id: 1,
@@ -71,7 +71,7 @@ const WhyCrowdr = () => {
         ]
         },
         {
-        tab: 'For Businesses',
+        tab: 'Businesses',
         items: [
             {
             id: 1,
@@ -106,7 +106,7 @@ const WhyCrowdr = () => {
 
   const Tab = () => {
     return (
-      <div className='flex flex-row items-center  justify-between gap-[24px] bg-[#383838] p-2.5 mt-4 md:mt-24 rounded-[80px]'>
+      <div className='flex flex-row items-center  justify-between gap-[24px] bg-[#383838] p-1.5 md:p-2.5 mt-4 md:mt-24 rounded-[80px]'>
         {tabs.map((tab, index) => {
           const isActive = activeTab === tab
           const activeStyle = isActive
@@ -115,7 +115,7 @@ const WhyCrowdr = () => {
           return (
             <div
               key={index}
-              className={`text-sm md:text-[16px] font-normal rounded-[50px] p-4 text-center ${activeStyle}`}
+              className={`text-sm text-[13px] md:text-[16px] font-normal rounded-[50px] p-2 md:p-4 text-center ${activeStyle}`}
               onClick={() => setActiveTab(tab)}
             >
               {tab}
