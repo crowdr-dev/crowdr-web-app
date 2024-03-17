@@ -4,11 +4,10 @@ import '../home-styles/partners.css'
 
 const Partners = () => {
   const partnerLogos = [
-    '/svg/layers.svg',
-    '/svg/sisyphus.svg',
-    '/svg/circooles.svg',
-    '/svg/catalog.svg',
-    '/svg/quotient.svg'
+    '/svg/tokan.svg',
+    '/svg/foodbank.svg',
+    '/svg/lisa.png',
+    '/svg/orange-bath.svg',
   ]
   return (
     <section className='partners relative'>

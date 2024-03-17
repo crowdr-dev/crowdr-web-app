@@ -52,7 +52,7 @@ export default function Header () {
           Transaction fees help us run the platform successfully and we’ve
           worked hard to keep them lower than<br/> market costs. If you have any
           questions or concerns, please email us at{' '}
-          <a className='text-[#00B964]'>info@oncrowdr.com</a>.
+          <a className='text-[#00B964]' href='mailto:info@oncrowdr.com'>info@oncrowdr.com</a>.
         </p>
         </div>
         <div className='flex flex-col md:flex-row items-start gap-3 mt-16'>
