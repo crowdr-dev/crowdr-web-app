@@ -1,9 +1,11 @@
 "use client"
 import { useState } from "react"
+import { usePathname, useSearchParams } from "next/navigation"
 import { useQuery } from "react-query"
 import { useUser } from "../../common/hooks/useUser"
 import moment from "moment"
 import makeRequest from "@/utils/makeRequest"
+import { formatAmount } from "../../common/utils/currency"
 import { mapCampaignResponseToView } from "../../common/utils/campaign"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import { keys } from "../../utils/queryKeys"
@@ -20,15 +22,17 @@ import { pill } from "../../dashboard-components/Pill"
 
 import { Nullable, QF, Route } from "@/app/common/types"
 import { IFundraiseVolunteerCampaign } from "@/app/common/types/Campaign"
-import { IDonationResponse, IVolunteerResponse } from "@/app/common/types/DonationsVolunteering"
-import { IUser } from "@/app/api/user/getUser"
-
+import {
+  IDonationResponse,
+  IVolunteerResponse,
+} from "@/app/common/types/DonationsVolunteering"
 import FileDownloadIcon from "../../../../../../public/svg/file-download.svg"
-import { formatAmount } from "../../common/utils/currency"
 
 const Campaign = ({ params }: Route) => {
   const [donorsPage, setDonorsPage] = useState(1)
   const [volunteersPage, setVolunteersPage] = useState(1)
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
   const user = useUser()
 
   const { data: campaign } = useQuery(
@@ -54,6 +58,14 @@ const Campaign = ({ params }: Route) => {
       enabled: Boolean(user?.token),
     }
   )
+
+  const isFundraiseCampaign = /fundraise/i.test(campaign?.campaignType || "")
+  const isVolunteerCampaign = /volunteer/i.test(campaign?.campaignType || "")
+  const selectedView =
+    searchParams.get("view") ||
+    (isFundraiseCampaign && "Donors") ||
+    (isVolunteerCampaign && "Volunteers") ||
+    undefined
 
   return (
     <div>
@@ -141,9 +153,9 @@ const Campaign = ({ params }: Route) => {
 
       {/* donors x volunteers */}
       {campaign && (
-        <Tabs>
-          {/fundraise/i.test(campaign.campaignType) && (
-            <Tabs.Item heading="Donors">
+        <Tabs activeTab={selectedView}>
+          {isFundraiseCampaign && (
+            <Tabs.Item heading="Donors" href={`${pathname}?view=Donors`}>
               {donors && (
                 <>
                   <Table className="hidden md:block mb-9">
@@ -184,8 +196,11 @@ const Campaign = ({ params }: Route) => {
             </Tabs.Item>
           )}
 
-          {/volunteer/i.test(campaign.campaignType) && (
-            <Tabs.Item heading="Volunteers">
+          {isVolunteerCampaign && (
+            <Tabs.Item
+              heading="Volunteers"
+              href={`${pathname}?view=Volunteers`}
+            >
               {volunteers && (
                 <>
                   <Table className="hidden md:block mb-9">
@@ -248,9 +263,10 @@ type IVolunteers = {
 const ITEMS_PER_PAGE = "4"
 const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"
 
-const fetchCampaign: QF<Nullable<ICampaignView>, [Nullable<string>, string]> = async ({
-  queryKey,
-}) => {
+const fetchCampaign: QF<
+  Nullable<ICampaignView>,
+  [Nullable<string>, string]
+> = async ({ queryKey }) => {
   const [_, token, campaignId] = queryKey
 
   if (token) {
@@ -262,10 +278,13 @@ const fetchCampaign: QF<Nullable<ICampaignView>, [Nullable<string>, string]> = a
     const endpoint = `/api/v1/my-campaigns/${campaignId}`
 
     try {
-      const { data } = await makeRequest<IFundraiseVolunteerCampaign>(endpoint, {
-        headers,
-        method: "GET",
-      })
+      const { data } = await makeRequest<IFundraiseVolunteerCampaign>(
+        endpoint,
+        {
+          headers,
+          method: "GET",
+        }
+      )
 
       const campaign = mapCampaignResponseToView(data)
       return campaign
@@ -276,9 +295,10 @@ const fetchCampaign: QF<Nullable<ICampaignView>, [Nullable<string>, string]> = a
   }
 }
 
-const fetchDonors: QF<Nullable<IDonors>, [Nullable<string>, string, number]> = async ({
-  queryKey,
-}) => {
+const fetchDonors: QF<
+  Nullable<IDonors>,
+  [Nullable<string>, string, number]
+> = async ({ queryKey }) => {
   const [_, token, campaignId, donorsPage] = queryKey
 
   if (token) {
@@ -310,7 +330,10 @@ const fetchDonors: QF<Nullable<IDonors>, [Nullable<string>, string, number]> = a
   }
 }
 
-const fetchVolunteers: QF<Nullable<IVolunteers>, [Nullable<string>, string, number]> = async ({ queryKey }) => {
+const fetchVolunteers: QF<
+  Nullable<IVolunteers>,
+  [Nullable<string>, string, number]
+> = async ({ queryKey }) => {
   const [_, token, campaignId, volunteersPage] = queryKey
 
   if (token) {

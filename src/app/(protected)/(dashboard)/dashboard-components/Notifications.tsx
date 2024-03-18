@@ -1,6 +1,8 @@
 import Image from "next/image"
 import moment, { Moment } from "moment"
 import { useSetAtom } from "jotai"
+import { useEffectOnce } from "usehooks-ts"
+import { useNotification } from "../common/hooks/useNotification"
 import ModalTrigger from "../../../common/components/ModalTrigger"
 import Dot from "./Dot"
 
@@ -10,8 +12,15 @@ import { pageDrawerAtom } from "./Sidebar"
 import { RFC } from "@/app/common/types"
 import { HiMiniXMark } from "react-icons/hi2"
 
+const imageUrl = 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
+
 const Notifications = () => {
   const setCurrentDrawerId = useSetAtom(pageDrawerAtom)
+  const {notifications, markNotificationsAsRead} = useNotification()
+
+  useEffectOnce(() => {
+    console.log(notifications)
+  })
 
   return (
     <div className="flex flex-col bg-white w-[400px] max-h-full pt-6">
@@ -26,8 +35,8 @@ const Notifications = () => {
       </div>
 
       <div className="grow overflow-y-auto px-6">
-        {notifications.map((notification, index) => (
-          <Notification key={index} detail={notification} isLastItem={(index + 1) === notifications.length} />
+        {notifications.map((notification, index) => (null
+          // <Notification key={index} detail={notification} isLastItem={(index + 1) === notifications.length} />
         ))}
       </div>
     </div>
@@ -99,7 +108,7 @@ const notifications: NotificationType[] = [
   {
     type: "donation",
     timestamp: moment(),
-    imageUrl: 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg',
+    imageUrl,
     acccountName: "Phoenix Baker",
     campaign: "Help Kunle",
     seen: true,
@@ -109,7 +118,7 @@ const notifications: NotificationType[] = [
   {
     type: "volunteer",
     timestamp: moment().subtract(2, 'minutes'),
-    imageUrl: 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg',
+    imageUrl,
     acccountName: "Lana Steiner",
     campaign: "Lagos Food Bank",
     seen: true,
@@ -117,7 +126,7 @@ const notifications: NotificationType[] = [
   {
     type: "donation",
     timestamp: moment().subtract(5, 'minutes'),
-    imageUrl: 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg',
+    imageUrl,
     acccountName: "Phoenix Baker",
     campaign: "Help Kunle beat Cancer",
     seen: false,
@@ -127,7 +136,7 @@ const notifications: NotificationType[] = [
   {
     type: "volunteer",
     timestamp: moment().subtract(10, 'minutes'),
-    imageUrl: 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg',
+    imageUrl,
     acccountName: "Lana Steiner",
     campaign: "Lagos Food Bank",
     seen: false,
@@ -135,7 +144,7 @@ const notifications: NotificationType[] = [
   {
     type: "donation",
     timestamp: moment().subtract(1, 'days'),
-    imageUrl: 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg',
+    imageUrl,
     acccountName: "Phoenix Baker",
     campaign: "Help Kunle beat Cancer",
     seen: true,
@@ -145,7 +154,7 @@ const notifications: NotificationType[] = [
   {
     type: "volunteer",
     timestamp: moment().subtract(1, 'weeks'),
-    imageUrl: 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg',
+    imageUrl,
     acccountName: "Lana Steiner",
     campaign: "Lagos Food",
     seen: false,
@@ -153,7 +162,7 @@ const notifications: NotificationType[] = [
   {
     type: "volunteer",
     timestamp: moment().subtract(2, 'weeks'),
-    imageUrl: 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg',
+    imageUrl,
     acccountName: "Demi Wikinson",
     campaign: "Lagos Food Bank",
     seen: true,
@@ -161,7 +170,7 @@ const notifications: NotificationType[] = [
   {
     type: "donation",
     timestamp: moment().subtract(1, 'months'),
-    imageUrl: 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg',
+    imageUrl,
     acccountName: "Phoenix Baker",
     campaign: "Help Kunle beat Cancer",
     seen: false,
@@ -171,7 +180,7 @@ const notifications: NotificationType[] = [
   {
     type: "volunteer",
     timestamp: moment().subtract(3, 'months'),
-    imageUrl: 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg',
+    imageUrl,
     acccountName: "Demi Wikinson",
     campaign: "Lagos Food Bank",
     seen: true,
@@ -179,7 +188,7 @@ const notifications: NotificationType[] = [
   {
     type: "donation",
     timestamp: moment().subtract(1, 'years'),
-    imageUrl: 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg',
+    imageUrl,
     acccountName: "Phoenix Baker",
     campaign: "Help Kunle beat Cancer",
     seen: false,
@@ -189,7 +198,7 @@ const notifications: NotificationType[] = [
   {
     type: "volunteer",
     timestamp: moment().subtract(2, 'years'),
-    imageUrl: 'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg',
+    imageUrl,
     acccountName: "Demi Wikinson",
     campaign: "Lagos Food Bank",
     seen: true,
