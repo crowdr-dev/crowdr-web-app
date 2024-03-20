@@ -4,7 +4,13 @@ import Image from "next/image";
 import { FaExclamation } from "react-icons/fa";
 import { Status } from "@/app/common/hooks/useToast";
 
-const Toast = ({ t, title, body, type }: ToastProps) => {
+const Toast = ({ t, title, body, type, isHtml, }: ToastProps) => {
+  const content = isHtml ? {
+    dangerouslySetInnerHTML: {
+      __html: body || ""
+    }
+  } : {}
+  
   const getColor = () => {
     switch (type) {
       case "error":
@@ -40,7 +46,7 @@ const Toast = ({ t, title, body, type }: ToastProps) => {
 
       <div className="self-center flex-grow pr-4">
         <p className="text-[#101828] text-sm">{title}</p>
-        {body && <p className="text-[#667085] text-sm font-[300]">{body}</p>}
+        {body && <p className="text-[#667085] text-sm font-[300]" {...content}>{isHtml ? null : body}</p>}
       </div>
 
       <div onClick={() => toast.dismiss(t.id)}>
