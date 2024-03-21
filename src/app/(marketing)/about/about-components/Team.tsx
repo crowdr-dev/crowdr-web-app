@@ -68,7 +68,7 @@ const fullTeamMembers = [
     name: 'Regina Richards',
     position: 'Project manager',
     photo: Regina,
-    bio: 'An Experienced project manager with 3 years experience, skilled in leading cross-functional teams to successful project completion through effective communication and strategic planning.'
+    bio: 'An Experienced project manager with 3 years experience.'
   },
   {
     name: 'Onyeka Nwakobi',
@@ -113,7 +113,7 @@ export default function Team () {
               key={name}
             >
               <Image
-                className={`rounded-full w-[96px] h-[96px] object-cover mb-5 ${name.toLowerCase().includes("regina") && "rotate-90"}`}
+                className={`rounded-full w-[96px] h-[96px] object-cover mb-5`}
                 src={photo}
                 alt={name}
                 width={96}
