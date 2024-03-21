@@ -112,7 +112,7 @@ const Todo = () => {
               width={300}
               height={500}
               alt='hero-section'
-              className='w-full mt-2 h-full overflow-hidden'
+              className='w-full mt-1 h-full overflow-hidden'
             />
           </div>
           <div className='!flex !flex-col !items-center !gap-4 !mt-4'>
