@@ -2,6 +2,7 @@
   padding: 35px 10px 35px 10px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 40px;
 }
 
 .todo h3 {
@@ -36,6 +37,20 @@
   font-weight: 500;
   line-height: normal;
   color: #000;
+}
+
+.slick-dots {
+  bottom: auto !important;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #006637 !important;
+  opacity: 1;
+  font-size: 12px !important;
+}
+
+.slick-dots li button:before {
+  font-size: 8px !important;
 }
 
 @media screen and (min-width: 600px) {

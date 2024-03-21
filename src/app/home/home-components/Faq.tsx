@@ -40,24 +40,19 @@ export default function Faq() {
 
 const faqArr = [
   {
-    heading: "When does the app launch?",
-    text: "Our team is working tirelessly to fine-tune all the details of the app. We are projected to launch in Q3. You can sign up to join our private beta testing group and be among the first to find out when we launch!",
+    heading: "What types of causes does Crowdr support?",
+    text: "Simply, anything that betters your life or that of another person! Issues supported on Crowdr range from poverty eradication to mental health awareness.",
   },
   {
-    heading: "What types of causes can be funded on Crowdr? ",
-    text: "Crowdr is available to support all kinds of initiatives ranging from poverty eradication to mental health awareness. Crowdr can also be used to seek funding for personal and creative projects/initiatives.",
+    heading: "How do you ensure campaigns are legitimate?",
+    text: "Our vetting process includes verifying government ID such as one’s NIN, BVN and driver’s license.",
   },
   {
-    heading: "Are there any fees associated with Crowdr? ",
-    text: "In order to keep the app running and to provide safe and secure services, we deduct a transaction fee from each donation. ",
+    heading: "Can volunteers track participation for external uses like visa interviews?",
+    text: "Our vetting process includes verifying government ID such as one’s NIN, BVN and driver’s license.",
   },
   {
-    heading: "Is there a vetting process for fundraisers and volunteers?",
-    text: "Security is our top priority. Our vetting process involves government identification and/or biometrics. ",
-  },
-  {
-    heading:
-      "Can volunteers track participation for external uses? E.g. for school and visa applications?",
-    text: "Yes, volunteer records will be available in each user’s profile. ",
+    heading: "How much does it cost to use Crowdr?",
+    text: "It doesn’t cost anything to set up a campaign! However, to keep our app up and running, we do deduct transaction and processing fees. For more information, please visit the Pricing section.",
   },
 ];

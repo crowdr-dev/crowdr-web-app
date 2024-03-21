@@ -8,8 +8,8 @@ export default function Values() {
         <h4 className="text-[32px] md:text-[36px] leading-[44px] text-[#E6F8F0] text-center">1 app, 2 goals, endless possibilities</h4>
         <p className="text-[#E6F8F0] text-sm leading-[30px] md:text-[20px] text-center ">Over 350 organizations and individuals use Crowdr. We think you should join them.</p>
         <div className='flex flex-row items-center gap-3 mt-8'>
-          <button className="btn-primary">Get started</button>
-          <button className="btn-outline">Learn more</button>
+          <button className="btn-primary !w-[150px] !text-sm">Get started</button>
+          <button className="btn-outline !w-[150px] !text-sm">Learn more</button>
         </div>
       </div>
     </section>

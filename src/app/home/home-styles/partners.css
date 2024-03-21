@@ -5,9 +5,40 @@
   background-color: #1f2227;
 }
 
+@keyframes scrollRightToLeft {
+  from {
+    transform: translateX(50%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.scroll-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.scroll-animation {
+  display: flex;
+  animation: scrollRightToLeft 25s linear infinite;
+  justify-content: space-around;
+  gap: 50px;
+  align-items: center;
+}
+
 @media screen and (min-width: 600px) {
   .partners {
     padding: 48px 30px 48px 30px;
+  }
+
+  @keyframes scrollRightToLeft {
+    from {
+      transform: translateX(20%);
+    }
+    to {
+      transform: translateX(-100%);
+    }
   }
 }
 

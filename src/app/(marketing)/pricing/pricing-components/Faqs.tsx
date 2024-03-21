@@ -36,7 +36,7 @@ export default function Faqs () {
                   </div>
                 }
               >
-                <p className="pt-4 faq-collapsible-body !text-sm">{faq.text}</p>
+                {index === 1 ?(<p className="pt-4 faq-collapsible-body !text-sm">Demos are available on a limited basis due to our team’s capacity. Please email us at <a className='text-[#00B964]' href='mailto:info@oncrowdr.com'>info@oncrowdr.com</a> for further assistance.</p>) :(<p className="pt-4 faq-collapsible-body !text-sm">{faq.text}</p>)}
               </Collapsible>
             </div>
           ))}
@@ -49,24 +49,16 @@ export default function Faqs () {
 
 const faqArr = [
   {
-    heading: "What’s a transaction fee?",
-    text: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
+    heading: "Is there a different pricing structure for non-profits and businesses?",
+    text: "Yes. The above prices apply to registered non-profits (this also applies to registered charity arms of corporations). If you intend to use Crowdr as a business, please schedule a meeting with us via the link below so we can better understand your company’s needs.",
   },
   {
-    heading: "What types of causes can be funded on Crowdr? ",
-    text: "Crowdr is available to support all kinds of initiatives ranging from poverty eradication to mental health awareness. Crowdr can also be used to seek funding for personal and creative projects/initiatives.",
+    heading: "Can I see a demo of how the product works before signing up?",
+    text: "",
   },
   {
-    heading: "Are there any fees associated with Crowdr? ",
-    text: "In order to keep the app running and to provide safe and secure services, we deduct a transaction fee from each donation. ",
+    heading: "Do you offer special pricing packages for large-scale campaigns?",
+    text: "At this time, we don’t — but never say never! Our platform is constantly evolving as we grow.",
   },
-  {
-    heading: "Is there a vetting process for fundraisers and volunteers?",
-    text: "Security is our top priority. Our vetting process involves government identification and/or biometrics. ",
-  },
-  {
-    heading:
-      "Can volunteers track participation for external uses? E.g. for school and visa applications?",
-    text: "Yes, volunteer records will be available in each user’s profile. ",
-  },
+ 
 ];

@@ -1,18 +1,3 @@
-<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_9177_7583)">
-<path d="M2.5 11C2.5 5.75329 6.75329 1.5 12 1.5H40C45.2467 1.5 49.5 5.75329 49.5 11V39C49.5 44.2467 45.2467 48.5 40 48.5H12C6.75329 48.5 2.5 44.2467 2.5 39V11Z" stroke="#EAECF0" shape-rendering="crispEdges"/>
-<path d="M26.9999 15L18.0933 25.6879C17.7445 26.1064 17.5701 26.3157 17.5674 26.4925C17.5651 26.6461 17.6336 26.7923 17.7531 26.8889C17.8906 27 18.163 27 18.7079 27H25.9999L24.9999 35L33.9064 24.3121C34.2552 23.8936 34.4296 23.6843 34.4323 23.5075C34.4346 23.3539 34.3661 23.2077 34.2466 23.1111C34.1091 23 33.8367 23 33.2918 23H25.9999L26.9999 15Z" stroke="#344054" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-<defs>
-<filter id="filter0_d_9177_7583" x="0" y="0" width="52" height="52" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="1"/>
-<feGaussianBlur stdDeviation="1"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.05 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_9177_7583"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_9177_7583" result="shape"/>
-</filter>
-</defs>
+<svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.9999 1L2.09332 11.6879C1.74451 12.1064 1.57011 12.3157 1.56744 12.4925C1.56512 12.6461 1.63359 12.7923 1.75312 12.8889C1.89061 13 2.16304 13 2.7079 13H9.99986L8.99986 21L17.9064 10.3121C18.2552 9.89358 18.4296 9.68429 18.4323 9.50754C18.4346 9.35388 18.3661 9.2077 18.2466 9.11111C18.1091 9 17.8367 9 17.2918 9H9.99986L10.9999 1Z" stroke="#344054" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

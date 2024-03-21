@@ -19,7 +19,7 @@ export default function Header({ openModal }: Props) {
           /> For individuals, non-profits & businesses</div>
         <h2 className="content-header">
           Build community
-          through <span>Giving.</span>
+          through <span>giving.</span>
         </h2>
         <p className="">
           Crowdr helps you fundraise and find volunteering opportunities

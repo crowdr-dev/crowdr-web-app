@@ -28,8 +28,8 @@ const Todo = () => {
         <div className='todo-content'>
           <div className='todo-item'>
             <div className='flex flex-col gap-[14px]'>
-              <h4>Create account in minutes</h4>
-              <button className='btn-primary'>Get started</button>
+              <h4>Create an account in minutes</h4>
+              <button className='btn-primary !w-[171px]'>Get started</button>
             </div>
             <Image
               src='/svg/iphone.svg'
@@ -53,7 +53,7 @@ const Todo = () => {
               </div>
             </div>
             <div className='todo-item !items-center !h-[340px]'>
-              <h4 className='text-center !text-[24px]'>Get Raise & Love.</h4>
+              <h4 className='text-center !text-[24px]'>Get support from your community and beyond!</h4>
               <Image
                 src='/svg/donation.svg'
                 width={500}
@@ -104,15 +104,15 @@ const Todo = () => {
         <Slider {...settings}>
             <div className='todo-item !mt-4'>
             <div className='flex flex-col gap-[14px]'>
-              <h4>Create account in minutes</h4>
-              <button className='btn-primary !w-fit'>Get started</button>
+              <h4>Create an account in minutes</h4>
+              <button className='btn-primary !w-[171px]'>Get started</button>
             </div>
             <Image
               src='/svg/iphone.svg'
               width={300}
               height={500}
               alt='hero-section'
-              className='w-full mt-10 h-full overflow-hidden'
+              className='w-full mt-2 h-full overflow-hidden'
             />
           </div>
           <div className='!flex !flex-col !items-center !gap-4 !mt-4'>
@@ -129,7 +129,7 @@ const Todo = () => {
               </div>
             </div>
             <div className='todo-item !items-center !h-[340px] w-full'>
-              <h4 className='text-center !text-[24px]'>Get Raise & Love.</h4>
+              <h4 className='text-center !text-[24px]'>Get support from your community and beyond!</h4>
               <Image
                 src='/svg/donation.svg'
                 width={500}

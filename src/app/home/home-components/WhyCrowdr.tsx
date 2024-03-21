@@ -22,9 +22,9 @@ const WhyCrowdr = () => {
         },
         {
           id: 2,
-          title: 'Support your community',
+          title: 'Build a volunteering resume',
           description:
-            'Impact your community by volunteering and donating to our catalog of non-profit initiatives.'
+            'Boost your resume with volunteering experience and increase your chances of career success.'
         },
         {
           id: 3,
@@ -34,9 +34,9 @@ const WhyCrowdr = () => {
         },
         {
           id: 4,
-          title: 'Network and make new friends',
+          title: 'Learn new skills',
           description:
-            'Expand your circle by connecting with other like-minded individuals.'
+            'If you’re trying to upgrade your knowledge, volunteering is a low-stakes way to both learn and put your skills into practice.'
         }
       ],
 
@@ -64,9 +64,9 @@ const WhyCrowdr = () => {
             },
             {
             id: 4,
-            title: 'Network and make new friends',
+            title: 'Maximize your impact',
             description:
-                'Expand your circle by connecting with other like-minded individuals.'
+                'Reach and engage with new audiences outside your non-profit’s locality.'
             }
         ]
         },
@@ -93,9 +93,9 @@ const WhyCrowdr = () => {
             },
             {
             id: 4,
-            title: 'Network and make new friends',
+            title: 'Employee engagement',
             description:
-                'Expand your circle by connecting with other like-minded individuals.'
+                'Encouraging employees to participate in volunteering activities fosters a sense of purpose and boosts morale.'
             }
         ]
     }

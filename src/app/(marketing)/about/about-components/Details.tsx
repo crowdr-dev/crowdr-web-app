@@ -7,7 +7,7 @@ export default function Details() {
   return (
     <section className={styles.details}>
       <div className="py-16 flex flex-col items-center justify-center gap-8 md:w-5/6 mx-auto my-0">
-        <p className="text-[24px] leading-[44px] text-[#101828] md:text-[36px] text-center">“We were inspired to build Crowdr after witnessing the will-power of Nigerians during the ENDSars protest despite the lack of infrastructure to  .”</p>
+        <p className="text-[24px] leading-[44px] text-[#101828] md:text-[36px] text-center">“We were inspired to build Crowdr after witnessing the willpower of Nigerians during the End SARS protests, despite the lack of infrastructure to support a social uprising of this scale. We wanted to build a platform that would empower Nigerians to create positive impact in their communities. The result? Crowdr: a social-good marketplace linking non-profits, volunteers and donors.”</p>
         <div className='flex flex-col items-center justify-center gap-4'>
           <Image
             src={Ada}
