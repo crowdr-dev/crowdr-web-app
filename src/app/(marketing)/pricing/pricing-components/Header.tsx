@@ -24,16 +24,16 @@ export default function Header () {
       bgColor: 'bg-[#3B8249]',
       textColor: 'text-[#EBECED]'
     },
-    // {
-    //   id: 3,
-    //   title: 'Volunteer sourcing fee',
-    //   description:
-    //     'At this time, sourcing volunteers through our platform is free!',
-    //   percentageCharge: '₦0',
-    //   percentageDescription: 'volunteer',
-    //   bgColor: 'bg-[#2B5F49]',
-    //   textColor: 'text-[#EBECED]'
-    // }
+    {
+      id: 3,
+      title: 'Volunteer sourcing fee',
+      description:
+        'At this time, sourcing volunteers through our platform is free!',
+      percentageCharge: '₦0',
+      percentageDescription: 'volunteer',
+      bgColor: 'bg-[#2B5F49]',
+      textColor: 'text-[#EBECED]'
+    }
   ]
 
 

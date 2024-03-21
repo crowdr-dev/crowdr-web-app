@@ -49,7 +49,7 @@ const faqArr = [
   },
   {
     heading: "Can volunteers track participation for external uses like visa interviews?",
-    text: "Our vetting process includes verifying government ID such as one’s NIN, BVN and driver’s license.",
+    text: "Yes, volunteer records will be available in each user’s profile.",
   },
   {
     heading: "How much does it cost to use Crowdr?",
