@@ -46,10 +46,10 @@ const CreateEditCampaign = ({ params }: Route) => {
       category,
       story,
       campaignType: isIndividual ? "fundraise" : campaignType,
-      campaignStartDate: campaignDuration[0],
-      campaignEndDate: campaignDuration[1],
-      // campaignStartDate: (campaignDuration[0] as any as Date).toISOString(),
-      // campaignEndDate: (campaignDuration[1] as any as Date).toISOString(),
+      // campaignStartDate: campaignDuration[0],
+      // campaignEndDate: campaignDuration[1],
+      campaignStartDate: new Date(campaignDuration[0] as any as Date).toISOString(),
+      campaignEndDate: new Date(campaignDuration[1] as any as Date).toISOString(),
     }
 
     if (campaignImages) {

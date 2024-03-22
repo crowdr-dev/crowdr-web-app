@@ -17,6 +17,7 @@ import HeartHand from '../../../../../../../public/svg/hand-holding-heart.svg'
 import { useToast } from '@/app/common/hooks/useToast'
 import { formatAmount } from '../../../common/utils/currency'
 import Link from 'next/link'
+import { useUser } from '../../../common/hooks/useUser'
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
 const inActiveTabStyle = 'text-[#667085]'
@@ -60,6 +61,7 @@ export default function DonateOrVolunteer({
   params: { id: string }
 }) {
   const toast = useToast()
+  const user = useUser()
   const [loading, setLoading] = useState(false)
   const [campaign, setCampaign] = useState<any>()
   const [tab, setTab] = useState('')
@@ -145,7 +147,7 @@ export default function DonateOrVolunteer({
   }
 
   const getCurrentUser = async () => {
-    const user = await getUser()
+    // const user = await getUser()
     setDonationInputs({
       ...donationInputs,
       email: user?.email
@@ -181,7 +183,7 @@ export default function DonateOrVolunteer({
 
   const donate = async () => {
     setLoading(true)
-    const user = await getUser()
+    // const user = await getUser()
 
     if (!user) {
       return null
@@ -218,13 +220,13 @@ export default function DonateOrVolunteer({
     } catch (error) {
       setLoading(false)
       const message = extractErrorMessage(error)
-      toast({ title: 'Oops!', body: message, type: 'error' })
+      toast({ title: 'Oops!', body: message, type: 'error', isHtml: true })
     }
   }
 
   const volunteer = async () => {
     setLoading(true)
-    const user = await getUser()
+    // const user = await getUser()
 
     if (!user) {
       return null

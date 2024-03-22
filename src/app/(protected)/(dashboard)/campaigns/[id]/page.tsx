@@ -24,7 +24,7 @@ import { Nullable, QF, Route } from "@/app/common/types"
 import { IFundraiseVolunteerCampaign } from "@/app/common/types/Campaign"
 import {
   IDonationResponse,
-  IVolunteerResponse,
+  IVolunteeringResponse,
 } from "@/app/common/types/DonationsVolunteering"
 import FileDownloadIcon from "../../../../../../public/svg/file-download.svg"
 
@@ -43,11 +43,14 @@ const Campaign = ({ params }: Route) => {
     }
   )
 
+  const isFundraiseCampaign = /fundraise/i.test(campaign?.campaignType || "")
+  const isVolunteerCampaign = /volunteer/i.test(campaign?.campaignType || "")
+
   const { data: donors } = useQuery(
     [keys.campaignPage.donors, user?.token, params.id, donorsPage],
     fetchDonors,
     {
-      enabled: Boolean(user?.token),
+      enabled: isFundraiseCampaign,
     }
   )
 
@@ -55,12 +58,10 @@ const Campaign = ({ params }: Route) => {
     [keys.campaignPage.volunteers, user?.token, params.id, volunteersPage],
     fetchVolunteers,
     {
-      enabled: Boolean(user?.token),
+      enabled: isVolunteerCampaign,
     }
   )
 
-  const isFundraiseCampaign = /fundraise/i.test(campaign?.campaignType || "")
-  const isVolunteerCampaign = /volunteer/i.test(campaign?.campaignType || "")
   const selectedView =
     searchParams.get("view") ||
     (isFundraiseCampaign && "Donors") ||
@@ -155,6 +156,7 @@ const Campaign = ({ params }: Route) => {
       {campaign && (
         <Tabs activeTab={selectedView}>
           {isFundraiseCampaign && (
+            // TODO: CONFIGURE TABS TO REPLACE NAVIGATION HISTORY INSTEAD OF PUSHING
             <Tabs.Item heading="Donors" href={`${pathname}?view=Donors`}>
               {donors && (
                 <>
@@ -257,7 +259,7 @@ type IDonors = {
 
 type IVolunteers = {
   volunteers: ReturnType<typeof mapVolunteeringResponseToView>
-  pagination: IVolunteerResponse["pagination"]
+  pagination: IVolunteeringResponse["pagination"]
 }
 
 const ITEMS_PER_PAGE = "4"
@@ -349,13 +351,13 @@ const fetchVolunteers: QF<
     }
 
     try {
-      const { data } = await makeRequest<IVolunteerResponse>(endpoint, {
+      const { data } = await makeRequest<IVolunteeringResponse>(endpoint, {
         headers,
         method: "GET",
       })
 
       return {
-        volunteers: mapVolunteeringResponseToView(data.volunteers),
+        volunteers: mapVolunteeringResponseToView(data.volunteerings),
         pagination: data.pagination,
       }
     } catch (error) {
@@ -374,7 +376,7 @@ function mapDonationsResponseToView(donations: IDonationResponse["donations"]) {
 }
 
 function mapVolunteeringResponseToView(
-  volunteering: IVolunteerResponse["volunteers"]
+  volunteering: IVolunteeringResponse["volunteerings"]
 ) {
   return volunteering.map((volunteer) => ({
     title: volunteer.fullName,

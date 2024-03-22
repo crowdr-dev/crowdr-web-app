@@ -7,15 +7,12 @@ import React, {
   useContext,
   ReactNode,
 } from "react";
-import { HeadlessService } from "@novu/headless";
+import { HeadlessService, IMessage } from "@novu/headless";
 import { useUser } from "./useUser";
 
-interface Notification {
-  // Define your notification properties here
-}
 
 interface NotificationContextType {
-  notifications: Notification[];
+  notifications: IMessage[];
   markNotificationsAsRead: (messageIds: string | string[]) => void;
   markAllMessagesAsRead: (feedId?: string) => void;
   markAllMessagesAsSeen: (feedId?: string) => void;
@@ -35,7 +32,7 @@ type Props = {
 
 const NotificationProvider: React.FC<Props> = ({ children }) => {
   const user = useUser();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<IMessage[]>([]);
   const headlessServiceRef = useRef<HeadlessService | null>(null);
   const [pageNum, setPageNum] = useState(0);
   const [unseenCount, setUnseenCount] = useState(0);
