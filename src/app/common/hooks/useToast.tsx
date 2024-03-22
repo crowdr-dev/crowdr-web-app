@@ -18,4 +18,5 @@ export interface Status {
   title: string
   body?: string
   type?: "success" | "error" | "info" | "warning"
+  isHtml?: boolean
 }

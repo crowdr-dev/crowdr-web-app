@@ -25,7 +25,7 @@ const Dashboard = () => {
   const searchParams = useSearchParams()
   const route = useRouter()
 
-  const selectedTable = searchParams.get("view") || "Campaigns"
+  const selectedView = searchParams.get("view") || "Campaigns"
   const tablePickerButtons = [
     {
       label: "Campaigns",
@@ -62,7 +62,7 @@ const Dashboard = () => {
 
       {/* toggle buttons x search x filters */}
       <div className="flex justify-between items-center px-4 py-3">
-        <ButtonGroup buttons={tablePickerButtons} selected={selectedTable} />
+        <ButtonGroup buttons={tablePickerButtons} selected={selectedView} />
 
         <div className="flex gap-3 items-center w-[515px]">
           <TextInput
@@ -93,7 +93,7 @@ const Dashboard = () => {
       {/* table */}
       <div className="px-8">
         {/* Campaigns */}
-        {selectedTable === "Campaigns" && (
+        {selectedView === "Campaigns" && (
           <Table>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
@@ -144,7 +144,7 @@ const Dashboard = () => {
         )}
 
         {/* KYC */}
-        {selectedTable === "KYC" && (
+        {selectedView === "KYC" && (
           <Table>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
@@ -183,7 +183,7 @@ const Dashboard = () => {
                             className="font-semibold text-sm text-[#00B964]"
                             onClick={() =>
                               route.push(
-                                `/admin/dashboard?view=${selectedTable}&kycId=blahblah`
+                                `/admin/dashboard?view=${selectedView}&kycId=blahblah`
                               )
                             }
                           >
@@ -213,7 +213,7 @@ const Dashboard = () => {
         )}
 
         {/* Withdrawals */}
-        {selectedTable === "Withdrawals" && (
+        {selectedView === "Withdrawals" && (
           <Table>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
@@ -250,7 +250,7 @@ const Dashboard = () => {
                           className="font-semibold text-sm text-[#6941C6]"
                           onClick={() =>
                             route.push(
-                              `/admin/dashboard?view=${selectedTable}&campaignId=blahblah`
+                              `/admin/dashboard?view=${selectedView}&campaignId=blahblah`
                             )
                           }
                         >

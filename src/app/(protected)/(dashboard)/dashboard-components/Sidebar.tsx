@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import ModalTrigger from "../../../common/components/ModalTrigger"
 import DrawerTrigger from "../../../common/components/DrawerTrigger"
+import { useNotification } from "../common/hooks/useNotification"
 import { pageGroups } from "../pages"
 import Icon from "./Icon"
 
@@ -16,6 +17,7 @@ export const pageDrawerAtom = atom("")
 const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
   const [currentDrawerId, setCurrentDrawerId] = useAtom(pageDrawerAtom)
   const currentPath = usePathname()
+  const { fetchNotifications } = useNotification()
   const display = drawer ? "flex" : "hidden md:flex"
 
   const toggleDrawer = (drawerId: string) => {
@@ -27,6 +29,10 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
       }
     } else {
       setCurrentDrawerId("")
+    }
+
+    if (drawerId === 'notifications') {
+      fetchNotifications()
     }
   }
 
