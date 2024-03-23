@@ -46,7 +46,7 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
         },
         onSuccess: (response) => {
           // Handle the fetched notifications here.
-          console.log(response, "data", 111);
+          // console.log(response, "data", 111);
           setNotifications(response.data); // Store notifications in the state
         },
         page: pageNum, // page number to be fetched
@@ -61,7 +61,7 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
         headlessService.fetchUnseenCount({
           listener: () => {},
           onSuccess: (data) => {
-            console.log(data, "unseen count listener", 222);
+            // console.log(data, "unseen count listener", 222);
             setUnseenCount(data.count);
           },
         });
@@ -69,7 +69,7 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
 
       headlessService.listenUnseenCountChange({
         listener: (unseenCount: number) => {
-          console.log(unseenCount, "unseenCount");
+          // console.log(unseenCount, "unseenCount");
           setUnseenCount(unseenCount);
           fetchNotifications();
         },
@@ -123,7 +123,7 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
     if (headlessService) {
       headlessService.markAllMessagesAsRead({
         listener: (result) => {
-          console.log(result);
+          // console.log(result);
           // Handle the result of marking all messages as read
           // You can update the state or perform other actions here
         },
@@ -142,7 +142,7 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
     if (headlessService) {
       headlessService.markAllMessagesAsSeen({
         listener: (result) => {
-          console.log(result);
+          // console.log(result);
           // Handle the result of marking all messages as read
           // You can update the state or perform other actions here
         },

@@ -1,4 +1,5 @@
 "use client"
+import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { atom, useAtom } from "jotai"
 import Link from "next/link"
@@ -6,19 +7,41 @@ import Image from "next/image"
 import ModalTrigger from "../../../common/components/ModalTrigger"
 import DrawerTrigger from "../../../common/components/DrawerTrigger"
 import { useNotification } from "../common/hooks/useNotification"
-import { pageGroups } from "../pages"
+import { pageGroups as _pageGroups } from "../pages"
 import Icon from "./Icon"
 
 import { RFC } from "@/app/common/types"
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
+import bell from "../../../../../public/svg/bell.svg"
+import bell_dot from "../../../../../public/svg/bell-dot.svg"
 
 export const pageDrawerAtom = atom("")
 
 const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
+  const [pageGroups, setPageGroups] = useState(_pageGroups)
   const [currentDrawerId, setCurrentDrawerId] = useAtom(pageDrawerAtom)
   const currentPath = usePathname()
-  const { fetchNotifications } = useNotification()
+  const { unseenCount, markAllMessagesAsSeen } = useNotification()
   const display = drawer ? "flex" : "hidden md:flex"
+
+  useEffect(() => {
+    const updatePageGroups = pageGroups.map((pageGroup) => {
+      const notificationPage = pageGroup.find(
+        (page) => page.title === "Notifications"
+      )
+      if (notificationPage) {
+        if (unseenCount > 0) {
+          notificationPage.icon = bell_dot
+        } else {
+          notificationPage.icon = bell
+        }
+      }
+
+      return pageGroup
+    })
+
+    setPageGroups(updatePageGroups)
+  }, [unseenCount])
 
   const toggleDrawer = (drawerId: string) => {
     if (drawerId) {
@@ -31,15 +54,16 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
       setCurrentDrawerId("")
     }
 
-    if (drawerId === 'notifications') {
-      fetchNotifications()
+    if (drawerId === "notifications") {
+      markAllMessagesAsSeen()
     }
   }
 
   return (
     <nav
       className={
-        display + " flex-col overflow-y-auto max-w-[272px] shrink-0 h-full bg-white"
+        display +
+        " flex-col overflow-y-auto max-w-[272px] shrink-0 h-full bg-white"
       }
     >
       <div
@@ -67,7 +91,8 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
 
               const isRoute = "route" in page
               let isCurrentPage = false
-              if (isRoute) { // IF IT'S A ROUTE AND A DRAWER IS CURRENTLY ACTIVE, IT ISN'T THE CURRENT PAGE.
+              if (isRoute) {
+                // IF IT'S A ROUTE AND A DRAWER IS CURRENTLY ACTIVE, IT ISN'T THE CURRENT PAGE.
                 isCurrentPage = currentDrawerId // OR ELSE CHECK IF THE ROUTE PATH MATCHES WITH THE CURRENT URL PATH
                   ? false
                   : currentPath.startsWith("/" + page.route.split("/")[1])
@@ -86,8 +111,13 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
                 pageLinkStyle += " cursor-default"
               }
 
-              let modalProps: any = { // IF IT'S A ROUTE AND THERE'S AN ACTIVE DRAWER, HIDE THE DRAWER
-                id: isRoute ? currentDrawerId : (isCurrentPage ? '' : page.modalId),
+              let modalProps: any = {
+                // IF IT'S A ROUTE AND THERE'S AN ACTIVE DRAWER, HIDE THE DRAWER
+                id: isRoute
+                  ? currentDrawerId
+                  : isCurrentPage
+                  ? ""
+                  : page.modalId,
                 type: isRoute || currentDrawerId ? "hide" : "show",
               }
 
@@ -108,7 +138,8 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
                     backdrop: "dynamic",
                     onHide: () => toggleDrawer(""),
                     onShow: () => toggleDrawer(isRoute ? "" : page.modalId),
-                    backdropClasses: "bg-[#50556F] bg-opacity-30 fixed inset-0 z-40"
+                    backdropClasses:
+                      "bg-[#50556F] bg-opacity-30 fixed inset-0 z-40",
                   }}
                 >
                   <DrawerTrigger id="sidebar_drawer" type="hide">

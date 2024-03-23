@@ -12,6 +12,7 @@ import { pageDrawerAtom } from "./Sidebar"
 import { RFC } from "@/app/common/types"
 import { IMessage } from "@novu/headless"
 import { HiMiniXMark } from "react-icons/hi2"
+import { GrayButton } from "@/app/common/components/Button"
 
 const imageUrl =
   "https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg"
@@ -24,7 +25,7 @@ const Notifications = () => {
   const clearDrawerId = () => setCurrentDrawerId("")
 
   return (
-    <div className="flex flex-col bg-white w-[400px] max-h-full pt-6">
+    <div className="flex flex-col bg-white w-[400px] h-full max-h-full pt-6">
       <div className="flex justify-between px-6 mb-6">
         <h1 className="font-semibold text-2xl">Notifications</h1>
 
@@ -48,6 +49,8 @@ const Notifications = () => {
           />
         ))}
       </div>
+
+      <GrayButton text="Show more" className="!justify-center self-center mt-auto" />
     </div>
   )
 }
