@@ -95,8 +95,10 @@ export default function Team() {
 
   const showMoreTeamMembers = () => {
     if (teamMembers.length === fullTeamMembers.length) {
-      setTeamMembers(fullTeamMembers.slice(0, 3))
       teamRef.current?.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+      setTeamMembers(fullTeamMembers.slice(0, 3))
+      }, 1000)
     } else {
       setTeamMembers(fullTeamMembers)
     }
