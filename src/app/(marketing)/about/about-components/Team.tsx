@@ -15,25 +15,29 @@ import Tomiwa from '../../../../../public/images/team/Tomiwa.jpg'
 import Ade from '../../../../../public/images/team/Ade.jpg'
 import Daniel from '../../../../../public/images/team/Daniel2.jpg'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const fullTeamMembers = [
   {
     name: 'Adaobi Ajegbo',
     position: 'Founder, CEO',
     photo: Ada,
-    bio: 'Ex-Orca Live. Product designer with 3+ years of experience.'
+    bio: 'Ex-Orca Live. Product designer with 3+ years of experience.',
+    linkedIn: "https://www.linkedin.com/in/adaobiajegbo"
   },
   {
     name: 'Tritima Achigbu',
     position: 'Co-Founder, CMO',
     photo: Tritima,
-    bio: 'Finance and marketing professional with 5+ years of experience.'
+    bio: 'Finance and marketing professional with 5+ years of experience.',
+    linkedIn: "https://www.linkedin.com/in/tritimaachigbu"
   },
   {
     name: 'Jerry Chibuokem',
     position: 'Full-Stack Dev, CTO',
     photo: Jerry,
-    bio: 'Ex-Andela, Ex-Coursera. Software engineer with 4+ years of experience.'
+    bio: 'Ex-Andela, Ex-Coursera. Software engineer with 4+ years of experience.',
+    linkedIn:"https://www.linkedin.com/in/jerry-chibuokem"
   },
   {
     name: 'Akintomiwa Ajayi',
@@ -85,7 +89,7 @@ const fullTeamMembers = [
   }
 ]
 
-export default function Team () {
+export default function Team() {
   const teamRef = useRef<HTMLDivElement | null>(null);
   const [teamMembers, setTeamMembers] = useState(fullTeamMembers.slice(0, 3))
 
@@ -107,7 +111,7 @@ export default function Team () {
         people to do good in their communities.
       </p>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16' id="teamList" ref={teamRef}>
-        {teamMembers.map(({ name, photo, position, bio }) => {
+        {teamMembers.map(({ name, photo, position, bio, linkedIn }) => {
           return (
             <div
               className='h-[330px] min-w-[240px] p-6 bg-[#F9FAFB] flex flex-col items-center justify-start'
@@ -124,18 +128,16 @@ export default function Team () {
               <p className='text-sm font-[300] mt-2 text-center'>{position}</p>
               <p className='text-sm font-[300] mt-2 text-center'>{bio}</p>
               <div className='flex flex-row items-center justify-center gap-4 mt-4'>
-                <Image
-                  src='/svg/twitter-bland.svg'
-                  alt={'twitter'}
-                  width={20}
-                  height={20}
-                />
-                <Image
-                  src='/svg/linkedin-bland.svg'
-                  alt={'linkedin'}
-                  width={20}
-                  height={20}
-                />
+                {!!linkedIn &&
+                  <Link href={linkedIn}passHref={true} target='_blank'>
+                    <Image
+                      src='/svg/linkedin-bland.svg'
+                      alt={'linkedin'}
+                      width={20}
+                      height={20}
+                    />
+                  </Link>
+                }
               </div>
             </div>
           )
