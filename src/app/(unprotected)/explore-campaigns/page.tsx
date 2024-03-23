@@ -7,6 +7,7 @@ import Navigation from '@/app/common/components/Navigation';
 import Footer from '@/app/common/components/Footer'
 import Modal from '@/app/common/components/Modal';
 import WaitlistForm from '@/app/home/home-components/WaitlistForm';
+import Head from 'next/head';
 
 export default function DynamicExplore () {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -53,6 +54,12 @@ export default function DynamicExplore () {
   }
   return (
     <div>
+       <Head>
+        <title>Explore campaigns</title>
+        <meta name="description" content={"Explore campaigns and spread love by donating."} />
+        <meta property="og:title" content={"Explore campaigns"} />
+        <meta property="og:description" content="Explore campaigns and spread love by donating." />
+      </Head>
      <Navigation openModal={openModal}/>
       <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 p-10 bg-[#E7F0EE]'>
         {Array.isArray(campaigns) &&

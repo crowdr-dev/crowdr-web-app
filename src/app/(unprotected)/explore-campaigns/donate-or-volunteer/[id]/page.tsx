@@ -21,6 +21,7 @@ import WaitlistForm from '@/app/home/home-components/WaitlistForm'
 import Navigation from '@/app/common/components/Navigation'
 import { formatAmount } from '@/app/(protected)/(dashboard)/common/utils/currency'
 import Footer from '@/app/common/components/Footer'
+import Head from 'next/head'
 
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
@@ -283,6 +284,12 @@ export default function DonateOrVolunteer ({
 
   return (
     <div>
+       <Head>
+        <title>Fundraise and Find Volunteers</title>
+        <meta name="description" content={`Explore campaigns and spread love by donating or volunteering to ${campaign?.title}`} />
+        <meta property="og:title" content={"Fundraise and Find Volunteers"} />
+        <meta property="og:description" content={`Explore campaigns and spread love by donating or volunteering to ${campaign?.title}`} />
+      </Head>
       <Navigation openModal={openModal} />
       <div className='p-10 bg-[#E7F0EE]'>
         <div className='flex items-center justify-between mb-4'>

@@ -9,6 +9,7 @@ import ExploreCard from '../dashboard-components/ExploreCard'
 import DynamicExplore from '../dashboard-components/DynamicExplore'
 import { getUser } from '@/app/api/user/getUser'
 import { useEffect } from 'react'
+import Head from 'next/head'
 
 type FundraisingGoalProps = {
   amount: number
@@ -55,6 +56,12 @@ export default async function Explore () {
   
   return (
     <div>
+      <Head>
+        <title>Explore campaigns</title>
+        <meta name="description" content={"Explore campaigns and spread love by donating."} />
+        <meta property="og:title" content={"Explore campaigns"} />
+        <meta property="og:description" content="Explore campaigns and spread love by donating." />
+      </Head>
       <div className='flex items-center justify-between mb-4'>
         <div>
           <h3 className='text-2xl text-black'>
