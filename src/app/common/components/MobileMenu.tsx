@@ -55,7 +55,7 @@ export default function MobileMenu({openModal} : Props) {
               Contact Us
             </a>
           </li>
-          <li><button className="btn-outline w-100" onClick={openModal}>Join Private Beta</button></li>
+          <li><button className="btn-outline w-100" onClick={openModal}>Start a Campaign</button></li>
         </ul>
       </div>
     </div>

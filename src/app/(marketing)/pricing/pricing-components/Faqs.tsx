@@ -16,7 +16,7 @@ export default function Faqs () {
           FAQS
         </h2>
         <p className='text-start text-sm md:text-[18px] text-[#475467] leading-[28px] mt-5'>
-        Everything you need to know about the product and billing. Can’t find the answer you’re looking for? Please reach out to our support team.
+        Everything you need to know about the platform and billing. Can’t find the answer you’re looking for? Please reach out to our support team.
         </p>
         </div>
         <div>

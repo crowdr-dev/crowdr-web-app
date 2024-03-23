@@ -80,7 +80,7 @@ export default function Footer() {
            </div>
          </div>
          <div className="links">
-         <p className="copyright">Copyright 2023. All Rights Reserved.</p>
+         <p className="copyright">Copyright {new Date().getFullYear()}. All Rights Reserved.</p>
          <p className="copyright">CrowdrApp Technologies Limited.</p>
          </div>
        </div>
