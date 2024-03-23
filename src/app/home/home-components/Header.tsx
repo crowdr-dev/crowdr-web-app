@@ -31,11 +31,11 @@ export default function Header({ openModal }: Props) {
         </div>
       </div>
       <Image
-        src="/svg/hero-section.svg"
+        src="/images/crowdr-hero-section.png"
         width={500}
         height={500}
         alt="hero-section"
-        className='w-full'
+        className='w-full -mt-[7rem] md:-mt-[16rem] z-0'
       />
     </section>
   )

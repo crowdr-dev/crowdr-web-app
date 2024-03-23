@@ -8,6 +8,7 @@ import Onyeka from '../../../../../public/images/team/onyeka.jpg'
 import Rokiat from '../../../../../public/images/team/rokiat.png'
 import Mide from '../../../../../public/images/team/mide.png'
 import Jerry from '../../../../../public/images/team/Jerry.jpeg'
+import Sylvia from '../../../../../public/images/team/sylvia.jpg'
 import Busola from '../../../../../public/images/team/Busola2.jpg'
 import Idris from '../../../../../public/images/team/Idris.jpg'
 import Tomiwa from '../../../../../public/images/team/Tomiwa.jpg'
@@ -78,9 +79,9 @@ const fullTeamMembers = [
   },
   {
     name: 'Sylvia Adimike',
-    position: 'Backend Developer',
-    photo: Idris,
-    bio: 'Lead backend dev at Clearbit. Former Clearbit and Loom.'
+    position: 'Fullstack Developer',
+    photo: Sylvia,
+    bio: 'A MERN fullstack software developer.'
   }
 ]
 

@@ -77,9 +77,6 @@ export default async function Explore () {
             const urlsOnly = campaign.campaignAdditionalImages.map(
               item => item.url
             )
-
-            console.log('camp',campaign)
-           
             return (
               <ExploreCard
                 name={userDetails?.organizationName}
