@@ -10,11 +10,11 @@ const Toast = ({ t, title, body, type, isHtml, }: ToastProps) => {
   const [content, setContent] = useState({})
 
   useEffect(() => {
-    setContent({
+    setContent(isHtml ? {
       dangerouslySetInnerHTML: {
         __html: body ? sanitizeHtml(body) : ""
       }
-    })
+    } : {})
   }, [])
   
   const getColor = () => {
