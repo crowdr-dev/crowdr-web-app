@@ -30,7 +30,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
         (page) => page.title === "Notifications"
       )
       if (notificationPage) {
-        if (unseenCount > 0) {
+        if (unseenCount > 0 && currentDrawerId !== "notifications") {
           notificationPage.icon = bell_dot
         } else {
           notificationPage.icon = bell
