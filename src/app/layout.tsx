@@ -47,8 +47,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <Head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
+        <title>Crowdr</title>
+        <meta name="description" content={"Build Community through Giving"} />
         <meta property="og:image" content={"/svg/new-crowdr-logo.svg"} />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
       </Head>

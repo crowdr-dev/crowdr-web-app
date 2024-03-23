@@ -37,6 +37,7 @@ export default function Header({ openModal }: Props) {
         alt="hero-section"
         //  -mt-[7rem] md:-mt-[16rem] 
         className='w-full
+         -mt-[7rem] md:-mt-[16rem] 
          z-0'
       />
     </section>
