@@ -144,14 +144,14 @@ const Todo = () => {
                 width={500}
                 height={500}
                 alt='hero-section'
-                className='w-full mt-10 overflow-hidden'
+                className='w-full  overflow-hidden'
               />
               <Image
                 src='/svg/donation.svg'
                 width={500}
                 height={500}
                 alt='hero-section'
-                className='w-full mt-10 overflow-hidden'
+                className='w-full overflow-hidden'
               />
             </div>
           </div>
