@@ -54,13 +54,22 @@ const Todo = () => {
             </div>
             <div className='todo-item !items-center !h-[340px]'>
               <h4 className='text-center !text-[24px]'>Get support from your community and beyond!</h4>
+              <div className='overflow-hidden flex flex-col items-start'>
+              <Image
+                src='/svg/notification.svg'
+                width={500}
+                height={200}
+                alt='hero-section'
+                className='w-full  overflow-hidden'
+              />
               <Image
                 src='/svg/donation.svg'
                 width={500}
                 height={500}
                 alt='hero-section'
-                className='w-[350px] mt-10 h-full overflow-hidden'
+                className='w-[350px]  h-full overflow-hidden'
               />
+              </div>
             </div>
           </div>
           <div className='todo-item'>
@@ -131,6 +140,13 @@ const Todo = () => {
             <div className='todo-item !items-center !h-[340px] w-full'>
               <h4 className='text-center !text-[24px]'>Get support from your community and beyond!</h4>
               <Image
+                src='/svg/notification.svg'
+                width={500}
+                height={500}
+                alt='hero-section'
+                className='w-full mt-10 overflow-hidden'
+              />
+              <Image
                 src='/svg/donation.svg'
                 width={500}
                 height={500}
@@ -168,7 +184,7 @@ const Todo = () => {
               <Image src='/svg/mail.svg' width={40} height={40} alt='mail' />
             </div>
             <Image
-              src='/images/modal.svg'
+              src='/svg/modal.svg'
               width={300}
               height={300}
               alt='hero-section'
