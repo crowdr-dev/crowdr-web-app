@@ -31,6 +31,7 @@ const Donations = () => {
     fetchStats,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
       // staleTime: time.mins(2),
     }
   )
@@ -40,6 +41,7 @@ const Donations = () => {
     fetchDonations,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
     }
   )
 
@@ -48,6 +50,7 @@ const Donations = () => {
     fetchVolunteering,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
     }
   )
 

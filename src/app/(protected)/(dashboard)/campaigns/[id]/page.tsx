@@ -40,6 +40,7 @@ const Campaign = ({ params }: Route) => {
     fetchCampaign,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
     }
   )
 
@@ -51,6 +52,7 @@ const Campaign = ({ params }: Route) => {
     fetchDonors,
     {
       enabled: isFundraiseCampaign,
+      refetchOnWindowFocus: false,
     }
   )
 
@@ -59,6 +61,7 @@ const Campaign = ({ params }: Route) => {
     fetchVolunteers,
     {
       enabled: isVolunteerCampaign,
+      refetchOnWindowFocus: false,
     }
   )
 
