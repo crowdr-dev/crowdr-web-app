@@ -32,6 +32,7 @@ const PaymentPage = () => {
     fetchBankDetails,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
     }
   )
 
@@ -40,6 +41,7 @@ const PaymentPage = () => {
     fetchWithdrawals,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
     }
   )
 

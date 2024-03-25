@@ -37,13 +37,14 @@ const Campaigns = () => {
   const { data: stats } = useQuery([keys.myCampaigns.stats, user?.token, dateRange], fetchStats, {
     enabled: Boolean(user?.token),
     // staleTime: time.mins(2),
+    refetchOnWindowFocus: false,
   })
 
   const {isPreviousData, data} = useQuery([keys.myCampaigns.campaigns, user?.token, page], fetchCampaigns, {
     enabled: Boolean(user?.token),
     // keepPreviousData: true,
     // staleTime: time.mins(10),
-    // refetchOnWindowFocus: false
+    refetchOnWindowFocus: false
   })
 
   return (
