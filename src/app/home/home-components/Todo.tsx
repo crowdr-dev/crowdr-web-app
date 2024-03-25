@@ -5,7 +5,7 @@ import useWindowSize from '@/app/common/hooks/useWindowSize'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import Slider from 'react-slick'
-import {useRouter} from "next/navigation'
+import {useRouter} from "next/navigation"
 
 const Todo = () => {
   const router = useRouter()

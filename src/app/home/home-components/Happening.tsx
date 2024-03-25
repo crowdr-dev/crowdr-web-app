@@ -148,11 +148,10 @@ const Happening = () => {
   const router = useRouter()
 
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
-  const [page, setPage] = useState(1)
 
   const loadCampaigns = async () => {
     try {
-      const newCampaigns = await getCampaigns(page)
+      const newCampaigns = await getCampaigns(1)
       const campaignsArray = newCampaigns?.campaigns as Campaign[]
 
       if (Array.isArray(campaignsArray) && campaignsArray.length > 0) {
@@ -200,8 +199,6 @@ const Happening = () => {
             const urlsOnly = campaign.campaignAdditionalImages.map(
               item => item.url
             )
-
-            console.log("volunteer",campaigns )
 
             const userDetails = campaign?.user
             const donatedAmount = campaign?.totalAmountDonated?.[0].amount

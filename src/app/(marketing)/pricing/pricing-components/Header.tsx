@@ -8,8 +8,8 @@ export default function Header () {
       id: 1,
       title: 'Donor fee',
       description:
-        'For every donation processed by a donor, an added 1% platform fee is applied.',
-      percentageCharge: '1%',
+        'To fulfill the transaction with our payment processor, we charge a fee of 1.5% and ₦100 — capped at ₦500.',
+      percentageCharge: '1.5% + ₦100',
       percentageDescription: 'each donation',
       bgColor: 'bg-[#E3FFE6]',
       textColor: 'text-[#181A1D]'

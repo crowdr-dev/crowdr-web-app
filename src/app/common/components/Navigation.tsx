@@ -41,8 +41,6 @@ export default function Navigation({openModal} : Props ) {
             About us
           </Link>
         </li>
-        
-       
         <li className="font-satoshi">
           <a href={`mailto:${email}`} target="_blank">Contact us</a>
         </li>
