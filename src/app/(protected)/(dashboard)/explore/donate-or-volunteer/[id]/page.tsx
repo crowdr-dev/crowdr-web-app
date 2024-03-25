@@ -220,7 +220,6 @@ export default function DonateOrVolunteer({
 
       window.open(data.authorization_url, '_blank', 'noopener,noreferrer')
       window.location.href = '/donations'
-      toast({ title: 'Success!', body: data.message, type: 'success' })
       setLoading(false)
     } catch (error) {
       setLoading(false)
