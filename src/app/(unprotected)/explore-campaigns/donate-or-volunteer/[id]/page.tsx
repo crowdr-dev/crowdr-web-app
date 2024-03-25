@@ -68,7 +68,6 @@ export default function DonateOrVolunteer ({
   const [loading, setLoading] = useState(false)
   const [campaign, setCampaign] = useState<any>()
   const [tab, setTab] = useState('')
-
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const openModal = () => {
@@ -214,7 +213,8 @@ export default function DonateOrVolunteer ({
       currency: currency,
       isAnonymous: checkboxValues.isAnonymous,
       shouldShareDetails: checkboxValues.shouldShareDetails,
-      isSubscribedToPromo: checkboxValues.isSubscribedToPromo
+      isSubscribedToPromo: checkboxValues.isSubscribedToPromo,
+      callback_url: window.location.href
     }
 
     try {
