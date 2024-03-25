@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { atom, useAtom } from "jotai"
 import Link from "next/link"
@@ -21,7 +21,8 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
   const [pageGroups, setPageGroups] = useState(_pageGroups)
   const [currentDrawerId, setCurrentDrawerId] = useAtom(pageDrawerAtom)
   const currentPath = usePathname()
-  const { unseenCount, markAllMessagesAsSeen } = useNotification()
+  const { unseenCount, setUnseenCount, markAllMessagesAsSeen } =
+    useNotification()
   const display = drawer ? "flex" : "hidden md:flex"
 
   useEffect(() => {
@@ -41,6 +42,10 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
     })
 
     setPageGroups(updatePageGroups)
+
+    if (unseenCount > 0 && currentDrawerId !== "notifications") {
+      markAllMessagesAsSeen()
+    }
   }, [unseenCount])
 
   const toggleDrawer = (drawerId: string) => {
@@ -54,9 +59,12 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
       setCurrentDrawerId("")
     }
 
-    if (drawerId === "notifications") {
-      markAllMessagesAsSeen()
-    }
+    setUnseenCount((prev) => {
+      if (drawerId === "notifications" && prev > 0) {
+        markAllMessagesAsSeen()
+      }
+      return prev
+    })
   }
 
   return (

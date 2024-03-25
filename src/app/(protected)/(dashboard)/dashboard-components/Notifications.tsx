@@ -12,6 +12,7 @@ import { pageDrawerAtom } from "./Sidebar"
 import { RFC } from "@/app/common/types"
 import { IMessage } from "@novu/headless"
 import { HiMiniXMark } from "react-icons/hi2"
+import { FaRegCircleCheck, FaRegCircleXmark } from "react-icons/fa6"
 import { GrayButton } from "@/app/common/components/Button"
 
 const imageUrl =
@@ -19,10 +20,11 @@ const imageUrl =
 
 const Notifications = () => {
   const setCurrentDrawerId = useSetAtom(pageDrawerAtom)
-  const { notifications } = useNotification()
+  const { notifications, setPageNum, pagination } = useNotification()
   const mappedNotifications = mapNotificationToView(notifications)
 
   const clearDrawerId = () => setCurrentDrawerId("")
+  const fetchMoreNotifications = () => setPageNum((prev) => prev + 1)
 
   return (
     <div className="flex flex-col bg-white w-[400px] h-full max-h-full pt-6">
@@ -50,7 +52,15 @@ const Notifications = () => {
         ))}
       </div>
 
-      <GrayButton text="Show more" className="!justify-center self-center mt-auto" />
+      {pagination?.hasMore && (
+        <div className="flex justify-center pt-2 pb-4">
+          <GrayButton
+            text="Show more"
+            className="!justify-center self-center mt-auto"
+            onClick={fetchMoreNotifications}
+          />
+        </div>
+      )}
     </div>
   )
 }
@@ -68,8 +78,10 @@ const Notification: RFC<NotificationProps> = ({
 
   const detail = createDetail(content, emphasis)
   const selectNotification = () => {
-    markNotificationsAsRead(id)
-    onNotificationSelect()
+    // onNotificationSelect()
+    if (!read) {
+      markNotificationsAsRead(id)
+    }
   }
 
   return (
@@ -81,14 +93,25 @@ const Notification: RFC<NotificationProps> = ({
       >
         {/* account photo */}
         <div className="flex flex-col items-center">
-          <div className="h-12 w-12">
-            <Image
+          <div className="grid place-items-center h-12 w-12">
+            {/* <Image
               src={imageUrl}
               width={48}
               height={48}
               alt={subject}
               className="object-cover rounded-full h-full w-full"
-            />
+            /> */}
+            {status === "success" ? (
+              <FaRegCircleCheck
+                fill="rgb(132, 225, 188)"
+                className="text-3xl"
+              />
+            ) : (
+              <FaRegCircleXmark
+                fill="#rgb(248, 180, 180)"
+                className="text-3xl"
+              />
+            )}
           </div>
           {!isLastItem && (
             <div className="grow bg-[#EAECF0] rounded-sm w-[2.5px] my-1"></div>
