@@ -17,9 +17,9 @@ import {
   RegisterOptions,
 } from "react-hook-form"
 import { HiMiniXCircle } from "react-icons/hi2"
-import UploadIcon from "../../../../../public/svg/upload-cloud.svg"
-import AttentionIcon from "../../../../../public/assets/warning-circle.png"
-import LoadingCircle from "../../../../../public/svg/loading-circle.svg"
+import UploadIcon from "../../../../public/svg/upload-cloud.svg"
+import AttentionIcon from "../../../../public/assets/warning-circle.png"
+import LoadingCircle from "../../../../public/svg/loading-circle.svg"
 import { atom, useAtomValue, useSetAtom } from "jotai"
 
 // const previewImageAtom = atom<string | null>(null)

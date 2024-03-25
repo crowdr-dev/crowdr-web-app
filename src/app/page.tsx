@@ -7,7 +7,7 @@ import Benefits from "./home/home-components/Benefits";
 import Community from "./home/home-components/Community";
 import { useState } from "react";
 import WaitlistForm from "./home/home-components/WaitlistForm";
-import Modal from "./common/components/Modal";
+import OldModal from "./common/components/OldModal";
 import Footer from "./common/components/Footer";
 import Navigation from "./common/components/Navigation";
 import Todo from "./home/home-components/Todo";
@@ -42,9 +42,9 @@ export default function Home() {
         <Footer />
       </main>
       <div id="#modals" />
-      <Modal isOpen={modalIsOpen} onClose={closeModal}>
+      <OldModal isOpen={modalIsOpen} onClose={closeModal}>
         <WaitlistForm />
-      </Modal>
+      </OldModal>
     </main>
   );
 }

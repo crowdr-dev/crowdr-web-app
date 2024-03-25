@@ -1,17 +1,53 @@
 import { useFormContext } from "react-hook-form"
-import TextInput from "../../dashboard-components/TextInput"
-import InputTitle from "../../dashboard-components/InputTitle"
-import { Button } from "../../dashboard-components/Button"
+import { useUser } from "../../common/hooks/useUser"
+import { useToast } from "@/app/common/hooks/useToast"
+import InputTitle from "../../../../common/components/InputTitle"
+import { Button } from "../../../../common/components/Button"
 import PasswordFormContext, { FormFields } from "../utils/usePasswordForm"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import makeRequest from "@/utils/makeRequest"
+import PasswordInput from "@/app/common/components/PasswordInput"
 
 const PasswordForm = () => {
   const {
     handleSubmit,
+    reset,
     formState: { isSubmitting },
   } = useFormContext() as PasswordFormContext
+  const user = useUser()
+  const toast = useToast()
 
   const submit = async (formFields: FormFields) => {
-    console.log(formFields)
+    if (user) {
+      const { currentPassword, newPassword } =
+        formFields
+
+      const endpoint = "/api/v1/settings/change-password"
+      const headers = {
+        "x-auth-token": user.token,
+      }
+
+      const payload = {
+        oldPassword: currentPassword,
+        newPassword
+      }
+
+      try {
+        const { success, message } = await makeRequest(endpoint, {
+          headers,
+          method: "PATCH",
+          payload: JSON.stringify(payload)
+        })
+
+        if (success) {
+          reset()
+          toast({ title: "Well done!", body: message })
+        }
+      } catch (error) {
+        const message = extractErrorMessage(error)
+        toast({ title: "Oops!", body: message, type: "error" })
+      }
+    }
   }
 
   return (
@@ -22,7 +58,7 @@ const PasswordForm = () => {
             title="Current password"
             styles={{ wrapper: "md:w-[280px]" }}
           />
-          <TextInput
+          <PasswordInput
             name="currentPassword"
             rules={{
               required: "Current password is required",
@@ -39,7 +75,7 @@ const PasswordForm = () => {
             title="New password"
             styles={{ wrapper: "md:w-[280px]" }}
           />
-          <TextInput
+          <PasswordInput
             name="newPassword"
             rules={{
               required: "New password is required",
@@ -58,7 +94,7 @@ const PasswordForm = () => {
             title="Confirm new password"
             styles={{ wrapper: "md:w-[280px]" }}
           />
-          <TextInput
+          <PasswordInput
             name="confirmPassword"
             rules={{
               required: "Confirm password is required",

@@ -25,13 +25,15 @@ const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
       href: props.href,
     })
   )
-  const [activeTab, setActiveTab] = useState(
-    initialTab ? initialTab : tabHeadings[0]?.heading
-  )
 
+  const activeTabSetter = () =>
+    initialTab ? initialTab : tabHeadings[0]?.heading
+
+  const [activeTab, setActiveTab] = useState(activeTabSetter)
   useEffect(() => {
-      setActiveTab(tabHeadings[0]?.heading)
-  }, [])
+    setActiveTab(activeTabSetter)
+  }, [initialTab])
+  
   return (
     <div>
       <div
@@ -41,8 +43,8 @@ const Tabs: Tabs = ({ children, activeTab: initialTab, styles }) => {
         }
       >
         {tabHeadings?.map(({ heading, href }) => {
-          const props: any = href
-            ? { href, currentRoute }
+          const props: any = href // use current url to determine current tab, but if href and activeTab(initialTab) are present, use tab==activeTab instead
+            ? { href, currentRoute, ...(initialTab ? { activeTab } : {}) }
             : { activeTab, onSelectTab: setActiveTab }
 
           return <TabHeading key={heading} heading={heading} {...props} />
@@ -74,12 +76,15 @@ const TabHeading: RFC<TabHeadingProps> = ({
   const activeTabStyle =
     "text-[#00B964] bg-[#FCFCFC] border-b-2 border-[#00B964]"
   const inActiveTabStyle = "text-[#667085]"
+  const hasInitialTabAndIsLink = href && activeTab
+  const tabIdentifier = hasInitialTabAndIsLink ? tab : href || tab
+  const selectedIdentifier = hasInitialTabAndIsLink
+    ? activeTab
+    : currentRoute || activeTab
 
   const props: any = {
     className: `text-sm cursor-pointer whitespace-nowrap p-3 ${
-      (href || tab) === (currentRoute || activeTab)
-        ? activeTabStyle
-        : inActiveTabStyle
+      tabIdentifier === selectedIdentifier ? activeTabStyle : inActiveTabStyle
     }`,
   }
 

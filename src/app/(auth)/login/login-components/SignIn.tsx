@@ -5,7 +5,7 @@ import { LoginFormContext } from "@/app/common/hooks/useLoginForm";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { CgSpinner } from "react-icons/cg";
 import "../styles/shared.css";
-import Button from "@/app/common/components/Button";
+import OldButton from "@/app/common/components/OldButton";
 
 const SignIn = () => {
   const {
@@ -97,7 +97,7 @@ const SignIn = () => {
                 </span>
               )}
             </div>
-            <Button
+            <OldButton
               isValid={isValid}
               text="Login"
               isSubmitting={isSubmitting}

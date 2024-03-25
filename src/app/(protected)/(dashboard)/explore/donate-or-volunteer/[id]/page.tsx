@@ -9,7 +9,6 @@ import Filter from '../../../dashboard-components/Filter'
 import Input from '../../../dashboard-components/Input'
 import Checkbox from '../../../dashboard-components/Checkbox'
 import Select from '../../../dashboard-components/Select'
-import { Button } from '../../../dashboard-components/Button'
 import { getSingleCampaign } from '@/app/api/campaigns/getCampaigns'
 import makeRequest from '@/utils/makeRequest'
 import { extractErrorMessage } from '@/utils/extractErrorMessage'
@@ -18,6 +17,7 @@ import { useToast } from '@/app/common/hooks/useToast'
 import { formatAmount } from '../../../common/utils/currency'
 import Link from 'next/link'
 import Head from 'next/head'
+import { Button } from '@/app/common/components/Button'
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
 const inActiveTabStyle = 'text-[#667085]'
@@ -65,10 +65,13 @@ export default function DonateOrVolunteer({
   const [campaign, setCampaign] = useState<any>()
   const [tab, setTab] = useState('')
 
+  const [userId,setUserId] = useState<any>("")
+
   const fetchSingleCampaign = async () => {
     const singleCampaign = await getSingleCampaign(params.id)
     setCampaign(singleCampaign)
   }
+
 
   interface initTypes {
     amount?: string
@@ -147,6 +150,7 @@ export default function DonateOrVolunteer({
 
   const getCurrentUser = async () => {
     const user = await getUser()
+    setUserId(user?._id)
     setDonationInputs({
       ...donationInputs,
       email: user?.email
@@ -193,16 +197,18 @@ export default function DonateOrVolunteer({
 
     const endpoint = '/api/v1/payments/initiate'
 
+
     const payload = {
       campaignId: params.id,
-      campaignDonorId: campaign.userId,
+      campaignDonorId: userId,
       amount: donationInputs.amount,
       email: donationInputs.email,
       fullName: donationInputs.fullName,
       currency: currency,
       isAnonymous: checkboxValues.isAnonymous,
       shouldShareDetails: checkboxValues.shouldShareDetails,
-      isSubscribedToPromo: checkboxValues.isSubscribedToPromo
+      isSubscribedToPromo: checkboxValues.isSubscribedToPromo,
+      callback_url: window.location.href
     }
 
     try {
@@ -213,8 +219,6 @@ export default function DonateOrVolunteer({
       })
 
       window.open(data.authorization_url, '_blank', 'noopener,noreferrer')
-      window.location.href = '/donations'
-      toast({ title: 'Success!', body: data.message, type: 'success' })
       setLoading(false)
     } catch (error) {
       setLoading(false)

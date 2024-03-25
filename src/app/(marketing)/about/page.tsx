@@ -9,7 +9,7 @@ import Contact from "./about-components/Contact";
 import Team from "./about-components/Team";
 import Navigation from "@/app/common/components/Navigation";
 import Footer from "@/app/common/components/Footer";
-import Modal from "@/app/common/components/Modal";
+import OldModal from "@/app/common/components/OldModal";
 import WaitlistForm from "@/app/home/home-components/WaitlistForm";
 import Values from "./about-components/Values";
 
@@ -33,9 +33,9 @@ const AboutUs = () => {
       <Values/>
       <Contact />
       <Footer />
-      <Modal isOpen={modalIsOpen} onClose={closeModal}>
+      <OldModal isOpen={modalIsOpen} onClose={closeModal}>
         <WaitlistForm />
-      </Modal>
+      </OldModal>
     </div>
   );
 };

@@ -42,11 +42,7 @@ export default function Navigation({openModal} : Props ) {
           </Link>
         </li>
         
-        <li className="font-satoshi">
-          <Link href="/explore-campaigns" className={isActive("/explore-campaigns")}>
-            Explore
-          </Link>
-        </li>
+       
         <li className="font-satoshi">
           <a href={`mailto:${email}`} target="_blank">Contact us</a>
         </li>

@@ -5,7 +5,7 @@ import { useQuery } from "react-query"
 import { useUser } from "../../common/hooks/useUser"
 import { useModal } from "@/app/common/hooks/useModal"
 import { useToast } from "@/app/common/hooks/useToast"
-import { Button } from "../../dashboard-components/Button"
+import { Button } from "../../../../common/components/Button"
 import Table from "../../dashboard-components/Table"
 import Detail from "../../dashboard-components/Detail"
 import Pagination from "../../dashboard-components/Pagination"
@@ -21,7 +21,7 @@ import {
 } from "../../common/utils/campaign"
 import { keys } from "../../utils/queryKeys"
 
-import { Doubt, IPagination, QF } from "@/app/common/types"
+import { Nullable, IPagination, QF } from "@/app/common/types"
 import { ICampaignStats } from "@/app/common/types/UserStats"
 import { ICampaignResponse } from "@/app/common/types/Campaign"
 import DollarIcon from "../../../../../../public/svg/dollar.svg"
@@ -233,7 +233,7 @@ type ICampaign = {
   pagination: IPagination
 }
 
-const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<string>]> = async ({
+const fetchStats: QF<Nullable<ICampaignStats>, [Nullable<string>]> = async ({
   queryKey,
 }) => {
   const [_, token] = queryKey
@@ -258,7 +258,7 @@ const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<string>]> = async ({
   }
 }
 
-const fetchCampaigns: QF<Doubt<ICampaign>, [Doubt<string>, number]> = async ({
+const fetchCampaigns: QF<Nullable<ICampaign>, [Nullable<string>, number]> = async ({
   queryKey,
 }) => {
   const [_, token, page] = queryKey

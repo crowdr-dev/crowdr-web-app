@@ -8,7 +8,7 @@ import Table from "../../dashboard-components/Table"
 import Label from "../../dashboard-components/Label"
 import Detail from "../../dashboard-components/Detail"
 import Pagination from "../../dashboard-components/Pagination"
-import { Button } from "../../dashboard-components/Button"
+import { Button } from "../../../../common/components/Button"
 import AccountForm from "./AccountForm"
 import AccountFormContext, { FormFields } from "../utils/useAccountForm"
 import makeRequest from "@/utils/makeRequest"
@@ -32,6 +32,7 @@ const PaymentPage = () => {
     fetchBankDetails,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
     }
   )
 
@@ -40,6 +41,7 @@ const PaymentPage = () => {
     fetchWithdrawals,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
     }
   )
 

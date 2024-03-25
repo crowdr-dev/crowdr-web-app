@@ -23,6 +23,7 @@ const TextAreaInput: RFC<TextAreaInputProps> = ({
   name,
   rules,
   controlled,
+  disabled,
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -78,6 +79,7 @@ const TextAreaInput: RFC<TextAreaInputProps> = ({
         aria-labelledby={ariaLabelledBy}
         style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}
         className="text-[13px] resize-none rounded-lg border border-[#D0D5DD] w-full py-[10px] px-[14px]"
+        disabled={disabled}
       />
       {error && (
         <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
@@ -109,4 +111,5 @@ type TextAreaInputProps = {
   name?: string
   rules?: RegisterOptions
   controlled?: boolean
+  disabled?: boolean
 }

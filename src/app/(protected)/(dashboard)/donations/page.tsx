@@ -16,7 +16,7 @@ import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import { keys } from "../utils/queryKeys"
 
-import { Doubt, QF } from "@/app/common/types"
+import { Nullable, QF } from "@/app/common/types"
 import { IDonationResponse, IVolunteeringResponse } from "@/app/common/types/DonationsVolunteering"
 import { IDonationStats } from "@/app/common/types/UserStats"
 
@@ -31,6 +31,7 @@ const Donations = () => {
     fetchStats,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
       // staleTime: time.mins(2),
     }
   )
@@ -40,6 +41,7 @@ const Donations = () => {
     fetchDonations,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
     }
   )
 
@@ -48,6 +50,7 @@ const Donations = () => {
     fetchVolunteering,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
     }
   )
 
@@ -225,8 +228,8 @@ const ITEMS_PER_PAGE = "5"
 const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"
 
 const fetchStats: QF<
-  Doubt<IDonationStats>,
-  [Doubt<string>, IDateRange?]
+  Nullable<IDonationStats>,
+  [Nullable<string>, IDateRange?]
 > = async ({ queryKey }) => {
   const [_, token, dateRange] = queryKey
 
@@ -257,7 +260,7 @@ const fetchStats: QF<
   }
 }
 
-const fetchDonations: QF<Doubt<IDonations>, [Doubt<string>, number]> = async ({
+const fetchDonations: QF<Nullable<IDonations>, [Nullable<string>, number]> = async ({
   queryKey,
 }) => {
   const [_, token, donationsPage] = queryKey
@@ -292,8 +295,8 @@ const fetchDonations: QF<Doubt<IDonations>, [Doubt<string>, number]> = async ({
 }
 
 const fetchVolunteering: QF<
-  Doubt<IVolunteering>,
-  [Doubt<string>, number]
+  Nullable<IVolunteering>,
+  [Nullable<string>, number]
 > = async ({ queryKey }) => {
   const [_, token, volunteeringPage] = queryKey
 

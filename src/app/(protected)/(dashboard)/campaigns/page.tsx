@@ -2,8 +2,8 @@
 import { useState } from "react"
 import { useQuery } from "react-query"
 import CampaignCard from "../dashboard-components/CampaignCard"
-import { Button, GrayButton, WhiteButton } from "../dashboard-components/Button"
-import TextInput from "../dashboard-components/TextInput"
+import { Button, GrayButton, WhiteButton } from "../../../common/components/Button"
+import TextInput from "../../../common/components/TextInput"
 import DateRange from "../dashboard-components/DateRange"
 import StatCard from "../dashboard-components/StatCard"
 import Pagination from "../dashboard-components/Pagination"
@@ -16,7 +16,7 @@ import makeRequest from "@/utils/makeRequest"
 import { keys } from "../utils/queryKeys"
 import { time } from "../utils/time"
 
-import { Doubt, QF } from "@/app/common/types"
+import { Nullable, QF } from "@/app/common/types"
 // import { CampaignResponse, ICampaignStats } from "@/app/common/types/Campaign"
 import { IDateRange } from "../dashboard-components/DateRange"
 import { IUser } from "@/app/api/user/getUser"
@@ -37,13 +37,14 @@ const Campaigns = () => {
   const { data: stats } = useQuery([keys.myCampaigns.stats, user?.token, dateRange], fetchStats, {
     enabled: Boolean(user?.token),
     // staleTime: time.mins(2),
+    refetchOnWindowFocus: false,
   })
 
   const {isPreviousData, data} = useQuery([keys.myCampaigns.campaigns, user?.token, page], fetchCampaigns, {
     enabled: Boolean(user?.token),
     // keepPreviousData: true,
     // staleTime: time.mins(10),
-    // refetchOnWindowFocus: false
+    refetchOnWindowFocus: false
   })
 
   return (
@@ -166,7 +167,7 @@ const Campaigns = () => {
 
 export default Campaigns
 
-const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<string>, IDateRange?]> = async ({
+const fetchStats: QF<Nullable<ICampaignStats>, [Nullable<string>, IDateRange?]> = async ({
   queryKey,
 }) => {
   const [_, token, dateRange] = queryKey
@@ -198,14 +199,13 @@ const fetchStats: QF<Doubt<ICampaignStats>, [Doubt<string>, IDateRange?]> = asyn
   }
 }
 
-const fetchCampaigns: QF<Doubt<ICampaignResponse>, [Doubt<string>, number]> = async ({queryKey}) => {
+const fetchCampaigns: QF<Nullable<ICampaignResponse>, [Nullable<string>, number]> = async ({queryKey}) => {
   const [_, token, page] = queryKey
   
   if (token) {
     const query = new URLSearchParams({ page: `${page}`, perPage: "4" })
     const endpoint = `/api/v1/my-campaigns?${query}`
     const headers = {
-      "Content-Type": "multipart/form-data",
       "x-auth-token": token,
     }
   

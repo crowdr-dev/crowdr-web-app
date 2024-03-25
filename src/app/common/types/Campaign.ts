@@ -48,10 +48,13 @@ export interface Fundraise {
 export interface TotalAmountDonated {
   amount:   number;
   currency: string;
+  payableAmount: number
+  serviceFee: number
 }
 
 export interface User {
   _id:              string;
+  isAdmin: boolean
   organizationName: string;
   organizationId:   string;
   userType:         string;

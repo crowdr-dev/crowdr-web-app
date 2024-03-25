@@ -1,4 +1,7 @@
 export const keys = {
+  explore: {
+    campaigns: "explore-campaigns",
+  },
   myCampaigns: {
     stats: 'my-campaign-stats',
     campaigns: 'my-campaigns'
@@ -14,6 +17,7 @@ export const keys = {
     volunteering: 'my-volunteering',
   },
   settings: {
+    organization: 'get-organization',
     kyc: 'get-kyc',
     bankDetails: 'get-bank-details',
     withdrawals: 'get-withdrawals',

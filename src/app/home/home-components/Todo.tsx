@@ -5,8 +5,10 @@ import useWindowSize from '@/app/common/hooks/useWindowSize'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import Slider from 'react-slick'
+import {useRouter} from "next/navigation'
 
 const Todo = () => {
+  const router = useRouter()
   const width = useWindowSize(800)
 
   const settings = {
@@ -29,7 +31,9 @@ const Todo = () => {
           <div className='todo-item'>
             <div className='flex flex-col gap-[14px]'>
               <h4>Create an account in minutes</h4>
-              <button className='btn-primary !w-[171px]'>Get started</button>
+              <button className='btn-primary !w-[171px]'
+              onClick={()=>{router.push("signup")}}
+              >Get started</button>
             </div>
             <Image
               src='/svg/iphone.svg'
@@ -114,7 +118,9 @@ const Todo = () => {
             <div className='todo-item !mt-4'>
             <div className='flex flex-col gap-[14px]'>
               <h4>Create an account in minutes</h4>
-              <button className='btn-primary !w-[171px]'>Get started</button>
+              <button className='btn-primary !w-[171px]'
+               onClick={()=>{router.push("signup")}}
+              >Get started</button>
             </div>
             <Image
               src='/svg/iphone.svg'

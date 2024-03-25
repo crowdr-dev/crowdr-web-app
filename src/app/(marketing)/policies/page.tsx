@@ -3,7 +3,7 @@ import React,{ useState } from 'react'
 import Navigation from '@/app/common/components/Navigation';
 import Footer from '@/app/common/components/Footer'
 import OurPolicies from './policies-components/OurPolicies'
-import Modal from '@/app/common/components/Modal';
+import OldModal from '@/app/common/components/OldModal';
 import WaitlistForm from '@/app/home/home-components/WaitlistForm';
 
 export default function Policies() {
@@ -21,9 +21,9 @@ export default function Policies() {
        <Navigation openModal={openModal}/>
        <OurPolicies />
        <Footer />
-       <Modal isOpen={modalIsOpen} onClose={closeModal}>
+       <OldModal isOpen={modalIsOpen} onClose={closeModal}>
         <WaitlistForm />
-      </Modal>
+      </OldModal>
     </div>
   )
 }

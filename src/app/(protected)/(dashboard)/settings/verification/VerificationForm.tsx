@@ -2,11 +2,11 @@ import { useQuery } from "react-query"
 import { useFormContext } from "react-hook-form"
 import { useUser } from "../../common/hooks/useUser"
 import { useToast } from "@/app/common/hooks/useToast"
-import TextInput from "../../dashboard-components/TextInput"
-import SelectInput from "../../dashboard-components/SelectInput"
-import FileInput from "../../dashboard-components/FileInput"
-import { FileInputContent } from "../../dashboard-components/FileInput"
-import { Button } from "../../dashboard-components/Button"
+import TextInput from "../../../../common/components/TextInput"
+import SelectInput from "../../../../common/components/SelectInput"
+import FileInput from "../../../../common/components/FileInput"
+import { FileInputContent } from "../../../../common/components/FileInput"
+import { Button } from "../../../../common/components/Button"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import objectToFormData from "@/utils/objectToFormData"
 import makeRequest from "@/utils/makeRequest"
@@ -28,12 +28,13 @@ const VerificationForm = () => {
   const user = useUser()
   const toast = useToast()
 
-  const { data: customerDetails, refetch } = useQuery(
+  const { data: customerDetails, refetch: refetchCustomerDetails } = useQuery(
     [keys.settings.kyc, user?.token],
     fetchKyc,
     {
       enabled: Boolean(user?.token),
       retry: false,
+      refetchOnWindowFocus: false,
       onSuccess: (data) => {
         const fields = {
           bvnNumber: data?.BVN,
@@ -75,7 +76,7 @@ const VerificationForm = () => {
         })
 
         if (success) {
-          refetch()
+          refetchCustomerDetails()
           toast({ title: "Well done!", body: message })
         }
       } catch (error) {
