@@ -1,29 +1,7 @@
 .headerContainer {
-  display: block;
   justify-content: space-around;
-  padding: 70px 0 70px 0;
-  max-width: 90%;
-  margin: auto;
-}
-
-.headerHeading {
-  color: var(--PRIMARY_DARK_COLOR);
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 48px;
-  margin-bottom: 20px;
-}
-
-.headerHeading span {
-  color: #0a8643;
-}
-
-.headerPara {
-  color: var(--PRIMARY_DARK_COLOR);
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 28px;
-  max-width: 553px;
+  padding: 70px 32px;
+  margin: 0 auto;
 }
 
 @media screen and (min-width: 900px) {
@@ -33,14 +11,5 @@
     gap: 10px;
     padding: 100px 0 110px 0;
     max-width: 1800px;
-
-    /* padding: 100px 0 143px 0;
-    max-width: 1800px;
-    margin: auto; */
-  }
-
-  .headerHeading {
-    font-size: 74px;
-    line-height: 72px;
   }
 }

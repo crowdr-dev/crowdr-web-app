@@ -4,29 +4,41 @@
   color: #fff;
   padding: 12px 20px;
   border-radius: 12px;
-  font-weight: bold; 
+  font-weight: bold;
   font-size: 14px;
   cursor: pointer;
 }
 
-.btn-outline {
+.btn-primary {
   border: none;
-  background-color: var(--PRIMARY_LIGHT_COLOR2);
-  color:  var(--PRIMARY_COLOR);
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: bold; 
-  font-size: 14px;
+  background-color: var(--MAIN_GREEN);
+  color: var(--BACKGROUND_WHITE);
+  padding: 16px;
+  border-radius: 50px;
+  font-weight: 400;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-outline {
+  background-color: var(--BACKGROUND_WHITE);
+  border: 0.6px solid var(--Foundation-text-text-50, #ebeced);
+  color: #1f2227;
+  padding: 16px;
+  border-radius: 50px;
+  font-weight: 400;
+  font-size: 16px;
   cursor: pointer;
 }
 
 .btn-white {
   background-color: white;
-  color:  var(--PRIMARY_COLOR);
+  color: var(--PRIMARY_COLOR);
 }
 
-@media screen and (min-width : 600px) {
-  .btn-standard, .btn-outline  {
-   font-size: 16px;
+@media screen and (min-width: 600px) {
+  .btn-standard,
+  .btn-outline {
+    font-size: 16px;
   }
 }

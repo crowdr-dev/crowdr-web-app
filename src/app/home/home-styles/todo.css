@@ -1,0 +1,76 @@
+.todo {
+  padding: 35px 10px 35px 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.todo h3 {
+  color: #000;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: normal;
+  text-align: start;
+}
+
+.todo-content {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: row;
+  gap: 11px;
+  margin-top: 12px;
+}
+
+.todo-item {
+  height: 700px;
+  border-radius: 20px;
+  background: #f6f6f6;
+  padding: 34px 20px 0px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.todo-item h4 {
+  font-size: 28px;
+  font-weight: 500;
+  line-height: normal;
+  color: #000;
+}
+
+.slick-dots {
+  bottom: auto !important;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #006637 !important;
+  opacity: 1;
+  font-size: 12px !important;
+}
+
+.slick-dots li button:before {
+  font-size: 8px !important;
+}
+
+@media screen and (min-width: 600px) {
+  .todo {
+    padding: 12px 30px 30px 30px;
+  }
+  .todo h3 {
+    font-size: 42px;
+    line-height: 72px;
+  }
+  .todo-item h4 {
+    font-size: 32px;
+    line-height: 50px;
+  }
+}
+
+@media screen and (min-width: 940px) {
+  .todo {
+    display: flex;
+    align-items: start;
+    justify-content: space-around;
+  }
+}

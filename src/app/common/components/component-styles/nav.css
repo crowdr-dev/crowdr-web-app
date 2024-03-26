@@ -2,20 +2,22 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 26px 10px;
-  background-color: var(--PRIMARY_LIGHT_COLOR);
+  padding: 18px 10px;
+  background-color: var(--BACKGROUND_WHITE);
+  border-bottom: 0.7px solid #ebeced;
 }
 
 nav ul {
   display: none;
-
 }
 
 nav ul li {
   margin-right: 24px;
-  font-weight: bold;
+  font-weight: normal;
   color: black;
   font-size: 16px;
+  color: #000;
+  line-height: normal;
   /* font-family: 'Public Sans'; */
 }
 
@@ -29,7 +31,7 @@ nav ul a.active {
 
 @media screen and (min-width: 600px) {
   nav {
-    padding: 36px 40px;
+    padding: 18px 40px;
   }
   nav ul {
     display: flex;
@@ -41,5 +43,4 @@ nav ul a.active {
   nav ul li {
     font-size: 20px;
   }
-  
 }

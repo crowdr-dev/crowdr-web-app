@@ -129,7 +129,6 @@ const Campaigns = () => {
           value={input}
           onChange={(e) => {
             setInput(e.target.value)
-            console.log(e.target.value)
           }}
           placeholder="Search campaigns"
           icon={BiSearch}

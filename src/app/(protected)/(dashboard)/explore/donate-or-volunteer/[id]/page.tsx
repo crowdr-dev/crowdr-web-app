@@ -219,7 +219,6 @@ export default function DonateOrVolunteer({
       })
 
       window.open(data.authorization_url, '_blank', 'noopener,noreferrer')
-      window.location.href = '/donations'
       setLoading(false)
     } catch (error) {
       setLoading(false)

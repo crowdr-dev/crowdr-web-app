@@ -1,0 +1,19 @@
+.happening {
+  padding: 40px 24px 40px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 600px) {
+  .happening {
+    padding: 48px 30px 48px 30px;
+  }
+}
+
+@media screen and (min-width: 940px) {
+  .happening {
+    display: flex;
+    align-items: start;
+    justify-content: space-around;
+  }
+}

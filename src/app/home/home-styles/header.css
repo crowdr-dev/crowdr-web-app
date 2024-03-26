@@ -1,41 +1,62 @@
 .cta {
   /* min-height: 30px; */
-  background: var(--PRIMARY_LIGHT_COLOR);
-  background-image: url('/public/assets/svg/worldmap.svg');
+  background: var(--BACKGROUND_WHITE);
+  background-image: url("/public/assets/svg/worldmap.svg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  padding: 60px 10px 0 10px;
+  padding: 25px 10px 0 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .cta h2 {
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--PRIMARY_DARK_COLOR);
-  line-height: 48px;
+  line-height: 52px;
 }
 
 .cta p {
   font-size: 14px;
-  color: var(--PRIMARY_DARK_COLOR);
-  margin: 16px auto 32px auto;
-  line-height: 28px;
-  max-width: 327px;
+  color: #61656b;
+  line-height: normal;
+  text-align: center;
+  font-weight: 400;
 }
+
+.tag {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  width: fit-content;
+  gap: 8px;
+  border-radius: 50px;
+  border: 1px solid #ebeced;
+  margin: 0 auto;
+}
+
 .content {
   /* width: 600px; */
-  margin-left:auto;
+  margin-left: auto;
   margin-right: auto;
   text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
   /* margin-top: -180px; */
 }
 
 .content-header span {
-  color: var(--PRIMARY_COLOR);
+  color: var(--MAIN_GREEN);
+  font-style: italic;
 }
 
 .painting {
-  margin:auto;
+  margin: auto;
   width: fit-content;
   padding-top: 24px;
 }
@@ -44,17 +65,49 @@
   max-width: 90vw;
 }
 
+.button-group {
+  display: flex;
+  gap: 11px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-primary {
+  width: 100%;
+}
+
+.btn-outline {
+  width: 100%;
+}
+
 @media screen and (min-width: 600px) {
   .cta {
     min-height: 70vh;
+    padding: 35px 30px 0 30px;
   }
   .cta h2 {
-    font-size: 74px;
-    line-height: 72px;
+    font-size: 48px;
+    line-height: 52px;
   }
   .cta p {
-    font-size: 20px;
+    font-size: 16px;
     max-width: 553px;
+  }
+  .tag {
+    padding: 15px 26px;
+  }
+  .button-group {
+    flex-direction: row;
+    width: auto;
+  }
+  .btn-primary {
+    width: fit-content;
+  }
+  .btn-outline {
+    width: fit-content;
   }
 }
 
@@ -63,11 +116,9 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 10px;
   }
   .content {
     align-self: flex-start;
-    padding-top: 130px;
   }
   .painting {
     display: block;

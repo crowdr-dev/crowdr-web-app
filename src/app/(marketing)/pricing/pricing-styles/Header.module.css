@@ -1,0 +1,15 @@
+.headerContainer {
+  justify-content: space-around;
+  padding: 70px 32px;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 900px) {
+  .headerContainer {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    padding: 100px 50px 110px 50px;
+    max-width: 1800px;
+  }
+}

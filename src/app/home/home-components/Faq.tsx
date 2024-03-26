@@ -1,5 +1,6 @@
 "use client";
 import { openEmail } from "@/utils/openEmail";
+import Image from "next/image";
 import Collapsible from "react-collapsible";
 import "../home-styles/faq.css";
 
@@ -7,8 +8,8 @@ export default function Faq() {
   return (
     <section className="faq">
       <div className="faq-container">
-        <p className="faq-header-small">Frequently Asked Questions</p>
-        <p className="faq-header-big">Get to know more about us</p>
+        <p className="faq-header">Frequently Asked Questions</p>
+        <p className="faq-header-big mt-[20px]">We knew you would ask. See? We’re two peas in a pod.</p>
 
         <div>
           {faqArr.map((faq: { heading: string, text: string}, index) => (
@@ -17,13 +18,13 @@ export default function Faq() {
                 trigger={
                   <div className="flex justify-between">
                     <p className="faq-collapsible-header">{faq.heading}</p>
-                    <div className="faq-collapsible-icon-close" />
+                    <Image src="/svg/plus-circle.svg" width={24} height={24} alt='accordion'/>
                   </div>
                 }
                 triggerWhenOpen={
                   <div className="flex justify-between">
                     <p className="faq-collapsible-header">{faq.heading}</p>
-                    <div className="faq-collapsible-icon-close" />
+                    <Image src="/svg/minus-circle.svg" width={24} height={24} alt='accordion'/>
                   </div>
                 }
               >
@@ -32,12 +33,6 @@ export default function Faq() {
             </div>
           ))}
         </div>
-
-        <p className="faq-more-questions">
-          Have more questions? Our team is happy to assist you!
-        </p>
-
-        <button className="btn-outline" onClick={openEmail}>Contact Us</button>
       </div>
     </section>
   );
@@ -45,24 +40,19 @@ export default function Faq() {
 
 const faqArr = [
   {
-    heading: "When does the app launch?",
-    text: "Our team is working tirelessly to fine-tune all the details of the app. We are projected to launch in Q3. You can sign up to join our private beta testing group and be among the first to find out when we launch!",
+    heading: "What types of causes does Crowdr support?",
+    text: "Simply, anything that betters your life or that of another person! Issues supported on Crowdr range from poverty eradication to mental health awareness.",
   },
   {
-    heading: "What types of causes can be funded on Crowdr? ",
-    text: "Crowdr is available to support all kinds of initiatives ranging from poverty eradication to mental health awareness. Crowdr can also be used to seek funding for personal and creative projects/initiatives.",
+    heading: "How do you ensure campaigns are legitimate?",
+    text: "Our vetting process includes verifying government ID such as one’s NIN, BVN and driver’s license.",
   },
   {
-    heading: "Are there any fees associated with Crowdr? ",
-    text: "In order to keep the app running and to provide safe and secure services, we deduct a transaction fee from each donation. ",
+    heading: "Can volunteers track participation for external uses like visa interviews?",
+    text: "Yes, volunteer records will be available in each user’s profile.",
   },
   {
-    heading: "Is there a vetting process for fundraisers and volunteers?",
-    text: "Security is our top priority. Our vetting process involves government identification and/or biometrics. ",
-  },
-  {
-    heading:
-      "Can volunteers track participation for external uses? E.g. for school and visa applications?",
-    text: "Yes, volunteer records will be available in each user’s profile. ",
+    heading: "How much does it cost to use Crowdr?",
+    text: "It doesn’t cost anything to set up a campaign! However, to keep our app up and running, we do deduct transaction and processing fees. For more information, please visit the Pricing section.",
   },
 ];

@@ -6,47 +6,26 @@ import Image from "next/image";
 export default function Details() {
   return (
     <section className={styles.details}>
-      <section className={styles.detailsContainer}>
-        <h2 className={styles.detailsHeading}>Here’s what we do</h2>
-        <aside className={styles.detailsPara}>
-          <p>
-            Social good initiatives in Nigeria, and Africa at large, are grossly
-            underserved.
-          </p>
-          <p>
-            Our app aims to make it easy for anyone to raise funds and support
-            for their projects, causes, and businesses, while also fostering a
-            sense of community and collaboration among our users. Our ultimate
-            goal is to help build a more inclusive and innovative society where
-            everyone has the chance to succeed.
-          </p>
-          <p>
-            Our team comprises professionals with years of experience in their
-            various fields. We are all equally passionate about advancing social
-            good and the charity industry on the continent.
-          </p>
-        </aside>
-      </section>
-
-      <section className={`${styles.detailsContainer} ${styles.ceoQuoteContainer}`}>
-        <div className={styles.ceo}>
-          <Image className={styles.imagePlaceholder} src={Ada} alt="ceo" />
-          <div >
-            <p className={styles.ceoName}>Adaobi Ajegbo<br />
-            Founder, CEO</p>
+      <div className="py-16 flex flex-col items-center justify-center gap-8 md:w-5/6 mx-auto my-0">
+        <p className="text-[24px] leading-[44px] text-[#101828] md:text-[36px] text-center">“We were inspired to build Crowdr after witnessing the willpower of Nigerians during the End SARS protests, despite the lack of infrastructure to support a social uprising of this scale. We wanted to build a platform that would empower Nigerians to create positive impact in their communities. The result? Crowdr: a social-good marketplace linking non-profits, volunteers and donors.”</p>
+        <div className='flex flex-col items-center justify-center gap-4'>
+          <Image
+            src={Ada}
+            alt='Adaobi Ajegbo'
+            className='rounded-[50px] object-cover'
+            width={50}
+            height={50}
+          />
+          <div className='flex flex-col items-center justify-center gap-1'>
+            <p className='text-[18px] font-semibold text-[#1F2227]'>
+              Adaobi Ajegbo
+            </p>
+            <p className='text-[16px] font-normal text-[#1F2227]'>
+              Founder, CEO
+            </p>
           </div>
         </div>
-
-        <aside className={styles.inspiration}>
-          “We were inspired to start this initiative after the Nigerian #EndSARS
-          protests in October 2020. Well-meaning individuals sought to show up
-          for protests and other civic actions but there was no infrastructure
-          in place to facilitate an uprising of this scale. Crowdr is a platform
-          connecting people to causes they care about in Africa; either by
-          helping them find volunteer events or simplifying the donation process
-          - or both.”
-        </aside>
-      </section>
+      </div>
     </section>
   );
 }

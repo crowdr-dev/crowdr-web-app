@@ -1,6 +1,6 @@
 .faq {
   padding: 60px 0;
-  background-color: var(--PRIMARY_LIGHT_COLOR);
+  background-color: #fff;
   display: flex;
   justify-content: center;
   /* text-align: center; */
@@ -10,22 +10,21 @@
   width: 90%;
 }
 
-.faq-header-small {
-  color: var(--TERTIARY_COLOR);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 22px;
-  letter-spacing: 0.56px;
+.faq-header {
+  color: #101828;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 44px;
+  letter-spacing: -0.48px;
   text-align: center;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .faq-header-big {
-  color: var(--BASE);
-  font-size: 24px;
-  font-family: Public Sans;
-  font-weight: 800;
-  line-height: 32px;
+  color: #475467;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 30px; /* 214.286% */
   margin-bottom: 40px;
   text-align: center;
 }
@@ -41,17 +40,18 @@
 }
 
 .faq-collapsible-header {
-  color: var(--BACKGROUND_PRIMARY);
+  color: #101828;
   font-size: 16px;
   font-weight: 600;
-  line-height: 24px;
+  line-height: 28px;
   max-width: 90%;
   text-align: left;
 }
 .faq-collapsible-body {
-  color: var(--BACKGROUND_PRIMARY);
+  color: #202020;
   font-size: 14px;
   line-height: 28px;
+  font-weight: 400;
   max-width: 90%;
 }
 
@@ -65,17 +65,13 @@
 }
 
 @media screen and (min-width: 600px) {
-  .faq-header-small {
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 28px;
-    letter-spacing: 0.8px;
+  .faq-header {
+    font-size: 40px;
+    line-height: 44px; /* 110% */
+    letter-spacing: -0.8px;
   }
   .faq-header-big {
-    font-size: 48px;
-    font-weight: 800;
-    line-height: 56px;
-    margin-bottom: 4rem;
+    font-size: 16px;
   }
   .faq-more-questions {
     font-size: 58px;
@@ -86,8 +82,8 @@
   }
   .faq-collapsible-header {
     font-size: 24px;
-    font-weight: 700;
-    line-height: 32px;
+    font-weight: 500;
+    line-height: 28px;
   }
   .faq-collapsible-body {
     font-size: 20px;
