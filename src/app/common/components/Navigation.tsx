@@ -9,7 +9,7 @@ import { email } from "@/utils/openEmail";
 import "./component-styles/nav.css";
 
 type Props = {
-  openModal: () => void
+  openModal?: () => void
 }
 
 export default function Navigation({openModal} : Props ) {

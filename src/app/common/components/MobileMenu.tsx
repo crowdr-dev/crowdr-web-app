@@ -8,7 +8,7 @@ import { email } from "@/utils/openEmail";
 import "./component-styles/mobile-menu.css";
 
 type Props = {
-  openModal : () => void
+  openModal?: () => void
 }
 
 export default function MobileMenu({openModal} : Props) {
