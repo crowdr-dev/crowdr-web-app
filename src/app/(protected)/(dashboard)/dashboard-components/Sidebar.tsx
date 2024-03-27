@@ -1,5 +1,5 @@
 "use client"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { atom, useAtom } from "jotai"
 import Link from "next/link"
@@ -31,7 +31,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
         (page) => page.title === "Notifications"
       )
       if (notificationPage) {
-        if (unseenCount > 0 && currentDrawerId !== "notifications") {
+        if (unseenCount > 0) {
           notificationPage.icon = bell_dot
         } else {
           notificationPage.icon = bell
@@ -42,10 +42,6 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
     })
 
     setPageGroups(updatePageGroups)
-
-    if (unseenCount > 0 && currentDrawerId !== "notifications") {
-      markAllMessagesAsSeen()
-    }
   }, [unseenCount])
 
   const toggleDrawer = (drawerId: string) => {
