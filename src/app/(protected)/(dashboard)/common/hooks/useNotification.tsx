@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useEffect,
   useState,
@@ -9,7 +9,7 @@ import React, {
 } from "react"
 import { HeadlessService, IMessage } from "@novu/headless"
 import { useUser } from "./useUser"
-import { useAtom } from "jotai"
+import { useSetAtom } from "jotai"
 import { pageDrawerAtom } from "../../dashboard-components/Sidebar"
 
 interface NotificationContextType {
@@ -47,14 +47,11 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
   const [pageNum, setPageNum] = useState(0)
   const [pagination, setPagination] = useState<Pagination>()
   const [unseenCount, setUnseenCount] = useState(0)
-  const [currentDrawerId] = useAtom(pageDrawerAtom)
+  const setCurrentDrawerId = useSetAtom(pageDrawerAtom)
 
   const fetchNotifications = useCallback(() => {
     const headlessService = headlessServiceRef.current
     if (headlessService) {
-      notifications
-      pagination
-      pageNum
       headlessService.fetchNotifications({
         listener: ({ data, error, isError, isFetching, isLoading, status }) => {
           // Handle the state of the fetching process and errors here.
@@ -68,6 +65,7 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
               pageSize: response.pageSize,
               totalCount: response.totalCount,
             }
+
             setPagination(pagination)
             setNotifications((prev) =>
               // response.page will be zero on initial fetching or subsequent ones caused by headlessService.listenUnseenCountChange's listener
@@ -92,8 +90,18 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
 
       headlessService.listenUnseenCountChange({
         listener: (unseenCount: number) => {
-          setUnseenCount(unseenCount)
-          if (unseenCount > 0) {
+          const isNewNotification = unseenCount > 0
+          if (isNewNotification) {
+            setUnseenCount(unseenCount)
+
+            setCurrentDrawerId((currentDrawerId) => {
+              if (currentDrawerId === "notifications") {
+                markAllMessagesAsSeen()
+              }
+
+              return currentDrawerId
+            })
+
             // fetch notifications if pageNum = 0, else set pageNum to 0
             // which will consequently cause new notifications to be fetched
             pageNum === 0 ? fetchNotifications() : setPageNum(0)
@@ -183,6 +191,9 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
           // console.log(result);
           // Handle the result of marking all messages as read
           // You can update the state or perform other actions here
+        },
+        onSuccess: (count) => {
+          setUnseenCount(0)
         },
         onError: (error) => {
           console.error("Error marking all messages as seen:", error)

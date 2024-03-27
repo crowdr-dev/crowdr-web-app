@@ -42,6 +42,7 @@ const Donations = () => {
     {
       enabled: Boolean(user?.token),
       refetchOnWindowFocus: false,
+      keepPreviousData: true,
     }
   )
 
@@ -51,6 +52,7 @@ const Donations = () => {
     {
       enabled: Boolean(user?.token),
       refetchOnWindowFocus: false,
+      keepPreviousData: true,
     }
   )
 
