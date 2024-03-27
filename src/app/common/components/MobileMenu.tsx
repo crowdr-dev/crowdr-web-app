@@ -1,13 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 import { usePathname } from "next/navigation";
 import { email } from "@/utils/openEmail";
 import "./component-styles/mobile-menu.css";
 
 type Props = {
-  openModal : () => void
+  openModal?: () => void
 }
 
 export default function MobileMenu({openModal} : Props) {
@@ -29,14 +30,14 @@ export default function MobileMenu({openModal} : Props) {
     <div className="mobile-menu">
       <div className="container">
         <div className="menu-icon" onClick={toggleMenu}>
-          {isOpen ? <IoMdClose size={25} /> : <IoMdMenu size={25} />}
+          {isOpen ? <IoMdClose size={25} /> : <Image width={25} height={25} src="/svg/new-menu.svg" alt="menu" />}
         </div>
       </div>
       <div className={`menu ${isOpen ? "open" : ""}`} onClick={closeMenu}>
         <ul>
           <li>
-            <Link href="/" className={isActive("/")}>
-              Home
+            <Link href="/pricing" className={isActive("/pricing")}>
+              Pricing
             </Link>
           </li>
           <li>
@@ -44,17 +45,13 @@ export default function MobileMenu({openModal} : Props) {
               About
             </Link>
           </li>
-          <li>
-            <Link href="/explore-campaigns" className={isActive("/explore-campaigns")}>
-              Explore campaigns
-            </Link>
-          </li>
+          
           <li>
             <a href={`mailto:${email}`} target="_blank">
               Contact Us
             </a>
           </li>
-          <li><button className="btn-outline w-100" onClick={openModal}>Join Private Beta</button></li>
+          <li><button className="btn-outline w-100" onClick={openModal}>Start a Campaign</button></li>
         </ul>
       </div>
     </div>

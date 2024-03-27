@@ -9,7 +9,7 @@ import { email } from "@/utils/openEmail";
 import "./component-styles/nav.css";
 
 type Props = {
-  openModal: () => void
+  openModal?: () => void
 }
 
 export default function Navigation({openModal} : Props ) {
@@ -23,34 +23,29 @@ export default function Navigation({openModal} : Props ) {
     <nav>
       <Link href="/">
         <Image
-          src="/svg/crowdr-logo.svg"
+          src="/svg/new-crowdr-logo.svg"
           alt="crowdr logo"
-          width={76}
-          height={20}
+          width={120}
+          height={30}
           className="cursor"
         />
       </Link>
       <ul>
-        <li>
-          <Link href="/" className={isActive("/")}>
-            Home
+        <li className="font-satoshi">
+          <Link href="/pricing" className={isActive("/pricing")} >
+            Pricing
           </Link>
         </li>
-        <li>
+        <li className="font-satoshi">
           <Link href="/about" className={isActive("/about")}>
             About us
           </Link>
         </li>
-        <li>
-          <Link href="/explore-campaigns" className={isActive("/explore-campaigns")}>
-            Explore
-          </Link>
-        </li>
-        <li>
+        <li className="font-satoshi">
           <a href={`mailto:${email}`} target="_blank">Contact us</a>
         </li>
       </ul>
-      <button className="btn-outline hide-sm" onClick={openModal}>Join Private Beta</button>
+      <button className="btn-primary hide-sm" onClick={openModal}>Start a Campaign</button>
       <MobileMenu openModal={openModal}/>
       {/* <Modal isOpen={modalIsOpen} onClose={closeModal}>
        <div>heyyy</div> 

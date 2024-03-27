@@ -9,7 +9,6 @@ import Filter from '../../../dashboard-components/Filter'
 import Input from '../../../dashboard-components/Input'
 import Checkbox from '../../../dashboard-components/Checkbox'
 import Select from '../../../dashboard-components/Select'
-import { Button } from '../../../../../common/components/Button'
 import { getSingleCampaign } from '@/app/api/campaigns/getCampaigns'
 import makeRequest from '@/utils/makeRequest'
 import { extractErrorMessage } from '@/utils/extractErrorMessage'
@@ -17,7 +16,8 @@ import HeartHand from '../../../../../../../public/svg/hand-holding-heart.svg'
 import { useToast } from '@/app/common/hooks/useToast'
 import { formatAmount } from '../../../common/utils/currency'
 import Link from 'next/link'
-import { useUser } from '../../../common/hooks/useUser'
+import Head from 'next/head'
+import { Button } from '@/app/common/components/Button'
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
 const inActiveTabStyle = 'text-[#667085]'
@@ -61,15 +61,17 @@ export default function DonateOrVolunteer({
   params: { id: string }
 }) {
   const toast = useToast()
-  const user = useUser()
   const [loading, setLoading] = useState(false)
   const [campaign, setCampaign] = useState<any>()
   const [tab, setTab] = useState('')
+
+  const [userId,setUserId] = useState<any>("")
 
   const fetchSingleCampaign = async () => {
     const singleCampaign = await getSingleCampaign(params.id)
     setCampaign(singleCampaign)
   }
+
 
   interface initTypes {
     amount?: string
@@ -147,7 +149,8 @@ export default function DonateOrVolunteer({
   }
 
   const getCurrentUser = async () => {
-    // const user = await getUser()
+    const user = await getUser()
+    setUserId(user?._id)
     setDonationInputs({
       ...donationInputs,
       email: user?.email
@@ -183,7 +186,7 @@ export default function DonateOrVolunteer({
 
   const donate = async () => {
     setLoading(true)
-    // const user = await getUser()
+    const user = await getUser()
 
     if (!user) {
       return null
@@ -194,16 +197,18 @@ export default function DonateOrVolunteer({
 
     const endpoint = '/api/v1/payments/initiate'
 
+
     const payload = {
       campaignId: params.id,
-      campaignDonorId: campaign.userId,
+      campaignDonorId: userId,
       amount: donationInputs.amount,
       email: donationInputs.email,
       fullName: donationInputs.fullName,
       currency: currency,
       isAnonymous: checkboxValues.isAnonymous,
       shouldShareDetails: checkboxValues.shouldShareDetails,
-      isSubscribedToPromo: checkboxValues.isSubscribedToPromo
+      isSubscribedToPromo: checkboxValues.isSubscribedToPromo,
+      callback_url: window.location.href
     }
 
     try {
@@ -214,19 +219,17 @@ export default function DonateOrVolunteer({
       })
 
       window.open(data.authorization_url, '_blank', 'noopener,noreferrer')
-      window.location.href = '/donations'
-      toast({ title: 'Success!', body: data.message, type: 'success' })
       setLoading(false)
     } catch (error) {
       setLoading(false)
       const message = extractErrorMessage(error)
-      toast({ title: 'Oops!', body: message, type: 'error', isHtml: true })
+      toast({ title: 'Oops!', body: message, type: 'error' })
     }
   }
 
   const volunteer = async () => {
     setLoading(true)
-    // const user = await getUser()
+    const user = await getUser()
 
     if (!user) {
       return null
@@ -273,6 +276,12 @@ export default function DonateOrVolunteer({
 
   return (
     <div className='mb-6'>
+      <Head>
+        <title>Fundraise and Find Volunteers</title>
+        <meta name="description" content={`Explore campaigns and spread love by donating or volunteering to ${campaign?.title}`} />
+        <meta property="og:title" content={"Fundraise and Find Volunteers"} />
+        <meta property="og:description" content={`Explore campaigns and spread love by donating or volunteering to ${campaign?.title}`} />
+      </Head>
       <div className='flex items-center justify-between mb-4'>
         <div>
           <h3 className='text-2xl text-black font-semibold'>
