@@ -26,14 +26,14 @@ const CompletionCard: RFC<CompletionCardProps> = ({
         <Rings icon={icon} />
 
         <div className="hidden md:flex flex-col gap-1 mb-6">
-          <p className="flex justify-between text-lg text-[#101828] font-semibold md:mb-1">
+          <div className="flex justify-between text-lg text-[#101828] font-semibold md:mb-1">
             {title}
 
             <XIcon
               onClick={clearModal}
               className="hidden md:inline cursor-pointer"
             />
-          </p>
+          </div>
           {typeof text === "string" ? (
             <p className="text-sm text-[#475467] md:text-justify md:pr-2">
               {text}
@@ -160,7 +160,7 @@ const Rings = ({ icon }: any) => {
 
 const XIcon = ({ onClick, className, wrapperClass }: any) => {
   return (
-    <div className={"relative " + wrapperClass}>
+    <div className={`relative ${wrapperClass || ''}`}>
       <div className="absolute grid place-items-center top-[50%] right-[50%] -translate-y-[50%] translate-x-[50%] rounded-full hover:bg-[#F8F8F8] transition h-10 w-10">
         <svg
           xmlns="http://www.w3.org/2000/svg"
