@@ -6,8 +6,9 @@ import Link from "next/link"
 import Image from "next/image"
 import ModalTrigger from "../../../common/components/ModalTrigger"
 import DrawerTrigger from "../../../common/components/DrawerTrigger"
+import { useUser } from "../common/hooks/useUser"
 import { useNotification } from "../common/hooks/useNotification"
-import { pageGroups as _pageGroups } from "../pages"
+import { Page, pageGroups as _pageGroups } from "../pages"
 import Icon from "./Icon"
 
 import { RFC } from "@/app/common/types"
@@ -18,7 +19,7 @@ import bell_dot from "../../../../../public/svg/bell-dot.svg"
 export const pageDrawerAtom = atom("")
 
 const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
-  const [pageGroups, setPageGroups] = useState(_pageGroups)
+  const user = useUser()
   const [currentDrawerId, setCurrentDrawerId] = useAtom(pageDrawerAtom)
   const currentPath = usePathname()
   const { unseenCount, setUnseenCount, markAllMessagesAsSeen } =
@@ -62,6 +63,32 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
       return prev
     })
   }
+
+  const setSidebarItems = () => {
+    if (!user?.isAdmin) {
+      return _pageGroups
+    }
+
+    const adminDashboard = new Page(
+      { route: "/admin/dashboard" },
+      "Admin Dashboard",
+      bell
+    )
+
+    return _pageGroups.map((pageGroup, index) => {
+      if (index + 1 !== _pageGroups.length) {
+        return pageGroup
+      }
+
+      return [adminDashboard, ...pageGroup]
+    })
+  }
+
+  const [pageGroups, setPageGroups] = useState(setSidebarItems)
+
+  useEffect(() => {
+    setPageGroups(setSidebarItems)
+  }, [user])
 
   return (
     <nav

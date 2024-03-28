@@ -14,6 +14,7 @@ export type IUser = {
   interests: string[]
   isEmailVerified: boolean
   organizationName: string
+  isAdmin?: boolean
 };
 
 // for getting user in server components, also a server action that can be called from client components
