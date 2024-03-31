@@ -22,9 +22,10 @@ const DropdownTrigger: RFC<DropdownTriggerProps> = ({
     if (triggerId) {
       const $triggerEl = document.getElementById(triggerId)
       const $targetEl = document.getElementById(targetId)
-
-      if (dropdownStore.has(triggerId)) {
-        dropdown.current = dropdownStore.get(triggerId)
+      const dropdownInStore = dropdownStore.get(triggerId)
+      
+      if (dropdownInStore && dropdownInStore._targetEl === $targetEl) {
+        dropdown.current = dropdownInStore
       } else {
         dropdown.current = dropdownStore
           .set(triggerId, new Dropdown($targetEl, $triggerEl, options))

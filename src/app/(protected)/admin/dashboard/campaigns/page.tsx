@@ -1,7 +1,10 @@
+"use client"
+import RejectionForm from "../../admin-dashboard-components/RejectionForm";
+
 const Campaigns = () => {
   return (
     <div>
-      Campaigns
+      <RejectionForm clearModal={() => {}} />
     </div>
   );
 }

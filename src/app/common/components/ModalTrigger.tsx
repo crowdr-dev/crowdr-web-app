@@ -15,15 +15,14 @@ const ModalTrigger: RFC<ModalTriggerProps> = ({
 }) => {
   const modalStore = useAtomValue(modalStoreAtom)
   const modal = useRef<Modal>()
-  const modalEl = useRef<HTMLElement | null>()
 
   useEffect(() => {
     if (id) {
       const $modalEl = document.getElementById(id)
-      modalEl.current = $modalEl
+      const modalInStore = modalStore.get(id)
 
-      if (modalStore.has(id)) {
-        modal.current = modalStore.get(id)
+      if (modalInStore && modalInStore._targetEl === $modalEl) {
+        modal.current = modalInStore
       } else {
         modal.current = modalStore.set(id, new Modal($modalEl, options)).get(id)
       }
