@@ -12,7 +12,7 @@ const SidebarModal: RFC<SidebarModalProps> = ({
   const isCenter = position === "center"
   const modalClasses = isCenter
     ? "items-center justify-center"
-    : "!justify-end md:!justify-between items-stretch"
+    : "!justify-end items-stretch" // md:!justify-between
   return (
     <div
       id={id}
@@ -24,11 +24,11 @@ const SidebarModal: RFC<SidebarModalProps> = ({
       }
     >
       {/* <div className="fixed flex justify-end md:justify-between h-full w-full pointer-events-none z-[60]"> */}
-      {!isCenter && (
+      {/* {!isCenter && (
         <div className="hidden md:block h-full ">
           <Sidebar drawer />
         </div>
-      )}
+      )} */}
 
       {!isCenter ? (
         <SidebarModalContent>{children}</SidebarModalContent>

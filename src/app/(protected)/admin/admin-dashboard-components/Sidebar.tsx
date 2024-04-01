@@ -19,14 +19,14 @@ const Sidebar = () => {
     <nav className="flex flex-col justify-between overflow-y-auto max-w-[280px] shrink-0 h-full bg-white py-8">
       <div className="flex flex-col gap-y-6">
         {/* logo */}
-        <div className="flex items-center px-6">
+        <Link href="/explore" className="flex items-center px-6">
           <Image src={CrowdrLogo} alt="crowdr logo" className="w-[50px]" />
           <Image
             src={CrowdrLogoType}
             alt="crowdr logotype"
             className="w-[77px]"
           />
-        </div>
+        </Link>
 
         {/* search */}
         <TextInput

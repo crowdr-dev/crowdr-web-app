@@ -1,11 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react"
+import { atom, useAtom } from "jotai"
+
 import { RFC } from "@/app/common/types"
 import { IUser, getUser } from "@/app/api/user/getUser"
 
 const UserContext = createContext<IUser | null>(null)
+const userAtom = atom<IUser | null>(null)
 
 const UserProvider: RFC<UserProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<IUser | null>(null)
+  const [user, setUser] = useAtom(userAtom)
 
   useEffect(() => {
     getUser().then((user) => setUser(user))

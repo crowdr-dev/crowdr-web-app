@@ -31,7 +31,7 @@ export const config = {
     "/donations",
     "/inbox",
     "/manage-webpage",
-    "/notifications",
-    "/settings"
+    "/settings/(.*)",
+    "/admin/(.*)",
   ],
 };
