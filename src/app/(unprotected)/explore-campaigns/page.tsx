@@ -61,12 +61,14 @@ export default function DynamicExplore () {
         <meta property="og:description" content="Explore campaigns and spread love by donating." />
       </Head>
      <Navigation openModal={openModal}/>
-      <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 p-10 bg-[#E7F0EE]'>
+      <div className='grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 p-10 bg-[#E7F0EE] h-screen'>
         {Array.isArray(campaigns) &&
           campaigns?.map((campaign: Campaign, index: number) => {
             const urlsOnly = campaign.campaignAdditionalImages.map(
               item => item.url
             )
+
+            console.log("campaign", campaign)
 
             const userDetails = campaign?.user
             const donatedAmount = campaign?.totalAmountDonated?.[0].amount
@@ -101,7 +103,15 @@ export default function DynamicExplore () {
           </span>
         </div>
       )}
+        {
+  campaigns?.length < 1 && (
+    <p className='absolute inset-0 flex justify-center items-center text-center font-semibold text-[30px]'>
+      No campaigns available at this moment
+    </p>
+  )
+}
       </div>
+    
        <Footer />
        <OldModal isOpen={modalIsOpen} onClose={closeModal}>
         <WaitlistForm />
