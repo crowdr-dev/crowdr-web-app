@@ -7,7 +7,7 @@ import bell from "../../../../public/svg/bell.svg"
 import settings from "../../../../public/svg/settings.svg"
 import logout from "../../../../public/svg/logout.svg"
 
-class Page {
+export class Page {
   constructor(
     public page: { route: string } | { modalId: string, noHighlight?: boolean },
     public title: string,
@@ -25,7 +25,7 @@ export const pageGroups = [
   ],
   [
     new Page({ route: "" }, "Inbox", envelope, "COMING SOON"),
-    new Page({ modalId: "notifications" }, "Notifications", bell),
+    new Page({ modalId: "notifications", noHighlight: true }, "Notifications", bell),
     new Page({ route: "/settings/profile" }, "Settings", settings),
   ],
   [new Page({ modalId: "logout-modal", noHighlight: true }, "Log out", logout)],

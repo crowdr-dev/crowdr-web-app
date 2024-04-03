@@ -19,10 +19,10 @@ const DrawerTrigger: RFC<DrawerTriggerProps> = ({
   useEffect(() => {
     if (id) {
       const $drawerEl = document.getElementById(id)
-      // drawer.current = new Drawer($drawerEl, options)
+      const drawrerInStore = drawerStore.get(id)
       
-      if (drawerStore.has(id)) {
-        drawer.current = drawerStore.get(id)
+      if (drawrerInStore && drawrerInStore._targetEl === $drawerEl) {
+        drawer.current = drawrerInStore
       } else {
         drawer.current = drawerStore.set(id, new Drawer($drawerEl, options)).get(id)
       }

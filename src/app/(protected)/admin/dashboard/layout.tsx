@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react"
-import Sidebar from "../../(dashboard)/admin-dashboard-components/Sidebar"
-import Page from "../../(dashboard)/admin-dashboard-components/Page"
+import Sidebar from "../admin-dashboard-components/Sidebar"
+import Page from "../admin-dashboard-components/Page"
 
 const AdminDashboardLayout = (props: PropsWithChildren) => {
   return (
