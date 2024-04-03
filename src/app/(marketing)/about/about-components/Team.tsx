@@ -40,10 +40,10 @@ const fullTeamMembers = [
     linkedIn:"https://www.linkedin.com/in/jerry-chibuokem"
   },
   {
-    name: 'Akintomiwa Ajayi',
-    position: 'Product Designer',
-    photo: Tomiwa,
-    bio: 'Product designer with 4+ years of experience.'
+    name: 'Rokiat Sulaimon',
+    position: 'COO',
+    photo: Rokiat,
+    bio: 'Project manager with 2+ years of experience.'
   },
   {
     name: 'Ayomide Yusuf',
@@ -51,12 +51,7 @@ const fullTeamMembers = [
     photo: Mide,
     bio: 'Product designer with 3+ years of experience.'
   },
-  {
-    name: 'Rokiat Sulaimon',
-    position: 'Product Manager',
-    photo: Rokiat,
-    bio: 'Project manager with 2+ years of experience.'
-  },
+ 
   {
     name: 'Daniel Arikawe',
     position: 'Frontend Developer',
@@ -64,17 +59,18 @@ const fullTeamMembers = [
     bio: 'Senior frontend engineer with 4+ years of experience.'
   },
   {
-    name: 'Idris Abdul-Lateef',
-    position: 'Frontend Developer',
-    photo: Idris,
-    bio: 'Lead CX at Wealthsimple. Former PagerDuty and Sqreen.'
-  },
-  {
     name: 'Regina Richards',
     position: 'Project manager',
     photo: Regina,
     bio: 'An Experienced project manager with 3 years experience.'
   },
+  {
+    name: 'Idris Abdul-Lateef',
+    position: 'Frontend Developer',
+    photo: Idris,
+    bio: 'Frontend Developer with 2+ years experience'
+  },
+  
   {
     name: 'Onyeka Nwakobi',
     position: 'Software Developer',
