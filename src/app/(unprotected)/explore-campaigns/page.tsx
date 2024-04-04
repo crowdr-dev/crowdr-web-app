@@ -117,7 +117,7 @@ export default function DynamicExplore () {
             </div>
           )}
           {campaigns?.length < 1 && (
-            <p className='absolute inset-0 flex justify-center items-center text-center font-semibold text-[30px]'>
+            <p className='absolute inset-0 flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px] '>
               No campaigns available at this moment.
             </p>
           )}

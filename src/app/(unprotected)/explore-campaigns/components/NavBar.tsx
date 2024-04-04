@@ -26,7 +26,7 @@ export default function NavBar( ) {
       </Link>
       
       <div className="flex flex-row items-center gap-2">
-      <button className="btn-outline !rounded-[8px] !py-2.5 !px-4" onClick={()=>{router.push("/login")}}>Sign in</button>
+      <button className="btn-outline !rounded-[8px] !py-2.5 !px-4 hide-sm" onClick={()=>{router.push("/login")}}>Sign in</button>
       <button className="btn-primary !rounded-[8px] !py-2.5 !px-4" onClick={()=>{router.push("/signup")}}>Sign up</button>
       </div>
     </nav>

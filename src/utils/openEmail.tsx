@@ -1,4 +1,4 @@
-export const email = 'contact.crowdr@gmail.com';
+export const email = ' info@oncrowdr.com';
 
 export const openEmail = () => {
      
