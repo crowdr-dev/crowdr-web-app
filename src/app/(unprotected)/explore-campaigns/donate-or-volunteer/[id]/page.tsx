@@ -80,7 +80,7 @@ export default function DonateOrVolunteer ({
   }
 
   const fetchSingleCampaign = async () => {
-    const singleCampaign = await getSingleCampaign(params.id)
+    const singleCampaign = await getSingleCampaign(params.id, true)
     setCampaign(singleCampaign)
   }
 
