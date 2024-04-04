@@ -308,7 +308,7 @@ export default function DonateOrVolunteer({
           donateImage={campaign?.campaignCoverImage?.url}
           routeTo={``}
           avatar={
-            'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
+            campaign?.photo.url
           }
           campaignType={campaign?.campaignType}
         />

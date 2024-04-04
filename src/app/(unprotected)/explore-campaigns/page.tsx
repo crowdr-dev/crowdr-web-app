@@ -27,7 +27,7 @@ export default function DynamicExplore () {
 
   const loadCampaigns = async () => {
     try {
-      const newCampaigns = await getCampaigns(page)
+      const newCampaigns = await getCampaigns(page, true)
       setHasNextPage(newCampaigns?.pagination.hasNextPage)
 
       const campaignsArray = newCampaigns?.campaigns as Campaign[]
@@ -67,7 +67,7 @@ export default function DynamicExplore () {
         />
       </Head>
       <NavBar />
-      <div className='py-10 px-10 md:px-40 relative h-screen'>
+      <div className={`py-10 px-10 md:px-40 relative h-full ${campaigns?.length < 1 ? "h-screen" : "h-full"}`}>
         <div className='flex flex-col gap-[5px]'>
           <h2 className='text-[18px] md:text-[24px] font-normal text-[#000]'>Explore</h2>
           <p className='text-[14px] font-normal'>
@@ -81,6 +81,7 @@ export default function DynamicExplore () {
                 item => item.url
               )
 
+                console.log("campaign", campaign)
               const userDetails = campaign?.user
               const donatedAmount = campaign?.totalAmountDonated?.[0].amount
               return (
@@ -89,6 +90,7 @@ export default function DynamicExplore () {
                   tier={userDetails?.userType}
                   header={campaign?.title}
                   subheader={campaign?.story}
+                  category={campaign?.category}
                   totalAmount={campaign.fundraise?.fundingGoalDetails[0].amount}
                   currentAmount={donatedAmount}
                   timePosted={campaign?.campaignStartDate}
@@ -102,7 +104,7 @@ export default function DynamicExplore () {
                   }
                   routeTo={`/explore-campaigns/donate-or-volunteer/${campaign._id}`}
                   avatar={
-                    'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
+                    campaign?.photo.url
                   }
                   key={index}
                   campaignType={campaign.campaignType}
