@@ -270,7 +270,7 @@ export default function DonateOrVolunteer ({
         <meta property="og:description" content={`Explore campaigns and spread love by donating or volunteering to ${campaign?.title}`} />
       </Head>
       <NavBar />
-      <div className='py-10 px-10 md:px-40'>
+      <div className='py-10 px-6 md:px-40'>
         <div className='flex items-center justify-between mb-4'>
           <div>
             <h3 className='text-2xl text-black font-semibold'>

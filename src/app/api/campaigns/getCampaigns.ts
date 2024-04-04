@@ -104,17 +104,15 @@ export const getCampaigns = async (page?: number, noAuth?: boolean) => {
   return campaigns;
 };
 
-export const getSingleCampaign = async (id: string) => {
+export const getSingleCampaign = async (id: string, noAuth?: boolean) => {
+  let headers: Record<string, string> = {};
   const user = await getUser();
 
-  if (!user) {
-    return null;
+  if (user && !noAuth) {
+    headers["x-auth-token"] = user.token;
   }
 
   const endpoint = `/api/v1/campaigns/${id}`;
-  const headers = {
-    "x-auth-token": user.token
-  };
 
   const { data: campaign } = await makeRequest<{ data: Campaign }>(endpoint, {
     headers,

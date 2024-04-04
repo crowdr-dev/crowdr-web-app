@@ -67,7 +67,7 @@ export default function DynamicExplore () {
         />
       </Head>
       <NavBar />
-      <div className={`py-10 px-10 md:px-40 relative h-full ${campaigns?.length < 1 ? "h-screen" : "h-full"}`}>
+      <div className={`py-10 px-6 md:px-40 relative h-full ${campaigns?.length < 1 ? "h-screen" : "h-full"}`}>
         <div className='flex flex-col gap-[5px]'>
           <h2 className='text-[18px] md:text-[24px] font-normal text-[#000]'>Explore</h2>
           <p className='text-[14px] font-normal'>
@@ -81,7 +81,6 @@ export default function DynamicExplore () {
                 item => item.url
               )
 
-                console.log("campaign", campaign)
               const userDetails = campaign?.user
               const donatedAmount = campaign?.totalAmountDonated?.[0].amount
               return (
