@@ -2,9 +2,10 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import useWindowSize from '@/app/common/hooks/useWindowSize'
+import {useRouter } from "next/navigation"
 
 const WhyCrowdr = () => {
-
+const router = useRouter()
     const tabs = ['Individuals', 'Non-profits', 'Businesses']
     const [activeTab, setActiveTab] = useState(tabs[0])
 
@@ -162,7 +163,7 @@ const WhyCrowdr = () => {
       {width ? (
         <Tab />
       ) : (
-        <div className='text-sm md:text-[16px] rounded-[50px] p-4 text-center text-white bg-[#00B964] w-[90%] mt-6'>
+        <div className='text-sm md:text-[16px] rounded-[50px] p-4 text-center text-white bg-[#00B964] w-[90%] mt-6 cursor-pointer' onClick={()=>{router.push("signup")}} >
           Get Started
         </div>
       )}

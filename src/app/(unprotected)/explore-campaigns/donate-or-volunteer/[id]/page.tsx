@@ -18,10 +18,10 @@ import { useToast } from '@/app/common/hooks/useToast'
 import Link from 'next/link'
 import OldModal from '@/app/common/components/OldModal'
 import WaitlistForm from '@/app/home/home-components/WaitlistForm'
-import Navigation from '@/app/common/components/Navigation'
 import { formatAmount } from '@/app/(protected)/(dashboard)/common/utils/currency'
 import Footer from '@/app/common/components/Footer'
 import Head from 'next/head'
+import NavBar from '../../components/NavBar'
 
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
@@ -80,7 +80,7 @@ export default function DonateOrVolunteer ({
   }
 
   const fetchSingleCampaign = async () => {
-    const singleCampaign = await getSingleCampaign(params.id)
+    const singleCampaign = await getSingleCampaign(params.id, true)
     setCampaign(singleCampaign)
   }
 
@@ -194,15 +194,6 @@ export default function DonateOrVolunteer ({
 
   const donate = async () => {
     setLoading(true)
-    const user = await getUser()
-
-    if (!user) {
-      return null
-    }
-    const headers = {
-      'x-auth-token': user.token
-    }
-
     const endpoint = '/api/v1/payments/initiate'
 
     const payload = {
@@ -221,7 +212,6 @@ export default function DonateOrVolunteer ({
     try {
       const { data } = await makeRequest(endpoint, {
         method: 'POST',
-        headers,
         payload: JSON.stringify(payload)
       })
 
@@ -236,15 +226,6 @@ export default function DonateOrVolunteer ({
 
   const volunteer = async () => {
     setLoading(true)
-    const user = await getUser()
-
-    if (!user) {
-      return null
-    }
-    const headers = {
-      'x-auth-token': user.token
-    }
-
     const endpoint = `/api/v1/campaigns/${params.id}/volunteer`
 
     const payload = {
@@ -261,7 +242,6 @@ export default function DonateOrVolunteer ({
     try {
       const { data } = await makeRequest(endpoint, {
         method: 'POST',
-        headers,
         payload: JSON.stringify(payload)
       })
       toast({ title: 'Success!', body: data.message, type: 'success' })
@@ -282,15 +262,15 @@ export default function DonateOrVolunteer ({
   }
 
   return (
-    <div>
+    <div className="font-satoshi">
        <Head>
         <title>Fundraise and Find Volunteers</title>
         <meta name="description" content={`Explore campaigns and spread love by donating or volunteering to ${campaign?.title}`} />
         <meta property="og:title" content={"Fundraise and Find Volunteers"} />
         <meta property="og:description" content={`Explore campaigns and spread love by donating or volunteering to ${campaign?.title}`} />
       </Head>
-      <Navigation openModal={openModal} />
-      <div className='p-10 bg-[#E7F0EE]'>
+      <NavBar />
+      <div className='py-10 px-6 md:px-40'>
         <div className='flex items-center justify-between mb-4'>
           <div>
             <h3 className='text-2xl text-black font-semibold'>
@@ -298,7 +278,7 @@ export default function DonateOrVolunteer ({
                 ? 'Donate and Volunteer'
                 : campaign?.campaignType === 'fundraise'
                 ? 'Donate'
-                : 'volunteer'}
+                : 'Volunteer'}
             </h3>
           </div>
         </div>
@@ -312,15 +292,16 @@ export default function DonateOrVolunteer ({
             currentAmount={donatedAmount}
             timePosted={campaign?.campaignStartDate}
             volunteer={campaign?.volunteer}
+            avatar={
+              campaign?.photo?.url || ""
+            }
             slideImages={[
               campaign?.campaignCoverImage?.url,
               ...(urlsOnly || [])
             ]}
             donateImage={campaign?.campaignCoverImage?.url}
             routeTo={``}
-            avatar={
-              'https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg'
-            }
+            category={campaign?.category}
             campaignType={campaign?.campaignType}
           />
           <div>

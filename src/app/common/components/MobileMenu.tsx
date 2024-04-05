@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
-import { usePathname } from "next/navigation";
+import { usePathname , useRouter} from "next/navigation";
 import { email } from "@/utils/openEmail";
 import "./component-styles/mobile-menu.css";
 
@@ -14,6 +14,7 @@ type Props = {
 export default function MobileMenu({openModal} : Props) {
   const [isOpen, setIsOpen] = useState(false);
   const currentPath = usePathname();
+  const router = useRouter();
 
   const isActive = (pathname: string) => {
     return currentPath === pathname ? "active" : "";
@@ -51,7 +52,7 @@ export default function MobileMenu({openModal} : Props) {
               Contact Us
             </a>
           </li>
-          <li><button className="btn-outline w-100" onClick={openModal}>Start a Campaign</button></li>
+          <li><button className="btn-outline w-100" onClick={()=>router.push("signup")}>Start a Campaign</button></li>
         </ul>
       </div>
     </div>

@@ -73,6 +73,10 @@ export type Campaign = {
     additonalNotes: string;
   };
   totalAmountDonated: DonatedAmount[];
+  photo: {
+    url: string;
+    _id: string;
+  };
   user: {
     _id: string;
     interests: string[];
@@ -82,36 +86,33 @@ export type Campaign = {
   };
 };
 
-export const getCampaigns = async (page?: number) => {
+export const getCampaigns = async (page?: number, noAuth?: boolean) => {
+  let headers: Record<string, string> = {};
   const user = await getUser();
 
-  if (!user) {
-    return null;
+  if (user && !noAuth) {
+    headers["x-auth-token"] = user.token;
   }
 
   const endpoint = `/api/v1/campaigns?page=${page}&perPage=10`;
-  const headers = {
-    "x-auth-token": user.token
-  };
 
   const { data: campaigns } = await makeRequest<CampaignsResponse>(endpoint, {
     headers,
     tags: [campaignsTag]
   });
+
   return campaigns;
 };
 
-export const getSingleCampaign = async (id: string) => {
+export const getSingleCampaign = async (id: string, noAuth?: boolean) => {
+  let headers: Record<string, string> = {};
   const user = await getUser();
 
-  if (!user) {
-    return null;
+  if (user && !noAuth) {
+    headers["x-auth-token"] = user.token;
   }
 
   const endpoint = `/api/v1/campaigns/${id}`;
-  const headers = {
-    "x-auth-token": user.token
-  };
 
   const { data: campaign } = await makeRequest<{ data: Campaign }>(endpoint, {
     headers,

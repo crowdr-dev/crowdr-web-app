@@ -105,7 +105,7 @@ const Todo = () => {
               <Image src='/svg/mail.svg' width={40} height={40} alt='mail' />
             </div>
             <Image
-              src='/svg/modal.svg'
+              src='/svg/new-modal.svg'
               width={300}
               height={300}
               alt='hero-section'
@@ -190,7 +190,7 @@ const Todo = () => {
               <Image src='/svg/mail.svg' width={40} height={40} alt='mail' />
             </div>
             <Image
-              src='/svg/modal.svg'
+              src='/svg/new-modal.svg'
               width={300}
               height={300}
               alt='hero-section'
