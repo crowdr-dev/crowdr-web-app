@@ -293,7 +293,7 @@ export default function DonateOrVolunteer ({
             timePosted={campaign?.campaignStartDate}
             volunteer={campaign?.volunteer}
             avatar={
-              campaign?.photo.url
+              campaign?.photo?.url || ""
             }
             slideImages={[
               campaign?.campaignCoverImage?.url,

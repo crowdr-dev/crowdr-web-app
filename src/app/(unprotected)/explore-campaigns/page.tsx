@@ -103,7 +103,7 @@ export default function DynamicExplore () {
                   }
                   routeTo={`/explore-campaigns/donate-or-volunteer/${campaign._id}`}
                   avatar={
-                    campaign?.photo.url
+                    campaign?.photo?.url || ""
                   }
                   key={index}
                   campaignType={campaign.campaignType}
