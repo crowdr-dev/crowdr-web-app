@@ -4,7 +4,7 @@ import "../home-styles/header.css";
 import {useRouter} from 'next/navigation'
 
 type Props = {
-  openModal: () => void
+  openModal?: () => void
 }
 
 export default function Header({ openModal }: Props) {

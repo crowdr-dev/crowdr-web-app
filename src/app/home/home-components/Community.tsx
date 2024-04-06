@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 
 type Props = {
-  openModal : () => void
+  openModal?: () => void
 }
 
 export default function Community({openModal} : Props) {
