@@ -180,6 +180,21 @@ export default function DonateOrVolunteer ({
         : 'volunteer'
     )
     getCurrentUser()
+
+
+    if (campaign) {
+      document.title = (campaign?.campaignType.includes("fundraise") ? 'Donate to ' : 'Volunteer to ') + campaign.title ;
+      const metaDescription = `Explore campaigns and spread love by donating or volunteering to ${campaign.title}`;
+      const metaTag = document.querySelector('meta[name="description"]');
+      if (metaTag) {
+        metaTag.setAttribute('content', metaDescription);
+      }
+      // Set Open Graph image meta tag
+      const ogImageTag = document.querySelector('meta[property="og:image"]');
+      if (ogImageTag) {
+        ogImageTag.setAttribute('content', campaign?.campaignCoverImage?.url);
+      }
+    }
   }, [params.id, campaign?.campaignType])
 
   const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails.reduce(
@@ -252,6 +267,8 @@ export default function DonateOrVolunteer ({
       toast({ title: 'Oops!', body: message, type: 'error' })
     }
   }
+
+  
 
   const urlsOnly = campaign?.campaignAdditionalImages.map(
     (item: { url: string }) => item.url
