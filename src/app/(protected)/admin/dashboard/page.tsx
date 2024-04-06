@@ -1,38 +1,36 @@
-"use client"
-import { useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/app/common/components/Button"
-import TextInput from "@/app/common/components/TextInput"
-import StatCard from "../admin-dashboard-components/StatCard"
-import ButtonGroup from "../admin-dashboard-components/ButtonGroup"
-import Table from "../admin-dashboard-components/Table"
-import Pagination from "../admin-dashboard-components/Pagination"
-import ModalTrigger from "@/app/common/components/ModalTrigger"
-import { label } from "../admin-dashboard-components/Label"
+"use client";
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useQuery } from "react-query";
+import { useUser } from "../../(dashboard)/common/hooks/useUser";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/app/common/components/Button";
+import TextInput from "@/app/common/components/TextInput";
+import StatCard from "../admin-dashboard-components/StatCard";
+import ButtonGroup from "../admin-dashboard-components/ButtonGroup";
+import Table from "../admin-dashboard-components/Table";
+import Pagination from "../admin-dashboard-components/Pagination";
+import ModalTrigger from "@/app/common/components/ModalTrigger";
+import { label } from "../admin-dashboard-components/Label";
+import makeRequest from "@/utils/makeRequest";
+import { extractErrorMessage } from "@/utils/extractErrorMessage";
 
-import SearchIcon from "../../../../../public/svg/search.svg"
-import FilterIcon from "../../../../../public/svg/filter-2.svg"
-import TempLogo from "../../../../../public/temp/c-logo.png"
-import UserIcon from "../../../../../public/svg/user-01.svg"
-import { Nullable, QF } from "@/app/common/types"
-import makeRequest from "@/utils/makeRequest"
-import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import { useQuery } from "react-query"
-import { useUser } from "../../(dashboard)/common/hooks/useUser"
-// import { IWithdrawals } from "../../(dashboard)/settings/payment/page"
+import { IPagination, Nullable, QF } from "@/app/common/types";
+import SearchIcon from "../../../../../public/svg/search.svg";
+import FilterIcon from "../../../../../public/svg/filter-2.svg";
+import TempLogo from "../../../../../public/temp/c-logo.png";
+import UserIcon from "../../../../../public/svg/user-01.svg";
+import { IWithdrawalResponse } from "@/app/common/types/Withdawal";
 
 const Dashboard = () => {
-  const [searchText, setSearchText] = useState("")
-  const [campaignsPage, setCampaignsPage] = useState(1)
-  const [kycPage, setKycPage] = useState(1)
-  const [withdrawalsPage, setWithdrawalsPage] = useState(1)
-  const searchParams = useSearchParams()
-  const route = useRouter()
-  const user = useUser()
-
-
+  const [searchText, setSearchText] = useState("");
+  const [campaignsPage, setCampaignsPage] = useState(1);
+  const [kycPage, setKycPage] = useState(1);
+  const [withdrawalsPage, setWithdrawalsPage] = useState(1);
+  const searchParams = useSearchParams();
+  const route = useRouter();
+  const user = useUser();
 
   const { data: kycData } = useQuery(
     ["getKYC", user?.token, kycPage],
@@ -42,8 +40,7 @@ const Dashboard = () => {
       refetchOnWindowFocus: false,
       keepPreviousData: true,
     }
-  )
-
+  );
 
   const { data: withdrawalData } = useQuery(
     ["getWithdrawal", user?.token, withdrawalsPage],
@@ -53,9 +50,9 @@ const Dashboard = () => {
       refetchOnWindowFocus: false,
       keepPreviousData: true,
     }
-  )
+  );
 
-  const selectedView = searchParams.get("view") || "Campaigns"
+  const selectedView = searchParams.get("view") || "Campaigns";
   const tablePickerButtons = [
     {
       label: "Campaigns",
@@ -69,7 +66,7 @@ const Dashboard = () => {
       label: "Withdrawals",
       onClick: () => route.push("/admin/dashboard?view=Withdrawals"),
     },
-  ]
+  ];
 
   return (
     <div>
@@ -98,7 +95,7 @@ const Dashboard = () => {
           <TextInput
             value={searchText}
             onChange={(e) => {
-              setSearchText(e.target.value)
+              setSearchText(e.target.value);
             }}
             placeholder="Search"
             iconUrl={SearchIcon}
@@ -261,7 +258,11 @@ const Dashboard = () => {
                     </div>
                   </Table.Cell>
                   <Table.Cell>
-                    {<div className="font-medium">{withdrawal.campaignTitle}</div>}
+                    {
+                      <div className="font-medium">
+                        {withdrawal.campaignTitle}
+                      </div>
+                    }
                   </Table.Cell>
                   <Table.Cell>{withdrawal.campaignType}</Table.Cell>
                   <Table.Cell>{withdrawal.campaignTitle}</Table.Cell>
@@ -302,193 +303,86 @@ const Dashboard = () => {
         )}
       </div>
     </div>
-  )
+  );
+};
+
+export default Dashboard;
+
+interface IWithdrawals {
+  withdrawals: ReturnType<typeof mapWithdrawalResponseToView>;
+  pagination: IPagination;
 }
 
-export default Dashboard
-
-// Generated by https://quicktype.io
-
-export interface IkycResponse {
-  kycs:       Kyc[];
-  pagination: Pagination;
-}
-
-export interface Kyc {
-  _id:                string;
-  userId:             string;
-  BVN:                string;
-  docType:            string;
-  docImg:             string;
-  selfieImg:          string;
-  verificationStatus: string;
-  createdAt:          string;
-  updatedAt:          string;
-  __v:                number;
-  reason?:            string;
-  status?:            string;
-}
-
-export interface Pagination {
-  total:       number;
-  perPage:     number;
-  currentPage: number;
-  totalPages:  number;
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
-}
-
-
-const ITEMS_PER_PAGE = "5"
+const ITEMS_PER_PAGE = "5";
 
 const fetchKyc: QF<Nullable<any>, [Nullable<string>, number]> = async ({
   queryKey,
 }) => {
-  const [_, token, page] = queryKey
+  const [_, token, page] = queryKey;
 
   if (token) {
     const query = new URLSearchParams({
       page: `${page}`,
       perPage: ITEMS_PER_PAGE,
-    })
-    const endpoint = `/api/v1/admin/kyc?${query}`
+    });
+    const endpoint = `/api/v1/admin/kyc?${query}`;
 
     const headers = {
       "x-auth-token": token,
-    }
+    };
 
     try {
       const { data } = await makeRequest<any>(endpoint, {
         headers,
         method: "GET",
-      })
-        console.log(data)
+      });
+      console.log(data);
       return {
         // donations: mapDonationsResponseToView(data.donations),
-  
+
         pagination: data.pagination,
-      }
+      };
     } catch (error) {
-      const message = extractErrorMessage(error)
-      throw new Error(message)
+      const message = extractErrorMessage(error);
+      throw new Error(message);
     }
   }
-} 
+};
 
-
-// Generated by https://quicktype.io
-
-export interface IWithdrawalResponse {
-  withdrawals: Withdrawal[];
-  pagination:  Pagination;
-}
-
-export interface Pagination {
-  total:       number;
-  perPage:     number;
-  currentPage: number;
-  totalPages:  number;
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
-}
-
-export interface Withdrawal {
-  _id:                string;
-  userId:             string;
-  campaignId:         string;
-  status:             string;
-  createdAt:          string;
-  updatedAt:          string;
-  campaign:           Campaign;
-  totalAmountDonated: TotalAmountDonated[];
-  reason?:            string;
-}
-
-export interface Campaign {
-  _id:                      string;
-  userId:                   string;
-  category:                 string;
-  title:                    string;
-  story:                    string;
-  campaignType:             string;
-  campaignStatus:           string;
-  campaignCoverImage:       string;
-  campaignAdditionalImages: string[];
-  campaignStartDate:        string;
-  campaignEndDate:          string;
-  campaignViews:            number;
-  fundraise:                Fundraise;
-  volunteer?:               Volunteer;
-}
-
-export interface Fundraise {
-  fundingGoalDetails: TotalAmountDonated[];
-}
-
-export interface TotalAmountDonated {
-  amount:   number;
-  currency: Currency;
-}
-
-export enum Currency {
-  Dollar = "dollar",
-  Naira = "naira",
-}
-
-export interface Volunteer {
-  skillsNeeded:         string[];
-  ageRange:             string;
-  genderPreference:     string;
-  commitementStartDate: string;
-  commitementEndDate:   string;
-  requiredCommitment:   string;
-  additonalNotes:       string;
-}
-
-
-export interface IWithdrawals {
-  withdrawals:ReturnType<typeof mapWithdrawalResponseToView>
-  pagination:Pagination
-}
-
-
-const fetchWithdrawal: QF<Nullable<IWithdrawals>, [Nullable<string>, number]> = async ({
-  queryKey,
-}) => {
-  const [_, token, page] = queryKey
+const fetchWithdrawal: QF<
+  Nullable<IWithdrawals>,
+  [Nullable<string>, number]
+> = async ({ queryKey }) => {
+  const [_, token, page] = queryKey;
 
   if (token) {
     const query = new URLSearchParams({
       page: `${page}`,
       perPage: ITEMS_PER_PAGE,
-    })
-    const endpoint = `/api/v1/admin/withdrawals?${query}`
+    });
+    const endpoint = `/api/v1/admin/withdrawals?${query}`;
 
     const headers = {
       "x-auth-token": token,
-    }
+    };
 
     try {
       const { data } = await makeRequest<IWithdrawalResponse>(endpoint, {
         headers,
         method: "GET",
-      })
-        console.log(data)
+      });
+      console.log(data);
       return {
         withdrawals: mapWithdrawalResponseToView(data.withdrawals),
-  
+
         pagination: data.pagination,
-      }
+      };
     } catch (error) {
-      const message = extractErrorMessage(error)
-      throw new Error(message)
+      const message = extractErrorMessage(error);
+      throw new Error(message);
     }
   }
-} 
-
-
-
-
+};
 
 const stats = [
   {
@@ -503,7 +397,7 @@ const stats = [
     title: "Total Users",
     value: "1000",
   },
-]
+];
 
 const items = [
   {
@@ -556,17 +450,16 @@ const items = [
     altImageUrl: UserIcon,
     status: "Pending",
   },
-]
-
+];
 
 function mapWithdrawalResponseToView(
-  Withdrawal:IWithdrawalResponse["withdrawals"]
+  Withdrawal: IWithdrawalResponse["withdrawals"]
 ) {
   return Withdrawal.map((withdraw) => ({
-    id:withdraw._id,
-    accountName:withdraw._id ,
+    id: withdraw._id,
+    accountName: withdraw._id,
     campaignTitle: withdraw.campaign.title,
     campaignType: withdraw.campaign.campaignType,
-    imageUrl:TempLogo,
-  }))
+    imageUrl: TempLogo,
+  }));
 }
