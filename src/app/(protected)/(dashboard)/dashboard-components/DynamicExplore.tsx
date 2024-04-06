@@ -75,7 +75,7 @@ export default function DynamicExplore({
                 }
                 routeTo={`/explore/donate-or-volunteer/${campaign._id}`}
                 avatar={
-                  "https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg"
+                  campaign?.photo?.url || ""
                 }
                 key={index}
                 campaignType={campaign.campaignType}

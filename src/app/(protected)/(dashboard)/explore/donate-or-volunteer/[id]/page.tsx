@@ -308,7 +308,7 @@ export default function DonateOrVolunteer({
           donateImage={campaign?.campaignCoverImage?.url}
           routeTo={``}
           avatar={
-            campaign?.photo.url
+            campaign?.photo?.url || ""
           }
           campaignType={campaign?.campaignType}
         />
