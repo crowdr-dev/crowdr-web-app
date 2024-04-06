@@ -172,6 +172,20 @@ export default function DonateOrVolunteer({
           : 'volunteer'
     )
     getCurrentUser()
+
+    if (campaign) {
+      document.title = (campaign?.campaignType.includes("fundraise") ? 'Donate to ' : 'Volunteer to ') + campaign.title + ` organised by ${campaign?.user?.organizationName}` ;
+      const metaDescription = `Explore campaigns and spread love by donating or volunteering to ${campaign.title}`;
+      const metaTag = document.querySelector('meta[name="description"]');
+      if (metaTag) {
+        metaTag.setAttribute('content', metaDescription);
+      }
+      // Set Open Graph image meta tag
+      const ogImageTag = document.querySelector('meta[property="og:image"]');
+      if (ogImageTag) {
+        ogImageTag.setAttribute('content', campaign?.campaignCoverImage?.url);
+      }
+    }
   }, [params.id, campaign?.campaignType])
 
   const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails.reduce(
@@ -277,10 +291,7 @@ export default function DonateOrVolunteer({
   return (
     <div className='mb-6'>
       <Head>
-        <title>Fundraise and Find Volunteers</title>
-        <meta name="description" content={`Explore campaigns and spread love by donating or volunteering to ${campaign?.title}`} />
-        <meta property="og:title" content={"Fundraise and Find Volunteers"} />
-        <meta property="og:description" content={`Explore campaigns and spread love by donating or volunteering to ${campaign?.title}`} />
+        <title>{campaign?.title} - Fundraise and Find Volunteers</title>
       </Head>
       <div className='flex items-center justify-between mb-4'>
         <div>

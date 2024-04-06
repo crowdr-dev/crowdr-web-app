@@ -14,6 +14,8 @@ import Todo from "./home/home-components/Todo";
 import WhyCrowdr from "./home/home-components/WhyCrowdr";
 import Happening from "./home/home-components/Happening";
 import Partners from "./home/home-components/Partners";
+import { Metadata } from "next";
+
 
 export default function Home() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -25,6 +27,8 @@ export default function Home() {
   const closeModal = () => {
     setModalIsOpen(false);
   };
+
+
   return (
     <main>
       <Navigation openModal={openModal} />
