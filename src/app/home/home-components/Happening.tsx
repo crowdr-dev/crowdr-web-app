@@ -61,6 +61,8 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
           alt='arrow-right'
           className={`${currentSlide === 0 && 'slick-disabled'}`}
           onMouseEnter={() => setHover(true)}
+          width={"100"}
+          height={"100"}
         />
       ),
       prevArrow: (
@@ -71,6 +73,8 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
             currentSlide === images.length - 1 && 'slick-disabled'
           }`}
           onMouseEnter={() => setHover(true)}
+          width={"100"}
+          height={"100"}
         />
       ),
       afterChange: (current: number) => setCurrentSlide(current)

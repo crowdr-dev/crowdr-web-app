@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname,useRouter } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 import { email } from "@/utils/openEmail";
 import "./component-styles/nav.css";
@@ -14,6 +14,7 @@ type Props = {
 
 export default function Navigation({openModal} : Props ) {
   const currentPath = usePathname();
+  const router = useRouter();
 
   const isActive = (pathname: string) => {
     return currentPath === pathname ? "active" : "";
@@ -45,7 +46,7 @@ export default function Navigation({openModal} : Props ) {
           <a href={`mailto:${email}`} target="_blank">Contact us</a>
         </li>
       </ul>
-      <button className="btn-primary hide-sm" onClick={openModal}>Start a Campaign</button>
+      <button className="btn-primary hide-sm" onClick={()=>{router.push("signup")}}>Start a Campaign</button>
       <MobileMenu openModal={openModal}/>
       {/* <Modal isOpen={modalIsOpen} onClose={closeModal}>
        <div>heyyy</div> 
