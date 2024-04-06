@@ -43,7 +43,7 @@ const inter = Public_Sans({ subsets: ["latin"] })
 const queryClient = new QueryClient()
 
 export default function RootLayout({ children }: PropsWithChildren) {
-  const pathname = window.location.pathname;
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
 
   useEffect(() => {
     if (pathname) {

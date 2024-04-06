@@ -8,7 +8,6 @@ import Onyeka from '../../../../../public/images/team/onyeka.jpg'
 import Rokiat from '../../../../../public/images/team/rokiat.png'
 import Mide from '../../../../../public/images/team/mide.png'
 import Jerry from '../../../../../public/images/team/Jerry.jpeg'
-import Sylvia from '../../../../../public/images/team/sylvia.jpg'
 import Busola from '../../../../../public/images/team/Busola2.jpg'
 import Idris from '../../../../../public/images/team/Idris.jpg'
 import Tomiwa from '../../../../../public/images/team/Tomiwa.jpg'
@@ -77,12 +76,6 @@ const fullTeamMembers = [
     photo: Onyeka,
     bio: 'A software developer with years of experience in building robust and scalable applications.'
   },
-  {
-    name: 'Sylvia Adimike',
-    position: 'Fullstack Developer',
-    photo: Sylvia,
-    bio: 'A MERN fullstack software developer.'
-  }
 ]
 
 export default function Team() {
