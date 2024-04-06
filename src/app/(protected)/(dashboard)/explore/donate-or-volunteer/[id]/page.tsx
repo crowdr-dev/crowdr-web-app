@@ -174,7 +174,7 @@ export default function DonateOrVolunteer({
     getCurrentUser()
 
     if (campaign) {
-      document.title = (campaign?.campaignType.includes("fundraise") ? 'Donate to ' : 'Volunteer to ') + campaign.title ;
+      document.title = (campaign?.campaignType.includes("fundraise") ? 'Donate to ' : 'Volunteer to ') + campaign.title + ` organised by ${campaign?.user?.organizationName}` ;
       const metaDescription = `Explore campaigns and spread love by donating or volunteering to ${campaign.title}`;
       const metaTag = document.querySelector('meta[name="description"]');
       if (metaTag) {
