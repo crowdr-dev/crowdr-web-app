@@ -82,7 +82,7 @@ const Explore = () => {
                     }
                     routeTo={`/explore/donate-or-volunteer/${campaign._id}`}
                     avatar={
-                      campaign?.photo.url
+                      campaign?.photo?.url || ""
                     }
                     key={index}
                     campaignType={campaign.campaignType}

@@ -22,6 +22,7 @@ import FilterIcon from "../../../../../public/svg/filter-2.svg";
 import TempLogo from "../../../../../public/temp/c-logo.png";
 import UserIcon from "../../../../../public/svg/user-01.svg";
 import { IWithdrawalResponse } from "@/app/common/types/Withdawal";
+import { IkycResponse } from "@/app/common/types/Kyc";
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("");
@@ -171,39 +172,40 @@ const Dashboard = () => {
         )}
 
         {/* KYC */}
-        {selectedView === "KYC" && (
+        {selectedView === "KYC" && kycData && (
           <Table>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
-              <Table.HeadCell>Campaign</Table.HeadCell>
-              <Table.HeadCell>Target Amount</Table.HeadCell>
+              <Table.HeadCell>Account Type</Table.HeadCell>
               <Table.HeadCell>Status</Table.HeadCell>
             </Table.Head>
             <Table.Body>
-              {items.map((item, index) => (
+              {kycData.kycs.map((kyc, index) => (
                 <Table.Row key={index}>
                   <Table.Cell>
                     <div className="flex items-center gap-3 font-medium">
                       <div className="grid place-items-center h-10 w-10 shrink-0 border border-black/10 bg-[#F2F4F7] rounded-full">
-                        <Image src={item.altImageUrl} alt="" />
+                        <Image src={kyc.imageUrl} alt="" />
                       </div>
-                      {item.title}
+                      {kyc.accountName}
                     </div>
                   </Table.Cell>
+                  
                   <Table.Cell>
-                    {<div className="font-medium">{item.detail}</div>}
+                    {<div className="font-medium">{kyc.accountType}</div>}
                   </Table.Cell>
-                  <Table.Cell>{item.date}</Table.Cell>
-                  <Table.Cell>{label(item.status)}</Table.Cell>
+
+                  <Table.Cell>{label(kyc.status)}</Table.Cell>
+                  
                   <Table.Cell>
                     <div className="flex gap-3">
                       <Link
-                        href={`/admin/view-kyc/${item.id}`}
+                        href={`/admin/view-kyc/${kyc.id}`}
                         className="font-semibold text-sm text-[#475467] cursor-pointer"
                       >
                         View
                       </Link>
-                      {item.status === "Approved" ? (
+                      {kyc.status === "Approved" ? (
                         <ModalTrigger id="kycPopup">
                           <button
                             type="button"
@@ -233,7 +235,7 @@ const Dashboard = () => {
             <Pagination
               currentPage={kycPage}
               perPage={5}
-              total={20}
+              total={kycData.pagination.total}
               onPageChange={setKycPage}
             />
           </Table>
@@ -296,7 +298,7 @@ const Dashboard = () => {
             <Pagination
               currentPage={withdrawalsPage}
               perPage={5}
-              total={20}
+              total={withdrawalData.pagination.total}
               onPageChange={setWithdrawalsPage}
             />
           </Table>
@@ -308,6 +310,11 @@ const Dashboard = () => {
 
 export default Dashboard;
 
+interface IKycs {
+  kycs: ReturnType<typeof mapKycResponseToView>;
+  pagination: IPagination;
+}
+
 interface IWithdrawals {
   withdrawals: ReturnType<typeof mapWithdrawalResponseToView>;
   pagination: IPagination;
@@ -315,7 +322,7 @@ interface IWithdrawals {
 
 const ITEMS_PER_PAGE = "5";
 
-const fetchKyc: QF<Nullable<any>, [Nullable<string>, number]> = async ({
+const fetchKyc: QF<Nullable<IKycs>, [Nullable<string>, number]> = async ({
   queryKey,
 }) => {
   const [_, token, page] = queryKey;
@@ -332,14 +339,13 @@ const fetchKyc: QF<Nullable<any>, [Nullable<string>, number]> = async ({
     };
 
     try {
-      const { data } = await makeRequest<any>(endpoint, {
+      const { data } = await makeRequest<IkycResponse>(endpoint, {
         headers,
         method: "GET",
       });
       console.log(data);
       return {
-        // donations: mapDonationsResponseToView(data.donations),
-
+        kycs: mapKycResponseToView(data.kycs),
         pagination: data.pagination,
       };
     } catch (error) {
@@ -451,6 +457,18 @@ const items = [
     status: "Pending",
   },
 ];
+
+function mapKycResponseToView(
+  Withdrawal: IkycResponse["kycs"]
+) {
+  return Withdrawal.map((kyc) => ({
+    id: kyc._id,
+    accountName: kyc.userId,
+    accountType: kyc.verificationStatus,
+    status: kyc.verificationStatus,
+    imageUrl: TempLogo,
+  }));
+}
 
 function mapWithdrawalResponseToView(
   Withdrawal: IWithdrawalResponse["withdrawals"]
