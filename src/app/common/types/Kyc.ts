@@ -10,12 +10,12 @@ export interface Kyc {
   docType: string;
   docImg: string;
   selfieImg: string;
-  verificationStatus: string;
+  verificationStatus: KycStatus;
   createdAt: string;
   updatedAt: string;
   __v: number;
   reason?: string;
-  status?: string;
+  status?: KycStatus;
 }
 
 export interface Pagination {
@@ -26,3 +26,5 @@ export interface Pagination {
   hasNextPage: boolean;
   hasPrevPage: boolean;
 }
+
+export type KycStatus = "completed" | "rejected" | "pending"
