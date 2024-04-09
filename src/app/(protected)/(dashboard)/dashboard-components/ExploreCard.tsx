@@ -14,6 +14,7 @@ import ArrowRight from '../../../../../public/svg/new-arrow.svg'
 import OldModal from '@/app/common/components/OldModal'
 import { formatAmount } from '../common/utils/currency'
 import { camelCaseToSeparated } from '@/utils/seperateText'
+import { getInitials } from './Header'
 
 const ExploreCard: RFC<ExploreCardProps> = props => {
   const {
@@ -100,19 +101,24 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
     <div className='p-6 rounded-xl border-[#393e4614] border mt-8 h-fit bg-white'>
       <div className='flex items-center justify-between '>
         <div className='flex items-center'>
-          <Image
+          {avatar ?  <Image
             src={avatar}
             alt='user-avatar'
             width={40}
             height={40}
             className='rounded-full'
-          />
+          /> : 
+          
+          <div className="rounded-full bg-[#00B964] flex flex-row items-center justify-center h-[40px] w-[40px] font-bold text-white">
+          {getInitials(name)}
+        </div>}
+        
           <div className='pl-3'>
             <h3 className='text-sm font-normal text-[#344054]'>{name}</h3>
             <h4 className='text-xs font-normal text-[#667085]'>{tier}</h4>
           </div>
         </div>
-        <Image src={Menu} alt='menu' />
+        {/* <Image src={Menu} alt='menu' /> */}
       </div>
 
       <div className='mt-4 mb-6 relative'>
@@ -159,6 +165,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
                 })}
               </Slider>
             ) : (
+              
               <Image
                 src={!!slideImages && slideImages[0]}
                 alt='donate'
