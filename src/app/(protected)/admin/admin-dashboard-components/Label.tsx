@@ -41,9 +41,13 @@ const Pending = <Label text="Pending" dotColor="#F3C729" />
 
 export const label = (type: string) => {
   switch (type) {
+    case "approved":
     case "Approved":
+    case "completed":
+    case "Completed":
       return Approved
 
+    case "pending":
     case "Pending":
       return Pending
   }
