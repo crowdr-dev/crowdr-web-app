@@ -15,11 +15,20 @@ import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg"
 import BurgerIcon from "../../../../../public/svg/burger-icon.svg"
 import Avatar from "../../../../../public/assets/avatar.png"
 
+export  function getInitials(name: string) {
+  if (!name) return ''; 
+  const nameParts = name.trim().split(' ');
+  const initials = nameParts.map(part => part.charAt(0).toUpperCase()).join('');
+
+  return initials;
+}
+
 const Header = () => {
   const user = useUser()
   const accountType =
     user?.userType === "individual" ? "Individual" : "Non-Profit"
 
+  
   return (
     <header className="flex justify-between items-center w-full min-h-[62px] md:min-h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
       <div>
@@ -47,7 +56,9 @@ const Header = () => {
         {user ? (
           <div className="hidden md:flex items-center">
             <div className="mr-[15px]">
-              <Image src={Avatar} alt="avatar" width={43} />
+              <div className="rounded-full bg-[#00B964] flex flex-row items-center justify-center h-[40px] w-[40px] font-bold text-white font-satoshi">
+                {getInitials(user.fullName || user.organizationName)}
+              </div>
             </div>
             <div>
               <p>{user.fullName || user.organizationName}</p>

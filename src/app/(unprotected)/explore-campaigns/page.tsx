@@ -9,6 +9,7 @@ import OldModal from '@/app/common/components/OldModal'
 import WaitlistForm from '@/app/home/home-components/WaitlistForm'
 import Head from 'next/head'
 import NavBar from './components/NavBar'
+import Loading from '@/app/loading'
 
 export default function DynamicExplore () {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -16,6 +17,7 @@ export default function DynamicExplore () {
 
   const [hasNextPage, setHasNextPage] = useState<any>()
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const openModal = () => {
     setModalIsOpen(true)
@@ -39,7 +41,9 @@ export default function DynamicExplore () {
           "Received data is not an array of campaigns or it's empty"
         )
       }
+      setIsLoading(false)
     } catch (error) {
+      setIsLoading(false)
       console.error('Error fetching campaigns:', error)
     }
   }
@@ -52,6 +56,8 @@ export default function DynamicExplore () {
     setPage(prevPage => prevPage + 1)
     loadCampaigns()
   }
+
+  if(isLoading) return <Loading/>
   return (
     <div className='font-satoshi'>
       <Head>
@@ -67,7 +73,7 @@ export default function DynamicExplore () {
         />
       </Head>
       <NavBar />
-      <div className={`py-10 px-6 md:px-40 relative h-full ${campaigns?.length < 1 ? "h-screen" : "h-full"}`}>
+      <div className={`py-10 px-6 md:px-40 relative  ${campaigns?.length < 1 ? "h-screen" : "h-full"}`}>
         <div className='flex flex-col gap-[5px]'>
           <h2 className='text-[18px] md:text-[24px] font-normal text-[#000]'>Explore</h2>
           <p className='text-[14px] font-normal'>
@@ -117,7 +123,7 @@ export default function DynamicExplore () {
               </span>
             </div>
           )}
-          {campaigns?.length < 1 && (
+          {campaigns?.length < 1 && !isLoading && (
             <p className='absolute inset-0 flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px] '>
               No campaigns available at this moment.
             </p>
