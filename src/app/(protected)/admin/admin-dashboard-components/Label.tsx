@@ -38,6 +38,7 @@ type LabelProps = {
 
 const Approved = <Label text="Approved" dotColor="#17B26A" />
 const Pending = <Label text="Pending" dotColor="#F3C729" />
+const Rejected = <Label text="Rejected" dotColor="#F04438" />
 
 export const label = (type: string) => {
   switch (type) {
@@ -50,5 +51,9 @@ export const label = (type: string) => {
     case "pending":
     case "Pending":
       return Pending
+
+    case "rejected":
+    case "Rejected":
+      return Rejected
   }
 }

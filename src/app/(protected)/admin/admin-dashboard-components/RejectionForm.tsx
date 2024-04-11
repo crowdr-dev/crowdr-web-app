@@ -1,34 +1,76 @@
 "use client"
-import { useModal } from "@/app/common/hooks/useModal"
-import { Button, WhiteButton } from "../../../common/components/Button"
-
-import { RFC } from "@/app/common/types"
-import { ReactElement } from "react"
+import { useEffect, useState } from "react"
+import { useAtom, useAtomValue } from "jotai"
+import { useUser } from "../../(dashboard)/common/hooks/useUser"
+import { useToast } from "@/app/common/hooks/useToast"
+import { Button } from "../../../common/components/Button"
 import TextInput from "@/app/common/components/TextInput"
 import TextAreaInput from "@/app/common/components/TextAreaInput"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import kycService from "../common/services/kycService"
+import { kycToRejectDataAtom } from "./KycPopup"
+import ModalTrigger, {
+  modalStoreAtom,
+} from "@/app/common/components/ModalTrigger"
 
-const RejectionForm: RFC<RejectionFormProps> = ({ clearModal }) => {
-  const boxShadow =
-    "0px 8px 8px -4px rgba(16, 24, 40, 0.03), 0px 20px 24px -4px rgba(16, 24, 40, 0.08)"
-  const buttonClasses = "!justify-center font-semibold !text-base "
+import { RFC } from "@/app/common/types"
+
+const RejectionForm: RFC<RejectionFormProps> = () => {
+  const [title, setTitle] = useState("")
+  const [reason, setReason] = useState("")
+  const [kycToRejectData, setKycToRejectData] = useAtom(kycToRejectDataAtom)
+  const [isRejecting, setIsRejecting] = useState(false)
+  const modalStore = useAtomValue(modalStoreAtom)
+  const user = useUser()
+  const toast = useToast()
+
+  const modal = modalStore.get("kycRejectionForm")!
+  modal._options.onHide = () => {
+    setTitle("")
+    setReason("")
+    setKycToRejectData(null)
+  }
+
+  const rejectKyc = async () => {
+    if (user && kycToRejectData?.id) {
+      setIsRejecting(true)
+
+      try {
+        const res = await kycService.changeKycStatus({
+          kycId: kycToRejectData.id,
+          adminOtp: kycToRejectData.otp,
+          authToken: user.token,
+          status: "rejected",
+          reason,
+        })
+
+        setIsRejecting(false)
+        modal.hide()
+        toast({ title: "KYC Rejected" })
+        kycService.refreshKyc()
+      } catch (error) {
+        setIsRejecting(false)
+        const message = extractErrorMessage(error)
+        toast({ title: "Oops!", body: message })
+      }
+    }
+  }
 
   return (
     <div
       style={{ boxShadow }}
       className="max-w-[342px] md:max-w-[544px] bg-white rounded-lg overflow-hidden p-4 md:p-6"
     >
-      
       <div className="relative flex justify-between md:gap-4 mb-5 w-full">
         <Rings />
-        
+
         {/* md:(heading x subheading) */}
         <div className="hidden md:flex flex-col gap-1 w-full">
           <div className="flex justify-between text-lg text-[#101828] font-semibold md:mb-1">
             Reason for Rejection
-            <XIcon
-              onClick={clearModal}
-              className="hidden md:inline cursor-pointer"
-            />
+            <ModalTrigger id="kycRejectionForm" type="hide">
+              <XIcon className="hidden md:inline cursor-pointer" />
+            </ModalTrigger>
           </div>
 
           <p className="text-sm text-[#475467] md:text-justify md:pr-2">
@@ -37,19 +79,27 @@ const RejectionForm: RFC<RejectionFormProps> = ({ clearModal }) => {
         </div>
 
         <div className="md:pointer-events-none contents">
-          <XIcon
-            onClick={clearModal}
-            className="md:hidden cursor-pointer"
-            wrapperClass="mr-4 md:mr-0 ml-auto md:ml-0"
-          />
+          <ModalTrigger id="kycRejectionForm" type="hide">
+            <XIcon
+              className="md:hidden cursor-pointer"
+              wrapperClass="mr-4 md:mr-0 ml-auto md:ml-0"
+            />
+          </ModalTrigger>
         </div>
       </div>
 
       {/* title x description */}
       <div className="flex flex-col gap-4 mb-8">
-        <TextInput label="Title*" placeholder="What is your title?" />
-        
+        <TextInput
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          label="Title*"
+          placeholder="What is your title?"
+        />
+
         <TextAreaInput
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
           label="Description*"
           placeholder="e.g. I joined Stripe’s Customer Success team to help them scale their checkout product. I focused mainly on onboarding new customers and resolving complaints."
         />
@@ -64,7 +114,14 @@ const RejectionForm: RFC<RejectionFormProps> = ({ clearModal }) => {
       </div>
 
       <div className="flex flex-col">
-        <Button text="Add Reason" className={buttonClasses} shadow />
+        <Button
+          text="Add Reason"
+          onClick={rejectKyc}
+          loading={isRejecting}
+          disabled={isRejecting}
+          className={buttonClasses}
+          shadow
+        />
       </div>
     </div>
   )
@@ -72,9 +129,7 @@ const RejectionForm: RFC<RejectionFormProps> = ({ clearModal }) => {
 
 export default RejectionForm
 
-type RejectionFormProps = {
-  clearModal: () => void
-}
+type RejectionFormProps = {}
 
 type Button = {
   label: string
@@ -150,3 +205,7 @@ const XIcon = ({ onClick, className, wrapperClass }: any) => {
     </div>
   )
 }
+
+const boxShadow =
+  "0px 8px 8px -4px rgba(16, 24, 40, 0.03), 0px 20px 24px -4px rgba(16, 24, 40, 0.08)"
+const buttonClasses = "!justify-center font-semibold !text-base "

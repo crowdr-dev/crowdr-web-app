@@ -1,39 +1,53 @@
-"use client";
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useQuery } from "react-query";
-import { useUser } from "../../(dashboard)/common/hooks/useUser";
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/app/common/components/Button";
-import TextInput from "@/app/common/components/TextInput";
-import StatCard from "../admin-dashboard-components/StatCard";
-import ButtonGroup from "../admin-dashboard-components/ButtonGroup";
-import Table from "../admin-dashboard-components/Table";
-import Pagination from "../admin-dashboard-components/Pagination";
-import ModalTrigger from "@/app/common/components/ModalTrigger";
-import { label } from "../admin-dashboard-components/Label";
-import makeRequest from "@/utils/makeRequest";
-import { extractErrorMessage } from "@/utils/extractErrorMessage";
+"use client"
+import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useAtomValue, useSetAtom } from "jotai"
+import { useQuery } from "react-query"
+import { useUser } from "../../(dashboard)/common/hooks/useUser"
+import Link from "next/link"
+import Image from "next/image"
+import { Button } from "@/app/common/components/Button"
+import TextInput from "@/app/common/components/TextInput"
+import StatCard from "../admin-dashboard-components/StatCard"
+import ButtonGroup from "../admin-dashboard-components/ButtonGroup"
+import Table from "../admin-dashboard-components/Table"
+import Pagination from "../admin-dashboard-components/Pagination"
+import ModalTrigger, {
+  modalStoreAtom,
+} from "@/app/common/components/ModalTrigger"
+import { label } from "../admin-dashboard-components/Label"
+import makeRequest from "@/utils/makeRequest"
+import { formatAmount } from "../../(dashboard)/common/utils/currency"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import kycService from "../common/services/kycService"
+import {
+  activeKycIdAtom,
+  kycDataAtom,
+  otpAtom,
+} from "../admin-dashboard-components/KycPopup"
 
-import { IPagination, Nullable, QF } from "@/app/common/types";
-import SearchIcon from "../../../../../public/svg/search.svg";
-import FilterIcon from "../../../../../public/svg/filter-2.svg";
-import TempLogo from "../../../../../public/temp/c-logo.png";
-import UserIcon from "../../../../../public/svg/user-01.svg";
-import { IWithdrawalResponse } from "@/app/common/types/Withdawal";
-import { IkycResponse } from "@/app/common/types/Kyc";
+import { IPagination, Nullable, QF } from "@/app/common/types"
+import SearchIcon from "../../../../../public/svg/search.svg"
+import FilterIcon from "../../../../../public/svg/filter-2.svg"
+import TempLogo from "../../../../../public/temp/c-logo.png"
+import UserIcon from "../../../../../public/svg/user-01.svg"
+import { IWithdrawalResponse } from "@/app/common/types/Withdawal"
+import { IkycResponse } from "@/app/common/types/Kyc"
 
 const Dashboard = () => {
-  const [searchText, setSearchText] = useState("");
-  const [campaignsPage, setCampaignsPage] = useState(1);
-  const [kycPage, setKycPage] = useState(1);
-  const [withdrawalsPage, setWithdrawalsPage] = useState(1);
-  const searchParams = useSearchParams();
-  const route = useRouter();
-  const user = useUser();
+  const [searchText, setSearchText] = useState("")
+  const [campaignsPage, setCampaignsPage] = useState(1)
+  const [kycPage, setKycPage] = useState(1)
+  const [withdrawalsPage, setWithdrawalsPage] = useState(1)
+  const modalStore = useAtomValue(modalStoreAtom)
+  const setActiveKycId = useSetAtom(activeKycIdAtom)
+  const setKycData = useSetAtom(kycDataAtom)
+  const setAdminOtp = useSetAtom(otpAtom)
+  const searchParams = useSearchParams()
+  const route = useRouter()
+  const user = useUser()
 
-  const { data: kycData } = useQuery(
+  const { data: kycData, refetch: refetchKycs } = useQuery(
     ["getKYC", user?.token, kycPage],
     fetchKyc,
     {
@@ -41,9 +55,10 @@ const Dashboard = () => {
       refetchOnWindowFocus: false,
       keepPreviousData: true,
     }
-  );
+  )
+  kycService.refreshKyc = refetchKycs
 
-  const { data: withdrawalData } = useQuery(
+  const { data: withdrawalData, refetch: refetchWithdrawals } = useQuery(
     ["getWithdrawal", user?.token, withdrawalsPage],
     fetchWithdrawal,
     {
@@ -51,14 +66,14 @@ const Dashboard = () => {
       refetchOnWindowFocus: false,
       keepPreviousData: true,
     }
-  );
+  )
 
-  const selectedView = searchParams.get("view") || "Campaigns";
+  const selectedView = searchParams.get("view") || "KYC"
   const tablePickerButtons = [
-    {
-      label: "Campaigns",
-      onClick: () => route.push("/admin/dashboard?view=Campaigns"),
-    },
+    // {
+    //   label: "Campaigns",
+    //   onClick: () => route.push("/admin/dashboard?view=Campaigns"),
+    // },
     {
       label: "KYC",
       onClick: () => route.push("/admin/dashboard?view=KYC"),
@@ -67,7 +82,7 @@ const Dashboard = () => {
       label: "Withdrawals",
       onClick: () => route.push("/admin/dashboard?view=Withdrawals"),
     },
-  ];
+  ]
 
   return (
     <div>
@@ -96,7 +111,7 @@ const Dashboard = () => {
           <TextInput
             value={searchText}
             onChange={(e) => {
-              setSearchText(e.target.value);
+              setSearchText(e.target.value)
             }}
             placeholder="Search"
             iconUrl={SearchIcon}
@@ -121,7 +136,7 @@ const Dashboard = () => {
       {/* table */}
       <div className="px-8">
         {/* Campaigns */}
-        {selectedView === "Campaigns" && (
+        {/* {selectedView === "Campaigns" && (
           <Table>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
@@ -134,7 +149,7 @@ const Dashboard = () => {
                 <Table.Row key={index}>
                   <Table.Cell>
                     <div className="flex items-center gap-3 font-medium">
-                      <Image src={item.imageUrl} alt="" />
+                      <Image src={item.imageUrl} alt="" className="shrink-0" />
                       {item.title}
                     </div>
                   </Table.Cell>
@@ -169,13 +184,13 @@ const Dashboard = () => {
               onPageChange={setCampaignsPage}
             />
           </Table>
-        )}
+        )} */}
 
         {/* KYC */}
         {selectedView === "KYC" && kycData && (
           <Table>
             <Table.Head>
-              <Table.HeadCell>Name</Table.HeadCell>
+              <Table.HeadCell>Account Name</Table.HeadCell>
               <Table.HeadCell>Account Type</Table.HeadCell>
               <Table.HeadCell>Status</Table.HeadCell>
             </Table.Head>
@@ -185,36 +200,36 @@ const Dashboard = () => {
                   <Table.Cell>
                     <div className="flex items-center gap-3 font-medium">
                       <div className="grid place-items-center h-10 w-10 shrink-0 border border-black/10 bg-[#F2F4F7] rounded-full">
-                        <Image src={kyc.imageUrl} alt="" />
+                        <Image src={kyc.imageUrl} alt="" className="shrink-0" />
                       </div>
                       {kyc.accountName}
                     </div>
                   </Table.Cell>
-                  
+
                   <Table.Cell>
                     {<div className="font-medium">{kyc.accountType}</div>}
                   </Table.Cell>
 
                   <Table.Cell>{label(kyc.status)}</Table.Cell>
-                  
+
                   <Table.Cell>
                     <div className="flex gap-3">
-                      <Link
-                        href={`/admin/view-kyc/${kyc.id}`}
-                        className="font-semibold text-sm text-[#475467] cursor-pointer"
-                      >
-                        View
-                      </Link>
-                      {kyc.status === "Approved" ? (
+                      <ModalTrigger id="kycPopup">
+                        <button
+                          type="button"
+                          className="font-semibold text-sm text-[#475467] cursor-pointer"
+                          onClick={() => setActiveKycId(kyc.id)}
+                        >
+                          View
+                        </button>
+                      </ModalTrigger>
+
+                      {kyc.status.match(/pending/i) ? (
                         <ModalTrigger id="kycPopup">
                           <button
                             type="button"
                             className="font-semibold text-sm text-[#00B964]"
-                            onClick={() =>
-                              route.push(
-                                `/admin/dashboard?view=${selectedView}&kycId=blahblah`
-                              )
-                            }
+                            onClick={() => setActiveKycId(kyc.id)}
                           >
                             Approve
                           </button>
@@ -245,20 +260,25 @@ const Dashboard = () => {
         {selectedView === "Withdrawals" && withdrawalData && (
           <Table>
             <Table.Head>
-              <Table.HeadCell>Name</Table.HeadCell>
+              <Table.HeadCell>Account Name</Table.HeadCell>
               <Table.HeadCell>Campaign</Table.HeadCell>
               <Table.HeadCell>Withdrawal Amount</Table.HeadCell>
-              <Table.HeadCell>Request Type</Table.HeadCell>
+              {/* <Table.HeadCell>Request Type</Table.HeadCell> */}
             </Table.Head>
             <Table.Body>
               {withdrawalData.withdrawals.map((withdrawal, index) => (
                 <Table.Row key={index}>
                   <Table.Cell>
                     <div className="flex items-center gap-3 font-medium">
-                      <Image src={withdrawal.imageUrl} alt="" />
+                      <Image
+                        src={withdrawal.imageUrl}
+                        alt=""
+                        className="shrink-0"
+                      />
                       {withdrawal.accountName}
                     </div>
                   </Table.Cell>
+
                   <Table.Cell>
                     {
                       <div className="font-medium">
@@ -266,8 +286,11 @@ const Dashboard = () => {
                       </div>
                     }
                   </Table.Cell>
-                  <Table.Cell>{withdrawal.campaignType}</Table.Cell>
-                  <Table.Cell>{withdrawal.campaignTitle}</Table.Cell>
+
+                  <Table.Cell>{withdrawal.amount}</Table.Cell>
+
+                  {/* <Table.Cell>{withdrawal.requestType}</Table.Cell> */}
+
                   <Table.Cell>
                     <div className="flex gap-3">
                       <Link
@@ -305,90 +328,90 @@ const Dashboard = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard
 
 interface IKycs {
-  kycs: ReturnType<typeof mapKycResponseToView>;
-  pagination: IPagination;
+  kycs: ReturnType<typeof mapKycResponseToView>
+  pagination: IPagination
 }
 
 interface IWithdrawals {
-  withdrawals: ReturnType<typeof mapWithdrawalResponseToView>;
-  pagination: IPagination;
+  withdrawals: ReturnType<typeof mapWithdrawalResponseToView>
+  pagination: IPagination
 }
 
-const ITEMS_PER_PAGE = "5";
+const ITEMS_PER_PAGE = "5"
 
 const fetchKyc: QF<Nullable<IKycs>, [Nullable<string>, number]> = async ({
   queryKey,
 }) => {
-  const [_, token, page] = queryKey;
+  const [_, token, page] = queryKey
 
   if (token) {
     const query = new URLSearchParams({
       page: `${page}`,
       perPage: ITEMS_PER_PAGE,
-    });
-    const endpoint = `/api/v1/admin/kyc?${query}`;
+    })
+    const endpoint = `/api/v1/admin/kyc?${query}`
 
     const headers = {
       "x-auth-token": token,
-    };
+    }
 
     try {
       const { data } = await makeRequest<IkycResponse>(endpoint, {
         headers,
         method: "GET",
-      });
-      console.log(data);
+      })
+      // console.log(data)
       return {
         kycs: mapKycResponseToView(data.kycs),
         pagination: data.pagination,
-      };
+      }
     } catch (error) {
-      const message = extractErrorMessage(error);
-      throw new Error(message);
+      const message = extractErrorMessage(error)
+      throw new Error(message)
     }
   }
-};
+}
 
 const fetchWithdrawal: QF<
   Nullable<IWithdrawals>,
   [Nullable<string>, number]
 > = async ({ queryKey }) => {
-  const [_, token, page] = queryKey;
+  const [_, token, page] = queryKey
 
   if (token) {
     const query = new URLSearchParams({
       page: `${page}`,
       perPage: ITEMS_PER_PAGE,
-    });
-    const endpoint = `/api/v1/admin/withdrawals?${query}`;
+    })
+    const endpoint = `/api/v1/admin/withdrawals?${query}`
 
     const headers = {
       "x-auth-token": token,
-    };
+    }
 
     try {
       const { data } = await makeRequest<IWithdrawalResponse>(endpoint, {
         headers,
         method: "GET",
-      });
-      console.log(data);
+      })
+      // console.log(data)
       return {
         withdrawals: mapWithdrawalResponseToView(data.withdrawals),
 
         pagination: data.pagination,
-      };
+      }
     } catch (error) {
-      const message = extractErrorMessage(error);
-      throw new Error(message);
+      const message = extractErrorMessage(error)
+      throw new Error(message)
     }
   }
-};
+}
 
 const stats = [
   {
@@ -403,7 +426,7 @@ const stats = [
     title: "Total Users",
     value: "1000",
   },
-];
+]
 
 const items = [
   {
@@ -456,28 +479,35 @@ const items = [
     altImageUrl: UserIcon,
     status: "Pending",
   },
-];
+]
 
-function mapKycResponseToView(
-  Withdrawal: IkycResponse["kycs"]
-) {
-  return Withdrawal.map((kyc) => ({
+function mapKycResponseToView(kycs: IkycResponse["kycs"]) {
+  return kycs.map((kyc) => ({
     id: kyc._id,
     accountName: kyc.userId,
-    accountType: kyc.verificationStatus,
-    status: kyc.verificationStatus,
+    accountType: kyc.status || "pending",
+    status: kyc.status || "pending",
     imageUrl: TempLogo,
-  }));
+  }))
 }
 
 function mapWithdrawalResponseToView(
-  Withdrawal: IWithdrawalResponse["withdrawals"]
+  withdrawals: IWithdrawalResponse["withdrawals"]
 ) {
-  return Withdrawal.map((withdraw) => ({
-    id: withdraw._id,
-    accountName: withdraw._id,
-    campaignTitle: withdraw.campaign.title,
-    campaignType: withdraw.campaign.campaignType,
-    imageUrl: TempLogo,
-  }));
+  return withdrawals.map((withdrawal) => {
+    const [{ currency, amount }] = withdrawal.totalAmountDonated
+    const formattedAmount = formatAmount(amount, currency)
+    const requestType = `${
+      withdrawal.campaign.volunteer ? "Double" : "Fundraise"
+    } Campaign`
+
+    return {
+      id: withdrawal._id,
+      accountName: withdrawal.campaign.userId,
+      campaignTitle: withdrawal.campaign.title,
+      requestType,
+      amount: formattedAmount,
+      imageUrl: TempLogo,
+    }
+  })
 }

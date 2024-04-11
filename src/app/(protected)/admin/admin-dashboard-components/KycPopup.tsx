@@ -1,15 +1,101 @@
 "use client"
+import { useEffect, useState } from "react"
 import Image from "next/image"
-import FileItem from "./FileItem"
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
+import { useUser } from "../../(dashboard)/common/hooks/useUser"
+import { useToast } from "@/app/common/hooks/useToast"
 import { Button, GrayButton } from "@/app/common/components/Button"
-import ModalTrigger from "@/app/common/components/ModalTrigger"
+import FileItem from "./FileItem"
+import TextInput from "@/app/common/components/TextInput"
+import ModalTrigger, {
+  modalStoreAtom,
+} from "@/app/common/components/ModalTrigger"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import otpService from "../common/services/otpService"
+import kycService, { IKyc } from "../common/services/kycService"
 
+import { CgSpinner } from "react-icons/cg"
 import XMark from "../../../../../public/svg/x-mark.svg"
 
-const KycPopup = () => {
-  const kycData = { isOrganzation: true, verified: false } // fetch kyc data
+export const otpAtom = atom("")
+export const activeKycIdAtom = atom<string | null>(null)
+export const kycToRejectDataAtom = atom<{ id: string; otp: string } | null>(
+  null
+)
+export const kycDataAtom = atom<IKyc | null>(null)
 
-  if (kycData)
+const KycPopup = () => {
+  const [adminOtp, setAdminOtp] = useAtom(otpAtom)
+  const [activeKycId, setActiveKycId] = useAtom(activeKycIdAtom)
+  const [kycData, setKycData] = useAtom(kycDataAtom)
+  const modalStore = useAtomValue(modalStoreAtom)
+  const setKycToRejectData = useSetAtom(kycToRejectDataAtom)
+  const [isApproving, setIsApproving] = useState(false)
+  const user = useUser()
+  const toast = useToast()
+  const otpIsFilled = adminOtp.length > 0
+  const isOrganzation = user?.userType === "non-profit"
+  const kycApproved = kycData?.status === "completed"
+
+  useEffect(() => {
+    if (user && activeKycId) {
+      kycService
+        .fetchKyc({
+          kycId: activeKycId,
+          authToken: user.token,
+        })
+        .then((res) => setKycData(res))
+
+      const modal = modalStore.get("kycPopup")!
+      modal._options.onHide = () => {
+        setAdminOtp("")
+        setActiveKycId(null)
+        setKycData(null)
+      }
+    } else {
+      setKycData(null)
+      setIsApproving(false)
+    }
+  }, [activeKycId])
+
+  const generateToken = async () => {
+    if (user) {
+      const res = await otpService.generateOtp(user.token)
+      toast({ title: "OTP created!", body: `OTP sent to ${res.email}` })
+    }
+  }
+
+  const approveKyc = async () => {
+    if (user && activeKycId) {
+      setIsApproving(true)
+
+      try {
+        const res = await kycService.changeKycStatus({
+          kycId: activeKycId,
+          adminOtp: adminOtp,
+          authToken: user.token,
+          status: "completed",
+        })
+
+        const kycData = await kycService.fetchKyc({
+          kycId: activeKycId,
+          authToken: user.token,
+        })
+
+        setKycData(kycData)
+        setIsApproving(false)
+        toast({ title: "KYC Approved" })
+
+        kycService.refreshKyc()
+      } catch (error) {
+        setIsApproving(false)
+        const message = extractErrorMessage(error)
+        toast({ title: "Oops!", body: message })
+      }
+    }
+  }
+
+  if (user && kycData) {
     return (
       <div className="grow max-w-[1031px] bg-white px-[50px] py-10 mb-11 border">
         <div className="flex justify-between items-center mb-11">
@@ -23,13 +109,13 @@ const KycPopup = () => {
           <div className="flex justify-between">
             <div className="flex flex-col gap-2">
               <p className="font-semibold text-[#61656B]">
-                {kycData.isOrganzation ? "Organization" : "Individual"}
+                {user.userType === "non-profit" ? "Organization" : "Individual"}
               </p>
               <h2 className="font-semibold text-2xl text-black">
                 Crowdr Africa
               </h2>
             </div>
-            {kycData.isOrganzation && (
+            {isOrganzation && (
               <p className="self-end font-semibold text-[#61656B]">
                 4536673337
               </p>
@@ -37,7 +123,7 @@ const KycPopup = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            {!kycData.isOrganzation && (
+            {!isOrganzation && (
               <p className="text-xs text-[#61656B]">BVN Number</p>
             )}
             <p className="text-sm text-[#393E46]">
@@ -59,35 +145,60 @@ const KycPopup = () => {
           </div>
         </div>
 
+        {!kycApproved && (
+          <div className="max-w-xs mb-[55px]">
+            <p
+              className="text-primary text-xs mb-1.5 hover:underline cursor-pointer"
+              onClick={generateToken}
+            >
+              Generate OTP
+            </p>
+            <TextInput
+              value={adminOtp}
+              onChange={(e) => setAdminOtp(e.target.value)}
+              placeholder="Fill in OTP"
+              controlled
+            />
+          </div>
+        )}
+
         <div className="flex gap-6">
-          {kycData.verified ? (
+          {kycApproved ? (
             <GrayButton
               text="KYC Verified"
               className="h-11 !w-[218px] !justify-center"
-              onClick={() => {}}
               disabled
             />
           ) : (
             <>
-              <GrayButton
-                text="Decline"
-                className="h-11 !w-[218px] !justify-center"
-                onClick={() => {}}
-              />
+              <ModalTrigger id="kycPopup" type="hide">
+                <ModalTrigger id="kycRejectionForm">
+                  <GrayButton
+                    text="Decline"
+                    className="h-11 !w-[218px] !justify-center"
+                    disabled={!otpIsFilled}
+                    onClick={() =>
+                      setKycToRejectData({ id: activeKycId!, otp: adminOtp })
+                    }
+                  />
+                </ModalTrigger>
+              </ModalTrigger>
+
               <Button
                 text="Approve KYC"
-                loading={false}
-                disabled={false}
+                loading={isApproving}
+                disabled={!otpIsFilled || isApproving}
                 className="h-11 !w-[218px] !justify-center"
-                onClick={() => {}}
+                onClick={approveKyc}
               />
             </>
           )}
         </div>
       </div>
     )
+  }
 
-  return "loading"
+  return <CgSpinner size="50px" className="animate-spin icon opacity-100" />
 }
 
 export default KycPopup
