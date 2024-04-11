@@ -22,6 +22,7 @@ import { formatAmount } from '@/app/(protected)/(dashboard)/common/utils/currenc
 import Footer from '@/app/common/components/Footer'
 import Head from 'next/head'
 import NavBar from '../../components/NavBar'
+import Loading from '@/app/loading'
 
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
@@ -66,6 +67,7 @@ export default function DonateOrVolunteer ({
   params: { id: string }
 }) {
   const toast = useToast()
+  const [loadingCampaign, setLoadingCampaign] = useState(true)
   const [loading, setLoading] = useState(false)
   const [campaign, setCampaign] = useState<any>()
   const [tab, setTab] = useState('')
@@ -82,6 +84,7 @@ export default function DonateOrVolunteer ({
   const fetchSingleCampaign = async () => {
     const singleCampaign = await getSingleCampaign(params.id, true)
     setCampaign(singleCampaign)
+    setLoadingCampaign(false)
   }
 
   interface initTypes {
@@ -157,19 +160,6 @@ export default function DonateOrVolunteer ({
     }))
   }
 
-  const getCurrentUser = async () => {
-    const user = await getUser()
-    setDonationInputs({
-      ...donationInputs,
-      email: user?.email
-    })
-    setVolunteerInputs({
-      ...volunteerInputs,
-      email: user?.email,
-      phoneNumber: '+234'
-    })
-  }
-
   useEffect(() => {
     fetchSingleCampaign()
     setTab(
@@ -179,7 +169,6 @@ export default function DonateOrVolunteer ({
         ? 'donate'
         : 'volunteer'
     )
-    getCurrentUser()
 
 
     if (campaign) {
@@ -277,6 +266,8 @@ export default function DonateOrVolunteer ({
   const areAllInputsFilled = (input: any) => {
     return Object.values(input).every(value => value !== '')
   }
+
+  if(loadingCampaign) return <Loading/>
 
   return (
     <div className="font-satoshi">

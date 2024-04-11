@@ -1,5 +1,4 @@
 "use client" // TODO: TRY TO RETURN TO SERVER COMPONENT; LOOK AT ModalProvider
-import { useRouter } from "next/router"
 import { PropsWithChildren, useEffect } from "react"
 import Head from "next/head"
 import { usePathname } from "next/navigation"
@@ -10,7 +9,6 @@ import { Toaster } from "react-hot-toast"
 import ModalProvider from "./common/hooks/useModal"
 import "./globals.css"
 import "./common/styles/button.css"
-import { Metadata } from "next"
 import NewLogo from "../../public/svg/new-crowdr-logo.svg"
 
 export const lato = Lato({
@@ -67,7 +65,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
   }, [pathname])
 
   return (
-    <>
+    <html lang="en">
       <Head>
         <title>Crowdr</title>
         <meta name="description" content={"Build Community through Giving"} />
@@ -86,6 +84,6 @@ export default function RootLayout({ children }: PropsWithChildren) {
           </ModalProvider>
         </QueryClientProvider>
       </body>
-    </>
+    </html>
   )
 }

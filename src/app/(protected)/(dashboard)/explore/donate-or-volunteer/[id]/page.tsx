@@ -18,6 +18,7 @@ import { formatAmount } from '../../../common/utils/currency'
 import Link from 'next/link'
 import Head from 'next/head'
 import { Button } from '@/app/common/components/Button'
+import Loading from '@/app/loading'
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
 const inActiveTabStyle = 'text-[#667085]'
@@ -64,12 +65,14 @@ export default function DonateOrVolunteer({
   const [loading, setLoading] = useState(false)
   const [campaign, setCampaign] = useState<any>()
   const [tab, setTab] = useState('')
+  const [loadingCampaign, setLoadingCampaign] = useState(true)
 
   const [userId,setUserId] = useState<any>("")
 
   const fetchSingleCampaign = async () => {
     const singleCampaign = await getSingleCampaign(params.id)
     setCampaign(singleCampaign)
+    setLoadingCampaign(false)
   }
 
 
@@ -288,6 +291,8 @@ export default function DonateOrVolunteer({
     return Object.values(input).every(value => value !== '') && checked
   }
 
+
+  if(loadingCampaign) return <Loading/>
   return (
     <div className='mb-6'>
       <Head>
@@ -451,7 +456,7 @@ export default function DonateOrVolunteer({
                 <Checkbox
                   id={'4'}
                   label={
-                    <>By ticking this box, you agree with the <a className="text-[#00B964] underlined">Terms and Conditions provided</a> by Crowdr</>
+                    <>By ticking this box, you agree with the <a className="text-[#00B964] underlined">Terms and Conditions provided</a> by Crowdr.*</>
                   }
                   checked={checkboxValues.agreeToTermsVolunteer}
                   onChange={newValue =>
@@ -593,7 +598,7 @@ export default function DonateOrVolunteer({
                   <Checkbox
                     id={'4'}
                     label={
-                      <>By ticking this box, you agree with the <a className="text-[#00B964] underlined">Terms and Conditions provided</a> by Crowdr</>
+                      <>By ticking this box, you agree with the <a className="text-[#00B964] underlined">Terms and Conditions provided</a> by Crowdr.*</>
                     }
                     checked={checkboxValues.agreeToTermsDonate}
                     onChange={newValue =>

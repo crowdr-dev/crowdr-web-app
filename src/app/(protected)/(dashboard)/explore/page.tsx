@@ -12,7 +12,6 @@ import { campaignsTag } from "@/tags"
 
 import { Nullable, QF } from "@/app/common/types"
 import { ICampaignResponse } from "@/app/common/types/Campaign"
-import Avatar from "../../../../../public/assets/avatar.png"
 
 const Explore = () => {
   const user = useUser()
@@ -39,9 +38,9 @@ const Explore = () => {
               Explore campaigns and spread love by donating.{" "}
             </p>
           </div>
-          <div>
+          {/* <div>
             <Filter query="Trending" />
-          </div>
+          </div> */}
         </div>
       )}
 

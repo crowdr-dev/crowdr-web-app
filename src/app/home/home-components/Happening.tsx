@@ -11,6 +11,7 @@ import { formatAmount } from '@/app/(protected)/(dashboard)/common/utils/currenc
 import useWindowSize from '@/app/common/hooks/useWindowSize'
 import { useRouter } from 'next/navigation'
 import { Campaign, getCampaigns } from '@/app/api/campaigns/getCampaigns'
+import Loading from '@/app/loading'
 
 type ExploreCardProps = {
   name: string
@@ -83,13 +84,13 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
 
   const progress = currentAmount / totalAmount
   return (
-    <div className='p-4 rounded-xl border-[#393e4614] border h-fit bg-white w-full cursor-pointer' onClick={()=>{router.push(routeTo)}}>
+    <div className='p-4 rounded-xl border-[#393e4614] border h-fit bg-white ' >
       <div className='relative'>
         <div className='absolute z-10 bg-[#F8F8F8] rounded-[25px] py-1 px-2 mt-[14px] ml-[14px] text-[#0B5351] capitalize opacity-80 text-sm'>
           {category}
         </div>
         {!!slideImages && (
-          <div>
+          <div className='w-full'>
             {slideImages?.length > 1 ? (
               <Slider {...settings(slideImages)}>
                 {slideImages?.map((image, index) => {
@@ -128,11 +129,11 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
             )}
           </div>
         )}
-        <div className='my-4'>
+        <div className='my-4 cursor-pointer' onClick={()=>{router.push(routeTo)}}>
           <h3 className='font-semibold text-[18px]'>{header}</h3>
         </div>
         {campaignType.includes('fundraise') && (
-          <div className='bg-[#F9F9F9] p-4 rounded-[8px]'>
+          <div className='bg-[#F9F9F9] p-4 rounded-[8px] cursor-pointer' onClick={()=>{router.push(routeTo)}}>
             <p className='text-sm text-[#667085] mb-[4px]'>
               {' '}
               <span className='text-[#000] text-sm'>Goal</span>{' '}
@@ -150,6 +151,8 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
 const Happening = () => {
   const width = useWindowSize(800)
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
+
 
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
 
@@ -165,8 +168,10 @@ const Happening = () => {
           "Received data is not an array of campaigns or it's empty"
         )
       }
+      setIsLoading(false)
     } catch (error) {
       console.error('Error fetching campaigns:', error)
+      setIsLoading(false)
     }
   }
 
@@ -197,8 +202,11 @@ const Happening = () => {
           </div>
         )}
       </div>
-      <div className='flex flex-col md:flex-row  items-center md:items-start justify-between w-full gap-4'>
-      {Array.isArray(campaigns) &&
+      <div className='grid grid-cols-1 md:grid-cols-3 items-center md:items-start  gap-4'>
+        {
+          isLoading && <Loading size='contain'/>
+        }
+      {Array.isArray(campaigns) && !isLoading &&
           campaigns?.slice(0,3).map((campaign: Campaign, index: number) => {
             const urlsOnly = campaign.campaignAdditionalImages.map(
               item => item.url
@@ -226,7 +234,7 @@ const Happening = () => {
             )
           })}
           {
-            campaigns?.length < 1 && <p className='text-center w-full font-bold text-lg my-6'>No campaigns available at this moment</p>
+            campaigns?.length < 1 && !isLoading && <p className='text-center w-full font-bold text-lg my-6'>No campaigns available at this moment</p>
           }
       </div>
 
