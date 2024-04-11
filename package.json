@@ -12,7 +12,7 @@
     "@hookform/resolvers": "^3.1.1",
     "@novu/headless": "^0.20.0",
     "@types/node": "20.3.1",
-    "@types/react": "18.2.13",
+    "@types/react": "18.2.25",
     "@types/react-dom": "18.2.6",
     "@types/react-slick": "^0.23.12",
     "autoprefixer": "10.4.14",
