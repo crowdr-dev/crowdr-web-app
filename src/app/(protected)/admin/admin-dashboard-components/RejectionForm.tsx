@@ -6,48 +6,70 @@ import { useToast } from "@/app/common/hooks/useToast"
 import { Button } from "../../../common/components/Button"
 import TextInput from "@/app/common/components/TextInput"
 import TextAreaInput from "@/app/common/components/TextAreaInput"
-import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import kycService from "../common/services/kycService"
-import { kycToRejectDataAtom } from "./KycPopup"
 import ModalTrigger, {
   modalStoreAtom,
 } from "@/app/common/components/ModalTrigger"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import kycService from "../common/services/kycService"
+import { kycToRejectAtom } from "./KycPopup"
+import { withdrawalToRejectAtom } from "./WithdrawalPopup"
 
 import { RFC } from "@/app/common/types"
+import withdrawalService from "../common/services/withdrawalService"
 
 const RejectionForm: RFC<RejectionFormProps> = () => {
   const [title, setTitle] = useState("")
   const [reason, setReason] = useState("")
-  const [kycToRejectData, setKycToRejectData] = useAtom(kycToRejectDataAtom)
+  const [kycToReject, setKycToReject] = useAtom(kycToRejectAtom)
+  const [withdrawalToReject, setWithdrawalToReject] = useAtom(
+    withdrawalToRejectAtom
+  )
   const [isRejecting, setIsRejecting] = useState(false)
   const modalStore = useAtomValue(modalStoreAtom)
   const user = useUser()
   const toast = useToast()
 
   const modal = modalStore.get("kycRejectionForm")!
-  modal._options.onHide = () => {
-    setTitle("")
-    setReason("")
-    setKycToRejectData(null)
+  if (modal) {
+    modal._options.onHide = () => {
+      setTitle("")
+      setReason("")
+      setKycToReject(null)
+      setWithdrawalToReject(null)
+    }
   }
 
-  const rejectKyc = async () => {
-    if (user && kycToRejectData?.id) {
+  const reject = async () => {
+    if (user && (kycToReject?.id || withdrawalToReject?.id)) {
       setIsRejecting(true)
 
       try {
-        const res = await kycService.changeKycStatus({
-          kycId: kycToRejectData.id,
-          adminOtp: kycToRejectData.otp,
-          authToken: user.token,
-          status: "rejected",
-          reason,
-        })
+        if (kycToReject) {
+          const res = await kycService.changeKycStatus({
+            kycId: kycToReject.id,
+            adminOtp: kycToReject.otp,
+            authToken: user.token,
+            status: "rejected",
+            reason,
+          })
+
+          toast({ title: "KYC Rejected" })
+          kycService.refreshKyc()
+        } else if (withdrawalToReject) {
+          const res = await withdrawalService.changeWithdrawalStatus({
+            withdrawalId: withdrawalToReject.id,
+            adminOtp: withdrawalToReject.otp,
+            authToken: user.token,
+            status: "rejected",
+            reason,
+          })
+
+          toast({ title: "Withdrawal Rejected" })
+          withdrawalService.refreshWithdrawal()
+        }
 
         setIsRejecting(false)
         modal.hide()
-        toast({ title: "KYC Rejected" })
-        kycService.refreshKyc()
       } catch (error) {
         setIsRejecting(false)
         const message = extractErrorMessage(error)
@@ -116,7 +138,7 @@ const RejectionForm: RFC<RejectionFormProps> = () => {
       <div className="flex flex-col">
         <Button
           text="Add Reason"
-          onClick={rejectKyc}
+          onClick={reject}
           loading={isRejecting}
           disabled={isRejecting}
           className={buttonClasses}

@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import Image from "next/image"
-import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
+import { atom, useAtom } from "jotai"
 import { useUser } from "../../(dashboard)/common/hooks/useUser"
 import { useToast } from "@/app/common/hooks/useToast"
 import { Button, GrayButton } from "@/app/common/components/Button"
@@ -17,24 +17,20 @@ import kycService, { IKyc } from "../common/services/kycService"
 import { CgSpinner } from "react-icons/cg"
 import XMark from "../../../../../public/svg/x-mark.svg"
 
-export const otpAtom = atom("")
 export const activeKycIdAtom = atom<string | null>(null)
-export const kycToRejectDataAtom = atom<{ id: string; otp: string } | null>(
-  null
-)
-export const kycDataAtom = atom<IKyc | null>(null)
+export const kycToRejectAtom = atom<{ id: string; otp: string } | null>(null)
 
 const KycPopup = () => {
-  const [adminOtp, setAdminOtp] = useAtom(otpAtom)
+  const [adminOtp, setAdminOtp] = useState("")
+  const [kycData, setKycData] = useState<IKyc | null>(null)
   const [activeKycId, setActiveKycId] = useAtom(activeKycIdAtom)
-  const [kycData, setKycData] = useAtom(kycDataAtom)
-  const modalStore = useAtomValue(modalStoreAtom)
-  const setKycToRejectData = useSetAtom(kycToRejectDataAtom)
+  const [modalStore] = useAtom(modalStoreAtom)
+  const [_, setKycToReject] = useAtom(kycToRejectAtom)
   const [isApproving, setIsApproving] = useState(false)
   const user = useUser()
   const toast = useToast()
   const otpIsFilled = adminOtp.length > 0
-  const isOrganzation = user?.userType === "non-profit"
+  const isOrganization = kycData?.user?.userType === "non-profit"
   const kycApproved = kycData?.status === "completed"
 
   useEffect(() => {
@@ -115,7 +111,7 @@ const KycPopup = () => {
                 Crowdr Africa
               </h2>
             </div>
-            {isOrganzation && (
+            {isOrganization && (
               <p className="self-end font-semibold text-[#61656B]">
                 4536673337
               </p>
@@ -123,7 +119,7 @@ const KycPopup = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            {!isOrganzation && (
+            {!isOrganization && (
               <p className="text-xs text-[#61656B]">BVN Number</p>
             )}
             <p className="text-sm text-[#393E46]">
@@ -178,7 +174,7 @@ const KycPopup = () => {
                     className="h-11 !w-[218px] !justify-center"
                     disabled={!otpIsFilled}
                     onClick={() =>
-                      setKycToRejectData({ id: activeKycId!, otp: adminOtp })
+                      setKycToReject({ id: activeKycId!, otp: adminOtp })
                     }
                   />
                 </ModalTrigger>

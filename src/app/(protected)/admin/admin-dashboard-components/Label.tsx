@@ -42,18 +42,17 @@ const Rejected = <Label text="Rejected" dotColor="#F04438" />
 
 export const label = (type: string) => {
   switch (type) {
-    case "approved":
     case "Approved":
+    case "approved":
     case "completed":
-    case "Completed":
       return Approved
 
-    case "pending":
     case "Pending":
+    case "pending":
+    case "in-review":
       return Pending
 
     case "rejected":
-    case "Rejected":
       return Rejected
   }
 }

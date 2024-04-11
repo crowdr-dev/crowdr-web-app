@@ -61,3 +61,5 @@ export interface Volunteer {
   requiredCommitment: string;
   additonalNotes: string;
 }
+
+export type WithdrawalStatus = "approved" | "rejected" | "in-review"

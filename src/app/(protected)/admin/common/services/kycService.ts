@@ -58,7 +58,6 @@ const refreshKyc = () => {}
 
 export default { fetchKyc, changeKycStatus, refreshKyc }
 
-
 export interface IGetKyc {
   kycId: string
   authToken: string
@@ -85,7 +84,7 @@ export interface IKyc {
   __v: number
   reason: string
   status: KycStatus
-  user: null
+  user: User | null
   id: string
 }
 
@@ -93,4 +92,18 @@ export interface Img {
   _id: string
   url: string
   id: string
+}
+export interface User {
+  _id: string
+  organizationName: string
+  organizationId: string
+  userType: string
+  email: string
+  interests: string[]
+  referrer: string
+  password: string
+  isEmailVerified: boolean
+  isDeleted: boolean
+  __v: number
+  isAdmin: boolean
 }

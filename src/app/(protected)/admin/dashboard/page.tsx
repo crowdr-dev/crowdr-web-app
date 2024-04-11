@@ -20,19 +20,17 @@ import makeRequest from "@/utils/makeRequest"
 import { formatAmount } from "../../(dashboard)/common/utils/currency"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import kycService from "../common/services/kycService"
-import {
-  activeKycIdAtom,
-  kycDataAtom,
-  otpAtom,
-} from "../admin-dashboard-components/KycPopup"
+import withdrawalService from "../common/services/withdrawalService"
+import { activeKycIdAtom } from "../admin-dashboard-components/KycPopup"
+import { activeWithdrawalIdAtom } from "../admin-dashboard-components/WithdrawalPopup"
 
 import { IPagination, Nullable, QF } from "@/app/common/types"
+import { IWithdrawalResponse } from "@/app/common/types/Withdrawal"
+import { IkycResponse } from "@/app/common/types/Kyc"
 import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
-import { IWithdrawalResponse } from "@/app/common/types/Withdawal"
-import { IkycResponse } from "@/app/common/types/Kyc"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
@@ -41,8 +39,7 @@ const Dashboard = () => {
   const [withdrawalsPage, setWithdrawalsPage] = useState(1)
   const modalStore = useAtomValue(modalStoreAtom)
   const setActiveKycId = useSetAtom(activeKycIdAtom)
-  const setKycData = useSetAtom(kycDataAtom)
-  const setAdminOtp = useSetAtom(otpAtom)
+  const setActiveWithdrawalIdAtom = useSetAtom(activeWithdrawalIdAtom)
   const searchParams = useSearchParams()
   const route = useRouter()
   const user = useUser()
@@ -67,6 +64,7 @@ const Dashboard = () => {
       keepPreviousData: true,
     }
   )
+  withdrawalService.refreshWithdrawal = refetchWithdrawals
 
   const selectedView = searchParams.get("view") || "KYC"
   const tablePickerButtons = [
@@ -263,8 +261,9 @@ const Dashboard = () => {
               <Table.HeadCell>Account Name</Table.HeadCell>
               <Table.HeadCell>Campaign</Table.HeadCell>
               <Table.HeadCell>Withdrawal Amount</Table.HeadCell>
-              {/* <Table.HeadCell>Request Type</Table.HeadCell> */}
+              <Table.HeadCell>Status</Table.HeadCell>
             </Table.Head>
+
             <Table.Body>
               {withdrawalData.withdrawals.map((withdrawal, index) => (
                 <Table.Row key={index}>
@@ -289,25 +288,27 @@ const Dashboard = () => {
 
                   <Table.Cell>{withdrawal.amount}</Table.Cell>
 
-                  {/* <Table.Cell>{withdrawal.requestType}</Table.Cell> */}
+                  <Table.Cell>{label(withdrawal.status)}</Table.Cell>
 
                   <Table.Cell>
                     <div className="flex gap-3">
-                      <Link
-                        href={`/admin/view-withdrawal/${withdrawal.id}`}
-                        className="font-semibold text-sm text-[#475467] cursor-pointer"
-                      >
-                        View
-                      </Link>
+                      <ModalTrigger id="withdrawalPopup">
+                        <button
+                          className="font-semibold text-sm text-[#475467] cursor-pointer"
+                          onClick={() =>
+                            setActiveWithdrawalIdAtom(withdrawal.id)
+                          }
+                        >
+                          View
+                        </button>
+                      </ModalTrigger>
 
                       <ModalTrigger id="withdrawalPopup">
                         <button
                           type="button"
                           className="font-semibold text-sm text-[#6941C6]"
                           onClick={() =>
-                            route.push(
-                              `/admin/dashboard?view=${selectedView}&campaignId=blahblah`
-                            )
+                            setActiveWithdrawalIdAtom(withdrawal.id)
                           }
                         >
                           Approve
@@ -497,15 +498,12 @@ function mapWithdrawalResponseToView(
   return withdrawals.map((withdrawal) => {
     const [{ currency, amount }] = withdrawal.totalAmountDonated
     const formattedAmount = formatAmount(amount, currency)
-    const requestType = `${
-      withdrawal.campaign.volunteer ? "Double" : "Fundraise"
-    } Campaign`
 
     return {
       id: withdrawal._id,
-      accountName: withdrawal.campaign.userId,
+      accountName: withdrawal.userId,
       campaignTitle: withdrawal.campaign.title,
-      requestType,
+      status: withdrawal.status,
       amount: formattedAmount,
       imageUrl: TempLogo,
     }
