@@ -57,8 +57,8 @@ export default function Header () {
         </div>
         <div className='flex flex-col md:flex-row items-start gap-3 mt-16'>
         {
-          pricingDetails.map(({id, title, description, percentageCharge, percentageDescription, bgColor, textColor}) => (
-            <div key={id} className={`flex flex-col items-start justify-between gap-3 p-6  ${bgColor} ${textColor} h-[280px] md:h-[340px]`}>
+          pricingDetails.map(({id, title, description, percentageCharge, percentageDescription, bgColor, textColor}, index) => (
+            <div key={id} className={`flex flex-col items-start justify-between gap-3 p-6 ${index !== 0 && "w-full md:w-auto"}  ${bgColor} ${textColor} h-[280px] md:h-[340px]`}>
               <div>
               <h3 className={`text-[24px] md:text-[36px] font-medium  ${textColor} leading-[55px]`}>{title}</h3>
               <p className={`text-[14px] md:text-sm ${textColor}`}>{description}</p>
