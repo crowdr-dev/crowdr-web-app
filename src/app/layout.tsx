@@ -72,7 +72,13 @@ export default function RootLayout ({ children }: PropsWithChildren) {
           href='https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css'
           rel='stylesheet'
         />
-        <title>Crowdr — Crowdfund in Nigeria</title>
+        <title>{pathname.length > 1
+          ? `${
+              pathname.slice(1).charAt(0).toUpperCase() +
+              pathname.slice(2) +
+              ' | '
+            } Crowdr — Crowdfund in Nigeria`
+          : 'Crowdr — Crowdfund in Nigeria'}</title>
         <meta name='title' content='Crowdr — Crowdfund in Nigeria' />
         <meta
           name='description'
@@ -81,7 +87,13 @@ export default function RootLayout ({ children }: PropsWithChildren) {
 
         <meta property='og:type' content='website' />
         <meta property='og:url' content='https://www.oncrowdr.com/' />
-        <meta property='og:title' content='Crowdr — Crowdfund in Nigeria' />
+        <meta property='og:title' content={pathname.length > 1
+          ? `${
+              pathname.slice(1).charAt(0).toUpperCase() +
+              pathname.slice(2) +
+              ' | '
+            } Crowdr — Crowdfund in Nigeria`
+          : 'Crowdr — Crowdfund in Nigeria'} />
         <meta
           property='og:description'
           content='Explore campaigns and spread love by donating or volunteering'
@@ -95,7 +107,13 @@ export default function RootLayout ({ children }: PropsWithChildren) {
         <meta property='twitter:url' content='https://www.oncrowdr.com/' />
         <meta
           property='twitter:title'
-          content='Crowdr — Crowdfund in Nigeria'
+          content={pathname.length > 1
+            ? `${
+                pathname.slice(1).charAt(0).toUpperCase() +
+                pathname.slice(2) +
+                ' | '
+              } Crowdr — Crowdfund in Nigeria`
+            : 'Crowdr — Crowdfund in Nigeria'}
         />
         <meta
           property='twitter:description'
@@ -103,7 +121,7 @@ export default function RootLayout ({ children }: PropsWithChildren) {
         />
         <meta
           property='twitter:image'
-          content='https://metatags.io/images/meta-tags.png'
+          content={NewLogo}
         />
       </Head>
 
