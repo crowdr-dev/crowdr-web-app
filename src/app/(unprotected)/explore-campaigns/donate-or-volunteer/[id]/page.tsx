@@ -23,6 +23,7 @@ import Footer from '@/app/common/components/Footer'
 import Head from 'next/head'
 import NavBar from '../../components/NavBar'
 import Loading from '@/app/loading'
+import { Helmet } from 'react-helmet'
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
 const inActiveTabStyle = 'text-[#667085]'
@@ -168,68 +169,6 @@ export default function DonateOrVolunteer ({
         ? 'donate'
         : 'volunteer'
     )
-
-    if (campaign) {
-      document.title =
-        (campaign?.campaignType.includes('fundraise')
-          ? 'Donate to '
-          : 'Volunteer to ') +
-        campaign.title +
-        ` organised by ${campaign?.user?.organizationName}`
-      const metaDescription = `Explore campaigns and spread love by donating or volunteering to ${campaign.title}`
-      const metaTag = document.querySelector('meta[name="description"]')
-      if (metaTag) {
-        metaTag.setAttribute('content', metaDescription)
-      }
-      // Set Open Graph image meta tag
-      const ogImageTag = document.querySelector('meta[property="og:image"]')
-
-      if (ogImageTag) {
-        ogImageTag.setAttribute('content', campaign?.campaignCoverImage?.url)
-      }
-
-      // Set Twitter meta tags
-      const twitterCardTag = document.querySelector('meta[name="twitter:card"]')
-      if (twitterCardTag) {
-        twitterCardTag.setAttribute('content', 'summary_large_image')
-      }
-
-      const twitterSiteTag = document.querySelector('meta[name="twitter:site"]')
-      if (twitterSiteTag) {
-        twitterSiteTag.setAttribute('content', '@oncrowdr')
-      }
-
-      const twitterCreatorTag = document.querySelector(
-        'meta[name="twitter:creator"]'
-      )
-      if (twitterCreatorTag) {
-        twitterCreatorTag.setAttribute('content', '@oncrowdr')
-      }
-
-      const twitterImageTag = document.querySelector(
-        'meta[name="twitter:image"]'
-      )
-      if (twitterImageTag) {
-        twitterImageTag.setAttribute(
-          'content',
-          campaign?.campaignCoverImage?.url
-        )
-      }
-
-      const twitterDescription = document.querySelector(
-        'meta[name="twitter:twitter_description"]'
-      )
-      if (twitterDescription) {
-        twitterDescription.setAttribute(
-          'content',
-          (campaign?.campaignType.includes('fundraise')
-            ? 'Donate to '
-            : 'Volunteer to ') +
-            campaign.title +
-            ` organised by ${campaign?.user?.organizationName}`
-        )
-      }
-    }
   }, [params.id, campaign?.campaignType])
 
   const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails.reduce(
@@ -315,7 +254,7 @@ export default function DonateOrVolunteer ({
 
   return (
     <div className='font-satoshi'>
-      <Head>
+      <Helmet>
         <title>
           {(campaign?.campaignType.includes('fundraise')
             ? 'Donate to '
@@ -373,7 +312,7 @@ export default function DonateOrVolunteer ({
           property='twitter:image'
           content={campaign?.campaignCoverImage?.url}
         />
-      </Head>
+      </Helmet>
       <NavBar />
       <div className='py-10 px-6 md:px-40'>
         <div className='flex items-center justify-between mb-4'>
