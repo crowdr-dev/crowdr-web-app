@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     description: "Explore campaigns and spread love by donating or volunteering"
   },
   appleWebApp: {
-    statusBarStyle: 'black-translucent',
+    statusBarStyle: 'default',
     capable: true,
     title: "Crowdr - Crowdfund in Nigeria"
   }
