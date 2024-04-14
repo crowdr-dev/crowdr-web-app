@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     description: 'Explore campaigns and spread love by donating or volunteering',
     images: [
       {
-        url: 'https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713093659/Frame_987_lcnt40.png',
+        url: 'https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100065/CROWDR_LOGO-GREEN_qlmt0o.png',
         alt: 'Crowdr logo',
       },
     ],
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@oncrowdr", 
     creator: "@oncrowdr",
-    images: "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713093659/Frame_987_lcnt40.png",
+    images: "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100065/CROWDR_LOGO-GREEN_qlmt0o.png",
     description: "Explore campaigns and spread love by donating or volunteering"
   },
   appleWebApp: {

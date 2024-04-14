@@ -22,19 +22,39 @@ export async function generateMetadata (
         campaign.title +
         ` organised by ${campaign?.user?.organizationName}`
     },
-    description: `Explore campaigns and spread love by donating or volunteering to ${campaign.title}`,
-    twitter: {
-      title: (campaign?.campaignType.includes('fundraise')
+    description: campaign?.story,
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      url: `https://www.oncrowdr.com/explore-campaigns/donate-or-volunteer/${id}`,
+      siteName: 'Crowdr',
+      title:
+        (campaign?.campaignType.includes('fundraise')
           ? 'Donate to '
           : 'Volunteer to ') +
         campaign.title +
         ` organised by ${campaign?.user?.organizationName}`,
-      card: "summary_large_image",
-      site: "https://www.oncrowdr.com/", 
-      creator: "@oncrowdr",
-      images: campaign?.campaignCoverImage?.url,
-      description: `Explore campaigns and spread love by donating or volunteering to ${campaign.title}`,
+      description: campaign?.story,
+      images: [
+        {
+          url: campaign?.campaignCoverImage?.url,
+          alt: `${campaign?.user?.organizationName} image` 
+        }
+      ]
     },
+    twitter: {
+      title:
+        (campaign?.campaignType.includes('fundraise')
+          ? 'Donate to '
+          : 'Volunteer to ') +
+        campaign.title +
+        ` organised by ${campaign?.user?.organizationName}`,
+      card: 'summary_large_image',
+      site: `@oncrowdr`,
+      creator: '@oncrowdr',
+      images: campaign?.campaignCoverImage?.url,
+      description: campaign?.story
+    }
   }
 }
 
