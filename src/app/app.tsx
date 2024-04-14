@@ -10,15 +10,13 @@ import './common/styles/button.css'
 
 const queryClient = new QueryClient()
 
-export default function App ({ children }: PropsWithChildren) {
+export default function RootApp ({ children }: PropsWithChildren) {
   return (
-    <html lang='en'>
         <QueryClientProvider client={queryClient}>
           <ModalProvider>
             <Toaster position='top-right' reverseOrder={false} />
             {children}
           </ModalProvider>
         </QueryClientProvider>
-    </html>
   )
 }

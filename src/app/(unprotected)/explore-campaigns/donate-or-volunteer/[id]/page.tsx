@@ -254,65 +254,6 @@ export default function DonateOrVolunteer ({
 
   return (
     <div className='font-satoshi'>
-      <Helmet>
-        <title>
-          {(campaign?.campaignType.includes('fundraise')
-            ? 'Donate to '
-            : 'Volunteer to ') +
-            campaign.title +
-            ` organised by ${campaign?.user?.organizationName}`}
-        </title>
-        <meta
-          name='title'
-          content={
-            (campaign?.campaignType.includes('fundraise')
-              ? 'Donate to '
-              : 'Volunteer to ') +
-            campaign.title +
-            ` organised by ${campaign?.user?.organizationName}`
-          }
-        />
-        <meta
-          name='description'
-          content={`Explore campaigns and spread love by donating or volunteering to ${campaign.title}`}
-        />
-
-        <meta property='og:type' content='website' />
-        <meta property='og:url' content='https://www.oncrowdr.com/' />
-        <meta property='og:title' content='Crowdr — Crowdfund in Nigeria' />
-        <meta
-          property='og:description'
-          content={
-            (campaign?.campaignType.includes('fundraise')
-              ? 'Donate to '
-              : 'Volunteer to ') +
-            campaign.title +
-            ` organised by ${campaign?.user?.organizationName}`
-          }
-        />
-        <meta property='og:image' content={campaign?.campaignCoverImage?.url} />
-
-        <meta property='twitter:card' content='summary_large_image' />
-        <meta property='twitter:url' content='https://www.oncrowdr.com/' />
-        <meta
-          property='twitter:title'
-          content={
-            (campaign?.campaignType.includes('fundraise')
-              ? 'Donate to '
-              : 'Volunteer to ') +
-            campaign.title +
-            ` organised by ${campaign?.user?.organizationName}`
-          }
-        />
-        <meta
-          property='twitter:description'
-          content={`Explore campaigns and spread love by donating or volunteering to ${campaign.title}`}
-        />
-        <meta
-          property='twitter:image'
-          content={campaign?.campaignCoverImage?.url}
-        />
-      </Helmet>
       <NavBar />
       <div className='py-10 px-6 md:px-40'>
         <div className='flex items-center justify-between mb-4'>
