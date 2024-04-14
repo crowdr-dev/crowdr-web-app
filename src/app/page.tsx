@@ -14,7 +14,6 @@ import WhyCrowdr from "./home/home-components/WhyCrowdr";
 import Happening from "./home/home-components/Happening";
 import Partners from "./home/home-components/Partners";
 import { Metadata } from "next";
-import { NextSeo } from "next-seo";
 
 
 export default function Home() {
