@@ -202,7 +202,7 @@ const Happening = () => {
           </div>
         )}
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-3 items-center md:items-start  gap-4'>
+      <div className='grid grid-cols-1 md:grid-cols-3 items-center md:items-start  gap-4 w-full'>
         {
           isLoading && <Loading size='contain'/>
         }
