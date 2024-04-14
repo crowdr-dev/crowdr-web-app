@@ -24,7 +24,6 @@ import Head from 'next/head'
 import NavBar from '../../components/NavBar'
 import Loading from '@/app/loading'
 
-
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
 const inActiveTabStyle = 'text-[#667085]'
 const genderOptions = [
@@ -170,18 +169,65 @@ export default function DonateOrVolunteer ({
         : 'volunteer'
     )
 
-
     if (campaign) {
-      document.title = (campaign?.campaignType.includes("fundraise") ? 'Donate to ' : 'Volunteer to ') + campaign.title ;
-      const metaDescription = `Explore campaigns and spread love by donating or volunteering to ${campaign.title}`;
-      const metaTag = document.querySelector('meta[name="description"]');
+      document.title =
+        (campaign?.campaignType.includes('fundraise')
+          ? 'Donate to '
+          : 'Volunteer to ') +
+        campaign.title +
+        ` organised by ${campaign?.user?.organizationName}`
+      const metaDescription = `Explore campaigns and spread love by donating or volunteering to ${campaign.title}`
+      const metaTag = document.querySelector('meta[name="description"]')
       if (metaTag) {
-        metaTag.setAttribute('content', metaDescription);
+        metaTag.setAttribute('content', metaDescription)
       }
       // Set Open Graph image meta tag
-      const ogImageTag = document.querySelector('meta[property="og:image"]');
+      const ogImageTag = document.querySelector('meta[property="og:image"]')
+
       if (ogImageTag) {
-        ogImageTag.setAttribute('content', campaign?.campaignCoverImage?.url);
+        ogImageTag.setAttribute('content', campaign?.campaignCoverImage?.url)
+      }
+
+      // Set Twitter meta tags
+      const twitterCardTag = document.querySelector('meta[name="twitter:card"]')
+      if (twitterCardTag) {
+        twitterCardTag.setAttribute('content', 'summary_large_image')
+      }
+
+      const twitterSiteTag = document.querySelector('meta[name="twitter:site"]')
+      if (twitterSiteTag) {
+        twitterSiteTag.setAttribute('content', '@oncrowdr')
+      }
+
+      const twitterCreatorTag = document.querySelector(
+        'meta[name="twitter:creator"]'
+      )
+      if (twitterCreatorTag) {
+        twitterCreatorTag.setAttribute('content', '@oncrowdr')
+      }
+
+      const twitterImageTag = document.querySelector(
+        'meta[name="twitter:image"]'
+      )
+      if (twitterImageTag) {
+        twitterImageTag.setAttribute(
+          'content',
+          campaign?.campaignCoverImage?.url
+        )
+      }
+
+      const twitterDescription = document.querySelector(
+        'meta[name="twitter:twitter_description"]'
+      )
+      if (twitterDescription) {
+        twitterDescription.setAttribute(
+          'content',
+          (campaign?.campaignType.includes('fundraise')
+            ? 'Donate to '
+            : 'Volunteer to ') +
+            campaign.title +
+            ` organised by ${campaign?.user?.organizationName}`
+        )
       }
     }
   }, [params.id, campaign?.campaignType])
@@ -257,8 +303,6 @@ export default function DonateOrVolunteer ({
     }
   }
 
-  
-
   const urlsOnly = campaign?.campaignAdditionalImages.map(
     (item: { url: string }) => item.url
   )
@@ -267,15 +311,68 @@ export default function DonateOrVolunteer ({
     return Object.values(input).every(value => value !== '')
   }
 
-  if(loadingCampaign) return <Loading/>
+  if (loadingCampaign) return <Loading />
 
   return (
-    <div className="font-satoshi">
-       <Head>
-        <title>Fundraise and Find Volunteers</title>
-        <meta name="description" content={`Explore campaigns and spread love by donating or volunteering to ${campaign?.title}`} />
-        <meta property="og:title" content={"Fundraise and Find Volunteers"} />
-        <meta property="og:description" content={`Explore campaigns and spread love by donating or volunteering to ${campaign?.title}`} />
+    <div className='font-satoshi'>
+      <Head>
+        <title>
+          {(campaign?.campaignType.includes('fundraise')
+            ? 'Donate to '
+            : 'Volunteer to ') +
+            campaign.title +
+            ` organised by ${campaign?.user?.organizationName}`}
+        </title>
+        <meta
+          name='title'
+          content={
+            (campaign?.campaignType.includes('fundraise')
+              ? 'Donate to '
+              : 'Volunteer to ') +
+            campaign.title +
+            ` organised by ${campaign?.user?.organizationName}`
+          }
+        />
+        <meta
+          name='description'
+          content={`Explore campaigns and spread love by donating or volunteering to ${campaign.title}`}
+        />
+
+        <meta property='og:type' content='website' />
+        <meta property='og:url' content='https://www.oncrowdr.com/' />
+        <meta property='og:title' content='Crowdr — Crowdfund in Nigeria' />
+        <meta
+          property='og:description'
+          content={
+            (campaign?.campaignType.includes('fundraise')
+              ? 'Donate to '
+              : 'Volunteer to ') +
+            campaign.title +
+            ` organised by ${campaign?.user?.organizationName}`
+          }
+        />
+        <meta property='og:image' content={campaign?.campaignCoverImage?.url} />
+
+        <meta property='twitter:card' content='summary_large_image' />
+        <meta property='twitter:url' content='https://www.oncrowdr.com/' />
+        <meta
+          property='twitter:title'
+          content={
+            (campaign?.campaignType.includes('fundraise')
+              ? 'Donate to '
+              : 'Volunteer to ') +
+            campaign.title +
+            ` organised by ${campaign?.user?.organizationName}`
+          }
+        />
+        <meta
+          property='twitter:description'
+          content={`Explore campaigns and spread love by donating or volunteering to ${campaign.title}`}
+        />
+        <meta
+          property='twitter:image'
+          content={campaign?.campaignCoverImage?.url}
+        />
       </Head>
       <NavBar />
       <div className='py-10 px-6 md:px-40'>
@@ -300,9 +397,7 @@ export default function DonateOrVolunteer ({
             currentAmount={donatedAmount}
             timePosted={campaign?.campaignStartDate}
             volunteer={campaign?.volunteer}
-            avatar={
-              campaign?.photo?.url || ""
-            }
+            avatar={campaign?.photo?.url || ''}
             slideImages={[
               campaign?.campaignCoverImage?.url,
               ...(urlsOnly || [])
