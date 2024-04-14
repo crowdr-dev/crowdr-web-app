@@ -24,6 +24,11 @@ export async function generateMetadata (
     },
     description: `Explore campaigns and spread love by donating or volunteering to ${campaign.title}`,
     twitter: {
+      title: (campaign?.campaignType.includes('fundraise')
+          ? 'Donate to '
+          : 'Volunteer to ') +
+        campaign.title +
+        ` organised by ${campaign?.user?.organizationName}`,
       card: "summary_large_image",
       site: "https://www.oncrowdr.com/", 
       creator: "@oncrowdr",
