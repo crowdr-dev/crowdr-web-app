@@ -129,8 +129,8 @@ const KycPopup = () => {
             Verification Documents
           </p>
           <div className="flex flex-col gap-5 max-w-[480px]">
-          <FileItem fileName={kycData.docType} url={kycData.docImg.url} />
-          <FileItem fileName="selfie" url={kycData.selfieImg.url} />
+          <FileItem fileName={kycData.docType} url={kycData.docImg?.url} />
+          <FileItem fileName="selfie" url={kycData.selfieImg?.url} />
             {/* {files.map((file, index) => (
               <FileItem key={index} />
             ))} */}

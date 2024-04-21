@@ -8,11 +8,17 @@ const FileItem: RFC<FileItemProps> = ({ fileName, url }) => {
   const [fileSize, setFileSize] = useState("")
 
   useEffect(() => {
-    getImageSize(url).then((fileSize) => setFileSize(fileSize))
+    if (url) {
+      getImageSize(url).then((fileSize) => setFileSize(fileSize))
+    } else {
+      setFileSize('NOT FOUND')
+    }
   }, [])
 
   const viewFile = () => {
-    window.open(url, "_blank")
+    if (url) {
+      window.open(url, "_blank")
+    }
   }
 
   return (
