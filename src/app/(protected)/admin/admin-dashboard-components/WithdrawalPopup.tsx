@@ -117,21 +117,19 @@ const WithdrawalPopup = () => {
                 {withdrawalData.user.organizationName}
               </h2>
             </div>
-            {isOrganization && (
+            {/* {isOrganization && (
               <p className="self-end font-semibold text-[#61656B]">
                 4536673337
               </p>
-            )}
+            )} */}
           </div>
 
           <div className="flex flex-col gap-1">
-            {!isOrganization && (
-              <p className="text-xs text-[#61656B]">BVN Number</p>
-            )}
             <Text
               characterLimit={128}
               expandText="Read more"
               className="text-sm text-[#393E46]"
+              toggle
             >
               {withdrawalData.campaign.story}
             </Text>

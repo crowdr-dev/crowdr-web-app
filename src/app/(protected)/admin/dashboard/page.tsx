@@ -205,7 +205,11 @@ const Dashboard = () => {
                   </Table.Cell>
 
                   <Table.Cell>
-                    {<div className="font-medium">{kyc.accountType}</div>}
+                    {
+                      <div className="font-medium">
+                        {toTitleCase(kyc.accountType)}
+                      </div>
+                    }
                   </Table.Cell>
 
                   <Table.Cell>{label(kyc.status)}</Table.Cell>
@@ -485,8 +489,8 @@ const items = [
 function mapKycResponseToView(kycs: IkycResponse["kycs"]) {
   return kycs.map((kyc) => ({
     id: kyc._id,
-    accountName: kyc.userId,
-    accountType: kyc.status || "pending",
+    accountName: kyc.user.organizationName || kyc.user.fullName,
+    accountType: kyc.user.userType,
     status: kyc.status || "pending",
     imageUrl: TempLogo,
   }))
@@ -501,11 +505,15 @@ function mapWithdrawalResponseToView(
 
     return {
       id: withdrawal._id,
-      accountName: withdrawal.userId,
+      accountName: withdrawal.user.organizationName || withdrawal.user.fullName,
       campaignTitle: withdrawal.campaign.title,
       status: withdrawal.status,
       amount: formattedAmount,
       imageUrl: TempLogo,
     }
   })
+}
+
+function toTitleCase(str: string) {
+  return str.replace(/\b\w/g, (match) => match.toUpperCase())
 }
