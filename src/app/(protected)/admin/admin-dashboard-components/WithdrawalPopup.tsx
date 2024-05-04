@@ -136,11 +136,35 @@ const WithdrawalPopup = () => {
           </div>
         </div>
 
-        <div className="px-[10px] max-w-[512px]">
-          <div className="flex flex-col gap-[26px] pt-[10px] mb-10">
+        <div className="px-2.5 max-w-[512px]">
+          <div className="flex flex-col gap-[26px] pt-2.5 mb-6">
+            <TextInput label="Withdrawal amount" value="2108051917" disabled />
             <TextInput label="Account number" value="2108051917" disabled />
             <TextInput label="Bank" value="Access Bank" disabled />
             <TextInput label="Account name" value="John Doe" disabled />
+          </div>
+
+          <div className="flex flex-col gap-4 text-xs mb-10">
+            <hr className="border-t-[#CFCFCF]" />
+            <h3 className="font-semibold text-[#666]">
+              Donation Breakdown
+            </h3>
+
+            <div className="flex justify-between">
+              <p>Donation amount</p>
+              <p>1,200,000</p>
+            </div>
+
+            <div className="flex justify-between">
+              <p>Service fee</p>
+              <p>200,000</p>
+            </div>
+            <hr className="border-t-[#CFCFCF]" />
+
+            <div className="flex justify-between font-semibold text-base">
+              <p>Total</p>
+              <p>N 1,400,000</p>
+            </div>
           </div>
 
           {!withdrawalApproved && (
