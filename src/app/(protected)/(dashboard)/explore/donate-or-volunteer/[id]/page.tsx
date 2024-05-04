@@ -175,20 +175,6 @@ export default function DonateOrVolunteer({
           : 'volunteer'
     )
     getCurrentUser()
-
-    if (campaign) {
-      document.title = (campaign?.campaignType.includes("fundraise") ? 'Donate to ' : 'Volunteer to ') + campaign.title + ` organised by ${campaign?.user?.organizationName}` ;
-      const metaDescription = `Explore campaigns and spread love by donating or volunteering to ${campaign.title}`;
-      const metaTag = document.querySelector('meta[name="description"]');
-      if (metaTag) {
-        metaTag.setAttribute('content', metaDescription);
-      }
-      // Set Open Graph image meta tag
-      const ogImageTag = document.querySelector('meta[property="og:image"]');
-      if (ogImageTag) {
-        ogImageTag.setAttribute('content', campaign?.campaignCoverImage?.url);
-      }
-    }
   }, [params.id, campaign?.campaignType])
 
   const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails.reduce(
@@ -295,9 +281,6 @@ export default function DonateOrVolunteer({
   if(loadingCampaign) return <Loading/>
   return (
     <div className='mb-6'>
-      <Head>
-        <title>{campaign?.title} - Fundraise and Find Volunteers</title>
-      </Head>
       <div className='flex items-center justify-between mb-4'>
         <div>
           <h3 className='text-2xl text-black font-semibold'>

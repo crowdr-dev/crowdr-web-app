@@ -1,89 +1,84 @@
-"use client" // TODO: TRY TO RETURN TO SERVER COMPONENT; LOOK AT ModalProvider
-import { PropsWithChildren, useEffect } from "react"
-import Head from "next/head"
-import { usePathname } from "next/navigation"
-import { Public_Sans, Lato } from "next/font/google"
-import localFont from "next/font/local"
-import { QueryClient, QueryClientProvider } from "react-query"
-import { Toaster } from "react-hot-toast"
-import ModalProvider from "./common/hooks/useModal"
-import "./globals.css"
-import "./common/styles/button.css"
-import NewLogo from "../../public/svg/new-crowdr-logo.svg"
+import { PropsWithChildren } from "react";
+import type { Metadata } from 'next'
+import Head from "next/head";
+import { usePathname } from "next/navigation";
+import { Public_Sans, Lato } from "next/font/google";
+import localFont from "next/font/local";
+import "./globals.css";
+import "./common/styles/button.css";
+import RootApp from "./app";
 
 export const lato = Lato({
   weight: ["400", "700"],
   style: ["normal", "italic"],
-  subsets: ["latin"],
-})
+  subsets: ["latin"]
+});
 
 const satoshi = localFont({
   src: [
     {
       path: "../../public/fonts/Satoshi-Regular.otf",
-      weight: "400",
+      weight: "400"
     },
     {
       path: "../../public/fonts/Satoshi-Medium.otf",
-      weight: "500",
+      weight: "500"
     },
     {
       path: "../../public/fonts/Satoshi-Bold.otf",
-      weight: "700",
-    },
+      weight: "700"
+    }
   ],
-  variable: "--font-satoshi",
-})
+  variable: "--font-satoshi"
+});
 
-const inter = Public_Sans({ subsets: ["latin"] })
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Crowdr',
+    default: 'Crowdr - Crowdfund in Nigeria',
+  },
+  applicationName: 'Crowdr',
+  keywords: ['crowdfunding', 'donate', 'volunteer', 'charity', 'NGO', 'non-profit', 'fundraising', 'donation', 'volunteering', 'Nigeria', 'Africa'],
+  description: 'Explore campaigns and spread love by donating or volunteering',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://www.oncrowdr.com/',
+    siteName: 'Crowdr',
+    title: 'Crowdr - Crowdfund in Nigeria',
+    description: 'Explore campaigns and spread love by donating or volunteering',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png',
+        alt: 'Crowdr logo',
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@oncrowdr", 
+    creator: "@oncrowdr",
+    images: "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
+    description: "Explore campaigns and spread love by donating or volunteering"
+  },
+  appleWebApp: {
+    statusBarStyle: 'default',
+    capable: true,
+    title: "Crowdr - Crowdfund in Nigeria"
+  }
+}
 
-const queryClient = new QueryClient()
+const inter = Public_Sans({ subsets: ["latin"] });
 
 export default function RootLayout({ children }: PropsWithChildren) {
-  const pathname = usePathname()
-
-  useEffect(() => {
-    if (pathname) {
-      document.title =
-        pathname.length > 1
-          ? `${
-              pathname.slice(1).charAt(0).toUpperCase() +
-              pathname.slice(2) +
-              " | "
-            } Crowdr — Crowdfund in Nigeria`
-          : "Crowdr — Crowdfund in Nigeria"
-      const metaDescription = `Explore campaigns and spread love by donating or volunteering`
-      const metaTag = document.querySelector('meta[name="description"]')
-      if (metaTag) {
-        metaTag.setAttribute("content", metaDescription)
-      }
-      const ogImageTag = document.querySelector('meta[property="og:image"]')
-      if (ogImageTag) {
-        ogImageTag.setAttribute("content", NewLogo)
-      }
-    }
-  }, [pathname])
-
+  // const pathname = usePathname();
   return (
     <html lang="en">
-      <Head>
-        <title>Crowdr</title>
-        <meta name="description" content={"Build Community through Giving"} />
-        <meta property="og:image" content={NewLogo} />
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css"
-          rel="stylesheet"
-        />
-      </Head>
-
       <body className={`${satoshi.variable} ${inter.className}`}>
-        <QueryClientProvider client={queryClient}>
-          <ModalProvider>
-            <Toaster position="top-right" reverseOrder={false} />
-            {children}
-          </ModalProvider>
-        </QueryClientProvider>
+        <RootApp>
+          {children}
+        </RootApp>
       </body>
     </html>
-  )
+  );
 }
