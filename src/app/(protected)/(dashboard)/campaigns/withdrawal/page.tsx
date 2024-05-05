@@ -37,14 +37,17 @@ const Withdrawal = () => {
     fetchStats,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
     }
   )
 
-  const { isPreviousData, data: campaigns } = useQuery(
+  const { data: campaigns } = useQuery(
     [keys.myCampaigns.campaigns, user?.token, page],
     fetchCampaigns,
     {
       enabled: Boolean(user?.token),
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
     }
   )
 

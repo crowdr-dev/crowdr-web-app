@@ -16,7 +16,7 @@ const Sidebar = () => {
   const currentPath = usePathname()
 
   return (
-    <nav className="flex flex-col justify-between overflow-y-auto max-w-[280px] shrink-0 h-full bg-white py-8">
+    <nav className="flex flex-col justify-between overflow-x-hidden overflow-y-auto max-w-[280px] shrink-0 h-full bg-white py-8">
       <div className="flex flex-col gap-y-6">
         {/* logo */}
         <Link href="/explore" className="flex items-center px-6">

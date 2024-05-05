@@ -193,7 +193,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
       </div>
 
       {drawer ? (
-        <div className="flex flex-col overflow-y-auto grow">{sidebarItems}</div>
+        <div className="flex flex-col overflow-x-hidden overflow-y-auto grow">{sidebarItems}</div>
       ) : (
         sidebarItems
       )}
