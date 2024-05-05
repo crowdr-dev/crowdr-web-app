@@ -138,32 +138,35 @@ const WithdrawalPopup = () => {
 
         <div className="px-2.5 max-w-[512px]">
           <div className="flex flex-col gap-[26px] pt-2.5 mb-6">
-            <TextInput label="Withdrawal amount" value="2108051917" disabled />
+            <TextInput
+              label="Withdrawal amount"
+              value={withdrawalData.totalAmountDonated[0].payableAmount.toString()}
+              disabled
+            />
             <TextInput label="Account number" value="2108051917" disabled />
             <TextInput label="Bank" value="Access Bank" disabled />
             <TextInput label="Account name" value="John Doe" disabled />
           </div>
 
+          {/* break down */}
           <div className="flex flex-col gap-4 text-xs mb-10">
             <hr className="border-t-[#CFCFCF]" />
-            <h3 className="font-semibold text-[#666]">
-              Donation Breakdown
-            </h3>
+            <h3 className="font-semibold text-[#666]">Donation Breakdown</h3>
 
             <div className="flex justify-between">
               <p>Donation amount</p>
-              <p>1,200,000</p>
+              <p>{withdrawalData.totalAmountDonated[0].payableAmount}</p>
             </div>
 
             <div className="flex justify-between">
               <p>Service fee</p>
-              <p>200,000</p>
+              <p>{withdrawalData.totalAmountDonated[0].serviceFee}</p>
             </div>
             <hr className="border-t-[#CFCFCF]" />
 
             <div className="flex justify-between font-semibold text-base">
               <p>Total</p>
-              <p>N 1,400,000</p>
+              <p>{withdrawalData.totalAmountDonated[0].amount}</p>
             </div>
           </div>
 
