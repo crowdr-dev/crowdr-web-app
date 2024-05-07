@@ -18,6 +18,7 @@ import { useToast } from "@/app/common/hooks/useToast"
 import otpService from "../common/services/otpService"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import Text from "../../(dashboard)/dashboard-components/Text"
+import { formatAmount } from "../../(dashboard)/common/utils/currency"
 
 export const activeWithdrawalIdAtom = atom<string | null>(null)
 export const withdrawalToRejectAtom = atom<{ id: string; otp: string } | null>(
@@ -97,7 +98,10 @@ const WithdrawalPopup = () => {
     }
   }
 
-  if (withdrawalData)
+  if (withdrawalData) {
+    const [{ payableAmount, serviceFee, currency, amount }] =
+      withdrawalData.totalAmountDonated
+
     return (
       <div className="grow max-w-[1031px] bg-white px-[50px] py-10 mb-11 border max-h-screen overflow-y-auto">
         <div className="flex justify-between items-center mb-11">
@@ -140,7 +144,7 @@ const WithdrawalPopup = () => {
           <div className="flex flex-col gap-[26px] pt-2.5 mb-6">
             <TextInput
               label="Withdrawal amount"
-              value={withdrawalData.totalAmountDonated[0].payableAmount.toString()}
+              value={formatAmount(payableAmount, currency)}
               disabled
             />
             <TextInput label="Account number" value="2108051917" disabled />
@@ -155,18 +159,22 @@ const WithdrawalPopup = () => {
 
             <div className="flex justify-between">
               <p>Donation amount</p>
-              <p>{withdrawalData.totalAmountDonated[0].payableAmount}</p>
+              <p>
+                {formatAmount(payableAmount, currency, { prefixSymbol: false })}
+              </p>
             </div>
 
             <div className="flex justify-between">
               <p>Service fee</p>
-              <p>{withdrawalData.totalAmountDonated[0].serviceFee}</p>
+              <p>
+                {formatAmount(serviceFee, currency, { prefixSymbol: false })}
+              </p>
             </div>
             <hr className="border-t-[#CFCFCF]" />
 
             <div className="flex justify-between font-semibold text-base">
               <p>Total</p>
-              <p>{withdrawalData.totalAmountDonated[0].amount}</p>
+              <p>{formatAmount(amount, currency)}</p>
             </div>
           </div>
 
@@ -215,6 +223,7 @@ const WithdrawalPopup = () => {
         </div>
       </div>
     )
+  }
 
   return <CgSpinner size="50px" className="animate-spin icon opacity-100" />
 }
