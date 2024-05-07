@@ -12,6 +12,7 @@ const CompletionCard: RFC<CompletionCardProps> = ({
   secondaryButton,
   clearModal,
   icon,
+  altLayout,
 }) => {
   const boxShadow =
     "0px 8px 8px -4px rgba(16, 24, 40, 0.03), 0px 20px 24px -4px rgba(16, 24, 40, 0.08)"
@@ -20,35 +21,41 @@ const CompletionCard: RFC<CompletionCardProps> = ({
   return (
     <div
       style={{ boxShadow }}
-      className="max-w-[342px] md:max-w-[544px] bg-white rounded-lg overflow-hidden p-4 md:p-6"
+      className={`max-w-[342px] ${!altLayout ? 'md:max-w-[544px]' : 'md:max-w-[400px]'} bg-white rounded-lg overflow-hidden p-4 md:p-6`}
     >
-      <div className="flex justify-between md:gap-4 mb-3 md:mb-8">
+      <div className={`flex justify-between md:gap-4 mb-3 ${!altLayout ? 'md:mb-8' : 'md:mb-4'}`}>
         <Rings icon={icon} />
 
-        <div className="hidden md:flex flex-col gap-1 mb-6">
-          <div className="flex justify-between text-lg text-[#101828] font-semibold md:mb-1">
-            {title}
+        {!altLayout && (
+          <div className="hidden md:flex flex-col gap-1 mb-6">
+            <div className="flex justify-between text-lg text-[#101828] font-semibold md:mb-1">
+              {title}
 
-            <XIcon
-              onClick={clearModal}
-              className="hidden md:inline cursor-pointer"
-            />
+              <XIcon
+                onClick={clearModal}
+                className="hidden md:inline cursor-pointer"
+              />
+            </div>
+            {typeof text === "string" ? (
+              <p className="text-sm text-[#475467] md:text-justify md:pr-2">
+                {text}
+              </p>
+            ) : (
+              text
+            )}
           </div>
-          {typeof text === "string" ? (
-            <p className="text-sm text-[#475467] md:text-justify md:pr-2">
-              {text}
-            </p>
-          ) : (
-            text
-          )}
-        </div>
+        )}
 
         <div className="md:pointer-events-none contents">
-          <XIcon onClick={clearModal} className="md:hidden cursor-pointer" wrapperClass="mr-4 md:mr-0" />
+          <XIcon
+            onClick={clearModal}
+            className={`cursor-pointer ${!altLayout ? 'md:hidden' : ''}`}
+            wrapperClass="mr-4 md:mr-0"
+          />
         </div>
       </div>
 
-      <div className="flex flex-col md:hidden gap-1 mb-6">
+      <div className={`flex flex-col gap-1 mb-6 ${!altLayout ? 'md:hidden' : ''}`}>
         <p className="text-lg font-semibold">{title}</p>
         <p className="text-sm text-[#475467]">{text}</p>
       </div>
@@ -85,6 +92,7 @@ type CompletionCardProps = {
   secondaryButton?: Button
   clearModal: () => void
   icon?: ReactElement
+  altLayout?: boolean
 }
 
 type Button = {
@@ -160,7 +168,7 @@ const Rings = ({ icon }: any) => {
 
 const XIcon = ({ onClick, className, wrapperClass }: any) => {
   return (
-    <div className={`relative ${wrapperClass || ''}`}>
+    <div className={`relative ${wrapperClass || ""}`}>
       <div className="absolute grid place-items-center top-[50%] right-[50%] -translate-y-[50%] translate-x-[50%] rounded-full hover:bg-[#F8F8F8] transition h-10 w-10">
         <svg
           xmlns="http://www.w3.org/2000/svg"

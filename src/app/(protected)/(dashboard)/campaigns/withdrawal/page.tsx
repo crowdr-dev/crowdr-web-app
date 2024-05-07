@@ -83,6 +83,7 @@ const Withdrawal = () => {
 
     modal.show(
       <CompletionCard
+        altLayout
         title={`You’re making a withdrawal of ${formatAmount(
           payableAmount,
           currency
