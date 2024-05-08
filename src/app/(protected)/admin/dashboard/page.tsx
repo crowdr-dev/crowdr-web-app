@@ -483,7 +483,10 @@ const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
   const [_, token] = queryKey
 
   if (token) {
-    const endpoint = `/api/v1/admin/dashboard`
+    const query = new URLSearchParams({
+      withdrawalStatus: 'in-review',
+    })
+    const endpoint = `/api/v1/admin/dashboard?${query}`
 
     const headers = {
       "x-auth-token": token,
@@ -502,7 +505,7 @@ const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
 
       const pendingWithdrawals = {
         title: "Pending Withdrawals",
-        value: data.withdrawals, // TODO: DOESN'T RETURN JUST PENDING WITHDRAWALS
+        value: data.withdrawals,
       }
 
       const totalUser = {
