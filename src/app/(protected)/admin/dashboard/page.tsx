@@ -484,6 +484,7 @@ const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
 
   if (token) {
     const query = new URLSearchParams({
+      kycStatus: 'pending',
       withdrawalStatus: 'in-review',
     })
     const endpoint = `/api/v1/admin/dashboard?${query}`
@@ -498,9 +499,9 @@ const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
         method: "GET",
       })
 
-      const pendingCampaigns = {
-        title: "Pending Campaigns",
-        value: data.KYCs, // TODO: DOESN'T RETURN CAMPAIGNS
+      const pendingKYCs = {
+        title: "Pending KYCs",
+        value: data.KYCs,
       }
 
       const pendingWithdrawals = {
@@ -513,7 +514,7 @@ const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
         value: data.users,
       }
 
-      return [pendingCampaigns, pendingWithdrawals, totalUser]
+      return [pendingKYCs, pendingWithdrawals, totalUser]
     } catch (error) {
       const message = extractErrorMessage(error)
       throw new Error(message)
