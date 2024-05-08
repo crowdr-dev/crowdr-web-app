@@ -25,5 +25,5 @@ export default StatCard
 
 type StatCardProps = {
   title: string
-  value: string
+  value: number
 }
