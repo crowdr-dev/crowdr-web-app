@@ -5,7 +5,7 @@ import InputTitle from "@/app/common/components/InputTitle"
 import TextInput from "@/app/common/components/TextInput"
 import TextAreaInput from "@/app/common/components/TextAreaInput"
 import FormSkeleton from "@/app/(protected)/(dashboard)/dashboard-components/skeletons/FormSkeleton"
-import FileItem from "../../admin-dashboard-components/FileItem"
+// import FileItem from "../../admin-dashboard-components/FileItem"
 import { Button, WhiteButton } from "@/app/common/components/Button"
 import ModalTrigger from "@/app/common/components/ModalTrigger"
 
@@ -108,7 +108,7 @@ const ViewCampaign = () => {
               <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Upload Engaging Media" />
                 <div className="max-w-lg">
-                  <FileItem />
+                  {/* <FileItem /> */}
                 </div>
               </div>
               <hr className="mb-5" />

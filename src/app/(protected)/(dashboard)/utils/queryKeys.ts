@@ -21,5 +21,10 @@ export const keys = {
     kyc: 'get-kyc',
     bankDetails: 'get-bank-details',
     withdrawals: 'get-withdrawals',
+  },
+  admin: {
+    stats: 'admin-get-stats',
+    kycs: "admin-get-KYC",
+    withdrawals: 'admin-get-withdrawals'
   }
 } as const

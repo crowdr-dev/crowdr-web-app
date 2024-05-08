@@ -21,7 +21,7 @@ const Label: RFC<LabelProps> = ({
           className="rounded-full h-2 w-2 mr-[6px]"
         ></span>
       )}
-      <span style={{ color: textColor, fontSize: "12px" }}>{text}</span>
+      <span className="whitespace-nowrap" style={{ color: textColor, fontSize: "12px" }}>{text}</span>
     </div>
   )
 }
@@ -37,20 +37,26 @@ type LabelProps = {
 }
 
 const Approved = <Label text="Approved" dotColor="#17B26A" />
+const Completed = <Label text="Completed" dotColor="#17B26A" />
 const Pending = <Label text="Pending" dotColor="#F3C729" />
+const In_Review = <Label text="In-Review" dotColor="#F3C729" />
 const Rejected = <Label text="Rejected" dotColor="#F04438" />
 
 export const label = (type: string) => {
   switch (type) {
     case "Approved":
     case "approved":
-    case "completed":
       return Approved
+
+    case "completed":
+      return Completed
 
     case "Pending":
     case "pending":
-    case "in-review":
       return Pending
+
+    case "in-review":
+      return In_Review
 
     case "rejected":
       return Rejected

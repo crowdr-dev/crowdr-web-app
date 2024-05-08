@@ -28,6 +28,11 @@ export const mapCampaignResponseToView = (
     percentage,
     allDonors,
     allVolunteers,
+    // serviceFee,
+    // payableAmount,
+    // totalAmount,
+    fundsToReceive,
+    amountDonated,
     duration = getDuration(campaignStartDate, campaignEndDate)
 
   if (isFundraise(campaign)) {
@@ -44,9 +49,20 @@ export const mapCampaignResponseToView = (
       totalAmountDonated.currency
     )
 
+    fundsToReceive = formatAmount(
+      totalAmountDonated.payableAmount,
+      totalAmountDonated.currency
+    )
+
     percentage = Math.floor(
       (totalAmountDonated.amount / fundingGoalDetail.amount) * 100
     )
+
+    amountDonated = totalAmountDonated
+
+    // serviceFee = totalAmountDonated.serviceFee
+    // payableAmount = totalAmountDonated.payableAmount
+    // totalAmount = totalAmountDonated.amount
   }
   
   if (isVolunteer(campaign)) {
@@ -73,6 +89,11 @@ export const mapCampaignResponseToView = (
     startDate: campaignStartDate,
     endDate: campaignEndDate,
     isCompleted,
+    // serviceFee,
+    // payableAmount,
+    // totalAmount,
+    fundsToReceive,
+    amountDonated,
   }
 }
 

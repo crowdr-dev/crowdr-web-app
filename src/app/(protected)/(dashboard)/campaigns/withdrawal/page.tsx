@@ -37,14 +37,17 @@ const Withdrawal = () => {
     fetchStats,
     {
       enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
     }
   )
 
-  const { isPreviousData, data: campaigns } = useQuery(
+  const { data: campaigns } = useQuery(
     [keys.myCampaigns.campaigns, user?.token, page],
     fetchCampaigns,
     {
       enabled: Boolean(user?.token),
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
     }
   )
 
@@ -73,15 +76,55 @@ const Withdrawal = () => {
     }
   }
 
+  // TODO: CREATE WITHDRAWAL CARD
   const activateWithdrawalModal = (campaign: ICampaignView) => {
+    const { payableAmount, serviceFee, amount, currency } =
+      campaign.amountDonated!
+
     modal.show(
       <CompletionCard
-        title={`You’re making a withdrawal of ${campaign.fundsGotten}`}
+        altLayout
+        title={`You’re making a withdrawal of ${formatAmount(
+          payableAmount,
+          currency
+        )}`}
         text={
-          <p className="text-sm text-[#475467] md:text-justify md:pr-2">
-            You are making a withdrawal from the{" "}
-            <span className="text-[#00B964]">{campaign.title}</span> campaign.
-          </p>
+          <div className="flex flex-col gap-5">
+            <p className="text-sm text-[#475467] md:text-justify md:pr-2">
+              You are making a withdrawal from the{" "}
+              <span className="text-[#00B964]">{campaign.title}</span> campaign.
+            </p>
+
+            {/* break down */}
+            <div className="flex flex-col gap-4 text-xs">
+              <hr className="border-t-[#CFCFCF]" />
+              <h3 className="font-semibold text-[#666]">
+                Withdrawal Breakdown
+              </h3>
+
+              <div className="flex justify-between">
+                <p>Amount to be received</p>
+                <p>
+                  {formatAmount(payableAmount, currency, {
+                    prefixSymbol: false,
+                  })}
+                </p>
+              </div>
+
+              <div className="flex justify-between">
+                <p>Service fee</p>
+                <p>
+                  {formatAmount(serviceFee, currency, { prefixSymbol: false })}
+                </p>
+              </div>
+              <hr className="border-t-[#CFCFCF]" />
+
+              <div className="flex justify-between font-semibold text-base">
+                <p>Total</p>
+                <p>{campaign.fundsGotten}</p>
+              </div>
+            </div>
+          </div>
         }
         primaryButton={{
           label: "Withdraw Funds",
@@ -195,8 +238,8 @@ const Withdrawal = () => {
                   <Table.Cell>
                     <Button
                       text="Withdraw"
-                      // disabled={!campaign.isCompleted}
                       onClick={() => activateWithdrawalModal(campaign)}
+                      // disabled={!campaign.isCompleted}
                     />
                   </Table.Cell>
                 </Table.Row>
@@ -258,9 +301,10 @@ const fetchStats: QF<Nullable<ICampaignStats>, [Nullable<string>]> = async ({
   }
 }
 
-const fetchCampaigns: QF<Nullable<ICampaign>, [Nullable<string>, number]> = async ({
-  queryKey,
-}) => {
+const fetchCampaigns: QF<
+  Nullable<ICampaign>,
+  [Nullable<string>, number]
+> = async ({ queryKey }) => {
   const [_, token, page] = queryKey
 
   if (token) {

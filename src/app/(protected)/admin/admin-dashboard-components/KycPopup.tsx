@@ -108,25 +108,19 @@ const KycPopup = () => {
                 {user.userType === "non-profit" ? "Organization" : "Individual"}
               </p>
               <h2 className="font-semibold text-2xl text-black">
-                Crowdr Africa
+                {kycData.user?.organizationName}
               </h2>
             </div>
-            {isOrganization && (
+            {/* {isOrganization && (
               <p className="self-end font-semibold text-[#61656B]">
                 4536673337
               </p>
-            )}
+            )} */}
           </div>
 
           <div className="flex flex-col gap-1">
-            {!isOrganization && (
-              <p className="text-xs text-[#61656B]">BVN Number</p>
-            )}
-            <p className="text-sm text-[#393E46]">
-              The "Help Nicholas Go Back to College" campaign aims to raise
-              funds to support Nicholas in pursuing his higher education dreams.
-              Nicholas is a passionate and determined individual who, due to
-            </p>
+            <p className="text-xs text-[#61656B]">BVN Number</p>
+            <p className="text-sm text-[#393E46]">{kycData.BVN}</p>
           </div>
         </div>
 
@@ -135,9 +129,11 @@ const KycPopup = () => {
             Verification Documents
           </p>
           <div className="flex flex-col gap-5 max-w-[480px]">
-            {files.map((file, index) => (
+          <FileItem fileName={kycData.docType} url={kycData.docImg?.url} />
+          <FileItem fileName="selfie" url={kycData.selfieImg?.url} />
+            {/* {files.map((file, index) => (
               <FileItem key={index} />
-            ))}
+            ))} */}
           </div>
         </div>
 
