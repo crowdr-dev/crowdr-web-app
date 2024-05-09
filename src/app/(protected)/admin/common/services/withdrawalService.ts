@@ -27,7 +27,7 @@ async function changeWithdrawalStatus({
   adminOtp,
   authToken,
   status,
-  reason,
+  remark,
 }: IPatchWithdrawal) {
   const endpoint = `/api/v1/admin/withdrawals/${kycId}`
   const headers = {
@@ -37,7 +37,7 @@ async function changeWithdrawalStatus({
 
   const body = {
     status,
-    ...(reason ? { reason } : {}),
+    ...(remark ? { remark } : {}),
   }
 
   try {
@@ -54,9 +54,28 @@ async function changeWithdrawalStatus({
   }
 }
 
+async function fetchBankDetails({ userId, authToken }: IGetBankingDetails) {
+  const endpoint = `/api/v1/admin/bank-details/user/${userId}`
+  const headers = {
+    "x-auth-token": authToken,
+  }
+
+  try {
+    const { data } = await makeRequest<IBankingDetails[]>(endpoint, {
+      headers,
+      method: "GET",
+    })
+
+    return data
+  } catch (error) {
+    const message = extractErrorMessage(error)
+    throw new Error(message)
+  }
+}
+
 const refreshWithdrawal = () => {}
 
-export default { fetchWithdrawal, changeWithdrawalStatus, refreshWithdrawal }
+export default { fetchWithdrawal, changeWithdrawalStatus, fetchBankDetails, refreshWithdrawal }
 
 export interface IGetWithdrawal {
   withdrawalId: string
@@ -68,7 +87,12 @@ export interface IPatchWithdrawal {
   adminOtp: string
   authToken: string
   status: WithdrawalStatus
-  reason?: string
+  remark?: string
+}
+
+export interface IGetBankingDetails {
+  userId: string
+  authToken: string
 }
 
 export interface IWithdrawal {
@@ -82,6 +106,20 @@ export interface IWithdrawal {
   campaign: Campaign
   totalAmountDonated: TotalAmountDonated[]
 }
+
+export interface IBankingDetails {
+  _id:               string;
+  userId:            string;
+  accountType:       string;
+  accountNumber:     string;
+  bankName:          string;
+  accountName:       string;
+  isVerifiedWithBVN: boolean;
+  createdAt:         Date;
+  updatedAt:         Date;
+  __v:               number;
+}
+
 
 export interface Campaign {
   _id: string

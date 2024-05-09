@@ -46,7 +46,7 @@ const CompletionCard: RFC<CompletionCardProps> = ({
           </div>
         )}
 
-        <div className="md:pointer-events-none contents">
+        <div className={`contents ${!altLayout ? 'md:pointer-events-none' : ''}`}>
           <XIcon
             onClick={clearModal}
             className={`cursor-pointer ${!altLayout ? 'md:hidden' : ''}`}

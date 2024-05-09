@@ -24,6 +24,7 @@ import kycService from "../common/services/kycService"
 import withdrawalService from "../common/services/withdrawalService"
 import { activeKycIdAtom } from "../admin-dashboard-components/KycPopup"
 import { activeWithdrawalIdAtom } from "../admin-dashboard-components/WithdrawalPopup"
+import { userCountAtom } from "../admin-dashboard-components/Sidebar"
 import { keys } from "../../(dashboard)/utils/queryKeys"
 
 import { IPagination, Nullable, QF } from "@/app/common/types"
@@ -43,6 +44,7 @@ const Dashboard = () => {
   const modalStore = useAtomValue(modalStoreAtom)
   const setActiveKycId = useSetAtom(activeKycIdAtom)
   const setActiveWithdrawalIdAtom = useSetAtom(activeWithdrawalIdAtom)
+  const setUserCount = useSetAtom(userCountAtom)
   const searchParams = useSearchParams()
   const route = useRouter()
   const user = useUser()
@@ -78,6 +80,12 @@ const Dashboard = () => {
     {
       enabled: Boolean(user?.token),
       refetchOnWindowFocus: false,
+      onSuccess: (stats) => {
+        if (stats) {
+          const userData = stats[2]
+          setUserCount(userData.value)
+        }
+      }
     }
   )
 
@@ -665,7 +673,7 @@ function mapKycResponseToView(kycs: IkycResponse["kycs"]) {
     id: kyc._id,
     accountName: kyc.user.organizationName || kyc.user.fullName,
     accountType: kyc.user.userType,
-    status: kyc.status || "pending",
+    status: kyc.verificationStatus || "pending",
     imageUrl: TempLogo,
   }))
 }

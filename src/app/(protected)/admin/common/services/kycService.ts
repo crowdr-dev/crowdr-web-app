@@ -26,8 +26,8 @@ async function changeKycStatus({
   kycId,
   adminOtp,
   authToken,
-  status,
-  reason,
+  verificationStatus,
+  remark,
 }: IPatchKyc) {
   const endpoint = `/api/v1/admin/kyc/${kycId}`
   const headers = {
@@ -36,8 +36,8 @@ async function changeKycStatus({
   }
 
   const body = {
-    status,
-    ...(reason ? { reason } : {}),
+    verificationStatus,
+    ...(remark ? { remark } : {}),
   }
 
   try {
@@ -67,8 +67,8 @@ export interface IPatchKyc {
   kycId: string
   adminOtp: string
   authToken: string
-  status: KycStatus
-  reason?: string
+  verificationStatus: KycStatus
+  remark?: string
 }
 
 export interface IKyc {
