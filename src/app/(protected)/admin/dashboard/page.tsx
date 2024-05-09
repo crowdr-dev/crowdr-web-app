@@ -665,7 +665,7 @@ function mapKycResponseToView(kycs: IkycResponse["kycs"]) {
     id: kyc._id,
     accountName: kyc.user.organizationName || kyc.user.fullName,
     accountType: kyc.user.userType,
-    status: kyc.status || "pending",
+    status: kyc.verificationStatus || "pending",
     imageUrl: TempLogo,
   }))
 }

@@ -11,6 +11,7 @@ import { CgSpinner } from "react-icons/cg"
 import XMark from "../../../../../public/svg/x-mark.svg"
 import { useEffect, useState } from "react"
 import withdrawalService, {
+  IBankingDetails,
   IWithdrawal,
 } from "../common/services/withdrawalService"
 import { useUser } from "../../(dashboard)/common/hooks/useUser"
@@ -28,6 +29,7 @@ export const withdrawalToRejectAtom = atom<{ id: string; otp: string } | null>(
 const WithdrawalPopup = () => {
   const [adminOtp, setAdminOtp] = useState("")
   const [withdrawalData, setWithdrawalData] = useState<IWithdrawal | null>(null)
+  const [bankDetails, setBankDetails] = useState<IBankingDetails | null>(null)
   const [activeWithdrawalId, setActiveWithdrawalId] = useAtom(
     activeWithdrawalIdAtom
   )
@@ -41,24 +43,34 @@ const WithdrawalPopup = () => {
   const withdrawalApproved = withdrawalData?.status === "approved"
 
   useEffect(() => {
-    if (user && activeWithdrawalId) {
-      withdrawalService
-        .fetchWithdrawal({
+    const initialize = async () => {
+      if (user && activeWithdrawalId) {
+        const withdrawalData = await withdrawalService.fetchWithdrawal({
           withdrawalId: activeWithdrawalId,
           authToken: user.token,
         })
-        .then((res) => setWithdrawalData(res))
 
-      const modal = modalStore.get("withdrawalPopup")!
-      modal._options.onHide = () => {
-        setAdminOtp("")
-        setActiveWithdrawalId(null)
+        const [bankingDetails] = await withdrawalService.fetchBankDetails({
+          userId: user._id,
+          authToken: user.token,
+        })
+
+        setWithdrawalData(withdrawalData)
+        setBankDetails(bankingDetails)
+
+        const modal = modalStore.get("withdrawalPopup")!
+        modal._options.onHide = () => {
+          setAdminOtp("")
+          setActiveWithdrawalId(null)
+          setWithdrawalData(null)
+        }
+      } else {
         setWithdrawalData(null)
+        setIsApproving(false)
       }
-    } else {
-      setWithdrawalData(null)
-      setIsApproving(false)
     }
+
+    initialize()
   }, [activeWithdrawalId])
 
   const generateToken = async () => {
@@ -147,9 +159,9 @@ const WithdrawalPopup = () => {
               value={formatAmount(payableAmount, currency)}
               disabled
             />
-            <TextInput label="Account number" value="2108051917" disabled />
-            <TextInput label="Bank" value="Access Bank" disabled />
-            <TextInput label="Account name" value="John Doe" disabled />
+            <TextInput label="Account number" value={bankDetails?.accountNumber} disabled />
+            <TextInput label="Bank" value={bankDetails?.bankName} disabled />
+            <TextInput label="Account name" value={bankDetails?.accountName} disabled />
           </div>
 
           {/* break down */}
