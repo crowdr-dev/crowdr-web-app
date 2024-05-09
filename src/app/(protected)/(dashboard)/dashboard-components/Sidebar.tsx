@@ -13,6 +13,7 @@ import Icon from "./Icon"
 
 import { RFC } from "@/app/common/types"
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
+import shield from "../../../../../public/svg/shield.svg"
 import bell from "../../../../../public/svg/bell.svg"
 import bell_dot from "../../../../../public/svg/bell-dot.svg"
 
@@ -72,7 +73,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
     const adminDashboard = new Page(
       { route: "/admin/dashboard" },
       "Admin Dashboard",
-      bell
+      shield
     )
 
     return _pageGroups.map((pageGroup, index) => {
