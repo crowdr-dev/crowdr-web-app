@@ -48,6 +48,8 @@ export interface Fundraise {
 export interface TotalAmountDonated {
   amount:   number;
   currency: Currency;
+  payableAmount: number
+  serviceFee: number
 }
 
 export interface Volunteer {
