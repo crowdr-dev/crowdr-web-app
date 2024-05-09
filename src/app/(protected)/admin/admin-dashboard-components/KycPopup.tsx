@@ -70,7 +70,7 @@ const KycPopup = () => {
           kycId: activeKycId,
           adminOtp: adminOtp,
           authToken: user.token,
-          status: "completed",
+          verificationStatus: "completed",
         })
 
         const kycData = await kycService.fetchKyc({
