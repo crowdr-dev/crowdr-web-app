@@ -16,5 +16,5 @@ export const pages = [
   new Page("/admin/dashboard", "Dashboard", barchart),
   new Page("/admin/dashboard/campaigns", "Campaigns", layers),
   new Page("/admin/dashboard/withdrawals", "Withdrawals", check),
-  new Page("/admin/dashboard/users", "Users", users, '100'),
+  new Page("/admin/dashboard/users", "Users", users, ''),
 ]

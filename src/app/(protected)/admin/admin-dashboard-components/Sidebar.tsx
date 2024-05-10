@@ -1,22 +1,37 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
+import { atom, useAtomValue } from "jotai"
 import TextInput from "@/app/common/components/TextInput"
-import { pages } from "../pages"
+import { pages as _pages } from "../pages"
 
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
 import CrowdrLogoType from "../../../../../public/svg/crowdr-logo.svg"
 import SearchIcon from "../../../../../public/svg/search.svg"
 import LogoutIcon from "../../../../../public/svg/logout-2.svg"
 
+export const userCountAtom = atom(0)
+
 const Sidebar = () => {
   const [searchText, setSearchText] = useState("")
   const currentPath = usePathname()
+  const [pages, setPages] = useState(_pages)
+  const userCount = useAtomValue(userCountAtom)
+
+  useEffect(() => {
+    const _pages = structuredClone(pages)
+    const usersPage = _pages.find((page) => page.title === "Users")
+
+    if (usersPage) {
+      usersPage.label = userCount.toString()
+      setPages(_pages)
+    }
+  }, [userCount])
 
   return (
-    <nav className="flex flex-col justify-between overflow-y-auto max-w-[280px] shrink-0 h-full bg-white py-8">
+    <nav className="flex flex-col justify-between overflow-x-hidden overflow-y-auto max-w-[280px] shrink-0 h-full bg-white py-8">
       <div className="flex flex-col gap-y-6">
         {/* logo */}
         <Link href="/explore" className="flex items-center px-6">

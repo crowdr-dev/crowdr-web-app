@@ -112,7 +112,7 @@ const ViewKyc = () => {
               <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Upload Engaging Media" />
                 <div className="max-w-lg">
-                  <FileItem />
+                  {/* <FileItem /> */}
                 </div>
               </div>
               <hr className="mb-5" />

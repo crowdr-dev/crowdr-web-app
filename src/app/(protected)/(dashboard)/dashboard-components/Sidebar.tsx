@@ -13,6 +13,7 @@ import Icon from "./Icon"
 
 import { RFC } from "@/app/common/types"
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
+import shield from "../../../../../public/svg/shield.svg"
 import bell from "../../../../../public/svg/bell.svg"
 import bell_dot from "../../../../../public/svg/bell-dot.svg"
 
@@ -72,7 +73,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
     const adminDashboard = new Page(
       { route: "/admin/dashboard" },
       "Admin Dashboard",
-      bell
+      shield
     )
 
     return _pageGroups.map((pageGroup, index) => {
@@ -193,7 +194,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
       </div>
 
       {drawer ? (
-        <div className="flex flex-col overflow-y-auto grow">{sidebarItems}</div>
+        <div className="flex flex-col overflow-x-hidden overflow-y-auto grow">{sidebarItems}</div>
       ) : (
         sidebarItems
       )}

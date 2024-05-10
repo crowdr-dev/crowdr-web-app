@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useQuery } from "react-query"
+import { useDebounceCallback } from "usehooks-ts"
 import { useUser } from "../../(dashboard)/common/hooks/useUser"
 import Link from "next/link"
 import Image from "next/image"
@@ -23,6 +24,8 @@ import kycService from "../common/services/kycService"
 import withdrawalService from "../common/services/withdrawalService"
 import { activeKycIdAtom } from "../admin-dashboard-components/KycPopup"
 import { activeWithdrawalIdAtom } from "../admin-dashboard-components/WithdrawalPopup"
+import { userCountAtom } from "../admin-dashboard-components/Sidebar"
+import { keys } from "../../(dashboard)/utils/queryKeys"
 
 import { IPagination, Nullable, QF } from "@/app/common/types"
 import { IWithdrawalResponse } from "@/app/common/types/Withdrawal"
@@ -31,6 +34,7 @@ import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
+import DropdownTrigger from "@/app/common/components/DropdownTrigger"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
@@ -40,12 +44,53 @@ const Dashboard = () => {
   const modalStore = useAtomValue(modalStoreAtom)
   const setActiveKycId = useSetAtom(activeKycIdAtom)
   const setActiveWithdrawalIdAtom = useSetAtom(activeWithdrawalIdAtom)
+  const setUserCount = useSetAtom(userCountAtom)
   const searchParams = useSearchParams()
   const route = useRouter()
   const user = useUser()
 
+  const [filter, setFilter] = useState<{
+    [K in FilterKeys]: { status?: Status<K>; username?: string }
+  }>({
+    KYC: {},
+    Withdrawals: {},
+  })
+
+  const setSearch = useDebounceCallback(
+    () =>
+      setSearchText((prevSearchText) => {
+        setFilter((prevFilter) => {
+          return {
+            ...prevFilter,
+            [selectedView]: {
+              ...prevFilter[selectedView],
+              username: prevSearchText,
+            },
+          }
+        })
+
+        return prevSearchText
+      }),
+    1000
+  )
+
+  const { data: stats } = useQuery(
+    [keys.admin.stats, user?.token],
+    fetchStats,
+    {
+      enabled: Boolean(user?.token),
+      refetchOnWindowFocus: false,
+      onSuccess: (stats) => {
+        if (stats) {
+          const userData = stats[2]
+          setUserCount(userData.value)
+        }
+      }
+    }
+  )
+
   const { data: kycData, refetch: refetchKycs } = useQuery(
-    ["getKYC", user?.token, kycPage],
+    [keys.admin.kycs, user?.token, kycPage, filter.KYC],
     fetchKyc,
     {
       enabled: Boolean(user?.token),
@@ -56,7 +101,7 @@ const Dashboard = () => {
   kycService.refreshKyc = refetchKycs
 
   const { data: withdrawalData, refetch: refetchWithdrawals } = useQuery(
-    ["getWithdrawal", user?.token, withdrawalsPage],
+    [keys.admin.withdrawals, user?.token, withdrawalsPage, filter.Withdrawals],
     fetchWithdrawal,
     {
       enabled: Boolean(user?.token),
@@ -66,7 +111,7 @@ const Dashboard = () => {
   )
   withdrawalService.refreshWithdrawal = refetchWithdrawals
 
-  const selectedView = searchParams.get("view") || "KYC"
+  const selectedView = (searchParams.get("view") || "KYC") as FilterKeys
   const tablePickerButtons = [
     // {
     //   label: "Campaigns",
@@ -82,6 +127,16 @@ const Dashboard = () => {
     },
   ]
 
+  const resetPage = () => {
+    switch (selectedView) {
+      case "KYC":
+        setKycPage(1)
+
+      case "Withdrawals":
+        setWithdrawalsPage(1)
+    }
+  }
+
   return (
     <div>
       {/* page title x subtitle */}
@@ -96,9 +151,8 @@ const Dashboard = () => {
 
       {/* stats */}
       <div className="flex gap-6 px-8 pt-8 mb-8">
-        {stats.map((stat, index) => (
-          <StatCard key={index} {...stat} />
-        ))}
+        {stats &&
+          stats.map((stat, index) => <StatCard key={index} {...stat} />)}
       </div>
 
       {/* toggle buttons x search x filters */}
@@ -110,6 +164,8 @@ const Dashboard = () => {
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value)
+              resetPage()
+              setSearch()
             }}
             placeholder="Search"
             iconUrl={SearchIcon}
@@ -119,14 +175,80 @@ const Dashboard = () => {
             }}
           />
 
-          <Button
-            text="Filters"
-            bgColor="#FFF"
-            textColor="#344054"
-            iconUrl={FilterIcon}
-            shadow
-            className="font-semibold"
-          />
+          <DropdownTrigger
+            triggerId="withdrawalsFilterBtn"
+            targetId="dropdownDefaultRadio"
+            options={{ placement: "bottom-end" }}
+          >
+            <Button
+              text="Filters"
+              bgColor="#FFF"
+              textColor="#344054"
+              iconUrl={FilterIcon}
+              shadow
+              className="font-semibold"
+            />
+          </DropdownTrigger>
+
+          {/* filter dropdown */}
+          <div
+            id="dropdownDefaultRadio"
+            className="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow"
+          >
+            <ul className="p-3 space-y-3 text-sm text-gray-700">
+              {_filter[selectedView].map((filter) => (
+                <li key={filter.value}>
+                  <div className="flex items-center">
+                    <input
+                      id={filter.value}
+                      type="radio"
+                      value={filter.value}
+                      name={selectedView}
+                      className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500"
+                      onChange={() => {
+                        resetPage()
+                        setFilter((prev) => {
+                          return {
+                            ...prev,
+                            [selectedView]: {
+                              status: filter.value as Status<
+                                typeof selectedView
+                              >,
+                            },
+                          }
+                        })
+                      }}
+                    />
+                    <label
+                      htmlFor={filter.value}
+                      className="ms-2 text-sm font-medium text-gray-900"
+                    >
+                      {filter.label}
+                    </label>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex justify-center px-4 py-3">
+              <Button
+                text="Clear"
+                bgColor="#FFF"
+                textColor="#344054"
+                shadow
+                className="grow !justify-center font-semibold"
+                onClick={() => {
+                  setFilter({ KYC: {}, Withdrawals: {} })
+                  const radioButtons = document.querySelectorAll<HTMLInputElement>(
+                    'input[type="radio"]'
+                  )
+                  radioButtons.forEach((button) => {
+                    button.checked = false
+                  })
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
       <hr className="mb-8" />
@@ -205,7 +327,11 @@ const Dashboard = () => {
                   </Table.Cell>
 
                   <Table.Cell>
-                    {<div className="font-medium">{kyc.accountType}</div>}
+                    {
+                      <div className="font-medium">
+                        {toTitleCase(kyc.accountType)}
+                      </div>
+                    }
                   </Table.Cell>
 
                   <Table.Cell>{label(kyc.status)}</Table.Cell>
@@ -334,6 +460,7 @@ const Dashboard = () => {
 
 export default Dashboard
 
+const ITEMS_PER_PAGE = "5"
 interface IKycs {
   kycs: ReturnType<typeof mapKycResponseToView>
   pagination: IPagination
@@ -344,18 +471,85 @@ interface IWithdrawals {
   pagination: IPagination
 }
 
-const ITEMS_PER_PAGE = "5"
+type IStats = {
+  title: string
+  value: number
+}[]
 
-const fetchKyc: QF<Nullable<IKycs>, [Nullable<string>, number]> = async ({
-  queryKey,
-}) => {
-  const [_, token, page] = queryKey
+interface StatsResponse {
+  users: number
+  withdrawals: number
+  KYCs: number
+}
+
+type FilterKeys = keyof typeof _filter
+type Status<K extends FilterKeys> = (typeof _filter)[K][number]["value"]
+
+type Token = Nullable<string>
+type Stats = Nullable<IStats>
+const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
+  const [_, token] = queryKey
+
+  if (token) {
+    const query = new URLSearchParams({
+      kycStatus: 'pending',
+      withdrawalStatus: 'in-review',
+    })
+    const endpoint = `/api/v1/admin/dashboard?${query}`
+
+    const headers = {
+      "x-auth-token": token,
+    }
+
+    try {
+      const { data } = await makeRequest<StatsResponse>(endpoint, {
+        headers,
+        method: "GET",
+      })
+
+      const pendingKYCs = {
+        title: "Pending KYCs",
+        value: data.KYCs,
+      }
+
+      const pendingWithdrawals = {
+        title: "Pending Withdrawals",
+        value: data.withdrawals,
+      }
+
+      const totalUser = {
+        title: "Total Users",
+        value: data.users,
+      }
+
+      return [pendingKYCs, pendingWithdrawals, totalUser]
+    } catch (error) {
+      const message = extractErrorMessage(error)
+      throw new Error(message)
+    }
+  }
+}
+
+type Kycs = Nullable<IKycs>
+type Page = number
+type KycFilter = Nullable<{ status?: Status<"KYC">; username?: string }>
+const fetchKyc: QF<Kycs, [Token, Page, KycFilter]> = async ({ queryKey }) => {
+  const [_, token, page, filter] = queryKey
 
   if (token) {
     const query = new URLSearchParams({
       page: `${page}`,
       perPage: ITEMS_PER_PAGE,
     })
+
+    if (filter?.status) {
+      query.append("status", filter.status)
+    }
+
+    if (filter?.username) {
+      query.append("username", filter.username)
+    }
+
     const endpoint = `/api/v1/admin/kyc?${query}`
 
     const headers = {
@@ -367,7 +561,7 @@ const fetchKyc: QF<Nullable<IKycs>, [Nullable<string>, number]> = async ({
         headers,
         method: "GET",
       })
-      // console.log(data)
+
       return {
         kycs: mapKycResponseToView(data.kycs),
         pagination: data.pagination,
@@ -379,17 +573,31 @@ const fetchKyc: QF<Nullable<IKycs>, [Nullable<string>, number]> = async ({
   }
 }
 
+type Withdrawals = Nullable<IWithdrawals>
+type WithdrawalFilter = Nullable<{
+  status?: Status<"Withdrawals">
+  username?: string
+}>
 const fetchWithdrawal: QF<
-  Nullable<IWithdrawals>,
-  [Nullable<string>, number]
+  Withdrawals,
+  [Token, Page, WithdrawalFilter]
 > = async ({ queryKey }) => {
-  const [_, token, page] = queryKey
+  const [_, token, page, filter] = queryKey
 
   if (token) {
     const query = new URLSearchParams({
       page: `${page}`,
       perPage: ITEMS_PER_PAGE,
     })
+
+    if (filter?.status) {
+      query.append("status", filter.status)
+    }
+
+    if (filter?.username) {
+      query.append("username", filter.username)
+    }
+
     const endpoint = `/api/v1/admin/withdrawals?${query}`
 
     const headers = {
@@ -401,7 +609,7 @@ const fetchWithdrawal: QF<
         headers,
         method: "GET",
       })
-      // console.log(data)
+      
       return {
         withdrawals: mapWithdrawalResponseToView(data.withdrawals),
 
@@ -429,65 +637,43 @@ const stats = [
   },
 ]
 
-const items = [
-  {
-    id: "0",
-    title: "Crowdr Africa",
-    detail: "Help Makinde attend school",
-    date: "N4,000,000",
-    extra: "some",
-    imageUrl: TempLogo,
-    altImageUrl: UserIcon,
-    status: "Approved",
-  },
-  {
-    id: "1",
-    title: "Crowdr Africa",
-    detail: "Help Makinde attend school",
-    date: "N4,000,000",
-    extra: "some",
-    imageUrl: TempLogo,
-    altImageUrl: UserIcon,
-    status: "Pending",
-  },
-  {
-    id: "2",
-    title: "Crowdr Africa",
-    detail: "Help Makinde attend school",
-    date: "N4,000,000",
-    extra: "some",
-    imageUrl: TempLogo,
-    altImageUrl: UserIcon,
-    status: "Approved",
-  },
-  {
-    id: "3",
-    title: "Crowdr Africa",
-    detail: "Help Makinde attend school",
-    date: "N4,000,000",
-    extra: "some",
-    imageUrl: TempLogo,
-    altImageUrl: UserIcon,
-    status: "Approved",
-  },
-  {
-    id: "4",
-    title: "Crowdr Africa",
-    detail: "Help Makinde attend school",
-    date: "N4,000,000",
-    extra: "some",
-    imageUrl: TempLogo,
-    altImageUrl: UserIcon,
-    status: "Pending",
-  },
-]
+const _filter = {
+  KYC: [
+    {
+      label: "Pending",
+      value: "pending",
+    },
+    {
+      label: "Rejected",
+      value: "rejected",
+    },
+    {
+      label: "Completed",
+      value: "completed",
+    },
+  ],
+  Withdrawals: [
+    {
+      label: "In-Review",
+      value: "in-review",
+    },
+    {
+      label: "Rejected",
+      value: "rejected",
+    },
+    {
+      label: "Approved",
+      value: "approved",
+    },
+  ],
+} as const
 
 function mapKycResponseToView(kycs: IkycResponse["kycs"]) {
   return kycs.map((kyc) => ({
     id: kyc._id,
-    accountName: kyc.userId,
-    accountType: kyc.status || "pending",
-    status: kyc.status || "pending",
+    accountName: kyc.user.organizationName || kyc.user.fullName,
+    accountType: kyc.user.userType,
+    status: kyc.verificationStatus || "pending",
     imageUrl: TempLogo,
   }))
 }
@@ -496,16 +682,20 @@ function mapWithdrawalResponseToView(
   withdrawals: IWithdrawalResponse["withdrawals"]
 ) {
   return withdrawals.map((withdrawal) => {
-    const [{ currency, amount }] = withdrawal.totalAmountDonated
-    const formattedAmount = formatAmount(amount, currency)
+    const [{ currency, payableAmount }] = withdrawal.totalAmountDonated
+    const formattedAmount = formatAmount(payableAmount, currency)
 
     return {
       id: withdrawal._id,
-      accountName: withdrawal.userId,
+      accountName: withdrawal.user.organizationName || withdrawal.user.fullName,
       campaignTitle: withdrawal.campaign.title,
       status: withdrawal.status,
       amount: formattedAmount,
       imageUrl: TempLogo,
     }
   })
+}
+
+function toTitleCase(str: string) {
+  return str.replace(/\b\w/g, (match) => match.toUpperCase())
 }

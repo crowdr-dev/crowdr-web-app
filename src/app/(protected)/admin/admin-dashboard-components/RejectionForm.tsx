@@ -19,7 +19,7 @@ import withdrawalService from "../common/services/withdrawalService"
 
 const RejectionForm: RFC<RejectionFormProps> = () => {
   const [title, setTitle] = useState("")
-  const [reason, setReason] = useState("")
+  const [remark, setRemark] = useState("")
   const [kycToReject, setKycToReject] = useAtom(kycToRejectAtom)
   const [withdrawalToReject, setWithdrawalToReject] = useAtom(
     withdrawalToRejectAtom
@@ -33,7 +33,7 @@ const RejectionForm: RFC<RejectionFormProps> = () => {
   if (modal) {
     modal._options.onHide = () => {
       setTitle("")
-      setReason("")
+      setRemark("")
       setKycToReject(null)
       setWithdrawalToReject(null)
     }
@@ -49,8 +49,8 @@ const RejectionForm: RFC<RejectionFormProps> = () => {
             kycId: kycToReject.id,
             adminOtp: kycToReject.otp,
             authToken: user.token,
-            status: "rejected",
-            reason,
+            verificationStatus: "rejected",
+            remark,
           })
 
           toast({ title: "KYC Rejected" })
@@ -61,7 +61,7 @@ const RejectionForm: RFC<RejectionFormProps> = () => {
             adminOtp: withdrawalToReject.otp,
             authToken: user.token,
             status: "rejected",
-            reason,
+            remark,
           })
 
           toast({ title: "Withdrawal Rejected" })
@@ -120,8 +120,8 @@ const RejectionForm: RFC<RejectionFormProps> = () => {
         />
 
         <TextAreaInput
-          value={reason}
-          onChange={(e) => setReason(e.target.value)}
+          value={remark}
+          onChange={(e) => setRemark(e.target.value)}
           label="Description*"
           placeholder="e.g. I joined Stripe’s Customer Success team to help them scale their checkout product. I focused mainly on onboarding new customers and resolving complaints."
         />
