@@ -609,7 +609,7 @@ const fetchWithdrawal: QF<
         headers,
         method: "GET",
       })
-      // console.log(data)
+      
       return {
         withdrawals: mapWithdrawalResponseToView(data.withdrawals),
 
@@ -682,8 +682,8 @@ function mapWithdrawalResponseToView(
   withdrawals: IWithdrawalResponse["withdrawals"]
 ) {
   return withdrawals.map((withdrawal) => {
-    const [{ currency, amount }] = withdrawal.totalAmountDonated
-    const formattedAmount = formatAmount(amount, currency)
+    const [{ currency, payableAmount }] = withdrawal.totalAmountDonated
+    const formattedAmount = formatAmount(payableAmount, currency)
 
     return {
       id: withdrawal._id,

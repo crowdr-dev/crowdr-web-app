@@ -45,24 +45,31 @@ const WithdrawalPopup = () => {
   useEffect(() => {
     const initialize = async () => {
       if (user && activeWithdrawalId) {
-        const withdrawalData = await withdrawalService.fetchWithdrawal({
-          withdrawalId: activeWithdrawalId,
-          authToken: user.token,
-        })
-
-        const [bankingDetails] = await withdrawalService.fetchBankDetails({
-          userId: user._id,
-          authToken: user.token,
-        })
-
-        setWithdrawalData(withdrawalData)
-        setBankDetails(bankingDetails)
-
         const modal = modalStore.get("withdrawalPopup")!
-        modal._options.onHide = () => {
-          setAdminOtp("")
-          setActiveWithdrawalId(null)
-          setWithdrawalData(null)
+
+        try {
+          const withdrawalData = await withdrawalService.fetchWithdrawal({
+            withdrawalId: activeWithdrawalId,
+            authToken: user.token,
+          })
+
+          const [bankingDetails] = await withdrawalService.fetchBankDetails({
+            userId: user._id,
+            authToken: user.token,
+          })
+
+          setWithdrawalData(withdrawalData)
+          setBankDetails(bankingDetails)
+
+          modal._options.onHide = () => {
+            setAdminOtp("")
+            setActiveWithdrawalId(null)
+            setWithdrawalData(null)
+          }
+        } catch (error) {
+          modal.hide()
+          const message = extractErrorMessage(error)
+          toast({ title: "Oops!", body: message })
         }
       } else {
         setWithdrawalData(null)
@@ -159,9 +166,17 @@ const WithdrawalPopup = () => {
               value={formatAmount(payableAmount, currency)}
               disabled
             />
-            <TextInput label="Account number" value={bankDetails?.accountNumber} disabled />
+            <TextInput
+              label="Account number"
+              value={bankDetails?.accountNumber}
+              disabled
+            />
             <TextInput label="Bank" value={bankDetails?.bankName} disabled />
-            <TextInput label="Account name" value={bankDetails?.accountName} disabled />
+            <TextInput
+              label="Account name"
+              value={bankDetails?.accountName}
+              disabled
+            />
           </div>
 
           {/* break down */}
