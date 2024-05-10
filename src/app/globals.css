@@ -128,3 +128,9 @@ input::-webkit-inner-spin-button {
   color: #00b964 !important;
   opacity: 1;
 }
+
+.tooltip-anchor {
+  width: 300px !important;
+  text-align: center;
+}
+

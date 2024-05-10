@@ -533,7 +533,8 @@ export default function DonateOrVolunteer({
                   type='number'
                   onChange={updateProps}
                   value={donationInputs.amount}
-                  info={`Processing fees and charges from our payment partners would be added to your donation. ${donationInputs.amount && `This brings your donation to a total of ${formatCurrency(calculateTransactionFee(parseFloat(donationInputs.amount)) + parseFloat(donationInputs.amount))}`}` }
+                  info={`Our payment processor charges a small donation fulfillment fee. ${donationInputs.amount && `This brings your total to ${formatCurrency(calculateTransactionFee(parseFloat(donationInputs.amount)) + parseFloat(donationInputs.amount))}`}` }
+                  formattedValue={donationInputs.amount && formatCurrency(calculateTransactionFee(parseFloat(donationInputs.amount)) + parseFloat(donationInputs.amount))}
                 />
                 <Input
                   label={'Full name'}

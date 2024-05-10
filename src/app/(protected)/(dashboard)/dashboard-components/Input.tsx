@@ -14,30 +14,29 @@ type InputProps = {
   type?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   info?: string
+  formattedValue?: string
 }
 
 const Input: RFC<InputProps> = props => {
-  const { label, placeholder, name, id , value, onChange, type,info} = props
+  const { label, placeholder, name, id, value, onChange, type, info, formattedValue } = props
 
   return (
     <div className='flex flex-col mb-[14px]'>
       <label htmlFor={id} className='text-[14px] text-[#344054] mb-[6px] flex flex-row items-center gap-1'>
         {label}
-       {
-        info && <>
-        <a data-tooltip-id="my-tooltip" data-tooltip-content={info}>
-  <Image 
-  src={'/svg/info.svg'}
-  height={15}
-  width={15}
-  alt="info"/>
-</a>
-<Tooltip id="my-tooltip" /></>
-       } 
+        {formattedValue && (<span className='text-[#344054] text-[14px] font-bold'>{" - "} {formattedValue}</span>)}
+
+        {
+          info && <div className="w-fit">
+            <a data-tooltip-id="my-tooltip" data-tooltip-content={info} className="tooltip-anchor">
+              <Image src={'/svg/info.svg'} height={15} width={15} alt="info" />
+            </a>
+            <Tooltip id="my-tooltip" className="tooltip-anchor" /></div>
+        }
       </label>
 
       <input
-        type={type? type : "text"}
+        type={type ? type : "text"}
         value={value}
         id={id}
         placeholder={placeholder}

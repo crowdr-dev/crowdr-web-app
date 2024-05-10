@@ -84,7 +84,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
 
   const progress = currentAmount / totalAmount
   return (
-    <div className='p-4 rounded-xl border-[#393e4614] border h-fit bg-white ' >
+    <div className='p-4 rounded-xl border-[#393e4614] border h-fit bg-white cursor-pointer' onClick={()=>{router.push(routeTo)}}>
       <div className='relative'>
         <div className='absolute z-10 bg-[#F8F8F8] rounded-[25px] py-1 px-2 mt-[14px] ml-[14px] text-[#0B5351] capitalize opacity-80 text-sm'>
           {category}
@@ -129,11 +129,11 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
             )}
           </div>
         )}
-        <div className='my-4 cursor-pointer' onClick={()=>{router.push(routeTo)}}>
+        <div className='my-4 cursor-pointer'>
           <h3 className='font-semibold text-[18px]'>{header}</h3>
         </div>
         {campaignType.includes('fundraise') && (
-          <div className='bg-[#F9F9F9] p-4 rounded-[8px] cursor-pointer' onClick={()=>{router.push(routeTo)}}>
+          <div className='bg-[#F9F9F9] p-4 rounded-[8px] cursor-pointer'>
             <p className='text-sm text-[#667085] mb-[4px]'>
               {' '}
               <span className='text-[#000] text-sm'>Goal</span>{' '}

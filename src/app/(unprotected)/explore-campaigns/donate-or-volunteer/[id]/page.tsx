@@ -19,6 +19,7 @@ import Link from 'next/link'
 import OldModal from '@/app/common/components/OldModal'
 import WaitlistForm from '@/app/home/home-components/WaitlistForm'
 import { formatAmount } from '@/app/(protected)/(dashboard)/common/utils/currency'
+import { calculateTransactionFee, formatCurrency } from '@/utils/seperateText'
 import Footer from '@/app/common/components/Footer'
 import Head from 'next/head'
 import NavBar from '../../components/NavBar'
@@ -500,6 +501,8 @@ export default function DonateOrVolunteer ({
                     type='number'
                     onChange={updateProps}
                     value={donationInputs.amount}
+                    info={`Our payment processor charges a small donation fulfillment fee. ${donationInputs.amount && `This brings your total to ${formatCurrency(calculateTransactionFee(parseFloat(donationInputs.amount)) + parseFloat(donationInputs.amount))}`}` }
+                  formattedValue={donationInputs.amount && formatCurrency(calculateTransactionFee(parseFloat(donationInputs.amount)) + parseFloat(donationInputs.amount))}
                   />
                   <Input
                     label={'Full name'}
