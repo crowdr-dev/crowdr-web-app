@@ -19,6 +19,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { Button } from '@/app/common/components/Button'
 import Loading from '@/app/loading'
+import { calculateTransactionFee, formatCurrency } from '@/utils/seperateText'
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
 const inActiveTabStyle = 'text-[#667085]'
@@ -532,6 +533,8 @@ export default function DonateOrVolunteer({
                   type='number'
                   onChange={updateProps}
                   value={donationInputs.amount}
+                  info={`Our payment processor charges a small donation fulfillment fee. ${donationInputs.amount && `This brings your total to ${formatCurrency(calculateTransactionFee(parseFloat(donationInputs.amount)) + parseFloat(donationInputs.amount))}`}` }
+                  formattedValue={donationInputs.amount && formatCurrency(calculateTransactionFee(parseFloat(donationInputs.amount)) + parseFloat(donationInputs.amount))}
                 />
                 <Input
                   label={'Full name'}
