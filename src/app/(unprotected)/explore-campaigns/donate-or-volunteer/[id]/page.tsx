@@ -205,7 +205,10 @@ export default function DonateOrVolunteer ({
         payload: JSON.stringify(payload)
       })
 
-      window.open(data.authorization_url, '_blank', 'noopener,noreferrer')
+      setTimeout(()=> {
+        window.open(data.authorization_url, '_blank', 'noopener,noreferrer')
+  
+        },100)
       setLoading(false)
     } catch (error) {
       setLoading(false)
