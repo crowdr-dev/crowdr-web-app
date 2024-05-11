@@ -235,7 +235,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
           href={routeTo}
         />
       ) : (
-        <div>
+        <div className='flex flex-col item-center'>
           <Button
             text={copied ? "Campaign link copied!" : "Copy campaign link"}
             className='w-full mt-4 !justify-center'
@@ -243,7 +243,7 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
             bgColor="#F8F8F8"
             textColor="#344054"
           />
-          <a className='text-[#00B964] text-[13px] underline mt-8 text-center cursor-pointer' href="mailto:support@oncrowdr.com">Report Organiser</a>
+          <a className='text-[#00B964] text-[13px] underline mt-4 text-center cursor-pointer' href="mailto:support@oncrowdr.com">Report Organiser</a>
         </div>
       )}
 
