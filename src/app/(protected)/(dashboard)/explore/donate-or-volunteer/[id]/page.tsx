@@ -227,10 +227,10 @@ export default function DonateOrVolunteer({
       // },100)
       const redirectUrl = data.authorization_url;
       const a = document.createElement("a");
-a.setAttribute('href', redirectUrl);
-a.setAttribute('target', '_blank');
-a.click();
-document.body.removeChild(a);
+      a.setAttribute('href', redirectUrl);
+      a.setAttribute('target', '_blank');
+      a.click();
+      document.body.removeChild(a);
       setLoading(false)
     } catch (error) {
       setLoading(false)
