@@ -15,6 +15,7 @@ import OldModal from '@/app/common/components/OldModal'
 import { formatAmount } from '../common/utils/currency'
 import { camelCaseToSeparated } from '@/utils/seperateText'
 import { getInitials } from './Header'
+import useClipboard from "@/app/common/hooks/useClipboard"
 
 const ExploreCard: RFC<ExploreCardProps> = props => {
   const {
@@ -33,6 +34,8 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
     category,
     volunteer
   } = props
+
+  const {copied, copy} =useClipboard();
 
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -234,13 +237,13 @@ const ExploreCard: RFC<ExploreCardProps> = props => {
       ) : (
         <div>
           <Button
-            text="Share with friends"
+            text={copied ? "Campaign link copied!" : "Copy campaign link"}
             className='w-full mt-4 !justify-center'
-            href={""}
+            onClick={() => copy(window.location.href)}
             bgColor="#F8F8F8"
             textColor="#344054"
           />
-          <p className='text-[#00B964] text-[13px] underline mt-8 text-center cursor-pointer'>Report Organiser</p>
+          <a className='text-[#00B964] text-[13px] underline mt-8 text-center cursor-pointer' href="mailto:support@oncrowdr.com">Report Organiser</a>
         </div>
       )}
 
