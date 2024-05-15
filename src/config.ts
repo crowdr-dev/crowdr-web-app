@@ -1,6 +1,4 @@
-export const isProd =
-  window.location.hostname === "oncrowdr.com" ||
-  window.localStorage.getItem("isProd");
+export const isProd = process.env.NODE_ENV === 'production';
 
 const API_BASE_URL = isProd
   ? "https://prod-api.oncrowdr.com"
