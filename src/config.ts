@@ -1,5 +1,5 @@
 export const isProd =
-  window.location.hostname === "panenkafc.gg" ||
+  window.location.hostname === "oncrowdr.com" ||
   window.localStorage.getItem("isProd");
 
 const API_BASE_URL = isProd
