@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { getUser } from '@/app/api/user/getUser'
 import ProgressBar from '../../../../(protected)/(dashboard)/dashboard-components/ProgressBar'
@@ -24,7 +24,7 @@ import Footer from '@/app/common/components/Footer'
 import Head from 'next/head'
 import NavBar from '../../components/NavBar'
 import Loading from '@/app/loading'
-import { Helmet } from 'react-helmet'
+import { useModal } from "@/app/common/hooks/useModal"
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
 const inActiveTabStyle = 'text-[#667085]'
@@ -68,6 +68,9 @@ export default function DonateOrVolunteer ({
   params: { id: string }
 }) {
   const toast = useToast()
+  const modal = useModal()
+  const iframeRef = useRef<any>()
+  const [redirectUrl, setRedirectUrl] = useState('')
   const [loadingCampaign, setLoadingCampaign] = useState(true)
   const [loading, setLoading] = useState(false)
   const [campaign, setCampaign] = useState<any>()
@@ -182,6 +185,8 @@ export default function DonateOrVolunteer ({
   const donatedAmount = campaign?.totalAmountDonated?.[0].amount
   const currency = campaign?.fundraise?.fundingGoalDetails[0].currency
 
+
+
   const donate = async () => {
     setLoading(true)
     const endpoint = '/api/v1/payments/initiate'
@@ -205,12 +210,7 @@ export default function DonateOrVolunteer ({
         payload: JSON.stringify(payload)
       })
 
-      const redirectUrl = data.authorization_url;
-      const a = document.createElement("a");
-      a.setAttribute('href', redirectUrl);
-      a.setAttribute('target', '_blank');
-      a.click();
-      document.body.removeChild(a);
+      setRedirectUrl(data.authorization_url)
       setLoading(false)
     } catch (error) {
       setLoading(false)
@@ -255,6 +255,39 @@ export default function DonateOrVolunteer ({
   const areAllInputsFilled = (input: any) => {
     return Object.values(input).every(value => value !== '')
   }
+
+  const closeIframe = () => {
+    if (iframeRef.current) {
+      iframeRef.current.src = "about:blank"; // Reset iframe source
+      iframeRef.current = null;
+    }
+    setRedirectUrl(''); // Reset redirect URL
+    modal.hide(); // Hide modal
+    scrollTo(0, 0); // Scroll to top of page
+    toast({ title: 'Success', body: 'Donation successful', type: 'success' }); // Show success toast
+    setDonationInputs(initProps); // Reset donation inputs
+  }
+
+  const checkIframeUrl = () => {
+    const iframe = iframeRef.current;
+    if (redirectUrl && iframe) {
+      const iframeUrl = iframe.contentWindow?.location.href;
+      if (iframeUrl && iframeUrl.includes('reference')) { // Check for specific URL indicating success
+        closeIframe();
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (redirectUrl) {
+      modal.show(
+        <iframe src={redirectUrl} style={{ height: '100vh', width: '100%' }} id="paystack-gateway" ref={iframeRef}></iframe>
+      )
+      const intervalId = setInterval(checkIframeUrl, 1000); // Check URL every second
+      return () => clearInterval(intervalId);
+    }
+  }, [redirectUrl])
+
 
   if (loadingCampaign) return <Loading />
 
@@ -582,7 +615,7 @@ export default function DonateOrVolunteer ({
                       ?.slice(0, 5)
                       .map(
                         (
-                          donor: { fullName: string; amount: string },
+                          donor: { fullName: string; amount: string, isAnonymous: boolean },
                           index: number
                         ) => {
                           return (
@@ -599,7 +632,7 @@ export default function DonateOrVolunteer ({
                               </div>
                               <div className='flex flex-col gap-[1px] ml-4'>
                                 <p className='text-[#344054] text-sm'>
-                                  {donor?.fullName}
+                                 {donor?.isAnonymous ?'Anonymous' :  donor?.fullName}
                                 </p>
                                 <span className='text-[13px] text-[#667085]'>
                                   Donated{' '}
