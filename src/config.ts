@@ -1,4 +1,4 @@
-export const isProd = process.env.NODE_ENV === 'production';
+export const isProd = process.env.CUSTOM_NODE_ENV === "prod";
 
 const API_BASE_URL = isProd
   ? "https://prod-api.oncrowdr.com"
