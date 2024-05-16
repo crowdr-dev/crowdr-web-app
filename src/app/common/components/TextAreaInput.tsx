@@ -24,6 +24,7 @@ const TextAreaInput: RFC<TextAreaInputProps> = ({
   rules,
   controlled,
   disabled,
+  additionalCharacterInfo
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -88,7 +89,7 @@ const TextAreaInput: RFC<TextAreaInputProps> = ({
       )}
       {showCharactersLeft && (
         <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">
-          {charactersLeft} characters left
+          {charactersLeft} characters left {additionalCharacterInfo  || ""}
         </span>
       )}
     </span>
@@ -112,4 +113,5 @@ type TextAreaInputProps = {
   rules?: RegisterOptions
   controlled?: boolean
   disabled?: boolean
+  additionalCharacterInfo?: string
 }
