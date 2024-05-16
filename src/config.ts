@@ -1,4 +1,4 @@
-export const isProd = process.env.CUSTOM_NODE_ENV === "prod";
+export const isProd = process.env.NEXT_PUBLIC_CUSTOM_NODE_ENV === "prod";
 
 // Base url
 const API_BASE_URL = isProd
