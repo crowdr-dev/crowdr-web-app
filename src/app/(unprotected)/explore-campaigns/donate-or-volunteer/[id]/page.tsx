@@ -201,7 +201,8 @@ export default function DonateOrVolunteer ({
       isAnonymous: checkboxValues.isAnonymous,
       shouldShareDetails: checkboxValues.shouldShareDetails,
       isSubscribedToPromo: checkboxValues.isSubscribedToPromo,
-      callback_url: window.location.href
+      callback_url: window.location.href,
+      cancel_url: `${window.location.href}?cancelled=true`
     }
 
     try {
@@ -264,7 +265,6 @@ export default function DonateOrVolunteer ({
     setRedirectUrl(''); // Reset redirect URL
     modal.hide(); // Hide modal
     scrollTo(0, 0); // Scroll to top of page
-    toast({ title: 'Success', body: 'Donation successful', type: 'success' }); // Show success toast
     setDonationInputs(initProps); // Reset donation inputs
   }
 
@@ -272,8 +272,11 @@ export default function DonateOrVolunteer ({
     const iframe = iframeRef.current;
     if (redirectUrl && iframe) {
       const iframeUrl = iframe.contentWindow?.location.href;
-      if (iframeUrl && iframeUrl.includes('reference')) { // Check for specific URL indicating success
+      if ((iframeUrl && iframeUrl.includes('reference') )|| (iframeUrl && iframeUrl.includes('cancelled'))) { // Check for specific URL indicating success
         closeIframe();
+        if( iframeUrl.includes('reference')){
+          toast({ title: 'Success', body: 'Donation successful', type: 'success' });
+        }
       }
     }
   }
@@ -281,7 +284,7 @@ export default function DonateOrVolunteer ({
   useEffect(() => {
     if (redirectUrl) {
       modal.show(
-        <iframe src={redirectUrl} style={{ height: '100vh', width: '100%' }} id="paystack-gateway" ref={iframeRef}></iframe>
+        <iframe src={redirectUrl} style={{ height: '100vh', width: '100%', background: "#fff" }} id="paystack-gateway" ref={iframeRef}></iframe>
       )
       const intervalId = setInterval(checkIframeUrl, 1000); // Check URL every second
       return () => clearInterval(intervalId);

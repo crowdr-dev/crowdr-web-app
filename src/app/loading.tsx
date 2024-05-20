@@ -9,7 +9,7 @@ export default function Loading(props: Props) {
   // You can add any UI inside Loading, including a Skeleton.
   return (
     <div className={`flex items-center justify-center ${size === "full" ? "h-screen absolute" : "h-fit"} w-screen m-auto `}>
-      <Image src="/images/loader.gif" alt="loading" width={100} height={100} />
+      <Image src="/images/loader.gif" alt="loading" width={150} height={150} />
     </div>
   );
 }
