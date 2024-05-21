@@ -7,7 +7,8 @@ import { Option } from "../../common/utils/form"
 import { Button } from "../../../../common/components/Button"
 
 import { IBankDetail } from "./page"
-import { RFC } from "@/app/common/types"
+import { QF, RFC } from "@/app/common/types"
+import { useQuery } from "react-query"
 
 const AccountForm: RFC<AccountFormProps> = ({
   onSubmit,
@@ -19,6 +20,10 @@ const AccountForm: RFC<AccountFormProps> = ({
     reset,
     formState: { isSubmitting },
   } = useFormContext() as AccountFormContext
+
+  const { data: banks } = useQuery(["all-banks"], fetchBanks, {
+    refetchOnWindowFocus: false,
+  })
 
   useEffect(() => {
     if (accountDetails) {
@@ -52,15 +57,18 @@ const AccountForm: RFC<AccountFormProps> = ({
           label="Account number"
         />
 
-        <SelectInput
-          name="bankName"
-          rules={{
-            required: "Bank is required",
-          }}
-          options={banks}
-          label="Bank"
-          ariaLabel="Bank"
-        />
+        {banks && (
+          <SelectInput
+            name="bankName"
+            rules={{
+              required: "Bank is required",
+            }}
+            options={banks}
+            label="Bank"
+            ariaLabel="Bank"
+            isSearchable
+          />
+        )}
 
         <SelectInput
           name="accountType"
@@ -111,16 +119,34 @@ type AccountFormProps = {
   accountDetails?: IBankDetail
 }
 
-const banks = [
-  Option("", "Select a bank...", true),
-  Option("Guarantee Trust Bank", "GT Bank"),
-  Option("Access Bank", "Access"),
-  Option("United Bank for Africa", "UBA"),
-  Option("Chipper", "Chipper"),
-]
+const fetchBanks: QF<ReturnType<typeof Option>[]> = async () => {
+  const banks = (await fetch("https://nigerianbanks.xyz/").then((res) =>
+    res.json()
+  )) as IBank[]
+
+  const bankList = banks.map(({ name }) => Option(name, name))
+
+  return [Option("", "Select a bank...", true), ...bankList]
+}
+
+// const _banks = [
+//   Option("", "Select a bank...", true),
+//   Option("Guarantee Trust Bank", "GT Bank"),
+//   Option("Access Bank", "Access"),
+//   Option("United Bank for Africa", "UBA"),
+//   Option("Chipper", "Chipper"),
+// ]
 
 const accountTypes = [
   Option("", "Select an account type", true),
   Option("naira", "Naira"),
   Option("dollar", "Dollar"),
 ]
+
+export interface IBank {
+  name: string
+  slug: string
+  code: string
+  ussd: string
+  logo: string
+}
