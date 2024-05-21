@@ -12,12 +12,12 @@ export async function middleware(request: NextRequest) {
   requestHeaders.set("x-pathname", request.nextUrl.pathname);
   return NextResponse.next({
     request: {
-      headers: requestHeaders,
-    },
+      headers: requestHeaders
+    }
   });
 }
 
-// "Matching Paths" 
+// "Matching Paths"
 export const config = {
   matcher: [
     "/confirmation",
@@ -32,6 +32,6 @@ export const config = {
     "/inbox",
     "/manage-webpage",
     "/settings/(.*)",
-    "/admin/(.*)",
-  ],
+    "/admin/(.*)"
+  ]
 };

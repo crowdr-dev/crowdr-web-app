@@ -1,6 +1,6 @@
 import { RFC } from "@/app/common/types";
 
-const ProgressBar: RFC<ProgressBarProps> = ({ percent, bgColor, showValue }) => {
+const ProgressBar: RFC<ProgressBarProps> = ({ percent, bgColor ="#00B964", showValue }) => {
   return (
     <div className="flex items-center">
       <div className="grow bg-[#EBECEC] rounded-full h-2">
@@ -15,10 +15,6 @@ const ProgressBar: RFC<ProgressBarProps> = ({ percent, bgColor, showValue }) => 
 };
 
 export default ProgressBar;
-
-ProgressBar.defaultProps = {
-  bgColor: '#00B964'
-}
 
 type ProgressBarProps = {
   percent: number;

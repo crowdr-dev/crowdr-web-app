@@ -173,7 +173,7 @@ export default function DonateOrVolunteer ({
         ? 'donate'
         : 'volunteer'
     )
-  }, [params.id, campaign?.campaignType])
+  }, [params.id, campaign?.campaignType, redirectUrl])
 
   const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails.reduce(
     (accumulator: number, current: { amount: number }) => {
