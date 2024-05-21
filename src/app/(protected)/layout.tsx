@@ -49,9 +49,6 @@ export default async function ProtectedLayout({ children }: PropsWithChildren) {
     case currentPath === adminPath && user.isAdmin:
       redirect(adminDashboard)
 
-
-   
-
     default:
       break
   }
