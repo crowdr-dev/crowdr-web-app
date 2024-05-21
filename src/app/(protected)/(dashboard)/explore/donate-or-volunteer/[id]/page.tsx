@@ -181,7 +181,7 @@ export default function DonateOrVolunteer({
           : 'volunteer'
     )
     getCurrentUser()
-  }, [params.id, campaign?.campaignType])
+  }, [params.id, campaign?.campaignType, redirectUrl])
 
   const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails.reduce(
     (accumulator: number, current: { amount: number }) => {
@@ -194,7 +194,6 @@ export default function DonateOrVolunteer({
   const currency = campaign?.fundraise?.fundingGoalDetails[0].currency
 
 
-  let windowReference = window.open() as Window
   const donate = async () => {
     setLoading(true)
     const user = await getUser()
