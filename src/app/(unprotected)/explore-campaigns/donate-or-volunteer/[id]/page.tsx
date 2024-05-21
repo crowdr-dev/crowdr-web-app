@@ -193,7 +193,6 @@ export default function DonateOrVolunteer ({
 
     const payload = {
       campaignId: params.id,
-      campaignDonorId: campaign.userId,
       amount: donationInputs.amount,
       email: donationInputs.email,
       fullName: donationInputs.fullName,
