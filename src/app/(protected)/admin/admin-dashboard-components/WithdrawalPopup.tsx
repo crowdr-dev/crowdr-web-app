@@ -54,7 +54,7 @@ const WithdrawalPopup = () => {
           })
 
           const [bankingDetails] = await withdrawalService.fetchBankDetails({
-            userId: user._id,
+            userId: withdrawalData.userId,
             authToken: user.token,
           })
 
