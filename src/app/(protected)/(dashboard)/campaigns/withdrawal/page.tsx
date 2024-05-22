@@ -103,25 +103,25 @@ const Withdrawal = () => {
               </h3>
 
               <div className="flex justify-between">
+                <p>Total</p>
+                <p>{campaign.fundsGotten}</p>
+              </div>
+
+              <div className="flex justify-between">
+                <p>Service fee</p>
+                <p>
+                  -{formatAmount(serviceFee, currency, { prefixSymbol: false })}
+                </p>
+              </div>
+              <hr className="border-t-[#CFCFCF]" />
+
+              <div className="flex justify-between font-semibold text-base">
                 <p>Amount to be received</p>
                 <p>
                   {formatAmount(payableAmount, currency, {
                     prefixSymbol: false,
                   })}
                 </p>
-              </div>
-
-              <div className="flex justify-between">
-                <p>Service fee</p>
-                <p>
-                  {formatAmount(serviceFee, currency, { prefixSymbol: false })}
-                </p>
-              </div>
-              <hr className="border-t-[#CFCFCF]" />
-
-              <div className="flex justify-between font-semibold text-base">
-                <p>Total</p>
-                <p>{campaign.fundsGotten}</p>
               </div>
             </div>
           </div>
@@ -301,10 +301,10 @@ const fetchStats: QF<Nullable<ICampaignStats>, [Nullable<string>]> = async ({
   }
 }
 
-const fetchCampaigns: QF<
-  Nullable<ICampaign>,
-  [Nullable<string>, number]
-> = async ({ queryKey }) => {
+type Data = Nullable<ICampaign>
+type Token = Nullable<string>
+type Page = number
+const fetchCampaigns: QF<Data, [Token, Page]> = async ({ queryKey }) => {
   const [_, token, page] = queryKey
 
   if (token) {

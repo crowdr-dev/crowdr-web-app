@@ -54,7 +54,7 @@ const WithdrawalPopup = () => {
           })
 
           const [bankingDetails] = await withdrawalService.fetchBankDetails({
-            userId: user._id,
+            userId: withdrawalData.userId,
             authToken: user.token,
           })
 
@@ -185,23 +185,23 @@ const WithdrawalPopup = () => {
             <h3 className="font-semibold text-[#666]">Donation Breakdown</h3>
 
             <div className="flex justify-between">
-              <p>Donation amount</p>
-              <p>
-                {formatAmount(payableAmount, currency, { prefixSymbol: false })}
-              </p>
+              <p>Total</p>
+              <p>{formatAmount(amount, currency)}</p>
             </div>
 
             <div className="flex justify-between">
               <p>Service fee</p>
               <p>
-                {formatAmount(serviceFee, currency, { prefixSymbol: false })}
+                {-formatAmount(serviceFee, currency, { prefixSymbol: false })}
               </p>
             </div>
             <hr className="border-t-[#CFCFCF]" />
 
             <div className="flex justify-between font-semibold text-base">
-              <p>Total</p>
-              <p>{formatAmount(amount, currency)}</p>
+              <p>Amount payable</p>
+              <p>
+                {formatAmount(payableAmount, currency, { prefixSymbol: false })}
+              </p>
             </div>
           </div>
 

@@ -112,12 +112,12 @@ const RejectionForm: RFC<RejectionFormProps> = () => {
 
       {/* title x description */}
       <div className="flex flex-col gap-4 mb-8">
-        <TextInput
+        {/* <TextInput
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           label="Title*"
           placeholder="What is your title?"
-        />
+        /> */}
 
         <TextAreaInput
           value={remark}
