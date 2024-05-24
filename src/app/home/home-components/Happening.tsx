@@ -192,7 +192,7 @@ const Happening = () => {
         </div>
         {width && (
           <div className='flex flex-row items-center gap-4'>
-            <button className='btn-primary'>Start a campaign</button>
+            <button className='btn-primary'  onClick={() => router.push('signup')}>Start a campaign</button>
             <button
               className='btn-outline'
               onClick={() => router.push('explore-campaigns')}
