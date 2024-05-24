@@ -222,7 +222,8 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                 rules={{
                   required: "Story is required",
                 }}
-                characterLimit={300}
+                characterLimit={5000}
+                additionalCharacterInfo="(must be between 60 - 5000 characters)"
                 error={errors.story}
                 ariaLabel="Tell Your Story"
               />

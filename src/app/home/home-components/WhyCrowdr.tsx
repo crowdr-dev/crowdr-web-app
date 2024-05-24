@@ -124,7 +124,7 @@ const router = useRouter()
           )
         })}
         {width && (
-          <div className='text-sm md:text-[16px] rounded-[50px] p-4 text-center text-white bg-[#006637] w-[170px] ml-12'>
+          <div onClick={() => router.push('/signup')} className='text-sm md:text-[16px] rounded-[50px] p-4 text-center text-white bg-[#006637] w-[170px] ml-12'>
             Get Started
           </div>
         )}
@@ -163,7 +163,7 @@ const router = useRouter()
       {width ? (
         <Tab />
       ) : (
-        <div className='text-sm md:text-[16px] rounded-[50px] p-4 text-center text-white bg-[#00B964] w-[90%] mt-6 cursor-pointer' onClick={()=>{router.push("signup")}} >
+        <div onClick={() => router.push('/explore')} className='text-sm md:text-[16px] rounded-[50px] p-4 text-center text-white bg-[#00B964] w-[90%] mt-6 cursor-pointer' >
           Get Started
         </div>
       )}

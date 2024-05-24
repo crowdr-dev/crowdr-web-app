@@ -1,10 +1,10 @@
 import { useRouter } from 'next/navigation'
 import React from "react";
 import styles from "../pricing-styles/values.module.css";
+import { useRouter } from "next/navigation";
 
 export default function Values() {
   const router = useRouter()
-
   return (
     <section className={styles.value}>
       <div className="py-16 flex flex-col items-center justify-center gap-3 md:w-5/6 mx-auto my-0">
