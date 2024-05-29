@@ -39,7 +39,7 @@ export default function Footer() {
            <h3 className="">Connect</h3>
            <div className="socials-links">
              <a
-               href="https://instagram.com/crowdr.app?igshid=ZWQyN2ExYTkwZQ=="
+               href="https://www.instagram.com/oncrowdr?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                target="_blank"
                className=""
              >
@@ -52,7 +52,7 @@ export default function Footer() {
                />
              </a>
              <a
-               href="https://twitter.com/crowdr_app?s=11&t=fK9DaoyW8Rt4TYyvhuMThg"
+               href="https://x.com/oncrowdr?s=21&t=7LoBQGAbuuakBget9QY3mw"
                target="_blank"
                className=""
              >
