@@ -120,13 +120,30 @@ type AccountFormProps = {
 }
 
 const fetchBanks: QF<ReturnType<typeof Option>[]> = async () => {
-  const banks = (await fetch("https://nigerianbanks.xyz/").then((res) =>
-    res.json()
-  )) as IBank[]
+  const url = "https://api.flutterwave.com/v3/banks/NG"
+  // const headers = {
+  //   Authorization: "Bearer FLWSECK_TEST-SANDBOXDEMOKEY-X",
+  // }
 
-  const bankList = banks.map(({ name }) => Option(name, name))
+  // const res = (await fetch(url, { headers }).then((res) =>
+  //   res.json()
+  // )) as IBankResponse
 
-  return [Option("", "Select a bank...", true), ...bankList]
+  const headers = new Headers()
+  headers.append("Authorization", "Bearer FLWSECK_TEST-SANDBOXDEMOKEY-X")
+  headers.append("Accept", "*/*")
+
+  const options = {
+    method: "GET",
+    headers,
+  }
+
+  const res = await fetch(url, options)
+    .then((res) => res.json())  as IBankResponse
+
+  const banks = res.data.map(({ name }) => Option(name, name))
+
+  return [Option("", "Select a bank...", true), ...banks]
 }
 
 // const _banks = [
@@ -143,10 +160,14 @@ const accountTypes = [
   Option("dollar", "Dollar"),
 ]
 
+export interface IBankResponse {
+  status: string
+  message: string
+  data: IBank[]
+}
+
 export interface IBank {
-  name: string
-  slug: string
+  id: number
   code: string
-  ussd: string
-  logo: string
+  name: string
 }
