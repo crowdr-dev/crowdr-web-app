@@ -5,6 +5,7 @@ import SelectInput from "../../../../common/components/SelectInput"
 import AccountFormContext, { FormFields } from "../utils/useAccountForm"
 import { Option } from "../../common/utils/form"
 import { Button } from "../../../../common/components/Button"
+import _banks from "../../common/utils/banks"
 
 import { IBankDetail } from "./page"
 import { QF, RFC } from "@/app/common/types"
@@ -21,9 +22,14 @@ const AccountForm: RFC<AccountFormProps> = ({
     formState: { isSubmitting },
   } = useFormContext() as AccountFormContext
 
-  const { data: banks } = useQuery(["all-banks"], fetchBanks, {
-    refetchOnWindowFocus: false,
-  })
+  // const { data: banks } = useQuery(["all-banks"], fetchBanks, {
+  //   refetchOnWindowFocus: false,
+  // })
+  const banks = [Option("", "Select a bank...", true)].concat(
+    _banks
+      .map(({ name }) => Option(name, name))
+      .sort((a, b) => a.label.localeCompare(b.label))
+  )
 
   useEffect(() => {
     if (accountDetails) {
@@ -120,22 +126,15 @@ type AccountFormProps = {
 }
 
 const fetchBanks: QF<ReturnType<typeof Option>[]> = async () => {
-  const banks = (await fetch("https://nigerianbanks.xyz/").then((res) =>
-    res.json()
-  )) as IBank[]
+  // const url = "https://api.flutterwave.com/v3/banks/NG"
+  // const headers = {
+  //   Authorization: "Bearer FLWSECK_TEST-SANDBOXDEMOKEY-X",
+  // }
 
-  const bankList = banks.map(({ name }) => Option(name, name))
+  const banks = _banks.map(({ name }) => Option(name, name))
 
-  return [Option("", "Select a bank...", true), ...bankList]
+  return [Option("", "Select a bank...", true), ...banks]
 }
-
-// const _banks = [
-//   Option("", "Select a bank...", true),
-//   Option("Guarantee Trust Bank", "GT Bank"),
-//   Option("Access Bank", "Access"),
-//   Option("United Bank for Africa", "UBA"),
-//   Option("Chipper", "Chipper"),
-// ]
 
 const accountTypes = [
   Option("", "Select an account type", true),
@@ -143,10 +142,14 @@ const accountTypes = [
   Option("dollar", "Dollar"),
 ]
 
+export interface IBankResponse {
+  status: string
+  message: string
+  data: IBank[]
+}
+
 export interface IBank {
-  name: string
-  slug: string
+  id: number
   code: string
-  ussd: string
-  logo: string
+  name: string
 }
