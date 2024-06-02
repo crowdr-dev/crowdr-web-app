@@ -91,7 +91,7 @@ const KycPopup = () => {
     }
   }
 
-  if (user && kycData) {
+  if (kycData) {
     return (
       <div className="grow max-w-[1031px] bg-white px-[50px] py-10 mb-11 border">
         <div className="flex justify-between items-center mb-11">
@@ -105,7 +105,7 @@ const KycPopup = () => {
           <div className="flex justify-between">
             <div className="flex flex-col gap-2">
               <p className="font-semibold text-[#61656B]">
-                {user.userType === "non-profit" ? "Organization" : "Individual"}
+                {isOrganization ? "Organization" : "Individual"}
               </p>
               <h2 className="font-semibold text-2xl text-black">
                 {kycData.user?.organizationName}
