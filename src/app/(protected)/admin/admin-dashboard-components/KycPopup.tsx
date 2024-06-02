@@ -30,8 +30,8 @@ const KycPopup = () => {
   const user = useUser()
   const toast = useToast()
   const otpIsFilled = adminOtp.length > 0
-  const isOrganization = kycData?.user?.userType === "non-profit"
-  const kycApproved = kycData?.status === "completed"
+  const isOrganization = kycData?.kyc?.user?.userType === "non-profit"
+  const kycApproved = kycData?.kyc?.verificationStatus === "completed"
 
   useEffect(() => {
     if (user && activeKycId) {
@@ -108,7 +108,7 @@ const KycPopup = () => {
                 {isOrganization ? "Organization" : "Individual"}
               </p>
               <h2 className="font-semibold text-2xl text-black">
-                {kycData.user?.organizationName}
+                {kycData.kyc.user?.organizationName}
               </h2>
             </div>
             {/* {isOrganization && (
@@ -118,9 +118,16 @@ const KycPopup = () => {
             )} */}
           </div>
 
-          <div className="flex flex-col gap-1">
-            <p className="text-xs text-[#61656B]">BVN Number</p>
-            <p className="text-sm text-[#393E46]">{kycData.BVN}</p>
+          <div className="flex gap-3">
+            <div className="flex flex-col gap-1">
+              <p className="text-xs text-[#61656B]">BVN Number</p>
+              <p className="text-sm text-[#393E46]">{kycData.kyc.BVN}</p>
+            </div>
+            <div className="border-r border-[#61656B] self-stretch"></div>
+            <div className="flex flex-col gap-1">
+              <p className="text-xs text-[#61656B]">CAC Number</p>
+              <p className="text-sm text-[#393E46]">{kycData.org.cacNumber}</p>
+            </div>
           </div>
         </div>
 
@@ -129,8 +136,11 @@ const KycPopup = () => {
             Verification Documents
           </p>
           <div className="flex flex-col gap-5 max-w-[480px]">
-          <FileItem fileName={kycData.docType} url={kycData.docImg?.url} />
-          <FileItem fileName="selfie" url={kycData.selfieImg?.url} />
+            <FileItem
+              fileName={kycData.kyc.docType}
+              url={kycData.kyc.docImg?.url}
+            />
+            <FileItem fileName="selfie" url={kycData.kyc.selfieImg?.url} />
             {/* {files.map((file, index) => (
               <FileItem key={index} />
             ))} */}

@@ -72,38 +72,51 @@ export interface IPatchKyc {
 }
 
 export interface IKyc {
-  _id: string
-  userId: string
-  BVN: string
-  docType: string
-  docImg: Img
-  selfieImg: Img
-  verificationStatus: string
-  createdAt: string
-  updatedAt: string
-  __v: number
-  reason: string
-  status: KycStatus
-  user: User | null
-  id: string
+  kyc: Kyc;
+  org: Org;
 }
 
-export interface Img {
-  _id: string
-  url: string
-  id: string
+export interface Kyc {
+  _id:                string;
+  userId:             string;
+  BVN:                string;
+  docType:            string;
+  docImg:             DocImg;
+  selfieImg:          DocImg;
+  verificationStatus: string;
+  createdAt:          string;
+  updatedAt:          string;
+  __v:                number;
+  user:               User;
+  id:                 string;
 }
+
+export interface DocImg {
+  _id: string;
+  url: string;
+  id:  string;
+}
+
 export interface User {
-  _id: string
-  organizationName: string
-  organizationId: string
-  userType: string
-  email: string
-  interests: string[]
-  referrer: string
-  password: string
-  isEmailVerified: boolean
-  isDeleted: boolean
-  __v: number
-  isAdmin: boolean
+  _id:              string;
+  userType:         string;
+  email:            string;
+  interests:        string[];
+  referrer:         string;
+  isAdmin:          boolean;
+  isEmailVerified:  boolean;
+  isDeleted:        boolean;
+  organizationName: string;
+  organizationId:   string;
 }
+
+export interface Org {
+  _id:       string;
+  imageId:   DocImg;
+  cacNumber: string;
+  state:     string;
+  publicUrl: string;
+  userId:    string;
+  __v:       number;
+}
+
