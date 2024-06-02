@@ -123,11 +123,17 @@ const KycPopup = () => {
               <p className="text-xs text-[#61656B]">BVN Number</p>
               <p className="text-sm text-[#393E46]">{kycData.kyc.BVN}</p>
             </div>
-            <div className="border-r border-[#61656B] self-stretch"></div>
-            <div className="flex flex-col gap-1">
-              <p className="text-xs text-[#61656B]">CAC Number</p>
-              <p className="text-sm text-[#393E46]">{kycData.org.cacNumber}</p>
-            </div>
+            {kycData.org && (
+              <>
+                <div className="border-r border-[#61656B] self-stretch"></div>
+                <div className="flex flex-col gap-1">
+                  <p className="text-xs text-[#61656B]">CAC Number</p>
+                  <p className="text-sm text-[#393E46]">
+                    {kycData.org.cacNumber}
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
