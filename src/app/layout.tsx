@@ -93,9 +93,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
   return (
     <html lang="en">
-      <Head>
+      {/* <Head>
       <meta name="google-site-verification" content="google6baf9f0790d24bbe" />
-      </Head>
+      </Head> */}
       <Script
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-JL3VDJ3QRX"
