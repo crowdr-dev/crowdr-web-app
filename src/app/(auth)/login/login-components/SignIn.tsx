@@ -6,6 +6,7 @@ import { LuEye, LuEyeOff } from "react-icons/lu";
 import { CgSpinner } from "react-icons/cg";
 import "../styles/shared.css";
 import OldButton from "@/app/common/components/OldButton";
+import { Mixpanel } from "@/utils/mixpanel";
 
 const SignIn = () => {
   const {
@@ -112,7 +113,10 @@ const SignIn = () => {
 
             <div className="bg-[#F8F8F8] py-[18px] px-[23px] mt-[13px] rounded-lg">
               <h2 className="text-[#344054]">Having problems logging in?</h2>
-              <button className="underline text-[13px] text-[#667085]">
+              <button className="underline text-[13px] text-[#667085]" onClick={()=> {
+                window.location.href = "mailto:support@oncrowdr.com"
+                Mixpanel.track("Support Contacted")
+              }}>
                 Contact support
               </button>
             </div>

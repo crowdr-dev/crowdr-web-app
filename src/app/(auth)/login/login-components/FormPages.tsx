@@ -9,6 +9,7 @@ import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import { handleUserRedirection } from "@/utils/handleUserRedirection"
 import makeRequest from "@/utils/makeRequest"
 import { IUser } from "@/app/api/user/getUser"
+import { Mixpanel } from "@/utils/mixpanel"
 
 const FormPages = () => {
   const { handleSubmit } = useFormContext() as LoginFormContext
@@ -16,6 +17,7 @@ const FormPages = () => {
   const toast = useToast()
 
   const submit = async (formFields: FormFields) => {
+    Mixpanel.track("Login clicked")
     const endpoint = "/api/v1/users/signin"
     let payload = JSON.stringify(_.pick(formFields, ["email", "password"]))
 
@@ -29,6 +31,7 @@ const FormPages = () => {
       if (token) await setUserCookie(token)
       handleUserRedirection(user, router.push)
     } catch (error) {
+      Mixpanel.track("Login failed")
       const message = extractErrorMessage(error)
       toast({ title: "Oops!", body: message, type: "error" })
     }

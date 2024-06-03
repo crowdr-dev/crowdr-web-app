@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect,useRef} from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { getUser } from '@/app/api/user/getUser'
 import ProgressBar from '../../../dashboard-components/ProgressBar'
@@ -21,6 +21,7 @@ import { Button } from '@/app/common/components/Button'
 import Loading from '@/app/loading'
 import { calculateTransactionFee, formatCurrency } from '@/utils/seperateText'
 import { useModal } from "@/app/common/hooks/useModal"
+import { Mixpanel } from '@/utils/mixpanel'
 
 const activeTabStyle = 'text-[#00B964]  border-b-2 border-[#00B964]'
 const inActiveTabStyle = 'text-[#667085]'
@@ -73,7 +74,7 @@ export default function DonateOrVolunteer({
   const [tab, setTab] = useState('')
   const [loadingCampaign, setLoadingCampaign] = useState(true)
 
-  const [userId,setUserId] = useState<any>("")
+  const [userId, setUserId] = useState<any>("")
 
   const fetchSingleCampaign = async () => {
     const singleCampaign = await getSingleCampaign(params.id)
@@ -172,6 +173,11 @@ export default function DonateOrVolunteer({
   }
 
   useEffect(() => {
+    Mixpanel.track(
+      campaign?.campaignType === "fundraiseAndVolunteer"
+        ? "Donation campaign viewed"
+        : "Volunteer campaign viewed"
+    );
     fetchSingleCampaign()
     setTab(
       campaign?.campaignType === 'fundraiseAndVolunteer'
@@ -222,16 +228,20 @@ export default function DonateOrVolunteer({
       cancel_url: `${window.location.href}?cancelled=true`
     }
 
+    checkboxValues.isAnonymous && Mixpanel.track("Anonymous Donation")
+
+
     try {
       const { data } = await makeRequest(endpoint, {
         method: 'POST',
         headers,
         payload: JSON.stringify(payload)
       })
-
+      Mixpanel.track("Routes to Paystack Gateway");
       setRedirectUrl(data.authorization_url)
       setLoading(false)
     } catch (error) {
+      Mixpanel.track("Error completing donation")
       setLoading(false)
       const message = extractErrorMessage(error)
       toast({ title: 'Oops!', body: message, type: 'error' })
@@ -301,9 +311,10 @@ export default function DonateOrVolunteer({
     const iframe = iframeRef.current;
     if (redirectUrl && iframe) {
       const iframeUrl = iframe.contentWindow?.location.href;
-      if ((iframeUrl && iframeUrl.includes('reference') )|| (iframeUrl && iframeUrl.includes('cancelled'))) { // Check for specific URL indicating success
+      if ((iframeUrl && iframeUrl.includes('reference')) || (iframeUrl && iframeUrl.includes('cancelled'))) { // Check for specific URL indicating success
         closeIframe();
-        if( iframeUrl.includes('reference')){
+        if (iframeUrl.includes('reference')) {
+          Mixpanel.track("Successful Donation");
           toast({ title: 'Success', body: 'Donation successful', type: 'success' });
         }
       }
@@ -321,7 +332,7 @@ export default function DonateOrVolunteer({
   }, [redirectUrl])
 
 
-  if(loadingCampaign) return <Loading/>
+  if (loadingCampaign) return <Loading />
   return (
     <div className='mb-6'>
       <div className='flex items-center justify-between mb-4'>
@@ -482,7 +493,7 @@ export default function DonateOrVolunteer({
                 <Checkbox
                   id={'4'}
                   label={
-                    <>By ticking this box, you agree with the <a className="text-[#00B964] underlined">Terms and Conditions provided</a> by Crowdr.*</>
+                    <>By ticking this box, you agree with the <a className="text-[#00B964] underlined" >Terms and Conditions provided</a> by Crowdr.*</>
                   }
                   checked={checkboxValues.agreeToTermsVolunteer}
                   onChange={newValue =>
@@ -575,7 +586,7 @@ export default function DonateOrVolunteer({
                   type='number'
                   onChange={updateProps}
                   value={donationInputs.amount}
-                  info={`Our payment processor charges a small donation fulfillment fee. ${donationInputs.amount && `This brings your total to ${formatCurrency(calculateTransactionFee(parseFloat(donationInputs.amount)) + parseFloat(donationInputs.amount))}`}` }
+                  info={`Our payment processor charges a small donation fulfillment fee. ${donationInputs.amount && `This brings your total to ${formatCurrency(calculateTransactionFee(parseFloat(donationInputs.amount)) + parseFloat(donationInputs.amount))}`}`}
                   formattedValue={donationInputs.amount && formatCurrency(calculateTransactionFee(parseFloat(donationInputs.amount)) + parseFloat(donationInputs.amount))}
                 />
                 <Input

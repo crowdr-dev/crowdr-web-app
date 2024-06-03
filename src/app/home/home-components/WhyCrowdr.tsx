@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import useWindowSize from '@/app/common/hooks/useWindowSize'
 import {useRouter } from "next/navigation"
+import { Mixpanel } from '@/utils/mixpanel'
 
 const WhyCrowdr = () => {
 const router = useRouter()
@@ -117,7 +118,9 @@ const router = useRouter()
             <div
               key={index}
               className={`text-sm text-[13px] md:text-[16px] font-normal rounded-[50px] p-2 md:p-4 text-center ${activeStyle}`}
-              onClick={() => setActiveTab(tab)}
+              onClick={() =>{ setActiveTab(tab)
+                Mixpanel.track(tab)
+              }}
             >
               {tab}
             </div>

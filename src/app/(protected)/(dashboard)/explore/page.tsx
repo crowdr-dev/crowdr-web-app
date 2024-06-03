@@ -12,6 +12,8 @@ import { campaignsTag } from "@/tags"
 
 import { Nullable, QF } from "@/app/common/types"
 import { ICampaignResponse } from "@/app/common/types/Campaign"
+import { useEffect } from "react"
+import { Mixpanel } from "@/utils/mixpanel"
 
 const Explore = () => {
   const user = useUser()
@@ -25,6 +27,10 @@ const Explore = () => {
       refetchOnWindowFocus: false
     }
   )
+
+  useEffect(() => {
+    Mixpanel.track("Explore Page viewed")
+  }, [])
 
   return (
     <div>
