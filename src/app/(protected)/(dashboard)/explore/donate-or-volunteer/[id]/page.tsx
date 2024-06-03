@@ -413,7 +413,7 @@ export default function DonateOrVolunteer({
               <div className='mt-4'>
                 <Input
                   label={'Full name'}
-                  placeholder='Ajayi Akintomiwa G.'
+                  placeholder='John doe'
                   name='fullName'
                   id='fullName'
                   value={volunteerInputs.fullName}
@@ -421,7 +421,7 @@ export default function DonateOrVolunteer({
                 />
                 <Input
                   label={'Email address'}
-                  placeholder='tomiwa@crowdr.com'
+                  placeholder='example@crowdr.com'
                   name='email'
                   id='email'
                   value={volunteerInputs.email}
@@ -580,7 +580,7 @@ export default function DonateOrVolunteer({
                 />
                 <Input
                   label={'Full name'}
-                  placeholder='Ajayi Akintomiwa G.'
+                  placeholder='John doe'
                   name='fullName'
                   id='fullName'
                   onChange={updateProps}
@@ -588,7 +588,7 @@ export default function DonateOrVolunteer({
                 />
                 <Input
                   label={'Email address'}
-                  placeholder='tomiwa@crowdr.com'
+                  placeholder='example@crowdr.com'
                   name='email'
                   id='email'
                   onChange={updateProps}

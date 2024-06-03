@@ -6,5 +6,5 @@ export default async function Layout({ children }: PropsWithChildren) {
   const  user = await getUser();
 
   handleUserRedirection(user);
-  return <section>{children}</section>;
+  return <section className="font-satoshi">{children}</section>;
 }

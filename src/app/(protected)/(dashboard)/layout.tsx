@@ -13,7 +13,7 @@ const DashboardLayout: RFC = (props: PropsWithChildren) => {
   return (
     <UserProvider>
       <NotificationProvider>
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full font-satoshi">
           <Header />
           <div className="flex grow overflow-hidden">
             <Sidebar />
