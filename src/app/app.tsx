@@ -14,7 +14,6 @@ import { useRouter } from 'next/router';
 const queryClient = new QueryClient()
 
 mixpanel.init('09420737b2f3103957800fa617fe2a0b', {
-  debug: true,
   /* eslint-disable camelcase */
   track_pageview: true,
   persistence: "localStorage",
