@@ -11,6 +11,7 @@ import { useModal } from "@/app/common/hooks/useModal"
 import { useToast } from "@/app/common/hooks/useToast"
 import { Route } from "@/app/common/types"
 import { Mixpanel } from "@/utils/mixpanel"
+import { ICampaign } from "@/app/common/types/Campaign"
 
 const CreateEditCampaign = ({ params }: Route) => {
   const router = useRouter()
@@ -41,8 +42,7 @@ const CreateEditCampaign = ({ params }: Route) => {
     const isFundraiseRelated = campaignType?.match(/fundraise/i)
     const isVolunteerRelated = campaignType?.match(/volunteer/i)
     const isIndividual = user?.userType == "individual"
-    console.log(formFields)
-    
+
     const payload: any = {
       title,
       category,
@@ -50,8 +50,12 @@ const CreateEditCampaign = ({ params }: Route) => {
       campaignType: isIndividual ? "fundraise" : campaignType,
       // campaignStartDate: campaignDuration[0],
       // campaignEndDate: campaignDuration[1],
-      campaignStartDate: new Date(campaignDuration[0] as any as Date).toISOString(),
-      campaignEndDate: new Date(campaignDuration[1] as any as Date).toISOString(),
+      campaignStartDate: new Date(
+        campaignDuration[0] as any as Date
+      ).toISOString(),
+      campaignEndDate: new Date(
+        campaignDuration[1] as any as Date
+      ).toISOString(),
     }
 
     if (campaignImages) {
@@ -87,6 +91,24 @@ const CreateEditCampaign = ({ params }: Route) => {
       })
     }
 
+    const shareCampaign = async (campaign: ICampaign) => {
+      if (navigator.share) {
+        try {
+          modal.hide()
+          await navigator.share({
+            title: campaign.title,
+            text: campaign.story,
+            url: `https://oncrowdr.com/explore-campaigns/donate-or-volunteer/${campaign._id}`,
+          })
+          // console.log("Successfully shared")
+        } catch (error) {
+          console.error("Error sharing:", error)
+        }
+      } else {
+        console.warn("Web Share API not supported.")
+      }
+    }
+
     try {
       const headers = {
         "Content-Type": "multipart/form-data",
@@ -96,11 +118,7 @@ const CreateEditCampaign = ({ params }: Route) => {
         ? `/api/v1/campaigns/${params.id}`
         : "/api/v1/campaigns"
 
-      const { success, message } = await makeRequest<{
-        data: any
-        success: boolean
-        message: string
-      }>(endpoint, {
+      const { success, message, data } = await makeRequest<ICampaign>(endpoint, {
         headers,
         method: isEdit ? "PUT" : "POST",
         payload: objectToFormData(payload),
@@ -108,16 +126,17 @@ const CreateEditCampaign = ({ params }: Route) => {
 
       if (success) {
         Mixpanel.track(isFundraiseRelated? "Donation Campaign created" : "Volunteer Campaign created")
-        router.back()
+        router.push("/campaigns")
+
         if (isEdit) {
           toast({ title: "Well done!", body: message })
         } else {
           modal.show(
             <CompletionCard
-              title="Donation Campaign created successfully"
-              text="This donation campaign has been created successfully. You will be
+              title="Campaign created successfully"
+              text="This campaign has been created successfully. You will be
           able to edit this campaign and republish changes."
-              primaryButton={{ label: "Share on your Socials" }}
+              primaryButton={{ label: "Share on your Socials", onClick: () => shareCampaign(data) }}
               secondaryButton={{ label: "Cancel", onClick: modal.hide }}
               clearModal={modal.hide}
             />

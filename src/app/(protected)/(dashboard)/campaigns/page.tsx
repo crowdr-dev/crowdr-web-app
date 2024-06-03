@@ -65,15 +65,13 @@ const Campaigns = () => {
         <DateRange onChange={setDateRange} />
 
         <div className="hidden md:flex">
-          <WhiteButton
+          {/* <WhiteButton
             text="Export Report"
             iconUrl={FileDownloadIcon}
             shadow
             className="mr-3"
-          />
-          <Button text="Withdraw Donations" href="/campaigns/withdrawal" onClick={()=>{
-            Mixpanel.track("Export report")
-          }}/>
+          /> */}
+          <Button text="Withdraw Donations" href="/campaigns/withdrawal" />
         </div>
       </div>
 
@@ -88,22 +86,22 @@ const Campaigns = () => {
                 stats.totalAmountDonated[0].currency,
                 { minimumFractionDigits: 2 }
               )}
-              percentage={100}
-              time="yesterday"
+              // percentage={100}
+              // time="yesterday"
               pattern
             />
             <StatCard
               title="Total Campaigns"
               text={stats.totalNoOfCampaigns}
-              percentage={100}
-              time="yesterday"
+              // percentage={100}
+              // time="yesterday"
               colorScheme="light"
             />
             <StatCard
               title="Campaign Views"
               text={stats.totalCampaignViews}
-              percentage={100}
-              time="yesterday"
+              // percentage={100}
+              // time="yesterday"
               colorScheme="light"
             />
           </>
@@ -140,7 +138,7 @@ const Campaigns = () => {
             input: "text-sm",
           }}
         />
-        <GrayButton text="Filters" iconUrl={FilterIcon} />
+        {/* <GrayButton text="Filters" iconUrl={FilterIcon} /> */}
       </div>
 
       {/* campaigns */}
