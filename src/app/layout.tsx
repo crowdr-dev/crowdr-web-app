@@ -89,21 +89,22 @@ export default function RootLayout({ children }: PropsWithChildren) {
   // const pathname = usePathname();
   return (
     <html lang="en">
-      <Script
-        strategy='lazyOnload'
-        src="https://www.googletagmanager.com/gtag/js?id=G-JL3VDJ3QRX"
-        async
-      />
-      <Script id="google-analytics" strategy='lazyOnload' >
-        {`
+      <head>
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-JL3VDJ3QRX"
+          async
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
           gtag('config', 'G-JL3VDJ3QRX');
         `}
-      </Script>
-
+        </Script>
+      </head>
       <body className={`${satoshi.variable} ${inter.className}`}>
         <RootApp>{children}</RootApp>
       </body>

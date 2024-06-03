@@ -125,7 +125,7 @@ const Todo = () => {
             <div className="flex flex-col gap-[14px]">
               <h4>Create an account in minutes</h4>
               <button
-                className="btn-primary !w-[171px]"
+                className="btn-primary !w-[171px] z-10"
                 onClick={() => {
                   router.push("signup");
                 }}>
