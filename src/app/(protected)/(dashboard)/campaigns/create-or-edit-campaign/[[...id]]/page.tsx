@@ -10,6 +10,7 @@ import { useUser } from "../../../common/hooks/useUser"
 import { useModal } from "@/app/common/hooks/useModal"
 import { useToast } from "@/app/common/hooks/useToast"
 import { Route } from "@/app/common/types"
+import { Mixpanel } from "@/utils/mixpanel"
 import { ICampaign } from "@/app/common/types/Campaign"
 
 const CreateEditCampaign = ({ params }: Route) => {
@@ -20,6 +21,7 @@ const CreateEditCampaign = ({ params }: Route) => {
   const isEdit = Boolean(params.id)
 
   const submit = async (formFields: FormFields) => {
+    Mixpanel.track("Create campaign clicked")
     const {
       category,
       campaignImages,
@@ -123,6 +125,7 @@ const CreateEditCampaign = ({ params }: Route) => {
       })
 
       if (success) {
+        Mixpanel.track(isFundraiseRelated? "Donation Campaign created" : "Volunteer Campaign created")
         router.push("/campaigns")
 
         if (isEdit) {
@@ -141,6 +144,7 @@ const CreateEditCampaign = ({ params }: Route) => {
         }
       }
     } catch (error: any) {
+      Mixpanel.track("Campaign creation error")
       const message = extractErrorMessage(error)
       toast({ title: "Oops!", body: message, type: "error" })
     }

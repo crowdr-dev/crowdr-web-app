@@ -1,8 +1,7 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import type { Metadata } from "next";
 import Head from "next/head";
 import Script from "next/script";
-
 import { Public_Sans, Lato } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -85,8 +84,11 @@ export const metadata: Metadata = {
 
 const inter = Public_Sans({ subsets: ["latin"] });
 
+
+
 export default function RootLayout({ children }: PropsWithChildren) {
   // const pathname = usePathname();
+
   return (
     <html lang="en">
       <head>
