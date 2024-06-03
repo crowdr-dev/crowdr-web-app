@@ -49,7 +49,9 @@ export const metadata: Metadata = {
     "donation",
     "volunteering",
     "Nigeria",
-    "Africa"
+    "Africa",
+    "Crowdfunding in Nigeria",
+    "Crowdfunding in Africa",
   ],
   description: "Explore campaigns and spread love by donating or volunteering",
   openGraph: {
@@ -91,8 +93,10 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
   return (
     <html lang="en">
-      <head>
-        <Script
+      <Head>
+      <meta name="google-site-verification" content="google6baf9f0790d24bbe" />
+      </Head>
+      <Script
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-JL3VDJ3QRX"
           async
@@ -106,7 +110,6 @@ export default function RootLayout({ children }: PropsWithChildren) {
           gtag('config', 'G-JL3VDJ3QRX');
         `}
         </Script>
-      </head>
       <body className={`${satoshi.variable} ${inter.className}`}>
         <RootApp>{children}</RootApp>
       </body>
