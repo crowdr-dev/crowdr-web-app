@@ -90,10 +90,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <Script
+        strategy='lazyOnload'
         src="https://www.googletagmanager.com/gtag/js?id=G-JL3VDJ3QRX"
-        strategy="afterInteractive"
+        async
       />
-      <Script id="google-analytics" strategy="afterInteractive">
+      <Script id="google-analytics" strategy='lazyOnload' >
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){window.dataLayer.push(arguments);}
