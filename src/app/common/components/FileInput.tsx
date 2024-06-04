@@ -32,7 +32,7 @@ const FileInput: RFC<FileInputProps> = ({
   optional,
   multiple,
   showFileList,
-  maxFileSize,
+  maxFileSizeInMb,
   name,
   onChange,
   value,
@@ -50,7 +50,8 @@ const FileInput: RFC<FileInputProps> = ({
     const {
       register,
       formState: { errors },
-    /*eslint-disable*/} = useFormContext()
+      /*eslint-disable*/
+    } = useFormContext()
     config = register(name, rules)
     error = errors[name] as FieldError
   }
@@ -63,11 +64,13 @@ const FileInput: RFC<FileInputProps> = ({
       control,
       setValue,
       setError,
+      clearErrors,
       watch,
       trigger,
       formState: { errors, isValid, isSubmitting },
       // eslint-disable-next-line react-hooks/rules-of-hooks
-    /*eslint-disable*/} = useFormContext()
+      /*eslint-disable*/
+    } = useFormContext()
     files = watch(config.name)
   }
   if (value) {
@@ -113,11 +116,11 @@ const FileInput: RFC<FileInputProps> = ({
     processFileSelection(e)
   }
 
-  const validateImage = async (fileList: FileList) => {
+  const _validateImage = async (fileList: FileList) => {
     const image = fileList[0]
     if (!image) return "Please select an image"
 
-    const maxSize = maxFileSize! * 1024 * 1024 // maxFileSize in bytes
+    const maxSize = maxFileSizeInMb! * 1024 * 1024 // maxFileSize in bytes
     if (image.size > maxSize) {
       const imageStatus = await new Promise<string | boolean>(
         async (resolve) => {
@@ -128,7 +131,7 @@ const FileInput: RFC<FileInputProps> = ({
           })
 
           if (compressedBlob.size > maxSize) {
-            resolve(`Image size exceeds ${maxFileSize}MB`)
+            resolve(`Image size exceeds ${maxFileSizeInMb}MB`)
           } else {
             if (config) setValue(config.name, blobToFile(compressedBlob))
             if (onChange) onChange({ value: blobToFile(compressedBlob) as any })
@@ -140,6 +143,36 @@ const FileInput: RFC<FileInputProps> = ({
     } else {
       return true
     }
+  }
+
+  const MAX_FILE_COUNT = 5
+  const validateFiles = async (files: File[]) => {
+    if (files.length > MAX_FILE_COUNT) {
+      throw new Error(`Selected files cannot be more than ${MAX_FILE_COUNT}`)
+    }
+
+    const maxSize = maxFileSizeInMb! * 1024 * 1024 // maxFileSize in bytes
+    const validatedFiles: File[] = []
+
+    for (let image of files) {
+      if (image.size > maxSize) {
+        const compressedBlob = await imageCompression(image, {
+          maxSizeMB: 2,
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+        })
+
+        if (compressedBlob.size > maxSize) {
+          throw new Error(`Image size exceeds ${maxFileSizeInMb}MB`)
+        } else {
+          validatedFiles.push(compressedBlob)
+        }
+      } else {
+        validatedFiles.push(image)
+      }
+    }
+
+    return validatedFiles
   }
 
   // BUG: DRAG & DROP IS ABLE TO BY-PASS FILE TYPE SPECIFIED
@@ -155,8 +188,12 @@ const FileInput: RFC<FileInputProps> = ({
         if (config) setError(config.name, { type: "required" })
       } else {
         if (!files) {
-          if (config) setValue(config.name, selectedFiles)
-          if (onChange) onChange({ value: selectedFiles })
+          validateFiles(selectedFiles)
+            .then(setFiles)
+            .catch((err) => {
+              if (config)
+                setError(config.name, { type: "custom", message: err.message })
+            })
         } else {
           let fileListArray = Array.from(files)
 
@@ -171,14 +208,23 @@ const FileInput: RFC<FileInputProps> = ({
               files!.push(selectedFile)
             }
           }
-          if (config) setValue(config.name, files)
-          if (onChange) onChange({ value: files })
+
+          validateFiles(files)
+            .then(setFiles)
+            .catch((err) => {
+              if (config)
+                setError(config.name, { type: "custom", message: err.message })
+            })
         }
       }
     } else {
       if (selectedFiles.length != 0) {
-        if (config) setValue(config.name, selectedFiles)
-        if (onChange) onChange({ value: selectedFiles })
+        validateFiles(selectedFiles)
+          .then(setFiles)
+          .catch((err) => {
+            if (config)
+              setError(config.name, { type: "custom", message: err.message })
+          })
       } else {
         fileInputRef.current!.value = ""
         if (config) setValue(config.name, null)
@@ -191,8 +237,11 @@ const FileInput: RFC<FileInputProps> = ({
   const removeFile = (name: string) => {
     const remainingFiles = files!.filter((file) => file.name != name)
     if (remainingFiles.length > 0) {
-      if (config) setValue(config.name, remainingFiles)
-      if (onChange) onChange({ value: remainingFiles })
+      setFiles(remainingFiles)
+
+      if (config && remainingFiles.length <= MAX_FILE_COUNT) {
+        clearErrors(config.name)
+      }
     } else {
       fileInputRef.current!.value = ""
       if (config) {
@@ -201,6 +250,12 @@ const FileInput: RFC<FileInputProps> = ({
       }
       if (onChange) onChange({ value: null })
     }
+  }
+
+  const setFiles = (files: File[]) => {
+    if (config) setValue(config.name, files, { shouldValidate: true })
+    if (onChange) onChange({ value: files })
+    // clearErrors()
   }
 
   const isChangeEvent = (
@@ -254,7 +309,7 @@ const FileInput: RFC<FileInputProps> = ({
           type="file"
           ref={fileInputRef}
           id={config?.name || name}
-          accept=".svg, .png, .jpg, .jpeg, .gif"
+          accept=".svg, .png, .jpg, .jpeg," // TODO: POSSIBLY ADD .gif
           multiple={multiple}
           onChange={processFileSelection}
           hidden
@@ -287,7 +342,7 @@ type FileInputProps = {
   error?: Merge<FieldError, (FieldError | undefined)[]>
   placeholder?: string
   optional?: boolean
-  maxFileSize?: number
+  maxFileSizeInMb?: number
   compressImage?: boolean
   multiple?: boolean
   showFileList?: boolean

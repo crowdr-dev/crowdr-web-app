@@ -247,6 +247,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                   },
                 }}
                 error={errors.campaignImages}
+                maxFileSizeInMb={2}
                 multiple
                 showFileList
               />
@@ -539,7 +540,7 @@ const campaignTypes = [
 const currencies = [
   Option("", "Select a currency...", true),
   Option("naira", "Naira (₦)"),
-  Option("dollar", "Dollar ($)"),
+  // Option("dollar", "Dollar ($)"),
 ]
 
 const skillsList = [
