@@ -139,7 +139,7 @@ const fetchBanks: QF<ReturnType<typeof Option>[]> = async () => {
 const accountTypes = [
   Option("", "Select an account type", true),
   Option("naira", "Naira"),
-  Option("dollar", "Dollar"),
+  // Option("dollar", "Dollar"),
 ]
 
 export interface IBankResponse {

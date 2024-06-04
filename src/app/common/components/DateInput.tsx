@@ -20,8 +20,8 @@ const DateInput: RFC<DateInputProps> = ({
   error,
   placeholder,
   showOptionalLabel,
-  mode,
-  dateFormat,
+  mode = "single",
+  dateFormat = "M j, Y",
   enableTime,
   minDate,
   value,
@@ -120,11 +120,6 @@ const DateInput: RFC<DateInputProps> = ({
 }
 
 export default DateInput
-
-DateInput.defaultProps = {
-  mode: "single",
-  dateFormat: "M j, Y",
-}
 
 type DateInputProps = {
   config?: UseFormRegisterReturn
