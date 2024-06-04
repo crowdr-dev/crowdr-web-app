@@ -1,7 +1,7 @@
-import { PropsWithChildren } from "react";
-import type { Metadata } from 'next'
+import { PropsWithChildren, useEffect } from "react";
+import type { Metadata } from "next";
 import Head from "next/head";
-import { usePathname } from "next/navigation";
+import Script from "next/script";
 import { Public_Sans, Lato } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -34,50 +34,84 @@ const satoshi = localFont({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Crowdr',
-    default: 'Crowdr - Crowdfund in Nigeria',
+    template: "%s | Crowdr",
+    default: "Crowdr - Crowdfund in Nigeria"
   },
-  applicationName: 'Crowdr',
-  keywords: ['crowdfunding', 'donate', 'volunteer', 'charity', 'NGO', 'non-profit', 'fundraising', 'donation', 'volunteering', 'Nigeria', 'Africa'],
-  description: 'Explore campaigns and spread love by donating or volunteering',
+  applicationName: "Crowdr",
+  keywords: [
+    "crowdfunding",
+    "donate",
+    "volunteer",
+    "charity",
+    "NGO",
+    "non-profit",
+    "fundraising",
+    "donation",
+    "volunteering",
+    "Nigeria",
+    "Africa",
+    "Crowdfunding in Nigeria",
+    "Crowdfunding in Africa",
+  ],
+  description: "Explore campaigns and spread love by donating or volunteering",
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://www.oncrowdr.com/',
-    siteName: 'Crowdr',
-    title: 'Crowdr - Crowdfund in Nigeria',
-    description: 'Explore campaigns and spread love by donating or volunteering',
+    type: "website",
+    locale: "en_US",
+    url: "https://www.oncrowdr.com/",
+    siteName: "Crowdr",
+    title: "Crowdr - Crowdfund in Nigeria",
+    description:
+      "Explore campaigns and spread love by donating or volunteering",
     images: [
       {
-        url: 'https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png',
-        alt: 'Crowdr logo',
-      },
-    ],
+        url: "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
+        alt: "Crowdr logo"
+      }
+    ]
   },
   twitter: {
     card: "summary_large_image",
-    site: "@oncrowdr", 
+    site: "@oncrowdr",
     creator: "@oncrowdr",
-    images: "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
+    images:
+      "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
     description: "Explore campaigns and spread love by donating or volunteering"
   },
   appleWebApp: {
-    statusBarStyle: 'default',
+    statusBarStyle: "default",
     capable: true,
     title: "Crowdr - Crowdfund in Nigeria"
   }
-}
+};
 
 const inter = Public_Sans({ subsets: ["latin"] });
 
+
+
 export default function RootLayout({ children }: PropsWithChildren) {
   // const pathname = usePathname();
+
   return (
     <html lang="en">
+      {/* <Head>
+      <meta name="google-site-verification" content="google6baf9f0790d24bbe" />
+      </Head> */}
+      <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-JL3VDJ3QRX"
+          async
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-JL3VDJ3QRX');
+        `}
+        </Script>
       <body className={`${satoshi.variable} ${inter.className}`}>
-        <RootApp>
-          {children}
-        </RootApp>
+        <RootApp>{children}</RootApp>
       </body>
     </html>
   );

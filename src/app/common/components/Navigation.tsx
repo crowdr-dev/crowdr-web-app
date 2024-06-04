@@ -1,18 +1,18 @@
-
 "use client";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname,useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 import { email } from "@/utils/openEmail";
 import "./component-styles/nav.css";
+import { Mixpanel } from "@/utils/mixpanel";
 
 type Props = {
-  openModal?: () => void
-}
+  openModal?: () => void;
+};
 
-export default function Navigation({openModal} : Props ) {
+export default function Navigation({ openModal }: Props) {
   const currentPath = usePathname();
   const router = useRouter();
 
@@ -33,7 +33,7 @@ export default function Navigation({openModal} : Props ) {
       </Link>
       <ul>
         <li className="font-satoshi">
-          <Link href="/pricing" className={isActive("/pricing")} >
+          <Link href="/pricing" className={isActive("/pricing")}>
             Pricing
           </Link>
         </li>
@@ -43,11 +43,20 @@ export default function Navigation({openModal} : Props ) {
           </Link>
         </li>
         <li className="font-satoshi">
-          <a href={`mailto:${email}`} target="_blank">Contact us</a>
+          <a href={`mailto:${email}`} target="_blank">
+            Contact us
+          </a>
         </li>
       </ul>
-      <button className="btn-primary hide-sm" onClick={()=>{router.push("signup")}}>Start a Campaign</button>
-      <MobileMenu openModal={openModal}/>
+      <button
+        className="btn-primary hide-sm"
+        onClick={() => {
+          router.push("signup");
+          Mixpanel.track("Start a Campaign Clicked");
+        }}>
+        Start a Campaign
+      </button>
+      <MobileMenu openModal={openModal} />
       {/* <Modal isOpen={modalIsOpen} onClose={closeModal}>
        <div>heyyy</div> 
       </Modal> */}

@@ -10,6 +10,7 @@ import WaitlistForm from '@/app/home/home-components/WaitlistForm'
 import Head from 'next/head'
 import NavBar from './components/NavBar'
 import Loading from '@/app/loading'
+import { Mixpanel } from '@/utils/mixpanel'
 
 export default function DynamicExplore () {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -50,6 +51,7 @@ export default function DynamicExplore () {
 
   useEffect(() => {
     loadCampaigns()
+    Mixpanel.track("Explore Page viewed")
   }, [])
 
   const handleSeeMore = () => {

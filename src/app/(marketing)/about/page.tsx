@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { Metadata } from 'next'
 import Header from "./about-components/Header";
 import Image from "next/image";
@@ -11,6 +11,7 @@ import Footer from "@/app/common/components/Footer";
 import OldModal from "@/app/common/components/OldModal";
 import WaitlistForm from "@/app/home/home-components/WaitlistForm";
 import Values from "./about-components/Values";
+import { Mixpanel } from "@/utils/mixpanel";
 
 
 const AboutUs = () => {
@@ -23,6 +24,12 @@ const AboutUs = () => {
   const closeModal = () => {
     setModalIsOpen(false);
   };
+
+  useEffect(()=>{
+    Mixpanel.track(
+      "About Page viewed"
+    );
+  },[])
   return (
     <div className="font-satoshi" >
       <Navigation openModal={openModal} />

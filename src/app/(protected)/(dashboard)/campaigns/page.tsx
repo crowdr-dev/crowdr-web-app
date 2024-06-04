@@ -26,6 +26,7 @@ import FileDownloadIcon from "../../../../../public/svg/file-download.svg"
 import FilterIcon from "../../../../../public/svg/filter.svg"
 import { ICampaignStats } from "@/app/common/types/UserStats"
 import { ICampaignResponse } from "@/app/common/types/Campaign"
+import { Mixpanel } from "@/utils/mixpanel"
 
 const Campaigns = () => {
   const [dateRange, setDateRange] = useState<IDateRange>()
