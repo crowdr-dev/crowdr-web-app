@@ -30,24 +30,26 @@ export default function DynamicExplore () {
 
   const loadCampaigns = async () => {
     try {
-      const newCampaigns = await getCampaigns(page, true)
-      setHasNextPage(newCampaigns?.pagination.hasNextPage)
+        const newCampaigns = await getCampaigns(page, true);
+        setHasNextPage(newCampaigns?.pagination.hasNextPage);
 
-      const campaignsArray = newCampaigns?.campaigns as Campaign[]
+        const campaignsArray = newCampaigns?.campaigns as Campaign[];
 
-      if (Array.isArray(campaignsArray) && campaignsArray.length > 0) {
-        setCampaigns(prevCampaigns => [...prevCampaigns, ...campaignsArray])
-      } else {
-        console.error(
-          "Received data is not an array of campaigns or it's empty"
-        )
-      }
-      setIsLoading(false)
+        if (Array.isArray(campaignsArray) && campaignsArray.length > 0) {
+            setCampaigns(prevCampaigns => {
+                const existingCampaignIds = new Set(prevCampaigns.map(campaign => campaign._id));
+                const filteredNewCampaigns = campaignsArray.filter(campaign => !existingCampaignIds.has(campaign._id));
+                return [...prevCampaigns, ...filteredNewCampaigns];
+            });
+        } else {
+            console.error("Received data is not an array of campaigns or it's empty");
+        }
+        setIsLoading(false);
     } catch (error) {
-      setIsLoading(false)
-      console.error('Error fetching campaigns:', error)
+        setIsLoading(false);
+        console.error('Error fetching campaigns:', error);
     }
-  }
+};
 
   useEffect(() => {
     loadCampaigns()
