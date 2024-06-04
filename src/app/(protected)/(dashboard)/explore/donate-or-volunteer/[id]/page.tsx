@@ -365,7 +365,7 @@ export default function DonateOrVolunteer({
           volunteer={campaign?.volunteer}
           totalAmount={campaign?.fundraise?.fundingGoalDetails[0].amount}
           currentAmount={donatedAmount}
-          timePosted={campaign?.campaignStartDate}
+          timePosted={campaign?.campaignEndDate}
           slideImages={[campaign?.campaignCoverImage?.url, ...(urlsOnly || [])]}
           donateImage={campaign?.campaignCoverImage?.url}
           routeTo={``}
