@@ -234,7 +234,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             </div>
           )}
           <h4 className="mt-5 text-[#667085] text-sm">
-            {moment(timePosted, "YYYYMMDD").fromNow()}
+            Ends {moment(timePosted, "YYYYMMDD").fromNow()}
           </h4>
         </div>
         {!!routeTo && campaignType?.includes("fundraise") && totalAmount && (

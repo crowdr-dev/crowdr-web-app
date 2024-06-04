@@ -51,6 +51,7 @@ export type Campaign = {
   campaignCoverImage: CampaignImage;
   campaignAdditionalImages: CampaignImage[];
   campaignStartDate: string;
+  campaignEndDate: string;
   fundraise: {
     fundingGoalDetails: [
       {

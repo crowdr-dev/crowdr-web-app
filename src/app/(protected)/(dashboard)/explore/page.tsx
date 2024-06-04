@@ -74,7 +74,7 @@ const Explore = () => {
                         : undefined
                     }
                     currentAmount={donatedAmount}
-                    timePosted={campaign.campaignStartDate}
+                    timePosted={campaign?.campaignEndDate}
                     volunteer={
                       isVolunteer(campaign) ? campaign.volunteer : undefined
                     }
