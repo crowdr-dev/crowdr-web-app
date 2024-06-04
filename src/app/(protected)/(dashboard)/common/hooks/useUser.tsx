@@ -5,7 +5,7 @@ import { RFC } from "@/app/common/types"
 import { IUser, getUser } from "@/app/api/user/getUser"
 
 const UserContext = createContext<IUser | null>(null)
-const userAtom = atom<IUser | null>(null)
+export const userAtom = atom<IUser | null>(null)
 
 const UserProvider: RFC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useAtom(userAtom)

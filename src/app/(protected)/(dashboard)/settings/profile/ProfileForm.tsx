@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form"
-import { useUser } from "../../common/hooks/useUser"
+import { useUser, userAtom } from "../../common/hooks/useUser"
 import { useToast } from "@/app/common/hooks/useToast"
 import { Button } from "../../../../common/components/Button"
 import TextInput from "../../../../common/components/TextInput"
@@ -7,6 +7,7 @@ import makeRequest from "@/utils/makeRequest"
 
 import ProfileFormContext, { FormFields } from "../utils/useProfileForm"
 import { useEffect } from "react"
+import { useSetAtom } from "jotai"
 
 const ProfileForm = () => {
   const {
@@ -16,6 +17,7 @@ const ProfileForm = () => {
   } = useFormContext() as ProfileFormContext
   const user = useUser()
   const toast = useToast()
+  const setUser = useSetAtom(userAtom)
   const isIndividual = user?.userType === "individual"
 
   useEffect(() => {
@@ -51,6 +53,7 @@ const ProfileForm = () => {
 
         if (success) {
           toast({ title: "Well done!", body: message })
+          setUser({ ...user, fullName, organizationName })
         }
       } catch (error) {
         console.log(error)
