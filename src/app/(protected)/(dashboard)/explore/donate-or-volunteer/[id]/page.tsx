@@ -357,7 +357,11 @@ export default function DonateOrVolunteer({
       </div>
       <div className="grid grid-cols-1 gap-12 min-w-full md:grid-cols-2">
         <ExploreCard
-          name={userDetails?.organizationName}
+          name={
+            userDetails?.userType === "individual"
+              ? userDetails?.fullName
+              : userDetails?.organizationName
+          }
           tier={userDetails?.userType}
           category={campaign?.category}
           header={campaign?.title}
@@ -708,44 +712,42 @@ export default function DonateOrVolunteer({
                   <Filter query="Top Donors" />
                 </div>
                 <div className="flex items-start flex-col gap-5 mb-8">
-                  {campaign?.campaignDonors
-                    ?.slice(0, 5)
-                    .map(
-                      (
-                        donor: {
-                          fullName: string;
-                          amount: string;
-                          isAnonymous: boolean;
-                        },
-                        index: number
-                      ) => {
-                        return (
-                          <div
-                            className="flex items-center flex-row justify-start"
-                            key={index}>
-                            <div className="p-2 bg-[#F8F8F8] rounded-full">
-                              <Image
-                                src={HeartHand}
-                                alt="menu"
-                                className="bg-F8F8F8"
-                              />
-                            </div>
-                            <div className="flex flex-col gap-[1px] ml-4">
-                              <p className="text-[#344054] text-sm">
-                                {donor?.isAnonymous
-                                  ? "Anonymous"
-                                  : donor?.fullName}
-                              </p>
-                              <span className="text-[13px] text-[#667085]">
-                                Donated{" "}
-                                {formatAmount(parseInt(donor?.amount), "naira")}{" "}
-                                to this campaign
-                              </span>
-                            </div>
+                  {campaign?.campaignDonors?.slice(0, 5).map(
+                    (
+                      donor: {
+                        fullName: string;
+                        amount: string;
+                        isAnonymous: boolean;
+                      },
+                      index: number
+                    ) => {
+                      return (
+                        <div
+                          className="flex items-center flex-row justify-start"
+                          key={index}>
+                          <div className="p-2 bg-[#F8F8F8] rounded-full">
+                            <Image
+                              src={HeartHand}
+                              alt="menu"
+                              className="bg-F8F8F8"
+                            />
                           </div>
-                        );
-                      }
-                    )}
+                          <div className="flex flex-col gap-[1px] ml-4">
+                            <p className="text-[#344054] text-sm">
+                              {donor?.isAnonymous
+                                ? "Anonymous"
+                                : donor?.fullName}
+                            </p>
+                            <span className="text-[13px] text-[#667085]">
+                              Donated{" "}
+                              {formatAmount(parseInt(donor?.amount), "naira")}{" "}
+                              to this campaign
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    }
+                  )}
                 </div>
                 {campaign?.totalNoOfCampaignDonors > 0 && (
                   <Link
