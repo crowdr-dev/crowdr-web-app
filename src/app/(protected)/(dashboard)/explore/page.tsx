@@ -77,6 +77,8 @@ const Explore = () => {
                         ? campaign.fundraise.fundingGoalDetails[0].amount
                         : undefined
                     }
+                    currency={isFundraise(campaign)
+                      ? campaign.fundraise.fundingGoalDetails[0].currency : undefined}
                     currentAmount={donatedAmount}
                     timePosted={campaign?.campaignEndDate}
                     volunteer={

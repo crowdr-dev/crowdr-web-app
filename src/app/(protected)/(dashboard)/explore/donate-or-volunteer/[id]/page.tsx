@@ -368,6 +368,7 @@ export default function DonateOrVolunteer({
           subheader={campaign?.story}
           volunteer={campaign?.volunteer}
           totalAmount={campaign?.fundraise?.fundingGoalDetails[0].amount}
+          currency={campaign?.fundraise?.fundingGoalDetails[0].currency}
           currentAmount={donatedAmount}
           timePosted={campaign?.campaignEndDate}
           slideImages={[campaign?.campaignCoverImage?.url, ...(urlsOnly || [])]}
@@ -609,18 +610,20 @@ export default function DonateOrVolunteer({
                   value={donationInputs.amount}
                   info={`Our payment processor charges a small donation fulfillment fee. ${
                     donationInputs.amount &&
-                    `This brings your total to ${formatCurrency(
+                    `This brings your total to ${formatAmount(
                       calculateTransactionFee(
                         parseFloat(donationInputs.amount)
-                      ) + parseFloat(donationInputs.amount)
+                      ) + parseFloat(donationInputs.amount),
+                      currency?.toLowerCase()
                     )}`
                   }`}
                   formattedValue={
                     donationInputs.amount &&
-                    formatCurrency(
+                    formatAmount(
                       calculateTransactionFee(
                         parseFloat(donationInputs.amount)
-                      ) + parseFloat(donationInputs.amount)
+                      ) + parseFloat(donationInputs.amount),
+                      currency?.toLowerCase()
                     )
                   }
                 />
@@ -740,7 +743,7 @@ export default function DonateOrVolunteer({
                             </p>
                             <span className="text-[13px] text-[#667085]">
                               Donated{" "}
-                              {formatAmount(parseInt(donor?.amount), "naira")}{" "}
+                              {formatAmount(parseInt(donor?.amount), currency)}{" "}
                               to this campaign
                             </span>
                           </div>
