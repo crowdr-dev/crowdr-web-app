@@ -33,6 +33,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
     campaignType,
     category,
     volunteer,
+    currency,
   } = props;
 
   const { copied, copy } = useClipboard();
@@ -242,8 +243,9 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             <p className="text-sm text-[#667085] mb-[4px]">
               {" "}
               <span className="text-[#000] text-sm">Goal</span>{" "}
-              {formatAmount(currentAmount, "naira")}/
-              {formatAmount(totalAmount, "naira")}
+              
+              {currency && formatAmount(currentAmount, currency)}/
+              {currency && formatAmount(totalAmount, currency)}
             </p>
             <ProgressBar bgColor="#00B964" percent={progress * 100} showValue />
           </div>
@@ -319,4 +321,5 @@ type ExploreCardProps = {
   campaignType?: string;
   category?: string;
   volunteer?: VolunteerDetails;
+  currency?: string;
 };

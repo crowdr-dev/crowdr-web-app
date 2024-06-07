@@ -25,6 +25,7 @@ type ExploreCardProps = {
   totalAmount: number;
   currentAmount: number;
   routeTo: string;
+  currency?: string;
 };
 
 const ExploreCard: RFC<ExploreCardProps> = (props) => {
@@ -37,7 +38,8 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
     currentAmount,
     totalAmount,
     campaignType,
-    routeTo
+    routeTo,
+    currency
   } = props;
 
   const [hover, setHover] = useState(false);
@@ -135,13 +137,13 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
         <div className="my-4 cursor-pointer">
           <h3 className="font-semibold text-[18px]">{header}</h3>
         </div>
-        {campaignType.includes("fundraise") && (
+        {campaignType.includes("fundraise") && currency &&  (
           <div className="bg-[#F9F9F9] p-4 rounded-[8px] cursor-pointer">
             <p className="text-sm text-[#667085] mb-[4px]">
               {" "}
               <span className="text-[#000] text-sm">Goal</span>{" "}
-              {formatAmount(currentAmount, "naira")}/
-              {formatAmount(totalAmount, "naira")}
+              {formatAmount(currentAmount, currency)}/
+              {formatAmount(totalAmount, currency)}
             </p>
             <ProgressBar bgColor="#00B964" percent={progress * 100} showValue />
           </div>
@@ -229,6 +231,7 @@ const Happening = () => {
                 header={campaign?.title}
                 category={campaign?.category}
                 totalAmount={campaign.fundraise?.fundingGoalDetails[0].amount}
+                currency={campaign?.fundraise?.fundingGoalDetails[0].currency}
                 currentAmount={donatedAmount}
                 timePosted={campaign?.campaignStartDate}
                 slideImages={[
