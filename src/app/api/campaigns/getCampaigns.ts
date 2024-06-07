@@ -84,6 +84,7 @@ export type Campaign = {
     organizationId: string;
     organizationName: string;
     userType: string;
+    fullName: string;
   };
 };
 
