@@ -561,18 +561,20 @@ export default function DonateOrVolunteer({
                     value={donationInputs.amount}
                     info={`Our payment processor charges a small donation fulfillment fee. ${
                       donationInputs.amount &&
-                      `This brings your total to ${formatCurrency(
+                      `This brings your total to ${formatAmount(
                         calculateTransactionFee(
                           parseFloat(donationInputs.amount)
-                        ) + parseFloat(donationInputs.amount)
+                        ) + parseFloat(donationInputs.amount),
+                        currency?.toLowerCase()
                       )}`
                     }`}
                     formattedValue={
                       donationInputs.amount &&
-                      formatCurrency(
+                      formatAmount(
                         calculateTransactionFee(
                           parseFloat(donationInputs.amount)
-                        ) + parseFloat(donationInputs.amount)
+                        ) + parseFloat(donationInputs.amount),
+                        currency?.toLowerCase()
                       )
                     }
                   />
