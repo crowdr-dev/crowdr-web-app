@@ -176,8 +176,8 @@ export default function DonateOrVolunteer({
       campaign?.campaignType === "fundraiseAndVolunteer"
         ? "donate"
         : campaign?.campaignType === "fundraise"
-          ? "donate"
-          : "volunteer"
+        ? "donate"
+        : "volunteer"
     );
   }, [params.id, campaign?.campaignType, redirectUrl]);
 
@@ -208,7 +208,7 @@ export default function DonateOrVolunteer({
       cancel_url: `${window.location.href}?cancelled=true`
     };
 
-    checkboxValues.isAnonymous && Mixpanel.track("Anonymous Donation")
+    checkboxValues.isAnonymous && Mixpanel.track("Anonymous Donation");
     try {
       const { data } = await makeRequest(endpoint, {
         method: "POST",
@@ -219,7 +219,7 @@ export default function DonateOrVolunteer({
       setRedirectUrl(data.authorization_url);
       setLoading(false);
     } catch (error) {
-      Mixpanel.track("Error completing donation")
+      Mixpanel.track("Error completing donation");
       setLoading(false);
       const message = extractErrorMessage(error);
       toast({ title: "Oops!", body: message, type: "error" });
@@ -323,20 +323,25 @@ export default function DonateOrVolunteer({
               {campaign?.campaignType === "fundraiseAndVolunteer"
                 ? "Donate and Volunteer"
                 : campaign?.campaignType === "fundraise"
-                  ? "Donate"
-                  : "Volunteer"}
+                ? "Donate"
+                : "Volunteer"}
             </h3>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-12 min-w-full md:grid-cols-2">
           <ExploreCard
-            name={userDetails?.organizationName}
+            name={
+              userDetails?.userType === "individual"
+                ? userDetails?.fullName
+                : userDetails?.organizationName
+            }
             tier={userDetails?.userType}
             header={campaign?.title}
             subheader={campaign?.story}
             totalAmount={campaign?.fundraise?.fundingGoalDetails[0].amount}
+            currency={campaign?.fundraise?.fundingGoalDetails[0].currency}
             currentAmount={donatedAmount}
-            timePosted={campaign?.campaignStartDate}
+            timePosted={campaign?.campaignEndDate}
             volunteer={campaign?.volunteer}
             avatar={campaign?.photo?.url || ""}
             slideImages={[
@@ -353,16 +358,18 @@ export default function DonateOrVolunteer({
               {campaign?.campaignType === "fundraiseAndVolunteer" ? (
                 <>
                   <span
-                    className={`text-sm p-3 cursor-pointer ${tab === "donate" ? activeTabStyle : inActiveTabStyle
-                      }`}
+                    className={`text-sm p-3 cursor-pointer ${
+                      tab === "donate" ? activeTabStyle : inActiveTabStyle
+                    }`}
                     onClick={() => {
                       setTab("donate");
                     }}>
                     Donate
                   </span>
                   <span
-                    className={`text-sm p-3 ml-4 cursor-pointer ${tab === "volunteer" ? activeTabStyle : inActiveTabStyle
-                      }`}
+                    className={`text-sm p-3 ml-4 cursor-pointer ${
+                      tab === "volunteer" ? activeTabStyle : inActiveTabStyle
+                    }`}
                     onClick={() => {
                       setTab("volunteer");
                     }}>
@@ -371,8 +378,9 @@ export default function DonateOrVolunteer({
                 </>
               ) : campaign?.campaignType === "fundraise" ? (
                 <span
-                  className={`text-sm p-3 cursor-pointer ${tab === "donate" ? activeTabStyle : inActiveTabStyle
-                    }`}
+                  className={`text-sm p-3 cursor-pointer ${
+                    tab === "donate" ? activeTabStyle : inActiveTabStyle
+                  }`}
                   onClick={() => {
                     setTab("donate");
                   }}>
@@ -380,8 +388,9 @@ export default function DonateOrVolunteer({
                 </span>
               ) : (
                 <span
-                  className={`text-sm p-3 ml-4 cursor-pointer ${tab === "volunteer" ? activeTabStyle : inActiveTabStyle
-                    }`}
+                  className={`text-sm p-3 ml-4 cursor-pointer ${
+                    tab === "volunteer" ? activeTabStyle : inActiveTabStyle
+                  }`}
                   onClick={() => {
                     setTab("volunteer");
                   }}>
@@ -550,19 +559,22 @@ export default function DonateOrVolunteer({
                     type="number"
                     onChange={updateProps}
                     value={donationInputs.amount}
-                    info={`Our payment processor charges a small donation fulfillment fee. ${donationInputs.amount &&
-                      `This brings your total to ${formatCurrency(
+                    info={`Our payment processor charges a small donation fulfillment fee. ${
+                      donationInputs.amount &&
+                      `This brings your total to ${formatAmount(
                         calculateTransactionFee(
                           parseFloat(donationInputs.amount)
-                        ) + parseFloat(donationInputs.amount)
+                        ) + parseFloat(donationInputs.amount),
+                        currency?.toLowerCase()
                       )}`
-                      }`}
+                    }`}
                     formattedValue={
                       donationInputs.amount &&
-                      formatCurrency(
+                      formatAmount(
                         calculateTransactionFee(
                           parseFloat(donationInputs.amount)
-                        ) + parseFloat(donationInputs.amount)
+                        ) + parseFloat(donationInputs.amount),
+                        currency?.toLowerCase()
                       )
                     }
                   />
@@ -635,47 +647,42 @@ export default function DonateOrVolunteer({
                     <Filter query="Top Donors" />
                   </div>
                   <div className="flex items-start flex-col gap-5 mb-8">
-                    {campaign?.campaignDonors
-                      ?.slice(0, 5)
-                      .map(
-                        (
-                          donor: {
-                            fullName: string;
-                            amount: string;
-                            isAnonymous: boolean;
-                          },
-                          index: number
-                        ) => {
-                          return (
-                            <div
-                              className="flex items-center flex-row justify-start"
-                              key={index}>
-                              <div className="p-2 bg-[#F8F8F8] rounded-full">
-                                <Image
-                                  src={HeartHand}
-                                  alt="menu"
-                                  className="bg-F8F8F8"
-                                />
-                              </div>
-                              <div className="flex flex-col gap-[1px] ml-4">
-                                <p className="text-[#344054] text-sm">
-                                  {donor?.isAnonymous
-                                    ? "Anonymous"
-                                    : donor?.fullName}
-                                </p>
-                                <span className="text-[13px] text-[#667085]">
-                                  Donated{" "}
-                                  {formatAmount(
-                                    parseInt(donor?.amount),
-                                    "naira"
-                                  )}{" "}
-                                  to this campaign
-                                </span>
-                              </div>
+                    {campaign?.campaignDonors?.slice(0, 5).map(
+                      (
+                        donor: {
+                          fullName: string;
+                          amount: string;
+                          isAnonymous: boolean;
+                        },
+                        index: number
+                      ) => {
+                        return (
+                          <div
+                            className="flex items-center flex-row justify-start"
+                            key={index}>
+                            <div className="p-2 bg-[#F8F8F8] rounded-full">
+                              <Image
+                                src={HeartHand}
+                                alt="menu"
+                                className="bg-F8F8F8"
+                              />
                             </div>
-                          );
-                        }
-                      )}
+                            <div className="flex flex-col gap-[1px] ml-4">
+                              <p className="text-[#344054] text-sm">
+                                {donor?.isAnonymous
+                                  ? "Anonymous"
+                                  : donor?.fullName}
+                              </p>
+                              <span className="text-[13px] text-[#667085]">
+                                Donated{" "}
+                                {formatAmount(parseInt(donor?.amount), "naira")}{" "}
+                                to this campaign
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      }
+                    )}
                   </div>
                   {campaign?.totalNoOfCampaignDonors > 0 && (
                     <Link

@@ -61,7 +61,7 @@ export default function DynamicExplore({
                     : undefined
                 }
                 currentAmount={donatedAmount}
-                timePosted={campaign?.campaignStartDate}
+                timePosted={campaign?.campaignEndDate}
                 category={campaign?.category}
                 volunteer={
                   isVolunteer(campaign) ? campaign?.volunteer : undefined
