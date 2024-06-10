@@ -94,7 +94,7 @@ const VerificationForm = () => {
     <div className="max-w-[484px]">
       <form onSubmit={handleSubmit(submit)}>
         <div className="flex flex-col mb-[33px] md:mb-[38px]">
-          <TextInput
+          {/* <TextInput
             name="bvnNumber"
             label="BVN number"
             styles={{ wrapper: "mb-[33px]" }}
@@ -109,7 +109,7 @@ const VerificationForm = () => {
                     },
                   }
             }
-          />
+          /> */}
 
           <SelectInput
             name="docType"

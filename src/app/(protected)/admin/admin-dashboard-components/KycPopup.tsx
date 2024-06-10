@@ -108,7 +108,9 @@ const KycPopup = () => {
                 {isOrganization ? "Organization" : "Individual"}
               </p>
               <h2 className="font-semibold text-2xl text-black">
-                {kycData.kyc.user?.organizationName}
+                {isOrganization
+                  ? kycData.kyc.user?.organizationName
+                  : kycData.kyc.user?.fullName}
               </h2>
             </div>
             {/* {isOrganization && (
@@ -119,13 +121,13 @@ const KycPopup = () => {
           </div>
 
           <div className="flex gap-3">
-            <div className="flex flex-col gap-1">
+            {/* <div className="flex flex-col gap-1">
               <p className="text-xs text-[#61656B]">BVN Number</p>
               <p className="text-sm text-[#393E46]">{kycData.kyc.BVN}</p>
-            </div>
+            </div> */}
             {kycData.org && (
               <>
-                <div className="border-r border-[#61656B] self-stretch"></div>
+                {/* <div className="border-r border-[#61656B] self-stretch"></div> */}
                 <div className="flex flex-col gap-1">
                   <p className="text-xs text-[#61656B]">CAC Number</p>
                   <p className="text-sm text-[#393E46]">
