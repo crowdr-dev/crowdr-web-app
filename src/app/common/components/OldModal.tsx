@@ -14,7 +14,7 @@ const customStyles: Styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.75)",
+    backgroundColor: "rgba(76, 76, 76, 0.7)",
     zIndex: 9999,
   },
   content: {
@@ -24,6 +24,9 @@ const customStyles: Styles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    border: "none",
+    borderRadius: "0px",
+    backgroundColor:"rgba(76, 76, 76, 0)",
     padding: 0,
   },
 };
