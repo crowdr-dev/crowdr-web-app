@@ -233,7 +233,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
                 <Image
                   src={!!slideImages && slideImages[0]}
                   alt="donate"
-                  className="h-60 object-center object-cover rounded-lg cursor-pointer"
+                  className="h-60 object-center object-cover rounded-lg  cursor-pointer"
                   width={500}
                   height={400}
                   style={{
