@@ -1,18 +1,11 @@
 import { PropsWithChildren, useEffect } from "react";
 import type { Metadata } from "next";
-import Head from "next/head";
 import Script from "next/script";
-import { Public_Sans, Lato } from "next/font/google";
+import { Public_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import "./common/styles/button.css";
 import RootApp from "./app";
-
-export const lato = Lato({
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  subsets: ["latin"]
-});
 
 const satoshi = localFont({
   src: [
@@ -51,7 +44,7 @@ export const metadata: Metadata = {
     "Nigeria",
     "Africa",
     "Crowdfunding in Nigeria",
-    "Crowdfunding in Africa",
+    "Crowdfunding in Africa"
   ],
   description: "Explore campaigns and spread love by donating or volunteering",
   openGraph: {
@@ -86,30 +79,36 @@ export const metadata: Metadata = {
 
 const inter = Public_Sans({ subsets: ["latin"] });
 
-
-
 export default function RootLayout({ children }: PropsWithChildren) {
-  // const pathname = usePathname();
-
   return (
     <html lang="en">
-      {/* <Head>
-      <meta name="google-site-verification" content="google6baf9f0790d24bbe" />
-      </Head> */}
       <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-JL3VDJ3QRX"
-          async
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-JL3VDJ3QRX"
+        async
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
           gtag('config', 'G-JL3VDJ3QRX');
         `}
-        </Script>
+      </Script>
+      <Script type="text/javascript" id="tawk">
+        {`
+          var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+          var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+          s1.async=true;
+          s1.src='https://embed.tawk.to/666c7875981b6c56477d5500/1i0brd3db';
+          s1.charset='UTF-8';
+          s1.setAttribute('crossorigin','*');
+          s0.parentNode.insertBefore(s1,s0);
+          })();
+        `}
+      </Script>
       <body className={`${satoshi.variable} ${inter.className}`}>
         <RootApp>{children}</RootApp>
       </body>
