@@ -33,6 +33,7 @@ import { IoShareSocial } from "react-icons/io5";
 import FileDownloadIcon from "../../../../../../public/svg/file-download.svg"
 import OldModal from "@/app/common/components/OldModal"
 import ShareCampaign from "@/app/common/components/share-campaign"
+import { Mixpanel } from "@/utils/mixpanel"
 
 const Campaign = ({ params }: Route) => {
   const [donorsPage, setDonorsPage] = useState(1)
@@ -204,7 +205,9 @@ const Campaign = ({ params }: Route) => {
             bgColor="#FFF"
             textColor="#344054"
             outlineColor="#D0D5DD"
-            onClick={()=> shareCampaign(campaign)}
+            onClick={()=> {shareCampaign(campaign)
+              Mixpanel.track("Clicked Share Campaign")
+            }}
           />
           <Button text="Withdraw Donations" />
         </div>

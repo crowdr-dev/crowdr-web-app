@@ -4,12 +4,13 @@ import { ICampaign } from "../types/Campaign";
 import { IoMdClose } from "react-icons/io";
 import useClipboard from "../hooks/useClipboard";
 import { BsWhatsapp } from "react-icons/bs";
+import { Mixpanel } from "@/utils/mixpanel";
 
 type ShareCampaignProps = {
   campaignId?: string;
   title?: string;
   campaignCoverImage?: string;
-  story?: string; 
+  story?: string;
   onClose: () => void;
 };
 
@@ -29,9 +30,14 @@ const ShareCampaign = (props: ShareCampaignProps) => {
   };
 
   const getWhatsAppShareLink = () => {
+    Mixpanel.track("Shared via WhatsApp");
     const header = encodeURIComponent(`\n\n*${title}*`);
-    const body = encodeURIComponent(`\n\n${story}…\n\nRead more here: ${shareUrl}`);
-    const footer = encodeURIComponent(`\n\nForward this message to your contacts to help this campaign reach its goal!`);
+    const body = encodeURIComponent(
+      `\n\n${story}…\n\nRead more here: ${shareUrl}`
+    );
+    const footer = encodeURIComponent(
+      `\n\nForward this message to your contacts to help this campaign reach its goal!`
+    );
     const message = `Hi, \n\nI'd really appreciate it if you would share or support to this campaign.\n\n${header}\n\n${body}${footer}`;
 
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -54,7 +60,10 @@ const ShareCampaign = (props: ShareCampaignProps) => {
       <div className="grid grid-cols-3 justify-between px-4 py-5 gap-6">
         <div
           className="flex flex-col cursor-pointer gap-1 items-center"
-          onClick={() => copy(shareUrl)}>
+          onClick={() => {
+            copy(shareUrl);
+            Mixpanel.track("Copied share link");
+          }}>
           <Image src={"/svg/copy.svg"} alt="campaign" width={60} height={60} />
           <p className="text-[#000] text-[12px]">
             {copied ? "Linked copied" : "Copy link"}
@@ -78,6 +87,7 @@ const ShareCampaign = (props: ShareCampaignProps) => {
           )}`}
           target="_blank"
           className="decoration-none text-[#000]"
+          onClick={() => Mixpanel.track("Shared via Facebook")}
           rel="noopener noreferrer">
           <div className="flex flex-col cursor-pointer gap-1 items-center">
             <Image
@@ -95,6 +105,7 @@ const ShareCampaign = (props: ShareCampaignProps) => {
           )}&title=${encodeURIComponent(!!title && title)}&source=oncrowdr.com`}
           target="_blank"
           className="decoration-none text-[#000]"
+          onClick={() => Mixpanel.track("Shared via LinkedIn")}
           rel="noopener noreferrer">
           <div className="flex flex-col cursor-pointer gap-1 items-center">
             <Image
@@ -112,6 +123,7 @@ const ShareCampaign = (props: ShareCampaignProps) => {
           )}&text=${encodeURIComponent("Help by supporting this campaign")}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => Mixpanel.track("Shared via Twitter")}
           className="decoration-none text-[#000]">
           <div className="flex flex-col cursor-pointer gap-1 items-center ">
             <Image
@@ -126,7 +138,10 @@ const ShareCampaign = (props: ShareCampaignProps) => {
 
         <div
           className="flex flex-col cursor-pointer gap-1 items-center "
-          onClick={shareViaEmail}>
+          onClick={() => {
+            shareViaEmail();
+            Mixpanel.track("Shared via Email");
+          }}>
           <Image src={"/svg/mail.svg"} alt="campaign" width={60} height={60} />
           <p className="text-[#000] text-[12px]">Share via mail</p>
         </div>

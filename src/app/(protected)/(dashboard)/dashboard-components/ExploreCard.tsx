@@ -19,6 +19,7 @@ import useClipboard from "@/app/common/hooks/useClipboard";
 import { IoMdClose } from "react-icons/io";
 import { IoShareSocial } from "react-icons/io5";
 import ShareCampaign from "@/app/common/components/share-campaign";
+import { Mixpanel } from "@/utils/mixpanel";
 
 const ExploreCard: RFC<ExploreCardProps> = (props) => {
   const {
@@ -342,6 +343,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             className="w-full !justify-center"
             onClick={() => {
               setShareModal(true);
+              Mixpanel.track("Clicked Share Campaign")
             }}
           />
         </div>
@@ -355,6 +357,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             className="w-full !justify-center"
             onClick={() => {
               setShareModal(true);
+              Mixpanel.track("Clicked Share Campaign")
             }}
           />
           <a
