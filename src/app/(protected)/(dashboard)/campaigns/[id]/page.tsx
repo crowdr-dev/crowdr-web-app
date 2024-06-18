@@ -21,11 +21,15 @@ import Text from "../../dashboard-components/Text"
 import { pill } from "../../dashboard-components/Pill"
 
 import { Nullable, QF, Route } from "@/app/common/types"
-import { IFundraiseVolunteerCampaign } from "@/app/common/types/Campaign"
+import { ICampaign, IFundraiseVolunteerCampaign } from "@/app/common/types/Campaign"
 import {
   IDonationResponse,
   IVolunteeringResponse,
 } from "@/app/common/types/DonationsVolunteering"
+import { useToast } from "@/app/common/hooks/useToast"
+import { useModal } from "@/app/common/hooks/useModal"
+import { BiSearch } from "react-icons/bi"
+import { IoShareSocial } from "react-icons/io5";
 import FileDownloadIcon from "../../../../../../public/svg/file-download.svg"
 
 const Campaign = ({ params }: Route) => {
@@ -34,6 +38,10 @@ const Campaign = ({ params }: Route) => {
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const user = useUser()
+  const modal = useModal()
+  const toast = useToast()
+
+
 
   const { data: campaign } = useQuery(
     [keys.campaignPage.details, user?.token, params.id],
@@ -64,6 +72,34 @@ const Campaign = ({ params }: Route) => {
       refetchOnWindowFocus: false,
     }
   )
+
+
+  const shareCampaign = async (campaign:any) => {
+  if (navigator.share) {
+    console.log("Web Share API is supported.");
+    try {
+      modal.hide();
+      await navigator.share({
+        title: campaign.title,
+        text: campaign.story,
+        url: `https://oncrowdr.com/explore-campaigns/donate-or-volunteer/${campaign._id}`,
+      });
+      console.log("Successfully shared");
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  } else {
+    // Fallback method
+    const shareUrl = `https://oncrowdr.com/explore-campaigns/donate-or-volunteer/${campaign?._id}`;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      toast({ title: "Success!", body:`Campaign link copied to clipboard`, type: "success" })
+    } catch (error) {
+      console.error("Fallback sharing failed:", error);
+      alert("Web Share API is not supported and copying to clipboard failed. Please copy the link manually: " + shareUrl);
+    }
+  }
+};
 
   const selectedView =
     searchParams.get("view") ||
@@ -145,11 +181,12 @@ const Campaign = ({ params }: Route) => {
 
         <div className="flex items-start gap-3 mb-[23px] md:mb-[9px]">
           <Button
-            text="Export Report"
-            iconUrl={FileDownloadIcon}
+            text="Share Campaign"
+            icon={IoShareSocial}
             bgColor="#FFF"
             textColor="#344054"
             outlineColor="#D0D5DD"
+            onClick={()=> shareCampaign(campaign)}
           />
           <Button text="Withdraw Donations" />
         </div>
