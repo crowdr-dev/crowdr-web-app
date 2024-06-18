@@ -21,7 +21,7 @@ export default function Navigation({ openModal }: Props) {
   };
 
   return (
-    <nav>
+    <nav className="font-satoshi">
       <Link href="/">
         <Image
           src="/svg/new-crowdr-logo.svg"
@@ -32,17 +32,22 @@ export default function Navigation({ openModal }: Props) {
         />
       </Link>
       <ul>
-        <li className="font-satoshi">
+        <li>
           <Link href="/pricing" className={isActive("/pricing")}>
             Pricing
           </Link>
         </li>
-        <li className="font-satoshi">
+        <li>
           <Link href="/about" className={isActive("/about")}>
             About us
           </Link>
         </li>
-        <li className="font-satoshi">
+        <li>
+          <a href="https://blog.oncrowdr.com" target="_blank">
+            Blog
+          </a>
+        </li>
+        <li>
           <a href={`mailto:${email}`} target="_blank">
             Contact us
           </a>
