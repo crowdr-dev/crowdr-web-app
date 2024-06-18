@@ -127,7 +127,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
               alt="user-avatar"
               width={40}
               height={40}
-              className="rounded-full"
+              className="rounded-full !w-10 !h-10"
             />
           ) : (
             <div className="rounded-full bg-[#00B964] flex flex-row items-center justify-center h-[40px] w-[40px] font-bold text-white">
