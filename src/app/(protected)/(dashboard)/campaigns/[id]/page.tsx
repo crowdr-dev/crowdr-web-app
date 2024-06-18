@@ -31,6 +31,8 @@ import { useModal } from "@/app/common/hooks/useModal"
 import { BiSearch } from "react-icons/bi"
 import { IoShareSocial } from "react-icons/io5";
 import FileDownloadIcon from "../../../../../../public/svg/file-download.svg"
+import OldModal from "@/app/common/components/OldModal"
+import ShareCampaign from "@/app/common/components/share-campaign"
 
 const Campaign = ({ params }: Route) => {
   const [donorsPage, setDonorsPage] = useState(1)
@@ -42,6 +44,7 @@ const Campaign = ({ params }: Route) => {
   const toast = useToast()
 
 
+  const [shareModal, setShareModal] = useState(false);
 
   const { data: campaign } = useQuery(
     [keys.campaignPage.details, user?.token, params.id],
@@ -179,6 +182,21 @@ const Campaign = ({ params }: Route) => {
         )}
         {/* TODO: ADD SKELETON LOADING */}
 
+
+        <OldModal isOpen={shareModal} onClose={() => setShareModal(false)}>
+        <div
+          className="relative p-12"
+          style={{
+            background: "rgba(76, 76, 76, 0)"
+          }}>
+          <ShareCampaign
+            onClose={() => setShareModal(false)}
+            campaignId={campaign?._id}
+            title={campaign?.title}
+            story={campaign?.story?.split(" ").slice(0, 30)?.join(" ")}
+          />
+        </div>
+      </OldModal>
         <div className="flex items-start gap-3 mb-[23px] md:mb-[9px]">
           <Button
             text="Share Campaign"

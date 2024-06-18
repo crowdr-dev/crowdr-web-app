@@ -51,6 +51,7 @@ export default function DynamicExplore({
             const donatedAmount = campaign?.totalAmountDonated?.[0].amount
             return (
               <ExploreCard
+                id={campaign._id}
                 name={userDetails?.organizationName}
                 tier={userDetails?.userType}
                 header={campaign?.title}

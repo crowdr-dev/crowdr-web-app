@@ -63,6 +63,7 @@ const Explore = () => {
 
                 return (
                   <ExploreCard
+                    id={campaign._id}
                     name={
                       userDetails?.userType === "individual"
                         ? userDetails?.fullName
