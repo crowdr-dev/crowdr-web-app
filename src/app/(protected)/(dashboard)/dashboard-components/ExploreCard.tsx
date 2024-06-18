@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { RFC } from "@/app/common/types";
-import { Button } from "../../../common/components/Button";
+import { Button, WhiteButton } from "../../../common/components/Button";
 import ProgressBar from "./ProgressBar";
 import moment from "moment";
 import "slick-carousel/slick/slick.css";
@@ -17,9 +17,13 @@ import { camelCaseToSeparated } from "@/utils/seperateText";
 import { getInitials } from "./Header";
 import useClipboard from "@/app/common/hooks/useClipboard";
 import { IoMdClose } from "react-icons/io";
+import { IoShareSocial } from "react-icons/io5";
+import ShareCampaign from "@/app/common/components/share-campaign";
+import { Mixpanel } from "@/utils/mixpanel";
 
 const ExploreCard: RFC<ExploreCardProps> = (props) => {
   const {
+    id,
     name,
     tier,
     avatar,
@@ -41,6 +45,9 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
 
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const [shareModal, setShareModal] = useState(false);
+
   const [hover, setHover] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -77,6 +84,11 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
   const closeModal = () => {
     setModalIsOpen(false);
   };
+
+  const closeShareModal = () => {
+    setShareModal(false);
+  };
+
   const wordsArray = subheader?.split(" ");
 
   const displayText = isCollapsed
@@ -294,35 +306,59 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
         )}
       </div>
 
+      <OldModal isOpen={shareModal} onClose={closeShareModal}>
+        <div
+          className="relative p-12"
+          style={{
+            background: "rgba(76, 76, 76, 0)"
+          }}>
+          <ShareCampaign
+            onClose={closeShareModal}
+            campaignId={id}
+            title={header}
+            story={displayText}
+            campaignCoverImage={slideImages?.[0]}
+          />
+        </div>
+      </OldModal>
+
       {!!routeTo ? (
-        <Button
-          text={
-            campaignType === "fundraiseAndVolunteer"
-              ? "Donate and Volunteer"
-              : campaignType === "fundraise"
-              ? "Donate"
-              : "Volunteer"
-          }
-          className="w-full mt-4 !justify-center"
-          href={routeTo}
-        />
+        <div className="flex flex-col w-full gap-3 mt-4">
+          <Button
+            text={
+              campaignType === "fundraiseAndVolunteer"
+                ? "Donate and Volunteer"
+                : campaignType === "fundraise"
+                ? "Donate"
+                : "Volunteer"
+            }
+            className="w-full !justify-center"
+            href={routeTo}
+          />
+          <Button
+            text="Share Campaign"
+            bgColor="#FFF"
+            textColor="#344054"
+            outlineColor="#D0D5DD"
+            className="w-full !justify-center"
+            onClick={() => {
+              setShareModal(true);
+              Mixpanel.track("Clicked Share Campaign")
+            }}
+          />
+        </div>
       ) : (
         <div className="flex flex-col item-center">
-          <Button
-            text={copied ? "Campaign link copied!" : "Copy campaign link"}
-            className="w-full mt-4 !justify-center"
-            onClick={() =>
-              window.location.pathname.split("/")[1] === "explore"
-                ? copy(
-                    window.location.href.replace(
-                      "/explore",
-                      "/explore-campaigns"
-                    )
-                  )
-                : copy(window.location.href)
-            }
-            bgColor="#F8F8F8"
+         <Button
+            text="Share Campaign"
+            bgColor="#FFF"
             textColor="#344054"
+            outlineColor="#D0D5DD"
+            className="w-full !justify-center"
+            onClick={() => {
+              setShareModal(true);
+              Mixpanel.track("Clicked Share Campaign")
+            }}
           />
           <a
             className="text-[#00B964] text-[13px] underline mt-4 text-center cursor-pointer"
@@ -348,6 +384,7 @@ type VolunteerDetails = {
   additonalNotes: string;
 };
 type ExploreCardProps = {
+  id: string;
   name: string;
   tier: string;
   header?: string;
