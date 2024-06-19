@@ -29,7 +29,6 @@ const ShareCampaign = (props: ShareCampaignProps) => {
   };
 
   const getWhatsAppShareLink = () => {
-    Mixpanel.track("Shared via WhatsApp");
     const header = encodeURIComponent(`\n\n*${title}*`);
     const body = encodeURIComponent(
       `\n\n${story}…\n\nRead more here: ${shareUrl}`
@@ -52,7 +51,9 @@ const ShareCampaign = (props: ShareCampaignProps) => {
       <div className="flex flex-row items-start p-4 border-b-[#3C3C435C] w-full justify-between border-b-[1px]">
         <div className="flex flex-col items-start">
           <h2 className="font-semibold text-[18px]">{title}</h2>
-          <p className="text-[14px] ">Support this campaign by sharing it to friends and family!</p>
+          <p className="text-[14px] ">
+            Support this campaign by sharing it to friends and family!
+          </p>
         </div>
         <IoMdClose size={30} className=" cursor-pointer" onClick={onClose} />
       </div>
@@ -73,6 +74,9 @@ const ShareCampaign = (props: ShareCampaignProps) => {
           href={getWhatsAppShareLink()}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => {
+            Mixpanel.track("Shared via WhatsApp");
+          }}
           className="decoration-none text-[#000]">
           <div className="flex flex-col cursor-pointer gap-1 items-center ">
             <BsWhatsapp size={60} />
@@ -119,7 +123,9 @@ const ShareCampaign = (props: ShareCampaignProps) => {
         <a
           href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
             shareUrl
-          )}&text=${encodeURIComponent("Please join me in supporting this campaign!")}`}
+          )}&text=${encodeURIComponent(
+            "Please join me in supporting this campaign!"
+          )}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => Mixpanel.track("Shared via Twitter")}
