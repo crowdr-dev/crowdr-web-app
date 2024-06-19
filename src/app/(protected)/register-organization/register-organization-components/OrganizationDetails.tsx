@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import NextImage from "next/image";
 import { Controller, useFormContext } from "react-hook-form";
 import { OrganizationFormContext } from "../utils/useOrganizatonForm";
@@ -21,6 +21,9 @@ const OrganisationDetails = () => {
   const imageUploaded = useMemo(() => image?.length && !errors.image, [image]);
 
   const [dragActive, setDragActive] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -37,6 +40,30 @@ const OrganisationDetails = () => {
     setDragActive(false);
     const files = e.dataTransfer.files;
     setValue("image", files);
+    previewImage(files[0]);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setValue("image", files);
+      previewImage(files[0]);
+    }
+  };
+
+  const handleLabelClick = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+  };
+
+  const previewImage = (file: File) => {
+    if (file instanceof Blob) {
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl);
+    } else {
+      console.error("The provided file is not a valid Blob or File object");
+    }
   };
 
   const validateImage = async (fileList: FileList) => {
@@ -68,7 +95,7 @@ const OrganisationDetails = () => {
   };
 
   return (
-    <section>
+    <section className="font-satoshi">
       <div className="max-w-[346px] mx-auto py-2">
         <div className="flex flex-col py-[21px] md:py-[56px] px-5">
           <h1 className="text-[#0B5351] text-[18px] md:text-[32px] font-[600] mb-[8px] md:mb-[15px]">
@@ -86,6 +113,7 @@ const OrganisationDetails = () => {
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDrop={handleDrop}
+                onClick={handleLabelClick}
                 className={`${
                   dragActive ? "border-green-200" : "border-[#e4e7ec]"
                 } flex flex-col items-center cursor-pointer rounded-lg border-[2px] border-dashed py-4 px-6 mb-1`}
@@ -99,6 +127,7 @@ const OrganisationDetails = () => {
                 >
                   <NextImage src={UploadIcon} alt="upload icon" width={24} />
                 </div>
+                {!!imagePreview && <p className="text-[12px] my-2 font-bold"> Image uploaded</p>}
                 <div className="text-center">
                   <p className="text-sm mb-1">
                     <span className="text-[#FF5200]">Click to upload</span> or
@@ -115,7 +144,9 @@ const OrganisationDetails = () => {
                   })}
                   id="upload"
                   accept=".svg, .png, .jpg, .jpeg, .gif"
+                  ref={inputRef}
                   className="hidden"
+                  onChange={handleFileChange}
                 />
               </label>
               {errors.image && (
@@ -124,6 +155,17 @@ const OrganisationDetails = () => {
                 </span>
               )}
             </div>
+            {imagePreview && (
+              <div className="mb-[20px]">
+                <NextImage
+                  src={imagePreview}
+                  width={100}
+                  height={100}
+                  alt="Image Preview"
+                  className="w-full h-[100px] rounded-lg object-contain"
+                />
+              </div>
+            )}
 
             <div className="flex flex-col mb-[26px]">
               <label
