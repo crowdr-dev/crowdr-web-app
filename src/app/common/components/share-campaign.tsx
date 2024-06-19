@@ -24,7 +24,7 @@ const ShareCampaign = (props: ShareCampaignProps) => {
   const shareViaEmail = () => {
     const subject = encodeURIComponent(`${title} campaign on oncrowdr.com`);
     const body = encodeURIComponent(
-      `Check out this campaign on onrowdr.com: ${shareUrl}`
+      `Hi, I’d really appreciate it if you would share or donate to this campaign! ${shareUrl}`
     );
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
@@ -38,7 +38,7 @@ const ShareCampaign = (props: ShareCampaignProps) => {
     const footer = encodeURIComponent(
       `\n\nForward this message to your contacts to help this campaign reach its goal!`
     );
-    const message = `Hi, \n\nI'd really appreciate it if you would share or support to this campaign.\n\n${header}\n\n${body}${footer}`;
+    const message = `Hi, \n\nI’d really appreciate it if you would share or donate to this campaign!\n\n${header}\n\n${body}${footer}`;
 
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if (isMobile) {
@@ -49,15 +49,15 @@ const ShareCampaign = (props: ShareCampaignProps) => {
   };
 
   return (
-    <div className="flex flex-col bg-[#fff] rounded-[10px] min-w-[300px] w-[500px] font-satoshi">
+    <div className="flex flex-col bg-[#fff] rounded-[10px] w-[350px] md:w-[500px] max-w-[500px] font-satoshi">
       <div className="flex flex-row items-start p-4 border-b-[#3C3C435C] w-full justify-between border-b-[1px]">
         <div className="flex flex-col items-start">
           <h2 className="font-semibold text-[18px]">{title}</h2>
-          <p className="text-[14px] ">Share using your unique links below.</p>
+          <p className="text-[14px] ">Support this campaign by sharing it to friends and family!</p>
         </div>
         <IoMdClose size={30} className=" cursor-pointer" onClick={onClose} />
       </div>
-      <div className="grid grid-cols-3 justify-between px-4 py-5 gap-6">
+      <div className="grid grid-cols-2  md:grid-cols-3 justify-between px-4 py-5 gap-6">
         <div
           className="flex flex-col cursor-pointer gap-1 items-center"
           onClick={() => {
@@ -120,7 +120,7 @@ const ShareCampaign = (props: ShareCampaignProps) => {
         <a
           href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
             shareUrl
-          )}&text=${encodeURIComponent("Help by supporting this campaign")}`}
+          )}&text=${encodeURIComponent("Please join me in supporting this campaign!")}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => Mixpanel.track("Shared via Twitter")}
