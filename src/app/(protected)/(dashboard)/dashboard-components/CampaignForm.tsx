@@ -205,6 +205,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                 })}
                 error={errors.campaignDuration as any}
                 mode="range"
+                minDate={new Date()}
                 // enableTime
               />
             </div>
@@ -247,6 +248,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                   },
                 }}
                 error={errors.campaignImages}
+                maxFileSizeInMb={2}
                 multiple
                 showFileList
               />
@@ -440,8 +442,8 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
                     }}
                     error={errors.timeCommitment as any}
                     mode="range"
+                    minDate={new Date()}
                     // enableTime
-                    // minDate={new Date()}
                   />
                 </div>
               </div>
@@ -539,7 +541,7 @@ const campaignTypes = [
 const currencies = [
   Option("", "Select a currency...", true),
   Option("naira", "Naira (₦)"),
-  Option("dollar", "Dollar ($)"),
+  // Option("dollar", "Dollar ($)"),
 ]
 
 const skillsList = [

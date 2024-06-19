@@ -137,7 +137,7 @@ const WithdrawalPopup = () => {
                 {isOrganization ? "Organization" : "Individual"}
               </p>
               <h2 className="font-semibold text-2xl text-black">
-                {withdrawalData.user.organizationName}
+                {isOrganization ? withdrawalData.user.organizationName : withdrawalData.user.fullName}
               </h2>
             </div>
             {/* {isOrganization && (

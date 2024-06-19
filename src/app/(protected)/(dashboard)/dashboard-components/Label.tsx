@@ -3,8 +3,8 @@ import { RFC } from "@/app/common/types";
 
 const Label: RFC<LabelProps> = ({
   text,
-  textColor,
-  bgColor,
+  textColor = "#027A48",
+  bgColor = "#ECFDF3",
   dotColor,
   className,
 }) => {
@@ -26,11 +26,6 @@ const Label: RFC<LabelProps> = ({
 };
 
 export default Label;
-
-Label.defaultProps = {
-  textColor: "#027A48",
-  bgColor: "#ECFDF3",
-};
 
 type LabelProps = {
   text: string;

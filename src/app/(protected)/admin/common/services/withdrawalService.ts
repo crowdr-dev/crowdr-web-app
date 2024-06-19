@@ -161,8 +161,6 @@ export interface Volunteer {
 
 export interface User {
   _id: string
-  organizationName: string
-  organizationId: string
   userType: string
   email: string
   interests: string[]
@@ -172,4 +170,8 @@ export interface User {
   isDeleted: boolean
   __v: number
   isAdmin: boolean
+  organizationName?: string;
+  organizationId?:   string;
+  fullName?:   string;
+  gender?:   string;
 }

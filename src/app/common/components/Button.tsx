@@ -37,7 +37,8 @@ export const Button: RFC<ButtonProps> = ({
   }
 
   const buttonRef = useRef<any>(null)
-  const flexDirection = iconPosition == "right" ? "flex-row-reverse" : "flex-row"
+  const flexDirection =
+    iconPosition == "right" ? "flex-row-reverse" : "flex-row"
   const cursorStyle = disabled || loading ? "cursor-default" : "cursor-pointer"
   const buttonClasses = `inline-flex justify-between items-center gap-2 rounded-lg text-sm transition h-[44px] px-[16px] py-[10px] ${cursorStyle} ${flexDirection} ${className}`
   const darkerBgColor = darken(bgColor!)
@@ -45,7 +46,7 @@ export const Button: RFC<ButtonProps> = ({
   const buttonStyle: React.CSSProperties = {
     color: textColor,
     background: !disabled ? bgColor : whiten(bgColor), // TODO: FINISHED UP MAKING BUTTON LIGHTER WHEN DISABLED
-    opacity: disabled ? 0.7 : 1 // FIXME: TEMPORARY FIX, REMOVE
+    opacity: disabled ? 0.7 : 1, // FIXME: TEMPORARY FIX, REMOVE
   }
   if (outlineColor) buttonStyle.border = `1px solid ${outlineColor}`
   if (shadow) {
@@ -53,8 +54,20 @@ export const Button: RFC<ButtonProps> = ({
     buttonStyle.border = `0.4px solid #D0D5DD`
   }
 
-  const onMouseEnter = !disabled ? () => (buttonRef.current.style.background = darkerBgColor) : nothing
-  const onMouseLeave = !disabled ? () => (buttonRef.current.style.background = bgColor!) : nothing
+  const onMouseEnter = !disabled
+    ? () => {
+        if (buttonRef.current)
+          buttonRef.current.style.background = darkerBgColor
+      }
+    : nothing
+
+  const onMouseLeave = !disabled
+    ? () => {
+        if (buttonRef.current) {
+          buttonRef.current.style.background = bgColor!
+        }
+      }
+    : nothing
 
   return href ? (
     <Link
@@ -99,14 +112,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
   if (props.icon) {
     icon = <props.icon width={24} height={24} />
   } else if (iconUrl) {
-    icon = (
-      <Image
-        src={iconUrl}
-        height={24}
-        width={24}
-        alt="button icon"
-      />
-    )
+    icon = <Image src={iconUrl} height={24} width={24} alt="button icon" />
   }
 
   return (
@@ -114,10 +120,7 @@ const ButtonContent: RFC<ButtonContentProps> = ({
       {icon}
       {text}
       {loading && (
-        <CgSpinner
-          size="20px"
-          className="animate-spin icon opacity-100"
-        />
+        <CgSpinner size="20px" className="animate-spin icon opacity-100" />
       )}
     </>
   )

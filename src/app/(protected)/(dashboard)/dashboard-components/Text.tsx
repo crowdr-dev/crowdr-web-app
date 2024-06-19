@@ -20,7 +20,7 @@ const Text: RFC<TextProps> = ({
       return (
         <>
           {shortenedText}{" "}
-          <span className={expandTextClassName}>{expandText}</span>
+          <span className={`${expandTextClassName} cursor-pointer`}>{expandText}</span>
         </>
       )
     } else {
@@ -39,7 +39,7 @@ const Text: RFC<TextProps> = ({
     <p {...props}>
       {text}{" "}
       {(toggle && !isCollapsed) && (
-        <span className={collaspseTextClassName}>{collaspseText}</span>
+        <span className={`${collaspseTextClassName} cursor-pointer`}>{collaspseText}</span>
       )}
     </p>
   )

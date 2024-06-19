@@ -29,12 +29,12 @@ const OptionInput: RFC<OptionInputProps> = ({
   }
 
   return (
-    <label htmlFor={value} className="flex mb-3">
+    <label className="flex mb-3">
       <input
         {...config}
         type={type}
         value={value}
-        id={config?.name || name}
+        id={(config?.name || name) + value}
         name={config?.name || name}
         onChange={handleChange}
         className="rounded-md border border-[#D0D5DD] h-5 w-5 mr-3"

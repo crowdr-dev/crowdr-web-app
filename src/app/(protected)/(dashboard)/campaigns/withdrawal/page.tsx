@@ -239,7 +239,10 @@ const Withdrawal = () => {
                     <Button
                       text="Withdraw"
                       onClick={() => activateWithdrawalModal(campaign)}
-                      // disabled={!campaign.isCompleted}
+                      disabled={
+                        !campaign.isCompleted ||
+                        campaign.campaignType === "volunteer"
+                      }
                     />
                   </Table.Cell>
                 </Table.Row>

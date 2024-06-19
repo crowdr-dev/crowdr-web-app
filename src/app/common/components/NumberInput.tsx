@@ -13,15 +13,15 @@ const NumberInput: RFC<NumberInputProps> = ({
   error,
   placeholder,
   showOptionalLabel,
-  prefix,
-  suffix,
+  prefix = "",
+  suffix = "",
   name,
   value,
   onChange,
   rules,
   controlled,
   styles,
-  disableGroupSeparators,
+  disableGroupSeparators = false,
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -121,12 +121,6 @@ const NumberInput: RFC<NumberInputProps> = ({
 }
 
 export default NumberInput
-
-NumberInput.defaultProps = {
-  prefix: "",
-  suffix: "",
-  disableGroupSeparators: false,
-}
 
 type NumberInputProps = {
   config?: UseFormRegisterReturn

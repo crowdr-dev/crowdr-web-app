@@ -4,7 +4,7 @@ import BgPattern from "../../../../../public/assets/stat-card-pattern.png"
 
 import { RFC } from "@/app/common/types";
 
-const StatCard: RFC<StatCardProps> = ({title, text, percentage, changeType, time, pattern, colorScheme, iconUrl, detail}) => {
+const StatCard: RFC<StatCardProps> = ({title, text, percentage, changeType = 'rise', time, pattern, colorScheme = 'dark', iconUrl, detail}) => {
   const backgroundColor = colorScheme == 'dark' ? '#00B964' : '#F8F8F8'
   const backgroundImage = "url('assets/stat-card-pattern.png')"
   const changeColor = colorScheme == 'dark' ? 'white' : (changeType == 'rise' ? '#00B964' : '#F36960')
@@ -30,11 +30,6 @@ const StatCard: RFC<StatCardProps> = ({title, text, percentage, changeType, time
 };
 
 export default StatCard;
-
-StatCard.defaultProps = {
-  colorScheme: 'dark',
-  changeType: 'rise'
-}
 
 type StatCardProps = {
   title: string;

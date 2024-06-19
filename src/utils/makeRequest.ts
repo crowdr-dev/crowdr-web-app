@@ -32,7 +32,7 @@ export default async function makeRequest<T = any>(
     next: { tags },
   };
 
-  // allow fetch ao automatically set "Content-Type"] === "multipart/form-data", so it can add boundary
+  // allow fetch to automatically set ["Content-Type"] === "multipart/form-data", so it can add boundary
   if(requestOptions.headers && requestOptions.headers["Content-Type"] === "multipart/form-data"){
     delete requestOptions.headers["Content-Type"]
   }

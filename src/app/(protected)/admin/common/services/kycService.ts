@@ -89,6 +89,7 @@ export interface Kyc {
   __v:                number;
   user:               User;
   id:                 string;
+  remark:             string;
 }
 
 export interface DocImg {
@@ -106,8 +107,10 @@ export interface User {
   isAdmin:          boolean;
   isEmailVerified:  boolean;
   isDeleted:        boolean;
-  organizationName: string;
-  organizationId:   string;
+  organizationName?: string;
+  organizationId?:   string;
+  fullName?:   string;
+  gender?:   string;
 }
 
 export interface Org {
