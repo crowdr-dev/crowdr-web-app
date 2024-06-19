@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import { ICampaign } from "../types/Campaign";
 import { IoMdClose } from "react-icons/io";
 import useClipboard from "../hooks/useClipboard";
 import { BsWhatsapp } from "react-icons/bs";
@@ -15,7 +14,7 @@ type ShareCampaignProps = {
 };
 
 const ShareCampaign = (props: ShareCampaignProps) => {
-  const { campaignId, title, campaignCoverImage, onClose, story } = props;
+  const { campaignId, title, onClose, story } = props;
 
   const shareUrl = `https://www.oncrowdr.com/explore-campaigns/donate-or-volunteer/${campaignId}`;
 
