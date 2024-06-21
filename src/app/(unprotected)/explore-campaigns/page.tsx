@@ -126,7 +126,7 @@ export default function DynamicExplore() {
                     ...(urlsOnly || [])
                   ]}
                   donateImage={
-                    "https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg"
+                    ""
                   }
                   routeTo={`/explore-campaigns/donate-or-volunteer/${campaign._id}`}
                   avatar={campaign?.photo?.url || ""}
