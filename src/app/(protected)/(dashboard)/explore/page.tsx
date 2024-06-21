@@ -21,6 +21,7 @@ const Explore = () => {
 
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   const [hasNextPage, setHasNextPage] = useState<any>();
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -137,7 +138,7 @@ const Explore = () => {
             {hasNextPage && (
             <div className="flex justify-end items-center mt-4">
               <span onClick={handleSeeMore} className={"cursor-pointer"}>
-                See more
+              {loadingMore ? "...." : "See more"}
               </span>
             </div>
           )}
