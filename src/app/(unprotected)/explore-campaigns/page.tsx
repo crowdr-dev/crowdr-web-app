@@ -20,6 +20,8 @@ export default function DynamicExplore() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [loadingMore, setLoadingMore] = useState(false);
+
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -63,8 +65,10 @@ export default function DynamicExplore() {
   }, []);
 
   const handleSeeMore = () => {
+    setLoadingMore(true);
     setPage((prevPage) => prevPage + 1);
     loadCampaigns();
+    setLoadingMore(false);
   };
 
   if (isLoading) return <Loading />;
@@ -106,6 +110,7 @@ export default function DynamicExplore() {
               const donatedAmount = campaign?.totalAmountDonated?.[0].amount;
               return (
                 <ExploreCard
+                  id={campaign._id}
                   name={
                     userDetails?.userType === "individual"
                       ? userDetails?.fullName
@@ -125,7 +130,7 @@ export default function DynamicExplore() {
                     ...(urlsOnly || [])
                   ]}
                   donateImage={
-                    "https://res.cloudinary.com/crowdr/image/upload/v1697259678/hyom8zz9lpmeyuhe6fss.jpg"
+                    ""
                   }
                   routeTo={`/explore-campaigns/donate-or-volunteer/${campaign._id}`}
                   avatar={campaign?.photo?.url || ""}
@@ -137,7 +142,7 @@ export default function DynamicExplore() {
           {hasNextPage && (
             <div className="flex justify-end items-center mt-4">
               <span onClick={handleSeeMore} className={"cursor-pointer"}>
-                See more
+               {loadingMore ? "...." : "See more"}
               </span>
             </div>
           )}

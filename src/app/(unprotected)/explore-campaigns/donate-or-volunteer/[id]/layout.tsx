@@ -20,7 +20,7 @@ export async function generateMetadata (
           ? 'Donate to '
           : 'Volunteer to ') +
         campaign.title +
-        ` organised by ${campaign?.user?.organizationName}`
+        ` organised by ${campaign?.user?.organizationName || campaign?.user?.fullName}`
     },
     description: campaign?.story,
     openGraph: {
@@ -33,12 +33,12 @@ export async function generateMetadata (
           ? 'Donate to '
           : 'Volunteer to ') +
         campaign.title +
-        ` organised by ${campaign?.user?.organizationName}`,
+        ` organised by ${campaign?.user?.organizationName || campaign?.user?.fullName}`,
       description: campaign?.story,
       images: [
         {
           url: campaign?.campaignCoverImage?.url,
-          alt: `${campaign?.user?.organizationName} image` 
+          alt: `${campaign?.user?.organizationName || campaign?.user?.fullName} image` 
         }
       ]
     },
@@ -48,7 +48,7 @@ export async function generateMetadata (
           ? 'Donate to '
           : 'Volunteer to ') +
         campaign.title +
-        ` organised by ${campaign?.user?.organizationName}`,
+        ` organised by ${campaign?.user?.organizationName || campaign?.user?.fullName}`,
       card: 'summary_large_image',
       site: `@oncrowdr`,
       creator: '@oncrowdr',

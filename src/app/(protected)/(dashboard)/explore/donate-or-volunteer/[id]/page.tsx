@@ -357,6 +357,7 @@ export default function DonateOrVolunteer({
       </div>
       <div className="grid grid-cols-1 gap-12 min-w-full md:grid-cols-2">
         <ExploreCard
+          id={campaign?._id}
           name={
             userDetails?.userType === "individual"
               ? userDetails?.fullName

@@ -3,15 +3,15 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
-import { usePathname , useRouter} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { email } from "@/utils/openEmail";
 import "./component-styles/mobile-menu.css";
 
 type Props = {
-  openModal?: () => void
-}
+  openModal?: () => void;
+};
 
-export default function MobileMenu({openModal} : Props) {
+export default function MobileMenu({ openModal }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const currentPath = usePathname();
   const router = useRouter();
@@ -31,7 +31,11 @@ export default function MobileMenu({openModal} : Props) {
     <div className="mobile-menu">
       <div className="container">
         <div className="menu-icon" onClick={toggleMenu}>
-          {isOpen ? <IoMdClose size={25} /> : <Image width={25} height={25} src="/svg/new-menu.svg" alt="menu" />}
+          {isOpen ? (
+            <IoMdClose size={25} />
+          ) : (
+            <Image width={25} height={25} src="/svg/new-menu.svg" alt="menu" />
+          )}
         </div>
       </div>
       <div className={`menu ${isOpen ? "open" : ""}`} onClick={closeMenu}>
@@ -46,13 +50,23 @@ export default function MobileMenu({openModal} : Props) {
               About
             </Link>
           </li>
-          
+          <li>
+            <a href="https://blog.oncrowdr.com" target="_blank">
+              Blog
+            </a>
+          </li>
           <li>
             <a href={`mailto:${email}`} target="_blank">
               Contact Us
             </a>
           </li>
-          <li><button className="btn-outline w-100" onClick={()=>router.push("signup")}>Start a Campaign</button></li>
+          <li>
+            <button
+              className="btn-outline w-100"
+              onClick={() => router.push("signup")}>
+              Start a Campaign
+            </button>
+          </li>
         </ul>
       </div>
     </div>
