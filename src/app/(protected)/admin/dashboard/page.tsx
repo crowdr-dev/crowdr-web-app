@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useReducer, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useQuery } from "react-query"
@@ -38,9 +38,17 @@ import DropdownTrigger from "@/app/common/components/DropdownTrigger"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
-  const [campaignsPage, setCampaignsPage] = useState(1)
-  const [kycPage, setKycPage] = useState(1)
-  const [withdrawalsPage, setWithdrawalsPage] = useState(1)
+
+  // const [campaignsPage, setCampaignsPage] = useState(1)
+  // const [kycPage, setKycPage] = useState(1)
+  // const [withdrawalsPage, setWithdrawalsPage] = useState(1)
+
+  const [page, dispatchPage] = useReducer(paginationReducer, {
+    campaigns: 1,
+    kycs: 1,
+    withdrawals: 1,
+  })
+
   const modalStore = useAtomValue(modalStoreAtom)
   const setActiveKycId = useSetAtom(activeKycIdAtom)
   const setActiveWithdrawalIdAtom = useSetAtom(activeWithdrawalIdAtom)
@@ -85,12 +93,12 @@ const Dashboard = () => {
           const userData = stats[2]
           setUserCount(userData.value)
         }
-      }
+      },
     }
   )
 
   const { data: kycData, refetch: refetchKycs } = useQuery(
-    [keys.admin.kycs, user?.token, kycPage, filter.KYC],
+    [keys.admin.kycs, user?.token, page.kycs, filter.KYC],
     fetchKyc,
     {
       enabled: Boolean(user?.token),
@@ -101,7 +109,7 @@ const Dashboard = () => {
   kycService.refreshKyc = refetchKycs
 
   const { data: withdrawalData, refetch: refetchWithdrawals } = useQuery(
-    [keys.admin.withdrawals, user?.token, withdrawalsPage, filter.Withdrawals],
+    [keys.admin.withdrawals, user?.token, page.withdrawals, filter.Withdrawals],
     fetchWithdrawal,
     {
       enabled: Boolean(user?.token),
@@ -130,11 +138,17 @@ const Dashboard = () => {
   const resetPage = () => {
     switch (selectedView) {
       case "KYC":
-        setKycPage(1)
+        dispatchPage({table: 'kycs', page: 1});
 
       case "Withdrawals":
-        setWithdrawalsPage(1)
+        dispatchPage({table: 'withdrawals', page: 1});
     }
+  }
+
+  try {
+    
+  } catch {
+    
   }
 
   return (
@@ -239,9 +253,10 @@ const Dashboard = () => {
                 className="grow !justify-center font-semibold"
                 onClick={() => {
                   setFilter({ KYC: {}, Withdrawals: {} })
-                  const radioButtons = document.querySelectorAll<HTMLInputElement>(
-                    'input[type="radio"]'
-                  )
+                  const radioButtons =
+                    document.querySelectorAll<HTMLInputElement>(
+                      'input[type="radio"]'
+                    )
                   radioButtons.forEach((button) => {
                     button.checked = false
                   })
@@ -298,7 +313,7 @@ const Dashboard = () => {
               ))}
             </Table.Body>
             <Pagination
-              currentPage={campaignsPage}
+              currentPage={page.campaigns}
               perPage={5}
               total={20}
               onPageChange={setCampaignsPage}
@@ -372,10 +387,10 @@ const Dashboard = () => {
               ))}
             </Table.Body>
             <Pagination
-              currentPage={kycPage}
-              perPage={5}
+              currentPage={page.kycs}
+              perPage={Number(ITEMS_PER_PAGE)}
               total={kycData.pagination.total}
-              onPageChange={setKycPage}
+              onPageChange={(page) => dispatchPage({ table: "kycs", page })}
             />
           </Table>
         )}
@@ -446,10 +461,12 @@ const Dashboard = () => {
               ))}
             </Table.Body>
             <Pagination
-              currentPage={withdrawalsPage}
-              perPage={5}
+              currentPage={page.withdrawals}
+              perPage={Number(ITEMS_PER_PAGE)}
               total={withdrawalData.pagination.total}
-              onPageChange={setWithdrawalsPage}
+              onPageChange={(page) =>
+                dispatchPage({ table: "withdrawals", page })
+              }
             />
           </Table>
         )}
@@ -492,8 +509,8 @@ const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
 
   if (token) {
     const query = new URLSearchParams({
-      kycStatus: 'pending',
-      withdrawalStatus: 'in-review',
+      kycStatus: "pending",
+      withdrawalStatus: "in-review",
     })
     const endpoint = `/api/v1/admin/dashboard?${query}`
 
@@ -609,7 +626,7 @@ const fetchWithdrawal: QF<
         headers,
         method: "GET",
       })
-      
+
       return {
         withdrawals: mapWithdrawalResponseToView(data.withdrawals),
 
@@ -698,4 +715,26 @@ function mapWithdrawalResponseToView(
 
 function toTitleCase(str: string) {
   return str.replace(/\b\w/g, (match) => match.toUpperCase())
+}
+
+interface PaginationState {
+  campaigns: number
+  kycs: number
+  withdrawals: number
+}
+interface Action {
+  table: "campaigns" | "kycs" | "withdrawals"
+  page: number
+}
+function paginationReducer(page: PaginationState, action: Action) {
+  switch (action.table) {
+    case "campaigns":
+      return { ...page, campaigns: action.page }
+    case "kycs":
+      return { ...page, kycs: action.page }
+    case "withdrawals":
+      return { ...page, withdrawals: action.page }
+    default:
+      return page
+  }
 }
