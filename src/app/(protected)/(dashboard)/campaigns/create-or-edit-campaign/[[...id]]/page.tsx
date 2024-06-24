@@ -9,8 +9,10 @@ import CompletionCard from "../../../dashboard-components/CompletionCard"
 import { useUser } from "../../../common/hooks/useUser"
 import { useModal } from "@/app/common/hooks/useModal"
 import { useToast } from "@/app/common/hooks/useToast"
-import { Route } from "@/app/common/types"
 import { Mixpanel } from "@/utils/mixpanel"
+import kycService from "@/app/(protected)/(dashboard)/common/services/kycService"
+
+import { Route } from "@/app/common/types"
 import { ICampaign } from "@/app/common/types/Campaign"
 
 const CreateEditCampaign = ({ params }: Route) => {
@@ -100,7 +102,6 @@ const CreateEditCampaign = ({ params }: Route) => {
             text: campaign.story,
             url: `https://oncrowdr.com/explore-campaigns/donate-or-volunteer/${campaign._id}`,
           })
-          // console.log("Successfully shared")
         } catch (error) {
           console.error("Error sharing:", error)
         }
@@ -118,27 +119,75 @@ const CreateEditCampaign = ({ params }: Route) => {
         ? `/api/v1/campaigns/${params.id}`
         : "/api/v1/campaigns"
 
-      const { success, message, data } = await makeRequest<ICampaign>(endpoint, {
-        headers,
-        method: isEdit ? "PUT" : "POST",
-        payload: objectToFormData(payload),
-      })
+      const { success, message, data } = await makeRequest<ICampaign>(
+        endpoint,
+        {
+          headers,
+          method: isEdit ? "PUT" : "POST",
+          payload: objectToFormData(payload),
+        }
+      )
 
       if (success) {
-        Mixpanel.track(isFundraiseRelated? "Donation Campaign created" : "Volunteer Campaign created")
+        Mixpanel.track(
+          isFundraiseRelated
+            ? "Donation Campaign created"
+            : "Volunteer Campaign created"
+        )
         router.push("/campaigns")
 
-        if (isEdit) {
-          toast({ title: "Well done!", body: message })
-        } else {
+        try {
+          await kycService.getKyc({ userToken: user?.token || "" })
+
+          if (isEdit) {
+            toast({ title: "Well done!", body: message })
+          } else {
+            modal.show(
+              <CompletionCard
+                title="Campaign created successfully"
+                text="This campaign has been created successfully. You will be able to edit this campaign and republish changes."
+                primaryButton={{
+                  label: "Share on your Socials",
+                  onClick: () => shareCampaign(data),
+                }}
+                secondaryButton={{ label: "Cancel", onClick: modal.hide }}
+                clearModal={modal.hide}
+              />
+            )
+          }
+        } catch (error) {
           modal.show(
             <CompletionCard
-              title="Campaign created successfully"
-              text="This campaign has been created successfully. You will be
-          able to edit this campaign and republish changes."
-              primaryButton={{ label: "Share on your Socials", onClick: () => shareCampaign(data) }}
+              title="Complete campaign setup!"
+              text="Upload your identity verification info in settings to finish creating your campaign."
+              primaryButton={{
+                label: "Upload KYC",
+                onClick: () => {
+                  router.push("/settings/verification")
+                  modal.hide()
+                },
+              }}
               secondaryButton={{ label: "Cancel", onClick: modal.hide }}
               clearModal={modal.hide}
+              icon={
+                <div className="grid place-items-center rounded-full bg-[#FEF0C7] p-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <path
+                      d="M12 11V16M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21ZM12.0498 8V8.1L11.9502 8.1002V8H12.0498Z"
+                      stroke="#FFC328"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+              }
             />
           )
         }

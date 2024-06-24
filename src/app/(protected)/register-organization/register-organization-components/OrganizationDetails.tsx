@@ -67,7 +67,7 @@ const OrganisationDetails = () => {
   };
 
   const validateImage = async (fileList: FileList) => {
-    const image = fileList[0];
+    const image = (fileList || [])[0];
     if (!image) return "Please select an image";
 
     const maxSize = 2 * 1024 * 1024; // 2MB in bytes
