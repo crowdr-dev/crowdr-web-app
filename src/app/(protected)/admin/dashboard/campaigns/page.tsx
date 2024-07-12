@@ -1,28 +1,49 @@
 "use client"
-import { useEffect, useState } from "react";
-import StatCard from "../../admin-dashboard-components/StatCard";
-import ButtonGroup from "../../admin-dashboard-components/ButtonGroup";
-import TextInput from "@/app/common/components/TextInput";
-import DropdownTrigger from "@/app/common/components/DropdownTrigger";
-import { Button } from "@/app/common/components/Button";
-import Pagination from "../../admin-dashboard-components/Pagination";
-import Table from "../../admin-dashboard-components/Table";
-import Image from "next/image";
-import makeRequest from "@/utils/makeRequest";
-import { extractErrorMessage } from "@/utils/extractErrorMessage";
-import { Nullable } from "@/app/common/types";
-import { useDebounceCallback } from "usehooks-ts";
+import { useEffect, useState } from "react"
+import { useQuery } from "react-query"
+import { useUser } from "@/app/(protected)/(dashboard)/common/hooks/useUser"
+import StatCard from "../../admin-dashboard-components/StatCard"
+import ButtonGroup from "../../admin-dashboard-components/ButtonGroup"
+import TextInput from "@/app/common/components/TextInput"
+import DropdownTrigger from "@/app/common/components/DropdownTrigger"
+import { Button } from "@/app/common/components/Button"
+import Pagination from "../../admin-dashboard-components/Pagination"
+import Table from "../../admin-dashboard-components/Table"
+import Image from "next/image"
+import makeRequest from "@/utils/makeRequest"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import { Nullable } from "@/app/common/types"
+import { useDebounceCallback } from "usehooks-ts"
+import campaignService from "../../common/services/campaign"
+
+import {
+  CampaignType,
+  IGetCampaignsParams,
+  RunningStatus,
+} from "../../common/services/campaign/models/GetCampaigns"
 
 import SearchIcon from "../../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../../public/svg/filter-2.svg"
-import campaignService from "../../common/services/campaign";
+import TempLogo from "../../../../../../public/temp/c-logo.png"
+import CircularProgress from "../../admin-dashboard-components/CircularProgress"
 
 const Campaigns = () => {
+  const user = useUser()
+  const [page, setPage] = useState(1)
   const [searchText, setSearchText] = useState("")
   const [activeFilter, setActiveFilter] = useState("Pending")
+  const [params, setParams] = useState<Partial<IGetCampaignsParams>>({
+    runningStatus: RunningStatus.Active,
+    page,
+  })
 
-  useEffect(() => {
-    campaignService.getCampaigns().then(campaigns => console.log(campaigns))
+  const { data } = useQuery({
+    queryKey: ["/admin/campaigns", params],
+    queryFn: () => campaignService.getCampaigns(params),
+    onSuccess: (data) => setPage(data.pagination.currentPage),
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+    enabled: Boolean(user),
   })
 
   // const setSearch = useDebounceCallback(
@@ -42,19 +63,28 @@ const Campaigns = () => {
   //     }),
   //   1000
   // )
-  
+
   const tableFilterButtons = [
     {
       label: "Pending",
-      onClick: () => {},
+      onClick: () => {
+        setActiveFilter("Pending")
+        setParams({ ...params, runningStatus: RunningStatus.Active })
+      },
     },
     {
       label: "Active",
-      onClick: () => {},
+      onClick: () => {
+        setActiveFilter("Active")
+        setParams({ ...params, runningStatus: RunningStatus.Active })
+      },
     },
     {
       label: "Completed",
-      onClick: () => {},
+      onClick: () => {
+        setActiveFilter("Completed")
+        setParams({ ...params, runningStatus: RunningStatus.Completed })
+      },
     },
   ]
 
@@ -177,213 +207,91 @@ const Campaigns = () => {
 
       {/* table */}
       <div className="px-8">
-        {/* Campaigns */}
-        {/* {selectedView === "Campaigns" && (
+        {data && (
           <Table>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Campaign</Table.HeadCell>
               <Table.HeadCell>Target Amount</Table.HeadCell>
-              <Table.HeadCell>Request Type</Table.HeadCell>
+              <Table.HeadCell>Campaign Type</Table.HeadCell>
+              <Table.HeadCell>Progress</Table.HeadCell>
             </Table.Head>
+
             <Table.Body>
-              {items.map((item, index) => (
+              {data.campaigns.map((campaign, index) => (
                 <Table.Row key={index}>
                   <Table.Cell>
                     <div className="flex items-center gap-3 font-medium">
-                      <Image src={item.imageUrl} alt="" className="shrink-0" />
-                      {item.title}
-                    </div>
-                  </Table.Cell>
-                  <Table.Cell>
-                    {<div className="font-medium">{item.detail}</div>}
-                  </Table.Cell>
-                  <Table.Cell>{item.date}</Table.Cell>
-                  <Table.Cell>{item.extra}</Table.Cell>
-                  <Table.Cell>
-                    <div className="flex gap-3">
-                      <Link
-                        href={`/admin/view-campaign/${item.id}`}
-                        className="font-semibold text-sm text-[#475467] cursor-pointer"
-                      >
-                        View
-                      </Link>
-                      <button
-                        type="button"
-                        className="font-semibold text-sm text-[#6941C6]"
-                      >
-                        Approve
-                      </button>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-            <Pagination
-              currentPage={page.campaigns}
-              perPage={5}
-              total={20}
-              onPageChange={setCampaignsPage}
-            />
-          </Table>
-        )} */}
-
-        {/* KYC */}
-        {/* {selectedView === "KYC" && kycData && (
-          <Table>
-            <Table.Head>
-              <Table.HeadCell>Account Name</Table.HeadCell>
-              <Table.HeadCell>Account Type</Table.HeadCell>
-              <Table.HeadCell>Status</Table.HeadCell>
-            </Table.Head>
-            <Table.Body>
-              {kycData.kycs.map((kyc, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>
-                    <div className="flex items-center gap-3 font-medium">
-                      <div className="grid place-items-center h-10 w-10 shrink-0 border border-black/10 bg-[#F2F4F7] rounded-full">
-                        <Image src={kyc.imageUrl} alt="" className="shrink-0" />
-                      </div>
-                      {kyc.accountName}
+                      <Image src={TempLogo} alt="" className="shrink-0" />
+                      {campaign.user.fullName || campaign.user.organizationName}
                     </div>
                   </Table.Cell>
 
                   <Table.Cell>
-                    {
-                      <div className="font-medium">
-                        {toTitleCase(kyc.accountType)}
-                      </div>
-                    }
+                    {<div className="font-medium">{campaign.title}</div>}
                   </Table.Cell>
 
-                  <Table.Cell>{label(kyc.status)}</Table.Cell>
+                  <Table.Cell>
+                    {campaign.campaignType == CampaignType.Fundraise ||
+                    campaign.campaignType == CampaignType.FundraiseVolunteer
+                      ? `₦${campaign.totalAmountDonated[0].amount}`
+                      : "--"}
+                  </Table.Cell>
 
                   <Table.Cell>
-                    <div className="flex gap-3">
-                      <ModalTrigger id="kycPopup">
-                        <button
-                          type="button"
-                          className="font-semibold text-sm text-[#475467] cursor-pointer"
-                          onClick={() => setActiveKycId(kyc.id)}
-                        >
-                          View
-                        </button>
-                      </ModalTrigger>
+                    {(() => {
+                      switch (campaign.campaignType) {
+                        case CampaignType.Fundraise:
+                          return "Fundraise"
+                        case CampaignType.Volunteer:
+                          return "Volunteer"
+                        case CampaignType.FundraiseVolunteer:
+                          return "Fundraise/Volunteer"
+                        default:
+                          return "--"
+                      }
+                    })()}
+                  </Table.Cell>
 
-                      {kyc.status.match(/pending/i) ? (
-                        <ModalTrigger id="kycPopup">
-                          <button
-                            type="button"
-                            className="font-semibold text-sm text-[#00B964]"
-                            onClick={() => setActiveKycId(kyc.id)}
-                          >
-                            Approve
-                          </button>
-                        </ModalTrigger>
+                  <Table.Cell>
+                    <div className="text-center">
+                      {campaign.campaignType == CampaignType.Fundraise ||
+                      campaign.campaignType == CampaignType.FundraiseVolunteer ||
+                      (campaign.fundraise &&
+                        campaign.fundraise.fundingGoalDetails[0].amount === 0) ? (
+                        <CircularProgress
+                          percent={(
+                            (campaign.totalAmountDonated[0].amount /
+                              campaign.fundraise.fundingGoalDetails[0].amount) *
+                            100
+                          ).toFixed(0)}
+                        />
                       ) : (
-                        <button
-                          type="button"
-                          className="font-semibold text-sm text-[#F04438]"
-                        >
-                          Delete
-                        </button>
+                        "--"
                       )}
                     </div>
                   </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
-            <Pagination
-              currentPage={page.kycs}
-              perPage={Number(ITEMS_PER_PAGE)}
-              total={kycData.pagination.total}
-              onPageChange={(page) => dispatchPage({ table: "kycs", page })}
-            />
-          </Table>
-        )} */}
-
-        {/* Withdrawals */}
-        {/* {selectedView === "Withdrawals" && withdrawalData && (
-          <Table>
-            <Table.Head>
-              <Table.HeadCell>Account Name</Table.HeadCell>
-              <Table.HeadCell>Campaign</Table.HeadCell>
-              <Table.HeadCell>Withdrawal Amount</Table.HeadCell>
-              <Table.HeadCell>Status</Table.HeadCell>
-            </Table.Head>
-
-            <Table.Body>
-              {withdrawalData.withdrawals.map((withdrawal, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>
-                    <div className="flex items-center gap-3 font-medium">
-                      <Image
-                        src={withdrawal.imageUrl}
-                        alt=""
-                        className="shrink-0"
-                      />
-                      {withdrawal.accountName}
-                    </div>
-                  </Table.Cell>
-
-                  <Table.Cell>
-                    {
-                      <div className="font-medium">
-                        {withdrawal.campaignTitle}
-                      </div>
-                    }
-                  </Table.Cell>
-
-                  <Table.Cell>{withdrawal.amount}</Table.Cell>
-
-                  <Table.Cell>{label(withdrawal.status)}</Table.Cell>
-
-                  <Table.Cell>
-                    <div className="flex gap-3">
-                      <ModalTrigger id="withdrawalPopup">
-                        <button
-                          className="font-semibold text-sm text-[#475467] cursor-pointer"
-                          onClick={() =>
-                            setActiveWithdrawalIdAtom(withdrawal.id)
-                          }
-                        >
-                          View
-                        </button>
-                      </ModalTrigger>
-
-                      <ModalTrigger id="withdrawalPopup">
-                        <button
-                          type="button"
-                          className="font-semibold text-sm text-[#6941C6]"
-                          onClick={() =>
-                            setActiveWithdrawalIdAtom(withdrawal.id)
-                          }
-                        >
-                          Approve
-                        </button>
-                      </ModalTrigger>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
 
             <Pagination
-              currentPage={page.withdrawals}
-              perPage={Number(ITEMS_PER_PAGE)}
-              total={withdrawalData.pagination.total}
-              onPageChange={(page) =>
-                dispatchPage({ table: "withdrawals", page })
-              }
+              currentPage={page}
+              perPage={5}
+              total={data.pagination.total}
+              onPageChange={(page) => {
+                setParams({ ...params, page })
+                setPage(page)
+              }}
             />
           </Table>
-        )} */}
+        )}
       </div>
     </div>
-  );
+  )
 }
 
-export default Campaigns;
+export default Campaigns
 
 // type Token = Nullable<string>
 // type Stats = Nullable<IStats>

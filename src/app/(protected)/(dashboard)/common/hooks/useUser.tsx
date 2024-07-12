@@ -15,7 +15,6 @@ const UserProvider: RFC<UserProviderProps> = ({ children }) => {
   useEffect(() => {
     getUser().then((user) => {
       if (user) {
-        axios.defaults.baseURL = `${API_BASE_URL}/api/v1`
         axios.defaults.headers.common["x-auth-token"] = user.token
       }
 
@@ -35,3 +34,5 @@ export const useUser = () => {
 type UserProviderProps = {
   children: React.ReactNode
 }
+
+axios.defaults.baseURL = `${API_BASE_URL}/api/v1`

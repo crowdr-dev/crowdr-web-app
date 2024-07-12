@@ -1,4 +1,17 @@
-export interface IGetCampaigns {
+// query
+export interface IGetCampaignsParams {
+  page:   number;
+  perPage: number;
+  campaignStatus: CampaignStatus;
+  runningStatus: RunningStatus;
+  title: string;
+  type: CampaignType;
+  category: CampaignCategory;
+  userId: string
+}
+
+// response
+export interface IGetCampaignsResponse {
   success: boolean;
   message: string;
   data:    IGetCampaignsData;
@@ -66,11 +79,35 @@ export enum Currency {
 }
 
 export enum CampaignStatus {
+  Approved = "approved",
   InReview = "in-review",
+  Declined = "declined",
+}
+
+export enum RunningStatus {
+  Active = "active",
+  Completed = "completed",
 }
 
 export enum CampaignType {
   Fundraise = "fundraise",
+  Volunteer = "volunteer",
+  FundraiseVolunteer = "fundraiseAndVolunteer",
+}
+
+export enum CampaignCategory {
+  Business = "business",
+  Education = "education",
+  Arts = "arts",
+  Events = "events",
+  Family = "family",
+  Sports = "sport",
+  Tech = "tech",
+  Health = "health",
+  Music = "music",
+  Legal = "legal",
+  Politics = "politics",
+  Others = "others",
 }
 
 export interface Fundraise {
