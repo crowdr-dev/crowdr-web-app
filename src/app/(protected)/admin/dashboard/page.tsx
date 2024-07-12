@@ -20,8 +20,8 @@ import { label } from "../admin-dashboard-components/Label"
 import makeRequest from "@/utils/makeRequest"
 import { formatAmount } from "../../(dashboard)/common/utils/currency"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import kycService from "../common/services/kycService"
-import withdrawalService from "../common/services/withdrawalService"
+import kycService from "../common/services/kyc"
+import withdrawalService from "../common/services/withdrawal"
 import { activeKycIdAtom } from "../admin-dashboard-components/KycPopup"
 import { activeWithdrawalIdAtom } from "../admin-dashboard-components/WithdrawalPopup"
 import { userCountAtom } from "../admin-dashboard-components/Sidebar"
@@ -488,7 +488,7 @@ interface IWithdrawals {
   pagination: IPagination
 }
 
-type IStats = {
+export type IStats = {
   title: string
   value: number
 }[]

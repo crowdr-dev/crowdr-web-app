@@ -1,5 +1,6 @@
-import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import makeRequest from "@/utils/makeRequest"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import { IPostOtpResponse } from "./models"
 
 async function generateOtp(authToken: string) {
   const endpoint = "/api/v1/admin/otp"
@@ -22,6 +23,4 @@ async function generateOtp(authToken: string) {
 
 export default {generateOtp}
 
-export interface IPostOtpResponse {
-  email: string;
-}
+

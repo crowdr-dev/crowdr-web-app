@@ -26,6 +26,7 @@
     "@types/react-slick": "^0.23.12",
     "@vercel/otel": "^1.8.3",
     "autoprefixer": "10.4.14",
+    "axios": "^1.7.2",
     "browser-image-compression": "^2.0.2",
     "color": "^4.2.3",
     "eslint": "8.43.0",
