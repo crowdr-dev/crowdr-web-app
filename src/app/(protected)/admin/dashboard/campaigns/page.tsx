@@ -46,23 +46,16 @@ const Campaigns = () => {
     enabled: Boolean(user),
   })
 
-  // const setSearch = useDebounceCallback(
-  //   () =>
-  //     setSearchText((prevSearchText) => {
-  //       setFilter((prevFilter) => {
-  //         return {
-  //           ...prevFilter,
-  //           [selectedView]: {
-  //             ...prevFilter[selectedView],
-  //             username: prevSearchText,
-  //           },
-  //         }
-  //       })
+  const setSearch = useDebounceCallback(
+    () =>
+      setSearchText((prevSearchText) => {
+        setParams({...params, page: 1, title: prevSearchText})
+        setPage(1)
 
-  //       return prevSearchText
-  //     }),
-  //   1000
-  // )
+        return prevSearchText
+      }),
+    1000
+  )
 
   const tableFilterButtons = [
     {
@@ -115,8 +108,7 @@ const Campaigns = () => {
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value)
-              // resetPage()
-              // setSearch()
+              setSearch()
             }}
             placeholder="Search"
             iconUrl={SearchIcon}
@@ -212,6 +204,7 @@ const Campaigns = () => {
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Campaign</Table.HeadCell>
+              <Table.HeadCell>Raised Amount</Table.HeadCell>
               <Table.HeadCell>Target Amount</Table.HeadCell>
               <Table.HeadCell>Campaign Type</Table.HeadCell>
               <Table.HeadCell>Progress</Table.HeadCell>
@@ -235,6 +228,13 @@ const Campaigns = () => {
                     {campaign.campaignType == CampaignType.Fundraise ||
                     campaign.campaignType == CampaignType.FundraiseVolunteer
                       ? `₦${campaign.totalAmountDonated[0].amount}`
+                      : "--"}
+                  </Table.Cell>
+
+                  <Table.Cell>
+                    {campaign.campaignType == CampaignType.Fundraise ||
+                    campaign.campaignType == CampaignType.FundraiseVolunteer
+                      ? `₦${campaign.fundraise.fundingGoalDetails[0].amount}`
                       : "--"}
                   </Table.Cell>
 
@@ -276,8 +276,8 @@ const Campaigns = () => {
             </Table.Body>
 
             <Pagination
-              currentPage={page}
-              perPage={5}
+              currentPage={data.pagination.currentPage}
+              perPage={data.pagination.perPage}
               total={data.pagination.total}
               onPageChange={(page) => {
                 setParams({ ...params, page })
