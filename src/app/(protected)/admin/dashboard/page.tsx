@@ -35,13 +35,14 @@ import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
 import DropdownTrigger from "@/app/common/components/DropdownTrigger"
+import { CampaignStatus } from "../common/services/campaign/models/GetCampaigns"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
 
-  // const [campaignsPage, setCampaignsPage] = useState(1)
-  // const [kycPage, setKycPage] = useState(1)
-  // const [withdrawalsPage, setWithdrawalsPage] = useState(1)
+  const [campaignsPage, setCampaignsPage] = useState(1)
+  const [kycPage, setKycPage] = useState(1)
+  const [withdrawalsPage, setWithdrawalsPage] = useState(1)
 
   const [page, dispatchPage] = useReducer(paginationReducer, {
     campaigns: 1,
@@ -60,6 +61,7 @@ const Dashboard = () => {
   const [filter, setFilter] = useState<{
     [K in FilterKeys]: { status?: Status<K>; username?: string }
   }>({
+    Campaigns: {},
     KYC: {},
     Withdrawals: {},
   })
@@ -138,18 +140,15 @@ const Dashboard = () => {
   const resetPage = () => {
     switch (selectedView) {
       case "KYC":
-        dispatchPage({table: 'kycs', page: 1});
+        dispatchPage({ table: "kycs", page: 1 })
 
       case "Withdrawals":
-        dispatchPage({table: 'withdrawals', page: 1});
+        dispatchPage({ table: "withdrawals", page: 1 })
     }
   }
 
   try {
-    
-  } catch {
-    
-  }
+  } catch {}
 
   return (
     <div>
@@ -252,7 +251,7 @@ const Dashboard = () => {
                 shadow
                 className="grow !justify-center font-semibold"
                 onClick={() => {
-                  setFilter({ KYC: {}, Withdrawals: {} })
+                  setFilter({ Campaigns: {}, KYC: {}, Withdrawals: {} })
                   const radioButtons =
                     document.querySelectorAll<HTMLInputElement>(
                       'input[type="radio"]'
@@ -312,9 +311,10 @@ const Dashboard = () => {
                 </Table.Row>
               ))}
             </Table.Body>
+            
             <Pagination
-              currentPage={page.campaigns}
-              perPage={5}
+              currentPage={campaignsPage}
+              perPage={Number(ITEMS_PER_PAGE)}
               total={20}
               onPageChange={setCampaignsPage}
             />
@@ -387,10 +387,10 @@ const Dashboard = () => {
               ))}
             </Table.Body>
             <Pagination
-              currentPage={page.kycs}
-              perPage={Number(ITEMS_PER_PAGE)}
+              currentPage={kycPage}
+              perPage={kycData.pagination.perPage}
               total={kycData.pagination.total}
-              onPageChange={(page) => dispatchPage({ table: "kycs", page })}
+              onPageChange={setKycPage}
             />
           </Table>
         )}
@@ -460,13 +460,12 @@ const Dashboard = () => {
                 </Table.Row>
               ))}
             </Table.Body>
+
             <Pagination
-              currentPage={page.withdrawals}
-              perPage={Number(ITEMS_PER_PAGE)}
+              currentPage={withdrawalsPage}
+              perPage={withdrawalData.pagination.perPage}
               total={withdrawalData.pagination.total}
-              onPageChange={(page) =>
-                dispatchPage({ table: "withdrawals", page })
-              }
+              onPageChange={setWithdrawalsPage}
             />
           </Table>
         )}
@@ -655,6 +654,11 @@ const stats = [
 ]
 
 const _filter = {
+  Campaigns: [
+    { label: "In-Review", value: CampaignStatus.InReview },
+    { label: "Approved", value: CampaignStatus.Approved },
+    { label: "Declined", value: CampaignStatus.Declined },
+  ],
   KYC: [
     {
       label: "Pending",
