@@ -3,9 +3,11 @@ import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
-import { atom, useAtomValue } from "jotai"
+import { atom, useAtom, useAtomValue } from "jotai"
 import TextInput from "@/app/common/components/TextInput"
 import { pages as _pages } from "../pages"
+import userService from "../common/services/user"
+import { useUser } from "../../(dashboard)/common/hooks/useUser"
 
 import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
 import CrowdrLogoType from "../../../../../public/svg/crowdr-logo.svg"
@@ -18,7 +20,16 @@ const Sidebar = () => {
   const [searchText, setSearchText] = useState("")
   const currentPath = usePathname()
   const [pages, setPages] = useState(_pages)
-  const userCount = useAtomValue(userCountAtom)
+  const [userCount, setUserCount] = useAtom(userCountAtom)
+  const user = useUser()
+
+  useEffect(() => {
+    if (user) {
+      userService.getUsers({ perPage: 1 }).then((res) => {
+        setUserCount(res.pagination.total)
+      })
+    }
+  }, [user])
 
   useEffect(() => {
     const _pages = structuredClone(pages)

@@ -26,7 +26,11 @@ import SearchIcon from "../../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../../public/temp/c-logo.png"
 import CircularProgress from "../../admin-dashboard-components/CircularProgress"
-import { IGetUsersParams, UserType } from "../../common/services/user/models/GetUsers"
+import {
+  IGetUsersParams,
+  UserType,
+} from "../../common/services/user/models/GetUsers"
+import Label from "../../admin-dashboard-components/Label"
 
 const Users = () => {
   const user = useUser()
@@ -38,7 +42,7 @@ const Users = () => {
   })
 
   const { data } = useQuery({
-    queryKey: ["/admin/campaigns", params],
+    queryKey: ["GET /admin/users", params],
     queryFn: () => userService.getUsers(params),
     onSuccess: (data) => setPage(data.pagination.currentPage),
     refetchOnWindowFocus: false,
@@ -48,11 +52,11 @@ const Users = () => {
 
   const setSearch = useDebounceCallback(
     () =>
-      setSearchText((prevSearchText) => {
-        setParams({...params, page: 1, name: prevSearchText})
+      setSearchText((text) => {
+        setParams({ ...params, page: 1, name: text })
         setPage(1)
 
-        return prevSearchText
+        return text
       }),
     1000
   )
@@ -204,7 +208,7 @@ const Users = () => {
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email Address</Table.HeadCell>
-              <Table.HeadCell>Is Verified</Table.HeadCell>
+              <Table.HeadCell>Verification Status</Table.HeadCell>
               <Table.HeadCell>Category</Table.HeadCell>
               <Table.HeadCell></Table.HeadCell>
             </Table.Head>
@@ -224,15 +228,16 @@ const Users = () => {
                   </Table.Cell>
 
                   <Table.Cell>
-                    {user.isEmailVerified.toString()}
+                    {user.isEmailVerified ? (
+                      <Label text="Verified" dotColor="#17B26A" />
+                    ) : (
+                      <Label text="Unverified" dotColor="#F04438" />
+                    )}
                   </Table.Cell>
 
-                  <Table.Cell>
-                    {user.userType}
-                  </Table.Cell>
+                  <Table.Cell>{user.userType}</Table.Cell>
 
-                  <Table.Cell>
-                  </Table.Cell>
+                  <Table.Cell></Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>

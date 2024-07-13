@@ -38,7 +38,7 @@ const Campaigns = () => {
   })
 
   const { data } = useQuery({
-    queryKey: ["/admin/campaigns", params],
+    queryKey: ["GET /admin/campaigns", params],
     queryFn: () => campaignService.getCampaigns(params),
     onSuccess: (data) => setPage(data.pagination.currentPage),
     refetchOnWindowFocus: false,
@@ -48,11 +48,11 @@ const Campaigns = () => {
 
   const setSearch = useDebounceCallback(
     () =>
-      setSearchText((prevSearchText) => {
-        setParams({...params, page: 1, title: prevSearchText})
+      setSearchText((text) => {
+        setParams({...params, page: 1, title: text})
         setPage(1)
 
-        return prevSearchText
+        return text
       }),
     1000
   )

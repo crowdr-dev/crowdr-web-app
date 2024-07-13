@@ -1,7 +1,7 @@
 "use client"
 import { useReducer, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useAtomValue, useSetAtom } from "jotai"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useQuery } from "react-query"
 import { useDebounceCallback } from "usehooks-ts"
 import { useUser } from "../../(dashboard)/common/hooks/useUser"
@@ -16,6 +16,7 @@ import Pagination from "../admin-dashboard-components/Pagination"
 import ModalTrigger, {
   modalStoreAtom,
 } from "@/app/common/components/ModalTrigger"
+import DropdownTrigger from "@/app/common/components/DropdownTrigger"
 import { label } from "../admin-dashboard-components/Label"
 import makeRequest from "@/utils/makeRequest"
 import { formatAmount } from "../../(dashboard)/common/utils/currency"
@@ -34,7 +35,6 @@ import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
-import DropdownTrigger from "@/app/common/components/DropdownTrigger"
 import { CampaignStatus } from "../common/services/campaign/models/GetCampaigns"
 
 const Dashboard = () => {
@@ -53,7 +53,7 @@ const Dashboard = () => {
   const modalStore = useAtomValue(modalStoreAtom)
   const setActiveKycId = useSetAtom(activeKycIdAtom)
   const setActiveWithdrawalIdAtom = useSetAtom(activeWithdrawalIdAtom)
-  const setUserCount = useSetAtom(userCountAtom)
+  const [userCount, setUserCount] = useAtom(userCountAtom)
   const searchParams = useSearchParams()
   const route = useRouter()
   const user = useUser()
@@ -93,7 +93,9 @@ const Dashboard = () => {
       onSuccess: (stats) => {
         if (stats) {
           const userData = stats[2]
-          setUserCount(userData.value)
+          if (userData.value !== userCount) {
+            setUserCount(userData.value)
+          }
         }
       },
     }
