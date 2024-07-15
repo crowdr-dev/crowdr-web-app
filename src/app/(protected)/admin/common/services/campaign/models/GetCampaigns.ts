@@ -85,6 +85,7 @@ export enum CampaignStatus {
 }
 
 export enum RunningStatus {
+  Upcoming = "upcoming",
   Active = "active",
   Completed = "completed",
 }

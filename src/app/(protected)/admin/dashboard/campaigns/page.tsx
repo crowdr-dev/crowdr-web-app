@@ -31,7 +31,7 @@ const Campaigns = () => {
   const user = useUser()
   const [page, setPage] = useState(1)
   const [searchText, setSearchText] = useState("")
-  const [activeFilter, setActiveFilter] = useState("Pending")
+  const [activeFilter, setActiveFilter] = useState("Upcoming")
   const [params, setParams] = useState<Partial<IGetCampaignsParams>>({
     runningStatus: RunningStatus.Active,
     page,
@@ -59,10 +59,10 @@ const Campaigns = () => {
 
   const tableFilterButtons = [
     {
-      label: "Pending",
+      label: "Upcoming",
       onClick: () => {
-        setActiveFilter("Pending")
-        setParams({ ...params, runningStatus: RunningStatus.Active })
+        setActiveFilter("Upcoming")
+        setParams({ ...params, runningStatus: RunningStatus.Upcoming })
       },
     },
     {
