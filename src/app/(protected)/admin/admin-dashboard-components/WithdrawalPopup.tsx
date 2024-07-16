@@ -10,16 +10,14 @@ import ModalTrigger, {
 import { CgSpinner } from "react-icons/cg"
 import XMark from "../../../../../public/svg/x-mark.svg"
 import { useEffect, useState } from "react"
-import withdrawalService, {
-  IBankingDetails,
-  IWithdrawal,
-} from "../common/services/withdrawalService"
+import withdrawalService from "../common/services/withdrawal"
 import { useUser } from "../../(dashboard)/common/hooks/useUser"
 import { useToast } from "@/app/common/hooks/useToast"
-import otpService from "../common/services/otpService"
+import otpService from "../common/services/otp"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import Text from "../../(dashboard)/dashboard-components/Text"
 import { formatAmount } from "../../(dashboard)/common/utils/currency"
+import { IBankingDetails, IWithdrawal } from "../common/services/withdrawal/models"
 
 export const activeWithdrawalIdAtom = atom<string | null>(null)
 export const withdrawalToRejectAtom = atom<{ id: string; otp: string } | null>(

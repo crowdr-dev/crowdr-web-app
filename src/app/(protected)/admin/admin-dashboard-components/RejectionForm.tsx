@@ -10,12 +10,12 @@ import ModalTrigger, {
   modalStoreAtom,
 } from "@/app/common/components/ModalTrigger"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import kycService from "../common/services/kycService"
+import kycService from "../common/services/kyc"
 import { kycToRejectAtom } from "./KycPopup"
 import { withdrawalToRejectAtom } from "./WithdrawalPopup"
 
 import { RFC } from "@/app/common/types"
-import withdrawalService from "../common/services/withdrawalService"
+import withdrawalService from "../common/services/withdrawal"
 
 const RejectionForm: RFC<RejectionFormProps> = () => {
   const [title, setTitle] = useState("")
