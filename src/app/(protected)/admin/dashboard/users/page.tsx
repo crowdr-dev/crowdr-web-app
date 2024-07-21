@@ -1,36 +1,27 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useQuery } from "react-query"
 import { useUser } from "@/app/(protected)/(dashboard)/common/hooks/useUser"
+import { useDebounceCallback } from "usehooks-ts"
+import Image from "next/image"
 import StatCard from "../../admin-dashboard-components/StatCard"
 import ButtonGroup from "../../admin-dashboard-components/ButtonGroup"
 import TextInput from "@/app/common/components/TextInput"
 import DropdownTrigger from "@/app/common/components/DropdownTrigger"
-import { Button } from "@/app/common/components/Button"
 import Pagination from "../../admin-dashboard-components/Pagination"
 import Table from "../../admin-dashboard-components/Table"
-import Image from "next/image"
-import makeRequest from "@/utils/makeRequest"
-import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import { Nullable } from "@/app/common/types"
-import { useDebounceCallback } from "usehooks-ts"
+import Label from "../../admin-dashboard-components/Label"
+import { Button } from "@/app/common/components/Button"
 import userService from "../../common/services/user"
 
-import {
-  CampaignType,
-  IGetCampaignsParams,
-  RunningStatus,
-} from "../../common/services/campaign/models/GetCampaigns"
-
-import SearchIcon from "../../../../../../public/svg/search.svg"
-import FilterIcon from "../../../../../../public/svg/filter-2.svg"
-import TempLogo from "../../../../../../public/temp/c-logo.png"
-import CircularProgress from "../../admin-dashboard-components/CircularProgress"
 import {
   IGetUsersParams,
   UserType,
 } from "../../common/services/user/models/GetUsers"
-import Label from "../../admin-dashboard-components/Label"
+
+import SearchIcon from "../../../../../../public/svg/search.svg"
+import FilterIcon from "../../../../../../public/svg/filter-2.svg"
+import TempLogo from "../../../../../../public/temp/c-logo.png"
 
 const Users = () => {
   const user = useUser()
@@ -125,7 +116,7 @@ const Users = () => {
             }}
           />
 
-          <DropdownTrigger
+          {/* <DropdownTrigger
             triggerId="withdrawalsFilterBtn"
             targetId="dropdownDefaultRadio"
             options={{ placement: "bottom-end" }}
@@ -138,7 +129,7 @@ const Users = () => {
               shadow
               className="font-semibold"
             />
-          </DropdownTrigger>
+          </DropdownTrigger> */}
 
           {/* filter dropdown */}
           {/* <div

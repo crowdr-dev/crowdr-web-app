@@ -122,7 +122,7 @@ const Withdrawals = () => {
             }}
           />
 
-          <DropdownTrigger
+          {/* <DropdownTrigger
             triggerId="withdrawalsFilterBtn"
             targetId="dropdownDefaultRadio"
             options={{ placement: "bottom-end" }}
@@ -135,7 +135,7 @@ const Withdrawals = () => {
               shadow
               className="font-semibold"
             />
-          </DropdownTrigger>
+          </DropdownTrigger> */}
 
           {/* filter dropdown */}
           {/* <div

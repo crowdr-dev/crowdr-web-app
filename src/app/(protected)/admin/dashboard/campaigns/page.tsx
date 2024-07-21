@@ -123,7 +123,7 @@ const Campaigns = () => {
             }}
           />
 
-          <DropdownTrigger
+          {/* <DropdownTrigger
             triggerId="withdrawalsFilterBtn"
             targetId="dropdownDefaultRadio"
             options={{ placement: "bottom-end" }}
@@ -136,7 +136,7 @@ const Campaigns = () => {
               shadow
               className="font-semibold"
             />
-          </DropdownTrigger>
+          </DropdownTrigger> */}
 
           {/* filter dropdown */}
           {/* <div
