@@ -13,7 +13,7 @@ const ButtonGroup: RFC<ButtonGroupProps> = ({ buttons, selected }) => {
         if (isFirstItem) buttonClasses += " rounded-l-lg"
         if (isLastItem) buttonClasses += " rounded-r-lg"
 
-        if (selected === button.label) buttonClasses += " bg-primary text-white"
+        if (selected === button.id) buttonClasses += " bg-primary text-white"
         else buttonClasses += " bg-white text-[#344054] hover:bg-[#EBECED]"
 
         return (
@@ -39,6 +39,7 @@ type ButtonGroupProps = {
 }
 
 type Button = {
+  id: string
   label: string
   onClick: () => void
 }

@@ -31,9 +31,9 @@ const Campaigns = () => {
   const user = useUser()
   const [page, setPage] = useState(1)
   const [searchText, setSearchText] = useState("")
-  const [activeFilter, setActiveFilter] = useState("Upcoming")
+  const [activeFilter, setActiveFilter] = useState<FilterKeys>("upcoming")
   const [params, setParams] = useState<Partial<IGetCampaignsParams>>({
-    runningStatus: RunningStatus.Active,
+    runningStatus: RunningStatus.Upcoming,
     page,
   })
 
@@ -57,25 +57,29 @@ const Campaigns = () => {
     1000
   )
 
+  type FilterKeys = typeof tableFilterButtons[number]['id']
   const tableFilterButtons = [
     {
+      id: "upcoming",
       label: "Upcoming",
       onClick: () => {
-        setActiveFilter("Upcoming")
+        setActiveFilter("upcoming")
         setParams({ ...params, runningStatus: RunningStatus.Upcoming })
       },
     },
     {
+      id: "active",
       label: "Active",
       onClick: () => {
-        setActiveFilter("Active")
+        setActiveFilter("active")
         setParams({ ...params, runningStatus: RunningStatus.Active })
       },
     },
     {
+      id: "completed",
       label: "Completed",
       onClick: () => {
-        setActiveFilter("Completed")
+        setActiveFilter("completed")
         setParams({ ...params, runningStatus: RunningStatus.Completed })
       },
     },
@@ -204,6 +208,7 @@ const Campaigns = () => {
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Campaign</Table.HeadCell>
+              <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell>Raised Amount</Table.HeadCell>
               <Table.HeadCell>Target Amount</Table.HeadCell>
               <Table.HeadCell>Campaign Type</Table.HeadCell>
@@ -222,6 +227,10 @@ const Campaigns = () => {
 
                   <Table.Cell>
                     {<div className="font-medium">{campaign.title}</div>}
+                  </Table.Cell>
+
+                  <Table.Cell>
+                    {<div className="font-medium">{campaign.user.userType}</div>}
                   </Table.Cell>
 
                   <Table.Cell>

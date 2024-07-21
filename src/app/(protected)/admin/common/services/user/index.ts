@@ -5,7 +5,6 @@ const getUsers = async (params: Partial<IGetUsersParams> = {}) => {
   const url = `/admin/users`
 
   type Key = keyof IGetUsersParams
-
   for (let key in params) {
     if (params[key as Key] == null) {
       delete params[key as Key]

@@ -17,10 +17,12 @@ import ModalTrigger, {
   modalStoreAtom,
 } from "@/app/common/components/ModalTrigger"
 import DropdownTrigger from "@/app/common/components/DropdownTrigger"
+import CircularProgress from "../admin-dashboard-components/CircularProgress"
 import { label } from "../admin-dashboard-components/Label"
 import makeRequest from "@/utils/makeRequest"
 import { formatAmount } from "../../(dashboard)/common/utils/currency"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import campaignService from "../common/services/campaign"
 import kycService from "../common/services/kyc"
 import withdrawalService from "../common/services/withdrawal"
 import { activeKycIdAtom } from "../admin-dashboard-components/KycPopup"
@@ -28,14 +30,27 @@ import { activeWithdrawalIdAtom } from "../admin-dashboard-components/Withdrawal
 import { userCountAtom } from "../admin-dashboard-components/Sidebar"
 import { keys } from "../../(dashboard)/utils/queryKeys"
 
+import {
+  CampaignType,
+  IGetCampaignsParams,
+  RunningStatus,
+} from "../common/services/campaign/models/GetCampaigns"
+import {
+  IGetKycsParams,
+  Kyc,
+  KycStatus,
+} from "../common/services/kyc/models/GetKycs"
+import {
+  IGetWithdrawalsParams,
+  Withdrawal,
+  WithdrawalStatus,
+} from "../common/services/withdrawal/models/GetWithdrawals"
 import { IPagination, Nullable, QF } from "@/app/common/types"
-import { IWithdrawalResponse } from "@/app/common/types/Withdrawal"
-import { IkycResponse } from "@/app/common/types/Kyc"
+
 import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
-import { CampaignStatus } from "../common/services/campaign/models/GetCampaigns"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
@@ -44,10 +59,10 @@ const Dashboard = () => {
   const [kycPage, setKycPage] = useState(1)
   const [withdrawalsPage, setWithdrawalsPage] = useState(1)
 
-  const [page, dispatchPage] = useReducer(paginationReducer, {
-    campaigns: 1,
-    kycs: 1,
-    withdrawals: 1,
+  const [tableParams, setTableParams] = useReducer(filterReducer, {
+    campaigns: { page: 1, perPage: 10 },
+    kycs: { page: 1, perPage: 10 },
+    withdrawals: { page: 1, perPage: 10 },
   })
 
   const modalStore = useAtomValue(modalStoreAtom)
@@ -58,28 +73,33 @@ const Dashboard = () => {
   const route = useRouter()
   const user = useUser()
 
+  const view = searchParams.get("view")
+  const selectedTable = (
+    view && view in _filter ? view : "campaigns"
+  ) as FilterKeys
+
   const [filter, setFilter] = useState<{
     [K in FilterKeys]: { status?: Status<K>; username?: string }
   }>({
-    Campaigns: {},
-    KYC: {},
-    Withdrawals: {},
+    campaigns: {},
+    kycs: {},
+    withdrawals: {},
   })
 
   const setSearch = useDebounceCallback(
     () =>
-      setSearchText((prevSearchText) => {
-        setFilter((prevFilter) => {
-          return {
-            ...prevFilter,
-            [selectedView]: {
-              ...prevFilter[selectedView],
-              username: prevSearchText,
-            },
-          }
-        })
+      setSearchText((text) => {
+        selectedTable === "campaigns"
+          ? setTableParams({
+              table: "campaigns",
+              params: { title: text, page: 1 },
+            })
+          : setTableParams({
+              table: selectedTable,
+              params: { username: text, page: 1 },
+            })
 
-        return prevSearchText
+        return text
       }),
     1000
   )
@@ -101,56 +121,68 @@ const Dashboard = () => {
     }
   )
 
-  const { data: kycData, refetch: refetchKycs } = useQuery(
-    [keys.admin.kycs, user?.token, page.kycs, filter.KYC],
-    fetchKyc,
-    {
-      enabled: Boolean(user?.token),
-      refetchOnWindowFocus: false,
-      keepPreviousData: true,
-    }
-  )
-  kycService.refreshKyc = refetchKycs
+  const queryConfig = {
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+  }
 
-  const { data: withdrawalData, refetch: refetchWithdrawals } = useQuery(
-    [keys.admin.withdrawals, user?.token, page.withdrawals, filter.Withdrawals],
-    fetchWithdrawal,
-    {
-      enabled: Boolean(user?.token),
-      refetchOnWindowFocus: false,
-      keepPreviousData: true,
-    }
-  )
+  const { data: campaignData } = useQuery({
+    queryKey: ["GET /admin/campaigns", tableParams.campaigns],
+    queryFn: () => campaignService.getCampaigns(tableParams.campaigns),
+    onSuccess: (data) => setCampaignsPage(data.pagination.currentPage),
+    enabled: Boolean(user) && selectedTable === "campaigns",
+    ...queryConfig,
+  })
+
+  const { data: kycData, refetch: refetchKycs } = useQuery({
+    queryKey: ["GET /admin/kyc", tableParams.kycs],
+    queryFn: () => kycService.getKycs(tableParams.kycs),
+    onSuccess: (data) => setKycPage(data.pagination.currentPage),
+    enabled: Boolean(user) && selectedTable === "kycs",
+    ...queryConfig,
+  })
+
+  const { data: withdrawalData, refetch: refetchWithdrawals } = useQuery({
+    queryKey: ["GET /admin/withdrawals", tableParams.withdrawals],
+    queryFn: () => withdrawalService.getWithdrawals(tableParams.withdrawals),
+    onSuccess: (data) => setWithdrawalsPage(data.pagination.currentPage),
+    enabled: Boolean(user) && selectedTable === "withdrawals",
+    ...queryConfig,
+  })
+
+  kycService.refreshKyc = refetchKycs
   withdrawalService.refreshWithdrawal = refetchWithdrawals
 
-  const selectedView = (searchParams.get("view") || "KYC") as FilterKeys
   const tablePickerButtons = [
-    // {
-    //   label: "Campaigns",
-    //   onClick: () => route.push("/admin/dashboard?view=Campaigns"),
-    // },
     {
-      label: "KYC",
-      onClick: () => route.push("/admin/dashboard?view=KYC"),
+      id: "campaigns",
+      label: "Campaigns",
+      onClick: () => {
+        const view: FilterKeys = "campaigns"
+        route.replace(`/admin/dashboard?view=${view}`)
+      },
     },
     {
+      id: "kycs",
+      label: "KYC",
+      onClick: () => {
+        const view: FilterKeys = "kycs"
+        route.replace(`/admin/dashboard?view=${view}`)
+      },
+    },
+    {
+      id: "withdrawals",
       label: "Withdrawals",
-      onClick: () => route.push("/admin/dashboard?view=Withdrawals"),
+      onClick: () => {
+        const view: FilterKeys = "withdrawals"
+        route.replace(`/admin/dashboard?view=${view}`)
+      },
     },
   ]
 
   const resetPage = () => {
-    switch (selectedView) {
-      case "KYC":
-        dispatchPage({ table: "kycs", page: 1 })
-
-      case "Withdrawals":
-        dispatchPage({ table: "withdrawals", page: 1 })
-    }
+    setTableParams({ table: selectedTable, type: "reset" })
   }
-
-  try {
-  } catch {}
 
   return (
     <div>
@@ -172,14 +204,14 @@ const Dashboard = () => {
 
       {/* toggle buttons x search x filters */}
       <div className="flex justify-between items-center px-4 py-3">
-        <ButtonGroup buttons={tablePickerButtons} selected={selectedView} />
+        <ButtonGroup buttons={tablePickerButtons} selected={selectedTable} />
 
         <div className="flex gap-3 items-center w-[515px]">
           <TextInput
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value)
-              resetPage()
+              // resetPage()
               setSearch()
             }}
             placeholder="Search"
@@ -211,27 +243,59 @@ const Dashboard = () => {
             className="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow"
           >
             <ul className="p-3 space-y-3 text-sm text-gray-700">
-              {_filter[selectedView].map((filter) => (
+              {_filter[selectedTable].map((filter) => (
                 <li key={filter.value}>
                   <div className="flex items-center">
                     <input
                       id={filter.value}
                       type="radio"
                       value={filter.value}
-                      name={selectedView}
+                      name={selectedTable}
                       className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500"
                       onChange={() => {
-                        resetPage()
-                        setFilter((prev) => {
-                          return {
-                            ...prev,
-                            [selectedView]: {
-                              status: filter.value as Status<
-                                typeof selectedView
-                              >,
-                            },
-                          }
-                        })
+                        // resetPage()
+                        // setFilter((tables) => {
+                        //   return {
+                        //     ...tables,
+                        //     [selectedTable]: {
+                        //       status: filter.value as Status<
+                        //         typeof selectedTable
+                        //       >,
+                        //     },
+                        //   }
+                        // })
+
+                        switch (selectedTable) {
+                          case "campaigns":
+                            setTableParams({
+                              table: "campaigns",
+                              params: {
+                                page: 1,
+                                runningStatus: filter.value as RunningStatus,
+                              },
+                            })
+                            break
+
+                          case "kycs":
+                            setTableParams({
+                              table: "kycs",
+                              params: {
+                                page: 1,
+                                status: filter.value as KycStatus,
+                              },
+                            })
+                            break
+
+                          case "withdrawals":
+                            setTableParams({
+                              table: "withdrawals",
+                              params: {
+                                page: 1,
+                                status: filter.value as WithdrawalStatus,
+                              },
+                            })
+                            break
+                        }
                       }}
                     />
                     <label
@@ -253,7 +317,8 @@ const Dashboard = () => {
                 shadow
                 className="grow !justify-center font-semibold"
                 onClick={() => {
-                  setFilter({ Campaigns: {}, KYC: {}, Withdrawals: {} })
+                  // setFilter({ campaigns: {}, kycs: {}, withdrawals: {} })
+                  resetPage()
                   const radioButtons =
                     document.querySelectorAll<HTMLInputElement>(
                       'input[type="radio"]'
@@ -272,59 +337,105 @@ const Dashboard = () => {
       {/* table */}
       <div className="px-8">
         {/* Campaigns */}
-        {/* {selectedView === "Campaigns" && (
+        {selectedTable === "campaigns" && campaignData && (
           <Table>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Campaign</Table.HeadCell>
+              <Table.HeadCell>Email</Table.HeadCell>
+              <Table.HeadCell>Raised Amount</Table.HeadCell>
               <Table.HeadCell>Target Amount</Table.HeadCell>
-              <Table.HeadCell>Request Type</Table.HeadCell>
+              <Table.HeadCell>Campaign Type</Table.HeadCell>
+              <Table.HeadCell>Progress</Table.HeadCell>
             </Table.Head>
             <Table.Body>
-              {items.map((item, index) => (
+              {campaignData.campaigns.map((campaign, index) => (
                 <Table.Row key={index}>
                   <Table.Cell>
                     <div className="flex items-center gap-3 font-medium">
-                      <Image src={item.imageUrl} alt="" className="shrink-0" />
-                      {item.title}
+                      <Image src={TempLogo} alt="" className="shrink-0" />
+                      {campaign.user.fullName || campaign.user.organizationName}
                     </div>
                   </Table.Cell>
+
                   <Table.Cell>
-                    {<div className="font-medium">{item.detail}</div>}
+                    {<div className="font-medium">{campaign.title}</div>}
                   </Table.Cell>
-                  <Table.Cell>{item.date}</Table.Cell>
-                  <Table.Cell>{item.extra}</Table.Cell>
+
                   <Table.Cell>
-                    <div className="flex gap-3">
-                      <Link
-                        href={`/admin/view-campaign/${item.id}`}
-                        className="font-semibold text-sm text-[#475467] cursor-pointer"
-                      >
-                        View
-                      </Link>
-                      <button
-                        type="button"
-                        className="font-semibold text-sm text-[#6941C6]"
-                      >
-                        Approve
-                      </button>
+                    {
+                      <div className="font-medium">
+                        {campaign.user.userType}
+                      </div>
+                    }
+                  </Table.Cell>
+
+                  <Table.Cell>
+                    {campaign.campaignType == CampaignType.Fundraise ||
+                    campaign.campaignType == CampaignType.FundraiseVolunteer
+                      ? `₦${campaign.totalAmountDonated[0].amount}`
+                      : "--"}
+                  </Table.Cell>
+
+                  <Table.Cell>
+                    {campaign.campaignType == CampaignType.Fundraise ||
+                    campaign.campaignType == CampaignType.FundraiseVolunteer
+                      ? `₦${campaign.fundraise.fundingGoalDetails[0].amount}`
+                      : "--"}
+                  </Table.Cell>
+
+                  <Table.Cell>
+                    {(() => {
+                      switch (campaign.campaignType) {
+                        case CampaignType.Fundraise:
+                          return "Fundraise"
+                        case CampaignType.Volunteer:
+                          return "Volunteer"
+                        case CampaignType.FundraiseVolunteer:
+                          return "Fundraise/Volunteer"
+                        default:
+                          return "--"
+                      }
+                    })()}
+                  </Table.Cell>
+
+                  <Table.Cell>
+                    <div className="text-center">
+                      {campaign.campaignType == CampaignType.Fundraise ||
+                      campaign.campaignType ==
+                        CampaignType.FundraiseVolunteer ||
+                      (campaign.fundraise &&
+                        campaign.fundraise.fundingGoalDetails[0].amount ===
+                          0) ? (
+                        <CircularProgress
+                          percent={(
+                            (campaign.totalAmountDonated[0].amount /
+                              campaign.fundraise.fundingGoalDetails[0].amount) *
+                            100
+                          ).toFixed(0)}
+                        />
+                      ) : (
+                        "--"
+                      )}
                     </div>
                   </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
-            
+
             <Pagination
               currentPage={campaignsPage}
-              perPage={Number(ITEMS_PER_PAGE)}
-              total={20}
-              onPageChange={setCampaignsPage}
+              perPage={campaignData.pagination.perPage}
+              total={campaignData.pagination.total}
+              onPageChange={(page) =>
+                setTableParams({ table: "campaigns", params: { page } })
+              }
             />
           </Table>
-        )} */}
+        )}
 
         {/* KYC */}
-        {selectedView === "KYC" && kycData && (
+        {selectedTable === "kycs" && kycData && (
           <Table>
             <Table.Head>
               <Table.HeadCell>Account Name</Table.HeadCell>
@@ -332,7 +443,7 @@ const Dashboard = () => {
               <Table.HeadCell>Status</Table.HeadCell>
             </Table.Head>
             <Table.Body>
-              {kycData.kycs.map((kyc, index) => (
+              {mapKycResponseToView(kycData.kycs).map((kyc, index) => (
                 <Table.Row key={index}>
                   <Table.Cell>
                     <div className="flex items-center gap-3 font-medium">
@@ -398,7 +509,7 @@ const Dashboard = () => {
         )}
 
         {/* Withdrawals */}
-        {selectedView === "Withdrawals" && withdrawalData && (
+        {selectedTable === "withdrawals" && withdrawalData && (
           <Table>
             <Table.Head>
               <Table.HeadCell>Account Name</Table.HeadCell>
@@ -408,59 +519,61 @@ const Dashboard = () => {
             </Table.Head>
 
             <Table.Body>
-              {withdrawalData.withdrawals.map((withdrawal, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>
-                    <div className="flex items-center gap-3 font-medium">
-                      <Image
-                        src={withdrawal.imageUrl}
-                        alt=""
-                        className="shrink-0"
-                      />
-                      {withdrawal.accountName}
-                    </div>
-                  </Table.Cell>
-
-                  <Table.Cell>
-                    {
-                      <div className="font-medium">
-                        {withdrawal.campaignTitle}
+              {mapWithdrawalResponseToView(withdrawalData.withdrawals).map(
+                (withdrawal, index) => (
+                  <Table.Row key={index}>
+                    <Table.Cell>
+                      <div className="flex items-center gap-3 font-medium">
+                        <Image
+                          src={withdrawal.imageUrl}
+                          alt=""
+                          className="shrink-0"
+                        />
+                        {withdrawal.accountName}
                       </div>
-                    }
-                  </Table.Cell>
+                    </Table.Cell>
 
-                  <Table.Cell>{withdrawal.amount}</Table.Cell>
+                    <Table.Cell>
+                      {
+                        <div className="font-medium">
+                          {withdrawal.campaignTitle}
+                        </div>
+                      }
+                    </Table.Cell>
 
-                  <Table.Cell>{label(withdrawal.status)}</Table.Cell>
+                    <Table.Cell>{withdrawal.amount}</Table.Cell>
 
-                  <Table.Cell>
-                    <div className="flex gap-3">
-                      <ModalTrigger id="withdrawalPopup">
-                        <button
-                          className="font-semibold text-sm text-[#475467] cursor-pointer"
-                          onClick={() =>
-                            setActiveWithdrawalIdAtom(withdrawal.id)
-                          }
-                        >
-                          View
-                        </button>
-                      </ModalTrigger>
+                    <Table.Cell>{label(withdrawal.status)}</Table.Cell>
 
-                      <ModalTrigger id="withdrawalPopup">
-                        <button
-                          type="button"
-                          className="font-semibold text-sm text-[#6941C6]"
-                          onClick={() =>
-                            setActiveWithdrawalIdAtom(withdrawal.id)
-                          }
-                        >
-                          Approve
-                        </button>
-                      </ModalTrigger>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
+                    <Table.Cell>
+                      <div className="flex gap-3">
+                        <ModalTrigger id="withdrawalPopup">
+                          <button
+                            className="font-semibold text-sm text-[#475467] cursor-pointer"
+                            onClick={() =>
+                              setActiveWithdrawalIdAtom(withdrawal.id)
+                            }
+                          >
+                            View
+                          </button>
+                        </ModalTrigger>
+
+                        <ModalTrigger id="withdrawalPopup">
+                          <button
+                            type="button"
+                            className="font-semibold text-sm text-[#6941C6]"
+                            onClick={() =>
+                              setActiveWithdrawalIdAtom(withdrawal.id)
+                            }
+                          >
+                            Approve
+                          </button>
+                        </ModalTrigger>
+                      </div>
+                    </Table.Cell>
+                  </Table.Row>
+                )
+              )}
             </Table.Body>
 
             <Pagination
@@ -548,150 +661,135 @@ const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
   }
 }
 
-type Kycs = Nullable<IKycs>
-type Page = number
-type KycFilter = Nullable<{ status?: Status<"KYC">; username?: string }>
-const fetchKyc: QF<Kycs, [Token, Page, KycFilter]> = async ({ queryKey }) => {
-  const [_, token, page, filter] = queryKey
+// type Kycs = Nullable<IKycs>
+// type Page = number
+// type KycFilter = Nullable<{ status?: Status<"kycs">; username?: string }>
+// const fetchKyc: QF<Kycs, [Token, Page, KycFilter]> = async ({ queryKey }) => {
+//   const [_, token, page, filter] = queryKey
 
-  if (token) {
-    const query = new URLSearchParams({
-      page: `${page}`,
-      perPage: ITEMS_PER_PAGE,
-    })
+//   if (token) {
+//     const query = new URLSearchParams({
+//       page: `${page}`,
+//       perPage: ITEMS_PER_PAGE,
+//     })
 
-    if (filter?.status) {
-      query.append("status", filter.status)
-    }
+//     if (filter?.status) {
+//       query.append("status", filter.status)
+//     }
 
-    if (filter?.username) {
-      query.append("username", filter.username)
-    }
+//     if (filter?.username) {
+//       query.append("username", filter.username)
+//     }
 
-    const endpoint = `/api/v1/admin/kyc?${query}`
+//     const endpoint = `/api/v1/admin/kyc?${query}`
 
-    const headers = {
-      "x-auth-token": token,
-    }
+//     const headers = {
+//       "x-auth-token": token,
+//     }
 
-    try {
-      const { data } = await makeRequest<IkycResponse>(endpoint, {
-        headers,
-        method: "GET",
-      })
+//     try {
+//       const { data } = await makeRequest<IkycResponse>(endpoint, {
+//         headers,
+//         method: "GET",
+//       })
 
-      return {
-        kycs: mapKycResponseToView(data.kycs),
-        pagination: data.pagination,
-      }
-    } catch (error) {
-      const message = extractErrorMessage(error)
-      throw new Error(message)
-    }
-  }
-}
+//       return {
+//         kycs: mapKycResponseToView(data.kycs),
+//         pagination: data.pagination,
+//       }
+//     } catch (error) {
+//       const message = extractErrorMessage(error)
+//       throw new Error(message)
+//     }
+//   }
+// }
 
-type Withdrawals = Nullable<IWithdrawals>
-type WithdrawalFilter = Nullable<{
-  status?: Status<"Withdrawals">
-  username?: string
-}>
-const fetchWithdrawal: QF<
-  Withdrawals,
-  [Token, Page, WithdrawalFilter]
-> = async ({ queryKey }) => {
-  const [_, token, page, filter] = queryKey
+// type Withdrawals = Nullable<IWithdrawals>
+// type WithdrawalFilter = Nullable<{
+//   status?: Status<"withdrawals">
+//   username?: string
+// }>
+// const fetchWithdrawal: QF<
+//   Withdrawals,
+//   [Token, Page, WithdrawalFilter]
+// > = async ({ queryKey }) => {
+//   const [_, token, page, filter] = queryKey
 
-  if (token) {
-    const query = new URLSearchParams({
-      page: `${page}`,
-      perPage: ITEMS_PER_PAGE,
-    })
+//   if (token) {
+//     const query = new URLSearchParams({
+//       page: `${page}`,
+//       perPage: ITEMS_PER_PAGE,
+//     })
 
-    if (filter?.status) {
-      query.append("status", filter.status)
-    }
+//     if (filter?.status) {
+//       query.append("status", filter.status)
+//     }
 
-    if (filter?.username) {
-      query.append("username", filter.username)
-    }
+//     if (filter?.username) {
+//       query.append("username", filter.username)
+//     }
 
-    const endpoint = `/api/v1/admin/withdrawals?${query}`
+//     const endpoint = `/api/v1/admin/withdrawals?${query}`
 
-    const headers = {
-      "x-auth-token": token,
-    }
+//     const headers = {
+//       "x-auth-token": token,
+//     }
 
-    try {
-      const { data } = await makeRequest<IWithdrawalResponse>(endpoint, {
-        headers,
-        method: "GET",
-      })
+//     try {
+//       const { data } = await makeRequest<IWithdrawalResponse>(endpoint, {
+//         headers,
+//         method: "GET",
+//       })
 
-      return {
-        withdrawals: mapWithdrawalResponseToView(data.withdrawals),
+//       return {
+//         withdrawals: mapWithdrawalResponseToView(data.withdrawals),
 
-        pagination: data.pagination,
-      }
-    } catch (error) {
-      const message = extractErrorMessage(error)
-      throw new Error(message)
-    }
-  }
-}
-
-const stats = [
-  {
-    title: "Pending Campaigns",
-    value: "50",
-  },
-  {
-    title: "Pending Withdrawals",
-    value: "1,020",
-  },
-  {
-    title: "Total Users",
-    value: "1000",
-  },
-]
+//         pagination: data.pagination,
+//       }
+//     } catch (error) {
+//       const message = extractErrorMessage(error)
+//       throw new Error(message)
+//     }
+//   }
+// }
 
 const _filter = {
-  Campaigns: [
-    { label: "In-Review", value: CampaignStatus.InReview },
-    { label: "Approved", value: CampaignStatus.Approved },
-    { label: "Declined", value: CampaignStatus.Declined },
+  campaigns: [
+    { label: "Upcoming", value: RunningStatus.Upcoming },
+    { label: "Active", value: RunningStatus.Active },
+    { label: "Completed", value: RunningStatus.Completed },
   ],
-  KYC: [
+  kycs: [
     {
       label: "Pending",
-      value: "pending",
+      value: KycStatus.Pending,
     },
     {
       label: "Rejected",
-      value: "rejected",
+      value: KycStatus.Rejected,
     },
     {
       label: "Completed",
-      value: "completed",
+      value: KycStatus.Completed,
     },
   ],
-  Withdrawals: [
+  withdrawals: [
     {
       label: "In-Review",
-      value: "in-review",
+      value: WithdrawalStatus.InReview,
     },
     {
       label: "Rejected",
-      value: "rejected",
+      value: WithdrawalStatus.Rejected,
     },
     {
       label: "Approved",
-      value: "approved",
+      value: WithdrawalStatus.Approved,
     },
   ],
 } as const
 
-function mapKycResponseToView(kycs: IkycResponse["kycs"]) {
+function mapKycResponseToView(kycs: Kyc[]) {
   return kycs.map((kyc) => ({
     id: kyc._id,
     accountName: kyc.user.organizationName || kyc.user.fullName,
@@ -701,9 +799,7 @@ function mapKycResponseToView(kycs: IkycResponse["kycs"]) {
   }))
 }
 
-function mapWithdrawalResponseToView(
-  withdrawals: IWithdrawalResponse["withdrawals"]
-) {
+function mapWithdrawalResponseToView(withdrawals: Withdrawal[]) {
   return withdrawals.map((withdrawal) => {
     const [{ currency, payableAmount }] = withdrawal.totalAmountDonated
     const formattedAmount = formatAmount(payableAmount, currency)
@@ -723,24 +819,53 @@ function toTitleCase(str: string) {
   return str.replace(/\b\w/g, (match) => match.toUpperCase())
 }
 
-interface PaginationState {
-  campaigns: number
-  kycs: number
-  withdrawals: number
+interface TableParams {
+  campaigns: Partial<IGetCampaignsParams>
+  kycs: Partial<IGetKycsParams>
+  withdrawals: Partial<IGetWithdrawalsParams>
 }
-interface Action {
-  table: "campaigns" | "kycs" | "withdrawals"
-  page: number
+// interface Action {
+//   table: FilterKeys
+//   type?: "patch" | "reset"
+//   params?: any
+// }
+type ActionBase = {
+  type?: "patch" | "reset"
 }
-function paginationReducer(page: PaginationState, action: Action) {
-  switch (action.table) {
-    case "campaigns":
-      return { ...page, campaigns: action.page }
-    case "kycs":
-      return { ...page, kycs: action.page }
-    case "withdrawals":
-      return { ...page, withdrawals: action.page }
+type Action = ActionBase &
+  (
+    | { table: "campaigns"; params?: Partial<IGetCampaignsParams> }
+    | { table: "kycs"; params?: Partial<IGetKycsParams> }
+    | { table: "withdrawals"; params?: Partial<IGetWithdrawalsParams> }
+  )
+
+function filterReducer(tableParams: TableParams, action: Action) {
+  const { table, params = {}, type = "patch" } = action
+  const perPage = 10
+
+  // switch (table) {
+  //   case "campaigns":
+  //     return (type === 'patch' ? { ...params, campaigns: params } : {page: 1})
+  //   case "kycs":
+  //     return { ...params, kycs: params }
+  //   case "withdrawals":
+  //     return { ...params, withdrawals: params }
+  //   default:
+  //     return params
+  // }
+
+  switch (type) {
+    case "patch":
+      return {
+        ...tableParams,
+        [table]: { ...tableParams[table], ...params, perPage },
+      }
+    case "reset":
+      return {
+        ...tableParams,
+        [table]: { page: 1, perPage },
+      }
     default:
-      return page
+      return tableParams
   }
 }
