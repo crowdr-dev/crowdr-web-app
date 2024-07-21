@@ -28,6 +28,7 @@ import { activeKycIdAtom } from "../admin-dashboard-components/KycPopup"
 import { activeWithdrawalIdAtom } from "../admin-dashboard-components/WithdrawalPopup"
 import { userCountAtom } from "../admin-dashboard-components/Sidebar"
 import { keys } from "../../(dashboard)/utils/queryKeys"
+import { mapWithdrawalResponseToView } from "./withdrawals/page"
 
 import {
   CampaignType,
@@ -41,7 +42,6 @@ import {
 } from "../common/services/kyc/models/GetKycs"
 import {
   IGetWithdrawalsParams,
-  Withdrawal,
   WithdrawalStatus,
 } from "../common/services/withdrawal/models/GetWithdrawals"
 import {  Nullable, QF } from "@/app/common/types"
@@ -680,21 +680,7 @@ function mapKycResponseToView(kycs: Kyc[]) {
   }))
 }
 
-function mapWithdrawalResponseToView(withdrawals: Withdrawal[]) {
-  return withdrawals.map((withdrawal) => {
-    const [{ currency, payableAmount }] = withdrawal.totalAmountDonated
-    const formattedAmount = formatAmount(payableAmount, currency)
 
-    return {
-      id: withdrawal._id,
-      accountName: withdrawal.user.organizationName || withdrawal.user.fullName,
-      campaignTitle: withdrawal.campaign.title,
-      status: withdrawal.status,
-      amount: formattedAmount,
-      imageUrl: TempLogo,
-    }
-  })
-}
 
 function toTitleCase(str: string) {
   return str.replace(/\b\w/g, (match) => match.toUpperCase())

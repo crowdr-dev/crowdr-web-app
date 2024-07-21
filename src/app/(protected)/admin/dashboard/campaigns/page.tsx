@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useQuery } from "react-query"
 import { useUser } from "@/app/(protected)/(dashboard)/common/hooks/useUser"
 import StatCard from "../../admin-dashboard-components/StatCard"
@@ -10,9 +10,6 @@ import { Button } from "@/app/common/components/Button"
 import Pagination from "../../admin-dashboard-components/Pagination"
 import Table from "../../admin-dashboard-components/Table"
 import Image from "next/image"
-import makeRequest from "@/utils/makeRequest"
-import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import { Nullable } from "@/app/common/types"
 import { useDebounceCallback } from "usehooks-ts"
 import campaignService from "../../common/services/campaign"
 
@@ -301,51 +298,6 @@ const Campaigns = () => {
 }
 
 export default Campaigns
-
-// type Token = Nullable<string>
-// type Stats = Nullable<IStats>
-// const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
-//   const [_, token] = queryKey
-
-//   if (token) {
-//     const query = new URLSearchParams({
-//       kycStatus: "pending",
-//       withdrawalStatus: "in-review",
-//     })
-//     const endpoint = `/api/v1/admin/dashboard?${query}`
-
-//     const headers = {
-//       "x-auth-token": token,
-//     }
-
-//     try {
-//       const { data } = await makeRequest<StatsResponse>(endpoint, {
-//         headers,
-//         method: "GET",
-//       })
-
-//       const pendingCampaigns = {
-//         title: "Pending Campaigns",
-//         value: data.KYCs,
-//       }
-
-//       const activeCampaigns = {
-//         title: "Active Campaigns",
-//         value: data.withdrawals,
-//       }
-
-//       const completedCampaigns = {
-//         title: "Completed Campaigns",
-//         value: data.users,
-//       }
-
-//       return [pendingCampaigns, activeCampaigns, completedCampaigns]
-//     } catch (error) {
-//       const message = extractErrorMessage(error)
-//       throw new Error(message)
-//     }
-//   }
-// }
 
 const dummyStats = [
   {
