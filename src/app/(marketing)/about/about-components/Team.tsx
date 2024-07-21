@@ -4,7 +4,6 @@ import styles from '../about-styles/Team.module.css'
 import Ada from '../../../../../public/images/team/Ada.jpg'
 import Tritima from '../../../../../public/images/team/Tritima.jpg'
 import Regina from '../../../../../public/images/team/regina.jpeg'
-import Onyeka from '../../../../../public/images/team/onyeka.jpg'
 import Rokiat from '../../../../../public/images/team/rokiat.png'
 import Mide from '../../../../../public/images/team/mide.png'
 import Jerry from '../../../../../public/images/team/Jerry.jpeg'
@@ -45,36 +44,29 @@ const fullTeamMembers = [
     bio: 'Project manager with 2+ years of experience.'
   },
   {
+    name: 'Regina Richards',
+    position: 'Project Manager',
+    photo: Regina,
+    bio: 'An experienced project manager with 3 years experience.'
+  },
+  {
     name: 'Ayomide Yusuf',
     position: 'Product Designer',
     photo: Mide,
     bio: 'Product designer with 3+ years of experience.'
   },
- 
   {
     name: 'Daniel Arikawe',
     position: 'Frontend Developer',
     photo: Daniel,
     bio: 'Senior frontend engineer with 4+ years of experience.'
   },
-  {
-    name: 'Regina Richards',
-    position: 'Project manager',
-    photo: Regina,
-    bio: 'An Experienced project manager with 3 years experience.'
-  },
+ 
   {
     name: 'Idris Abdul-Lateef',
     position: 'Frontend Developer',
     photo: Idris,
-    bio: 'Frontend Developer with 2+ years experience'
-  },
-  
-  {
-    name: 'Onyeka Nwakobi',
-    position: 'Software Developer',
-    photo: Onyeka,
-    bio: 'A software developer with years of experience in building robust and scalable applications.'
+    bio: 'Frontend Developer with 2+ years experience.'
   },
 ]
 

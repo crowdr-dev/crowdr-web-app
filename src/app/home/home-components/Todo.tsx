@@ -24,7 +24,7 @@ const Todo = () => {
   };
   return (
     <section className="todo">
-      <h3>What can you do on Crowdr?</h3>
+      <h3>How does Crowdr work?</h3>
 
       {width ? (
         <div className="todo-content">

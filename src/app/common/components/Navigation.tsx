@@ -33,11 +33,6 @@ export default function Navigation({ openModal }: Props) {
       </Link>
       <ul>
         <li>
-          <Link href="/pricing" className={isActive("/pricing")}>
-            Pricing
-          </Link>
-        </li>
-        <li>
           <Link href="/about" className={isActive("/about")}>
             About us
           </Link>
@@ -46,6 +41,11 @@ export default function Navigation({ openModal }: Props) {
           <a href="https://blog.oncrowdr.com" target="_blank">
             Blog
           </a>
+        </li>
+        <li>
+          <Link href="/pricing" className={isActive("/pricing")}>
+            Pricing
+          </Link>
         </li>
         <li>
           <a href={`mailto:${email}`} target="_blank">
