@@ -5,12 +5,11 @@ import { IGetWithdrawalsParams, IGetWithdrawalsResponse } from "./models/GetWith
 import axios from "axios"
 
 const getWithdrawals =  async (params: Partial<IGetWithdrawalsParams>) => {
-  const url = `/admin/withdrawals
-`
+  const url = `/admin/withdrawals`
 
   type Key = keyof IGetWithdrawalsParams
   for (let key in params) {
-    if (params[key as Key] == null) {
+    if (params[key as Key] == null || params[key as Key] === "") {
       delete params[key as Key]
     }
   }

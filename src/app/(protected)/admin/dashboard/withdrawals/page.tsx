@@ -53,8 +53,6 @@ const Withdrawals = () => {
     () =>
       setSearchText((text) => {
         setParams({ ...params, page: 1, username: text })
-        setPage(1)
-
         return text
       }),
     1000

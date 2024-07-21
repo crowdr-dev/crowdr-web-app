@@ -36,7 +36,7 @@ const Users = () => {
   const user = useUser()
   const [page, setPage] = useState(1)
   const [searchText, setSearchText] = useState("")
-  const [activeFilter, setActiveFilter] = useState("All")
+  const [activeFilter, setActiveFilter] = useState<UserType | "">("")
   const [params, setParams] = useState<Partial<IGetUsersParams>>({
     page,
   })
@@ -63,23 +63,26 @@ const Users = () => {
 
   const tableFilterButtons = [
     {
+      id: "",
       label: "All",
       onClick: () => {
-        setActiveFilter("All")
-        setParams({ ...params, userType: null })
+        setActiveFilter("")
+        setParams({ ...params, userType: ""})
       },
     },
     {
+      id: UserType.Individual,
       label: "Individuals",
       onClick: () => {
-        setActiveFilter("Individuals")
+        setActiveFilter(UserType.Individual)
         setParams({ ...params, userType: UserType.Individual })
       },
     },
     {
+      id: UserType.NonProfit,
       label: "Organizations",
       onClick: () => {
-        setActiveFilter("Organizations")
+        setActiveFilter(UserType.NonProfit)
         setParams({ ...params, userType: UserType.NonProfit })
       },
     },
@@ -259,51 +262,6 @@ const Users = () => {
 }
 
 export default Users
-
-// type Token = Nullable<string>
-// type Stats = Nullable<IStats>
-// const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
-//   const [_, token] = queryKey
-
-//   if (token) {
-//     const query = new URLSearchParams({
-//       kycStatus: "pending",
-//       withdrawalStatus: "in-review",
-//     })
-//     const endpoint = `/api/v1/admin/dashboard?${query}`
-
-//     const headers = {
-//       "x-auth-token": token,
-//     }
-
-//     try {
-//       const { data } = await makeRequest<StatsResponse>(endpoint, {
-//         headers,
-//         method: "GET",
-//       })
-
-//       const pendingCampaigns = {
-//         title: "Pending Campaigns",
-//         value: data.KYCs,
-//       }
-
-//       const activeCampaigns = {
-//         title: "Active Campaigns",
-//         value: data.withdrawals,
-//       }
-
-//       const completedCampaigns = {
-//         title: "Completed Campaigns",
-//         value: data.users,
-//       }
-
-//       return [pendingCampaigns, activeCampaigns, completedCampaigns]
-//     } catch (error) {
-//       const message = extractErrorMessage(error)
-//       throw new Error(message)
-//     }
-//   }
-// }
 
 const dummyStats = [
   {

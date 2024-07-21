@@ -19,7 +19,7 @@ import DropdownTrigger from "@/app/common/components/DropdownTrigger"
 import CircularProgress from "../admin-dashboard-components/CircularProgress"
 import { label } from "../admin-dashboard-components/Label"
 import makeRequest from "@/utils/makeRequest"
-import { formatAmount } from "../../(dashboard)/common/utils/currency"
+import { toTitleCase } from "@/utils/toTitleCase"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import campaignService from "../common/services/campaign"
 import kycService from "../common/services/kyc"
@@ -44,7 +44,7 @@ import {
   IGetWithdrawalsParams,
   WithdrawalStatus,
 } from "../common/services/withdrawal/models/GetWithdrawals"
-import {  Nullable, QF } from "@/app/common/types"
+import { Nullable, QF } from "@/app/common/types"
 
 import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
@@ -58,9 +58,9 @@ const Dashboard = () => {
   const [withdrawalsPage, setWithdrawalsPage] = useState(1)
 
   const [tableParams, setTableParams] = useReducer(filterReducer, {
-    campaigns: { page: 1, perPage: 10 },
-    kycs: { page: 1, perPage: 10 },
-    withdrawals: { page: 1, perPage: 10 },
+    campaigns: { page: 1 },
+    kycs: { page: 1 },
+    withdrawals: { page: 1 },
   })
 
   const modalStore = useAtomValue(modalStoreAtom)
@@ -680,12 +680,6 @@ function mapKycResponseToView(kycs: Kyc[]) {
   }))
 }
 
-
-
-function toTitleCase(str: string) {
-  return str.replace(/\b\w/g, (match) => match.toUpperCase())
-}
-
 interface TableParams {
   campaigns: Partial<IGetCampaignsParams>
   kycs: Partial<IGetKycsParams>
@@ -704,18 +698,17 @@ type Action = ActionBase &
 
 function filterReducer(tableParams: TableParams, action: Action) {
   const { table, params = {}, type = "patch" } = action
-  const perPage = 10
 
   switch (type) {
     case "patch":
       return {
         ...tableParams,
-        [table]: { ...tableParams[table], ...params, perPage },
+        [table]: { ...tableParams[table], ...params },
       }
     case "reset":
       return {
         ...tableParams,
-        [table]: { page: 1, perPage },
+        [table]: { page: 1 },
       }
     default:
       return tableParams

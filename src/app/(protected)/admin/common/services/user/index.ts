@@ -6,7 +6,7 @@ const getUsers = async (params: Partial<IGetUsersParams> = {}) => {
 
   type Key = keyof IGetUsersParams
   for (let key in params) {
-    if (params[key as Key] == null) {
+    if (params[key as Key] == null || params[key as Key] === "") {
       delete params[key as Key]
     }
   }
