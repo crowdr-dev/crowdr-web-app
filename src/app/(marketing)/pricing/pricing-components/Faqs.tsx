@@ -13,7 +13,7 @@ export default function Faqs () {
         <div className='flex flex-col items-start'>
           <span className="text-sm text-[#00B964] ">Support</span>
         <h2 className='text-center text-[32px] md:text-[36px] text-[#101828] font-medium leading-[44px] mt-3'>
-          FAQS
+          FAQs
         </h2>
         <p className='text-start text-sm md:text-[18px] text-[#475467] leading-[28px] mt-5'>
         Everything you need to know about the platform and billing. Can’t find the answer you’re looking for? Please reach out to our support team.

@@ -22,13 +22,18 @@ export default function Footer() {
               </a>
             </li>
             <li className="">
+              <Link href="/pricing" className="">
+                Pricing
+              </Link>
+            </li>
+            <li className="">
               <Link href="/policies" className="">
                 Terms and Conditions
               </Link>
             </li>
             <li className="">
               <a href={`mailto:${email}`} target="_blank" className="">
-                Contact
+                Contact us
               </a>
             </li>
           </ul>

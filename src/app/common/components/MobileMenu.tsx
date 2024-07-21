@@ -41,11 +41,6 @@ export default function MobileMenu({ openModal }: Props) {
       <div className={`menu ${isOpen ? "open" : ""}`} onClick={closeMenu}>
         <ul>
           <li>
-            <Link href="/pricing" className={isActive("/pricing")}>
-              Pricing
-            </Link>
-          </li>
-          <li>
             <Link href="/about" className={isActive("/about")}>
               About
             </Link>
@@ -56,8 +51,13 @@ export default function MobileMenu({ openModal }: Props) {
             </a>
           </li>
           <li>
+            <Link href="/pricing" className={isActive("/pricing")}>
+              Pricing
+            </Link>
+          </li>
+          <li>
             <a href={`mailto:${email}`} target="_blank">
-              Contact Us
+              Contact us
             </a>
           </li>
           <li>
