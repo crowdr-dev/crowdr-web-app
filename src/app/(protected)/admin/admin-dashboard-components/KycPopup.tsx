@@ -11,11 +11,12 @@ import ModalTrigger, {
   modalStoreAtom,
 } from "@/app/common/components/ModalTrigger"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import otpService from "../common/services/otpService"
-import kycService, { IKyc } from "../common/services/kycService"
+import otpService from "../common/services/otp"
+import kycService from "../common/services/kyc"
 
 import { CgSpinner } from "react-icons/cg"
 import XMark from "../../../../../public/svg/x-mark.svg"
+import { IKyc } from "../common/services/kyc/models"
 
 export const activeKycIdAtom = atom<string | null>(null)
 export const kycToRejectAtom = atom<{ id: string; otp: string } | null>(null)

@@ -67,7 +67,7 @@ const OrganisationDetails = () => {
   };
 
   const validateImage = async (fileList: FileList) => {
-    const image = fileList[0];
+    const image = (fileList || [])[0];
     if (!image) return "Please select an image";
 
     const maxSize = 2 * 1024 * 1024; // 2MB in bytes
@@ -172,14 +172,14 @@ const OrganisationDetails = () => {
                 htmlFor="cac_number"
                 className="text-[14px] text-[#344054] mb-[6px]"
               >
-                CAC number
+                CAC number (e.g. BN1234567)
               </label>
               <input
                 type="text"
                 {...register("cacNumber", {
                   required: true,
                   pattern: {
-                    value: /^\d+$/,
+                    value: /^(BN|RC|IT|LLP|LP|CO)\d{7}$/,
                     message: "Enter a valid CAC number",
                   },
                 })}

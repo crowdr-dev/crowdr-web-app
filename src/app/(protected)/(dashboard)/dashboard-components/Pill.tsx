@@ -40,6 +40,8 @@ const Technology = <Pill text="Technology" icon="desktop-computer" textColor="#0
 const Personal = <Pill text="Personal" icon="books" textColor="#960966" bgColor="#FFEBF2" />
 const Startup = <Pill text="Startup" icon="office-building" textColor="#606E09" bgColor="#FBFFE2" />
 const Family = <Pill text="Family" icon="family-man-woman-girl-boy" textColor="#4C160F" bgColor="#FFE7E3" />
+const Health = <Pill text="Health" icon="syringe" textColor="#085D70" bgColor="#DEFAFF" />
+const Legal = <Pill text="Legal" icon="balance-scale" textColor="#085D70" bgColor="#DEFAFF" />
 const Others = <Pill text="Others" icon="books" textColor="#0C0C0CA8" bgColor="#F5F5F5" />
 
 export const pill = (type: string) => {
@@ -76,6 +78,12 @@ export const pill = (type: string) => {
       
     case 'startup':
       return Startup
+
+    case 'health':
+      return Health
+
+    case 'legal':
+      return Legal
   
     default:
       return Others

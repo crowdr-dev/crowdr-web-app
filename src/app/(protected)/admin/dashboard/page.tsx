@@ -1,7 +1,7 @@
 "use client"
-import { useState } from "react"
+import { useReducer, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useAtomValue, useSetAtom } from "jotai"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useQuery } from "react-query"
 import { useDebounceCallback } from "usehooks-ts"
 import { useUser } from "../../(dashboard)/common/hooks/useUser"
@@ -16,12 +16,13 @@ import Pagination from "../admin-dashboard-components/Pagination"
 import ModalTrigger, {
   modalStoreAtom,
 } from "@/app/common/components/ModalTrigger"
+import DropdownTrigger from "@/app/common/components/DropdownTrigger"
 import { label } from "../admin-dashboard-components/Label"
 import makeRequest from "@/utils/makeRequest"
 import { formatAmount } from "../../(dashboard)/common/utils/currency"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import kycService from "../common/services/kycService"
-import withdrawalService from "../common/services/withdrawalService"
+import kycService from "../common/services/kyc"
+import withdrawalService from "../common/services/withdrawal"
 import { activeKycIdAtom } from "../admin-dashboard-components/KycPopup"
 import { activeWithdrawalIdAtom } from "../admin-dashboard-components/WithdrawalPopup"
 import { userCountAtom } from "../admin-dashboard-components/Sidebar"
@@ -34,17 +35,25 @@ import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
-import DropdownTrigger from "@/app/common/components/DropdownTrigger"
+import { CampaignStatus } from "../common/services/campaign/models/GetCampaigns"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
+
   const [campaignsPage, setCampaignsPage] = useState(1)
   const [kycPage, setKycPage] = useState(1)
   const [withdrawalsPage, setWithdrawalsPage] = useState(1)
+
+  const [page, dispatchPage] = useReducer(paginationReducer, {
+    campaigns: 1,
+    kycs: 1,
+    withdrawals: 1,
+  })
+
   const modalStore = useAtomValue(modalStoreAtom)
   const setActiveKycId = useSetAtom(activeKycIdAtom)
   const setActiveWithdrawalIdAtom = useSetAtom(activeWithdrawalIdAtom)
-  const setUserCount = useSetAtom(userCountAtom)
+  const [userCount, setUserCount] = useAtom(userCountAtom)
   const searchParams = useSearchParams()
   const route = useRouter()
   const user = useUser()
@@ -52,6 +61,7 @@ const Dashboard = () => {
   const [filter, setFilter] = useState<{
     [K in FilterKeys]: { status?: Status<K>; username?: string }
   }>({
+    Campaigns: {},
     KYC: {},
     Withdrawals: {},
   })
@@ -83,14 +93,16 @@ const Dashboard = () => {
       onSuccess: (stats) => {
         if (stats) {
           const userData = stats[2]
-          setUserCount(userData.value)
+          if (userData.value !== userCount) {
+            setUserCount(userData.value)
+          }
         }
-      }
+      },
     }
   )
 
   const { data: kycData, refetch: refetchKycs } = useQuery(
-    [keys.admin.kycs, user?.token, kycPage, filter.KYC],
+    [keys.admin.kycs, user?.token, page.kycs, filter.KYC],
     fetchKyc,
     {
       enabled: Boolean(user?.token),
@@ -101,7 +113,7 @@ const Dashboard = () => {
   kycService.refreshKyc = refetchKycs
 
   const { data: withdrawalData, refetch: refetchWithdrawals } = useQuery(
-    [keys.admin.withdrawals, user?.token, withdrawalsPage, filter.Withdrawals],
+    [keys.admin.withdrawals, user?.token, page.withdrawals, filter.Withdrawals],
     fetchWithdrawal,
     {
       enabled: Boolean(user?.token),
@@ -130,12 +142,15 @@ const Dashboard = () => {
   const resetPage = () => {
     switch (selectedView) {
       case "KYC":
-        setKycPage(1)
+        dispatchPage({ table: "kycs", page: 1 })
 
       case "Withdrawals":
-        setWithdrawalsPage(1)
+        dispatchPage({ table: "withdrawals", page: 1 })
     }
   }
+
+  try {
+  } catch {}
 
   return (
     <div>
@@ -238,10 +253,11 @@ const Dashboard = () => {
                 shadow
                 className="grow !justify-center font-semibold"
                 onClick={() => {
-                  setFilter({ KYC: {}, Withdrawals: {} })
-                  const radioButtons = document.querySelectorAll<HTMLInputElement>(
-                    'input[type="radio"]'
-                  )
+                  setFilter({ Campaigns: {}, KYC: {}, Withdrawals: {} })
+                  const radioButtons =
+                    document.querySelectorAll<HTMLInputElement>(
+                      'input[type="radio"]'
+                    )
                   radioButtons.forEach((button) => {
                     button.checked = false
                   })
@@ -297,9 +313,10 @@ const Dashboard = () => {
                 </Table.Row>
               ))}
             </Table.Body>
+            
             <Pagination
               currentPage={campaignsPage}
-              perPage={5}
+              perPage={Number(ITEMS_PER_PAGE)}
               total={20}
               onPageChange={setCampaignsPage}
             />
@@ -373,7 +390,7 @@ const Dashboard = () => {
             </Table.Body>
             <Pagination
               currentPage={kycPage}
-              perPage={5}
+              perPage={kycData.pagination.perPage}
               total={kycData.pagination.total}
               onPageChange={setKycPage}
             />
@@ -445,9 +462,10 @@ const Dashboard = () => {
                 </Table.Row>
               ))}
             </Table.Body>
+
             <Pagination
               currentPage={withdrawalsPage}
-              perPage={5}
+              perPage={withdrawalData.pagination.perPage}
               total={withdrawalData.pagination.total}
               onPageChange={setWithdrawalsPage}
             />
@@ -471,7 +489,7 @@ interface IWithdrawals {
   pagination: IPagination
 }
 
-type IStats = {
+export type IStats = {
   title: string
   value: number
 }[]
@@ -492,8 +510,8 @@ const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
 
   if (token) {
     const query = new URLSearchParams({
-      kycStatus: 'pending',
-      withdrawalStatus: 'in-review',
+      kycStatus: "pending",
+      withdrawalStatus: "in-review",
     })
     const endpoint = `/api/v1/admin/dashboard?${query}`
 
@@ -609,7 +627,7 @@ const fetchWithdrawal: QF<
         headers,
         method: "GET",
       })
-      
+
       return {
         withdrawals: mapWithdrawalResponseToView(data.withdrawals),
 
@@ -638,6 +656,11 @@ const stats = [
 ]
 
 const _filter = {
+  Campaigns: [
+    { label: "In-Review", value: CampaignStatus.InReview },
+    { label: "Approved", value: CampaignStatus.Approved },
+    { label: "Declined", value: CampaignStatus.Declined },
+  ],
   KYC: [
     {
       label: "Pending",
@@ -698,4 +721,26 @@ function mapWithdrawalResponseToView(
 
 function toTitleCase(str: string) {
   return str.replace(/\b\w/g, (match) => match.toUpperCase())
+}
+
+interface PaginationState {
+  campaigns: number
+  kycs: number
+  withdrawals: number
+}
+interface Action {
+  table: "campaigns" | "kycs" | "withdrawals"
+  page: number
+}
+function paginationReducer(page: PaginationState, action: Action) {
+  switch (action.table) {
+    case "campaigns":
+      return { ...page, campaigns: action.page }
+    case "kycs":
+      return { ...page, kycs: action.page }
+    case "withdrawals":
+      return { ...page, withdrawals: action.page }
+    default:
+      return page
+  }
 }
