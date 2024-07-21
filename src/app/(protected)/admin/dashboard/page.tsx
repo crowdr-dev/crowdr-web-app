@@ -5,7 +5,6 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useQuery } from "react-query"
 import { useDebounceCallback } from "usehooks-ts"
 import { useUser } from "../../(dashboard)/common/hooks/useUser"
-import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/app/common/components/Button"
 import TextInput from "@/app/common/components/TextInput"
@@ -45,7 +44,7 @@ import {
   Withdrawal,
   WithdrawalStatus,
 } from "../common/services/withdrawal/models/GetWithdrawals"
-import { IPagination, Nullable, QF } from "@/app/common/types"
+import {  Nullable, QF } from "@/app/common/types"
 
 import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
@@ -54,7 +53,6 @@ import UserIcon from "../../../../../public/svg/user-01.svg"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
-
   const [campaignsPage, setCampaignsPage] = useState(1)
   const [kycPage, setKycPage] = useState(1)
   const [withdrawalsPage, setWithdrawalsPage] = useState(1)
@@ -211,7 +209,6 @@ const Dashboard = () => {
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value)
-              // resetPage()
               setSearch()
             }}
             placeholder="Search"
@@ -253,18 +250,6 @@ const Dashboard = () => {
                       name={selectedTable}
                       className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500"
                       onChange={() => {
-                        // resetPage()
-                        // setFilter((tables) => {
-                        //   return {
-                        //     ...tables,
-                        //     [selectedTable]: {
-                        //       status: filter.value as Status<
-                        //         typeof selectedTable
-                        //       >,
-                        //     },
-                        //   }
-                        // })
-
                         switch (selectedTable) {
                           case "campaigns":
                             setTableParams({
@@ -317,7 +302,6 @@ const Dashboard = () => {
                 shadow
                 className="grow !justify-center font-semibold"
                 onClick={() => {
-                  // setFilter({ campaigns: {}, kycs: {}, withdrawals: {} })
                   resetPage()
                   const radioButtons =
                     document.querySelectorAll<HTMLInputElement>(
@@ -591,17 +575,6 @@ const Dashboard = () => {
 
 export default Dashboard
 
-const ITEMS_PER_PAGE = "5"
-interface IKycs {
-  kycs: ReturnType<typeof mapKycResponseToView>
-  pagination: IPagination
-}
-
-interface IWithdrawals {
-  withdrawals: ReturnType<typeof mapWithdrawalResponseToView>
-  pagination: IPagination
-}
-
 export type IStats = {
   title: string
   value: number
@@ -660,98 +633,6 @@ const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
     }
   }
 }
-
-// type Kycs = Nullable<IKycs>
-// type Page = number
-// type KycFilter = Nullable<{ status?: Status<"kycs">; username?: string }>
-// const fetchKyc: QF<Kycs, [Token, Page, KycFilter]> = async ({ queryKey }) => {
-//   const [_, token, page, filter] = queryKey
-
-//   if (token) {
-//     const query = new URLSearchParams({
-//       page: `${page}`,
-//       perPage: ITEMS_PER_PAGE,
-//     })
-
-//     if (filter?.status) {
-//       query.append("status", filter.status)
-//     }
-
-//     if (filter?.username) {
-//       query.append("username", filter.username)
-//     }
-
-//     const endpoint = `/api/v1/admin/kyc?${query}`
-
-//     const headers = {
-//       "x-auth-token": token,
-//     }
-
-//     try {
-//       const { data } = await makeRequest<IkycResponse>(endpoint, {
-//         headers,
-//         method: "GET",
-//       })
-
-//       return {
-//         kycs: mapKycResponseToView(data.kycs),
-//         pagination: data.pagination,
-//       }
-//     } catch (error) {
-//       const message = extractErrorMessage(error)
-//       throw new Error(message)
-//     }
-//   }
-// }
-
-// type Withdrawals = Nullable<IWithdrawals>
-// type WithdrawalFilter = Nullable<{
-//   status?: Status<"withdrawals">
-//   username?: string
-// }>
-// const fetchWithdrawal: QF<
-//   Withdrawals,
-//   [Token, Page, WithdrawalFilter]
-// > = async ({ queryKey }) => {
-//   const [_, token, page, filter] = queryKey
-
-//   if (token) {
-//     const query = new URLSearchParams({
-//       page: `${page}`,
-//       perPage: ITEMS_PER_PAGE,
-//     })
-
-//     if (filter?.status) {
-//       query.append("status", filter.status)
-//     }
-
-//     if (filter?.username) {
-//       query.append("username", filter.username)
-//     }
-
-//     const endpoint = `/api/v1/admin/withdrawals?${query}`
-
-//     const headers = {
-//       "x-auth-token": token,
-//     }
-
-//     try {
-//       const { data } = await makeRequest<IWithdrawalResponse>(endpoint, {
-//         headers,
-//         method: "GET",
-//       })
-
-//       return {
-//         withdrawals: mapWithdrawalResponseToView(data.withdrawals),
-
-//         pagination: data.pagination,
-//       }
-//     } catch (error) {
-//       const message = extractErrorMessage(error)
-//       throw new Error(message)
-//     }
-//   }
-// }
 
 const _filter = {
   campaigns: [
@@ -824,11 +705,7 @@ interface TableParams {
   kycs: Partial<IGetKycsParams>
   withdrawals: Partial<IGetWithdrawalsParams>
 }
-// interface Action {
-//   table: FilterKeys
-//   type?: "patch" | "reset"
-//   params?: any
-// }
+
 type ActionBase = {
   type?: "patch" | "reset"
 }
@@ -842,17 +719,6 @@ type Action = ActionBase &
 function filterReducer(tableParams: TableParams, action: Action) {
   const { table, params = {}, type = "patch" } = action
   const perPage = 10
-
-  // switch (table) {
-  //   case "campaigns":
-  //     return (type === 'patch' ? { ...params, campaigns: params } : {page: 1})
-  //   case "kycs":
-  //     return { ...params, kycs: params }
-  //   case "withdrawals":
-  //     return { ...params, withdrawals: params }
-  //   default:
-  //     return params
-  // }
 
   switch (type) {
     case "patch":
