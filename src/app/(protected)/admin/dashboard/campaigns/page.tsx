@@ -12,13 +12,9 @@ import Pagination from "../../admin-dashboard-components/Pagination"
 import Table from "../../admin-dashboard-components/Table"
 import CircularProgress from "../../admin-dashboard-components/CircularProgress"
 import { Button } from "@/app/common/components/Button"
-import { formatAmount } from "@/app/(protected)/(dashboard)/common/utils/currency"
-import { toTitleCase } from "@/utils/toTitleCase"
 import campaignService from "../../common/services/campaign"
 
 import {
-  Campaign,
-  CampaignType,
   IGetCampaignsParams,
   RunningStatus,
 } from "../../common/services/campaign/models/GetCampaigns"
@@ -26,6 +22,7 @@ import {
 import SearchIcon from "../../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../../public/temp/c-logo.png"
+import { mapCampaignResponseToView } from "../../common/utils/mappings"
 
 const Campaigns = () => {
   const user = useUser()
@@ -223,7 +220,7 @@ const Campaigns = () => {
                     <Table.Cell>
                       <div className="flex items-center gap-3 font-medium">
                         <Image
-                          src={campaign.imageUrl}
+                          src={TempLogo}
                           alt=""
                           className="shrink-0"
                         />
@@ -279,42 +276,7 @@ const Campaigns = () => {
 
 export default Campaigns
 
-export function mapCampaignResponseToView(campaigns: Campaign[]) {
-  return campaigns.map((campaign) => {
-    const isFundraising =
-      campaign.campaignType == CampaignType.Fundraise ||
-      campaign.campaignType == CampaignType.FundraiseVolunteer
 
-    const [raisedAmount] = isFundraising ? campaign.totalAmountDonated : []
-    const [targetAmount] = isFundraising
-      ? campaign.fundraise.fundingGoalDetails
-      : []
-
-    const formattedRaisedAmount = isFundraising
-      ? formatAmount(raisedAmount.amount, raisedAmount.currency)
-      : "--"
-    const formattedTargetAmount = isFundraising
-      ? formatAmount(targetAmount.amount, targetAmount.currency)
-      : "--"
-
-    const progressPercentage =
-      isFundraising && targetAmount.amount !== 0
-        ? (raisedAmount.amount / targetAmount.amount) * 100
-        : "--"
-
-    return {
-      id: campaign._id,
-      accountName: campaign.user.organizationName || campaign.user.fullName,
-      title: campaign.title,
-      email: "--",
-      type: toTitleCase(campaign.campaignType).replace("And", "/"),
-      raisedAmount: formattedRaisedAmount,
-      targetAmount: formattedTargetAmount,
-      progressPercentage,
-      imageUrl: TempLogo,
-    }
-  })
-}
 
 const dummyStats = [
   {

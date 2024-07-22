@@ -28,16 +28,13 @@ import { activeKycIdAtom } from "../admin-dashboard-components/KycPopup"
 import { activeWithdrawalIdAtom } from "../admin-dashboard-components/WithdrawalPopup"
 import { userCountAtom } from "../admin-dashboard-components/Sidebar"
 import { keys } from "../../(dashboard)/utils/queryKeys"
-import { mapWithdrawalResponseToView } from "./withdrawals/page"
 
 import {
-  CampaignType,
   IGetCampaignsParams,
   RunningStatus,
 } from "../common/services/campaign/models/GetCampaigns"
 import {
   IGetKycsParams,
-  Kyc,
   KycStatus,
 } from "../common/services/kyc/models/GetKycs"
 import {
@@ -50,6 +47,7 @@ import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
+import { mapCampaignResponseToView, mapKycResponseToView, mapWithdrawalResponseToView } from "../common/utils/mappings"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
@@ -333,78 +331,44 @@ const Dashboard = () => {
               <Table.HeadCell>Progress</Table.HeadCell>
             </Table.Head>
             <Table.Body>
-              {campaignData.campaigns.map((campaign, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>
-                    <div className="flex items-center gap-3 font-medium">
-                      <Image src={TempLogo} alt="" className="shrink-0" />
-                      {campaign.user.fullName || campaign.user.organizationName}
-                    </div>
-                  </Table.Cell>
-
-                  <Table.Cell>
-                    {<div className="font-medium">{campaign.title}</div>}
-                  </Table.Cell>
-
-                  <Table.Cell>
-                    {
-                      <div className="font-medium">
-                        {campaign.user.userType}
+              {mapCampaignResponseToView(campaignData.campaigns).map(
+                (campaign, index) => (
+                  <Table.Row key={index}>
+                    <Table.Cell>
+                      <div className="flex items-center gap-3 font-medium">
+                        <Image src={TempLogo} alt="" className="shrink-0" />
+                        {campaign.accountName}
                       </div>
-                    }
-                  </Table.Cell>
+                    </Table.Cell>
 
-                  <Table.Cell>
-                    {campaign.campaignType == CampaignType.Fundraise ||
-                    campaign.campaignType == CampaignType.FundraiseVolunteer
-                      ? `₦${campaign.totalAmountDonated[0].amount}`
-                      : "--"}
-                  </Table.Cell>
+                    <Table.Cell>
+                      {<div className="font-medium">{campaign.title}</div>}
+                    </Table.Cell>
 
-                  <Table.Cell>
-                    {campaign.campaignType == CampaignType.Fundraise ||
-                    campaign.campaignType == CampaignType.FundraiseVolunteer
-                      ? `₦${campaign.fundraise.fundingGoalDetails[0].amount}`
-                      : "--"}
-                  </Table.Cell>
+                    <Table.Cell>
+                      {<div className="font-medium">{campaign.email}</div>}
+                    </Table.Cell>
 
-                  <Table.Cell>
-                    {(() => {
-                      switch (campaign.campaignType) {
-                        case CampaignType.Fundraise:
-                          return "Fundraise"
-                        case CampaignType.Volunteer:
-                          return "Volunteer"
-                        case CampaignType.FundraiseVolunteer:
-                          return "Fundraise/Volunteer"
-                        default:
-                          return "--"
-                      }
-                    })()}
-                  </Table.Cell>
+                    <Table.Cell>{campaign.raisedAmount}</Table.Cell>
 
-                  <Table.Cell>
-                    <div className="text-center">
-                      {campaign.campaignType == CampaignType.Fundraise ||
-                      campaign.campaignType ==
-                        CampaignType.FundraiseVolunteer ||
-                      (campaign.fundraise &&
-                        campaign.fundraise.fundingGoalDetails[0].amount ===
-                          0) ? (
-                        <CircularProgress
-                          percent={(
-                            (campaign.totalAmountDonated[0].amount /
-                              campaign.fundraise.fundingGoalDetails[0].amount) *
-                            100
-                          ).toFixed(0)}
-                        />
-                      ) : (
-                        "--"
-                      )}
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
+                    <Table.Cell>{campaign.targetAmount}</Table.Cell>
+
+                    <Table.Cell>{campaign.type}</Table.Cell>
+
+                    <Table.Cell>
+                      <div className="text-center">
+                        {typeof campaign.progressPercentage === "number" ? (
+                          <CircularProgress
+                            percent={campaign.progressPercentage.toFixed(0)}
+                          />
+                        ) : (
+                          "--"
+                        )}
+                      </div>
+                    </Table.Cell>
+                  </Table.Row>
+                )
+              )}
             </Table.Body>
 
             <Pagination
@@ -432,7 +396,7 @@ const Dashboard = () => {
                   <Table.Cell>
                     <div className="flex items-center gap-3 font-medium">
                       <div className="grid place-items-center h-10 w-10 shrink-0 border border-black/10 bg-[#F2F4F7] rounded-full">
-                        <Image src={kyc.imageUrl} alt="" className="shrink-0" />
+                        <Image src={TempLogo} alt="" className="shrink-0" />
                       </div>
                       {kyc.accountName}
                     </div>
@@ -509,7 +473,7 @@ const Dashboard = () => {
                     <Table.Cell>
                       <div className="flex items-center gap-3 font-medium">
                         <Image
-                          src={withdrawal.imageUrl}
+                          src={TempLogo}
                           alt=""
                           className="shrink-0"
                         />
@@ -670,15 +634,7 @@ const _filter = {
   ],
 } as const
 
-function mapKycResponseToView(kycs: Kyc[]) {
-  return kycs.map((kyc) => ({
-    id: kyc._id,
-    accountName: kyc.user.organizationName || kyc.user.fullName,
-    accountType: kyc.user.userType,
-    status: kyc.verificationStatus || "pending",
-    imageUrl: TempLogo,
-  }))
-}
+
 
 interface TableParams {
   campaigns: Partial<IGetCampaignsParams>

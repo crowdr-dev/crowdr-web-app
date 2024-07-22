@@ -15,7 +15,6 @@ import ModalTrigger from "@/app/common/components/ModalTrigger"
 import { Button } from "@/app/common/components/Button"
 import { label } from "../../admin-dashboard-components/Label"
 import { activeWithdrawalIdAtom } from "../../admin-dashboard-components/WithdrawalPopup"
-import { formatAmount } from "@/app/(protected)/(dashboard)/common/utils/currency"
 import withdrawalService from "../../common/services/withdrawal"
 
 import SearchIcon from "../../../../../../public/svg/search.svg"
@@ -23,9 +22,9 @@ import FilterIcon from "../../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../../public/temp/c-logo.png"
 import {
   IGetWithdrawalsParams,
-  Withdrawal,
   WithdrawalStatus,
 } from "../../common/services/withdrawal/models/GetWithdrawals"
+import { mapWithdrawalResponseToView } from "../../common/utils/mappings"
 
 const Withdrawals = () => {
   const user = useUser()
@@ -219,7 +218,7 @@ const Withdrawals = () => {
                     <Table.Cell>
                       <div className="flex items-center gap-3 font-medium">
                         <Image
-                          src={withdrawal.imageUrl}
+                          src={TempLogo}
                           alt=""
                           className="shrink-0"
                         />
@@ -287,22 +286,6 @@ const Withdrawals = () => {
 }
 
 export default Withdrawals
-
-export function mapWithdrawalResponseToView(withdrawals: Withdrawal[]) {
-  return withdrawals.map((withdrawal) => {
-    const [{ currency, payableAmount }] = withdrawal.totalAmountDonated
-    const formattedAmount = formatAmount(payableAmount, currency)
-
-    return {
-      id: withdrawal._id,
-      accountName: withdrawal.user.organizationName || withdrawal.user.fullName,
-      campaignTitle: withdrawal.campaign.title,
-      status: withdrawal.status,
-      amount: formattedAmount,
-      imageUrl: TempLogo,
-    }
-  })
-}
 
 const dummyStats = [
   {
