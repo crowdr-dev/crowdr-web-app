@@ -36,7 +36,7 @@ const mapCampaignResponseToView = (campaigns: Campaign[]) => {
       accountName:
         campaign.user.organizationName || campaign.user.fullName || "--",
       title: campaign.title,
-      email: "--",
+      email: campaign.user.email,
       type: toTitleCase(campaign.campaignType).replace("And", "/"),
       raisedAmount: formattedRaisedAmount,
       targetAmount: formattedTargetAmount,
