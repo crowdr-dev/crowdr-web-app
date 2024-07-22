@@ -29,7 +29,7 @@ export default function Header({ openModal }: Props) {
         </p>
         <div className="button-group">
           <button className="btn-primary" onClick={() => router.push('signup')}>Start a Campaign</button>
-          <button className="btn-outline" onClick={() => router.push('/explore-campaigns')}>Donate to Campaign</button>
+          <button className="btn-outline" onClick={() => router.push('/explore-campaigns')}>Donate to a Campaign</button>
         </div>
       </div>
       <Image

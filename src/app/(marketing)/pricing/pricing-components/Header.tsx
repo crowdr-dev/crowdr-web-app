@@ -46,7 +46,7 @@ export default function Header () {
         </span>
         <div className="flex flex-col items-center gap-4 md:gap-6">
         <h2 className='text-[32px] md:text-[48px] font-medium text-[#1F2227] leading-[52px] md:leading-[60px] text-center'>
-          Low fees, Great impact
+          Small Fees, Great Impact
         </h2>
         <p className='text-[14px] font-normal md:text-[20px] text-center'>
           Transaction fees help us run the platform successfully and we’ve
