@@ -1,7 +1,30 @@
+import axios from "axios"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 
 import { IGetKyc, IKyc, IPatchKyc } from "./models"
+import { IGetKycsParams, IGetKycsResponse } from "./models/GetKycs"
+
+
+const getKycs = async (params: Partial<IGetKycsParams> = {}) => {
+  const url = `/admin/kyc`
+
+  type Key = keyof IGetKycsParams
+  for (let key in params) {
+    if (params[key as Key] == null || params[key as Key] == '') {
+      delete params[key as Key]
+    }
+  }
+
+  try {
+    const res = await axios.get<IGetKycsResponse>(url, { params })
+    return res.data.data
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "An error occurred")
+  }
+}
+
+const _changeKycStatus = async () => {}
 
 async function fetchKyc({ kycId, authToken }: IGetKyc) {
   const endpoint = `/api/v1/admin/kyc/${kycId}`
@@ -56,4 +79,4 @@ async function changeKycStatus({
 
 const refreshKyc = () => {}
 
-export default { fetchKyc, changeKycStatus, refreshKyc }
+export default { fetchKyc, changeKycStatus, refreshKyc, getKycs, }

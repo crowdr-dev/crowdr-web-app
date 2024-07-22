@@ -1,42 +1,33 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useQuery } from "react-query"
 import { useUser } from "@/app/(protected)/(dashboard)/common/hooks/useUser"
+import { useDebounceCallback } from "usehooks-ts"
+import Image from "next/image"
 import StatCard from "../../admin-dashboard-components/StatCard"
 import ButtonGroup from "../../admin-dashboard-components/ButtonGroup"
 import TextInput from "@/app/common/components/TextInput"
 import DropdownTrigger from "@/app/common/components/DropdownTrigger"
-import { Button } from "@/app/common/components/Button"
 import Pagination from "../../admin-dashboard-components/Pagination"
 import Table from "../../admin-dashboard-components/Table"
-import Image from "next/image"
-import makeRequest from "@/utils/makeRequest"
-import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import { Nullable } from "@/app/common/types"
-import { useDebounceCallback } from "usehooks-ts"
+import Label from "../../admin-dashboard-components/Label"
+import { Button } from "@/app/common/components/Button"
 import userService from "../../common/services/user"
 
-import {
-  CampaignType,
-  IGetCampaignsParams,
-  RunningStatus,
-} from "../../common/services/campaign/models/GetCampaigns"
-
-import SearchIcon from "../../../../../../public/svg/search.svg"
-import FilterIcon from "../../../../../../public/svg/filter-2.svg"
-import TempLogo from "../../../../../../public/temp/c-logo.png"
-import CircularProgress from "../../admin-dashboard-components/CircularProgress"
 import {
   IGetUsersParams,
   UserType,
 } from "../../common/services/user/models/GetUsers"
-import Label from "../../admin-dashboard-components/Label"
+
+import SearchIcon from "../../../../../../public/svg/search.svg"
+import FilterIcon from "../../../../../../public/svg/filter-2.svg"
+import TempLogo from "../../../../../../public/temp/c-logo.png"
 
 const Users = () => {
   const user = useUser()
   const [page, setPage] = useState(1)
   const [searchText, setSearchText] = useState("")
-  const [activeFilter, setActiveFilter] = useState("All")
+  const [activeFilter, setActiveFilter] = useState<UserType | "">("")
   const [params, setParams] = useState<Partial<IGetUsersParams>>({
     page,
   })
@@ -63,23 +54,26 @@ const Users = () => {
 
   const tableFilterButtons = [
     {
+      id: "",
       label: "All",
       onClick: () => {
-        setActiveFilter("All")
-        setParams({ ...params, userType: null })
+        setActiveFilter("")
+        setParams({ ...params, userType: ""})
       },
     },
     {
+      id: UserType.Individual,
       label: "Individuals",
       onClick: () => {
-        setActiveFilter("Individuals")
+        setActiveFilter(UserType.Individual)
         setParams({ ...params, userType: UserType.Individual })
       },
     },
     {
+      id: UserType.NonProfit,
       label: "Organizations",
       onClick: () => {
-        setActiveFilter("Organizations")
+        setActiveFilter(UserType.NonProfit)
         setParams({ ...params, userType: UserType.NonProfit })
       },
     },
@@ -122,7 +116,7 @@ const Users = () => {
             }}
           />
 
-          <DropdownTrigger
+          {/* <DropdownTrigger
             triggerId="withdrawalsFilterBtn"
             targetId="dropdownDefaultRadio"
             options={{ placement: "bottom-end" }}
@@ -135,7 +129,7 @@ const Users = () => {
               shadow
               className="font-semibold"
             />
-          </DropdownTrigger>
+          </DropdownTrigger> */}
 
           {/* filter dropdown */}
           {/* <div
@@ -259,51 +253,6 @@ const Users = () => {
 }
 
 export default Users
-
-// type Token = Nullable<string>
-// type Stats = Nullable<IStats>
-// const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
-//   const [_, token] = queryKey
-
-//   if (token) {
-//     const query = new URLSearchParams({
-//       kycStatus: "pending",
-//       withdrawalStatus: "in-review",
-//     })
-//     const endpoint = `/api/v1/admin/dashboard?${query}`
-
-//     const headers = {
-//       "x-auth-token": token,
-//     }
-
-//     try {
-//       const { data } = await makeRequest<StatsResponse>(endpoint, {
-//         headers,
-//         method: "GET",
-//       })
-
-//       const pendingCampaigns = {
-//         title: "Pending Campaigns",
-//         value: data.KYCs,
-//       }
-
-//       const activeCampaigns = {
-//         title: "Active Campaigns",
-//         value: data.withdrawals,
-//       }
-
-//       const completedCampaigns = {
-//         title: "Completed Campaigns",
-//         value: data.users,
-//       }
-
-//       return [pendingCampaigns, activeCampaigns, completedCampaigns]
-//     } catch (error) {
-//       const message = extractErrorMessage(error)
-//       throw new Error(message)
-//     }
-//   }
-// }
 
 const dummyStats = [
   {

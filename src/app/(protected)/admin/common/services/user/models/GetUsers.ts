@@ -2,7 +2,7 @@
 export interface IGetUsersParams {
   page:   number;
   perPage: number;
-  userType: UserType | null
+  userType: UserType | ""
   nameOrder: 'asc' | 'desc'
   name: string;
 }

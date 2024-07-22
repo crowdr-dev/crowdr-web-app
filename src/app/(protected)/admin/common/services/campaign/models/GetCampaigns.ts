@@ -136,6 +136,7 @@ export interface User {
   organizationId?:   string;
   fullName?:         string;
   gender?:           string;
+  email: string
 }
 
 export enum UserType {

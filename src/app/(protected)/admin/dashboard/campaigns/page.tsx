@@ -1,23 +1,20 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useQuery } from "react-query"
 import { useUser } from "@/app/(protected)/(dashboard)/common/hooks/useUser"
+import { useDebounceCallback } from "usehooks-ts"
+import Image from "next/image"
 import StatCard from "../../admin-dashboard-components/StatCard"
 import ButtonGroup from "../../admin-dashboard-components/ButtonGroup"
 import TextInput from "@/app/common/components/TextInput"
 import DropdownTrigger from "@/app/common/components/DropdownTrigger"
-import { Button } from "@/app/common/components/Button"
 import Pagination from "../../admin-dashboard-components/Pagination"
 import Table from "../../admin-dashboard-components/Table"
-import Image from "next/image"
-import makeRequest from "@/utils/makeRequest"
-import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import { Nullable } from "@/app/common/types"
-import { useDebounceCallback } from "usehooks-ts"
+import CircularProgress from "../../admin-dashboard-components/CircularProgress"
+import { Button } from "@/app/common/components/Button"
 import campaignService from "../../common/services/campaign"
 
 import {
-  CampaignType,
   IGetCampaignsParams,
   RunningStatus,
 } from "../../common/services/campaign/models/GetCampaigns"
@@ -25,15 +22,17 @@ import {
 import SearchIcon from "../../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../../public/temp/c-logo.png"
-import CircularProgress from "../../admin-dashboard-components/CircularProgress"
+import { mapCampaignResponseToView } from "../../common/utils/mappings"
 
 const Campaigns = () => {
   const user = useUser()
   const [page, setPage] = useState(1)
   const [searchText, setSearchText] = useState("")
-  const [activeFilter, setActiveFilter] = useState("Upcoming")
+  const [activeFilter, setActiveFilter] = useState<RunningStatus>(
+    RunningStatus.Upcoming
+  )
   const [params, setParams] = useState<Partial<IGetCampaignsParams>>({
-    runningStatus: RunningStatus.Active,
+    runningStatus: RunningStatus.Upcoming,
     page,
   })
 
@@ -49,7 +48,7 @@ const Campaigns = () => {
   const setSearch = useDebounceCallback(
     () =>
       setSearchText((text) => {
-        setParams({...params, page: 1, title: text})
+        setParams({ ...params, page: 1, title: text })
         setPage(1)
 
         return text
@@ -59,23 +58,26 @@ const Campaigns = () => {
 
   const tableFilterButtons = [
     {
+      id: RunningStatus.Upcoming,
       label: "Upcoming",
       onClick: () => {
-        setActiveFilter("Upcoming")
+        setActiveFilter(RunningStatus.Upcoming)
         setParams({ ...params, runningStatus: RunningStatus.Upcoming })
       },
     },
     {
+      id: RunningStatus.Active,
       label: "Active",
       onClick: () => {
-        setActiveFilter("Active")
+        setActiveFilter(RunningStatus.Active)
         setParams({ ...params, runningStatus: RunningStatus.Active })
       },
     },
     {
+      id: RunningStatus.Completed,
       label: "Completed",
       onClick: () => {
-        setActiveFilter("Completed")
+        setActiveFilter(RunningStatus.Completed)
         setParams({ ...params, runningStatus: RunningStatus.Completed })
       },
     },
@@ -118,7 +120,7 @@ const Campaigns = () => {
             }}
           />
 
-          <DropdownTrigger
+          {/* <DropdownTrigger
             triggerId="withdrawalsFilterBtn"
             targetId="dropdownDefaultRadio"
             options={{ placement: "bottom-end" }}
@@ -131,7 +133,7 @@ const Campaigns = () => {
               shadow
               className="font-semibold"
             />
-          </DropdownTrigger>
+          </DropdownTrigger> */}
 
           {/* filter dropdown */}
           {/* <div
@@ -204,6 +206,7 @@ const Campaigns = () => {
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Campaign</Table.HeadCell>
+              <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell>Raised Amount</Table.HeadCell>
               <Table.HeadCell>Target Amount</Table.HeadCell>
               <Table.HeadCell>Campaign Type</Table.HeadCell>
@@ -211,68 +214,48 @@ const Campaigns = () => {
             </Table.Head>
 
             <Table.Body>
-              {data.campaigns.map((campaign, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>
-                    <div className="flex items-center gap-3 font-medium">
-                      <Image src={TempLogo} alt="" className="shrink-0" />
-                      {campaign.user.fullName || campaign.user.organizationName}
-                    </div>
-                  </Table.Cell>
-
-                  <Table.Cell>
-                    {<div className="font-medium">{campaign.title}</div>}
-                  </Table.Cell>
-
-                  <Table.Cell>
-                    {campaign.campaignType == CampaignType.Fundraise ||
-                    campaign.campaignType == CampaignType.FundraiseVolunteer
-                      ? `₦${campaign.totalAmountDonated[0].amount}`
-                      : "--"}
-                  </Table.Cell>
-
-                  <Table.Cell>
-                    {campaign.campaignType == CampaignType.Fundraise ||
-                    campaign.campaignType == CampaignType.FundraiseVolunteer
-                      ? `₦${campaign.fundraise.fundingGoalDetails[0].amount}`
-                      : "--"}
-                  </Table.Cell>
-
-                  <Table.Cell>
-                    {(() => {
-                      switch (campaign.campaignType) {
-                        case CampaignType.Fundraise:
-                          return "Fundraise"
-                        case CampaignType.Volunteer:
-                          return "Volunteer"
-                        case CampaignType.FundraiseVolunteer:
-                          return "Fundraise/Volunteer"
-                        default:
-                          return "--"
-                      }
-                    })()}
-                  </Table.Cell>
-
-                  <Table.Cell>
-                    <div className="text-center">
-                      {campaign.campaignType == CampaignType.Fundraise ||
-                      campaign.campaignType == CampaignType.FundraiseVolunteer ||
-                      (campaign.fundraise &&
-                        campaign.fundraise.fundingGoalDetails[0].amount === 0) ? (
-                        <CircularProgress
-                          percent={(
-                            (campaign.totalAmountDonated[0].amount /
-                              campaign.fundraise.fundingGoalDetails[0].amount) *
-                            100
-                          ).toFixed(0)}
+              {mapCampaignResponseToView(data.campaigns).map(
+                (campaign, index) => (
+                  <Table.Row key={index}>
+                    <Table.Cell>
+                      <div className="flex items-center gap-3 font-medium">
+                        <Image
+                          src={TempLogo}
+                          alt=""
+                          className="shrink-0"
                         />
-                      ) : (
-                        "--"
-                      )}
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
+                        {campaign.accountName}
+                      </div>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      {<div className="font-medium">{campaign.title}</div>}
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      {<div className="font-medium">{campaign.email}</div>}
+                    </Table.Cell>
+
+                    <Table.Cell>{campaign.raisedAmount}</Table.Cell>
+
+                    <Table.Cell>{campaign.targetAmount}</Table.Cell>
+
+                    <Table.Cell>{campaign.type}</Table.Cell>
+
+                    <Table.Cell>
+                      <div className="text-center">
+                        {typeof campaign.progressPercentage === "number" ? (
+                          <CircularProgress
+                            percent={campaign.progressPercentage.toFixed(0)}
+                          />
+                        ) : (
+                          "--"
+                        )}
+                      </div>
+                    </Table.Cell>
+                  </Table.Row>
+                )
+              )}
             </Table.Body>
 
             <Pagination
@@ -293,50 +276,7 @@ const Campaigns = () => {
 
 export default Campaigns
 
-// type Token = Nullable<string>
-// type Stats = Nullable<IStats>
-// const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
-//   const [_, token] = queryKey
 
-//   if (token) {
-//     const query = new URLSearchParams({
-//       kycStatus: "pending",
-//       withdrawalStatus: "in-review",
-//     })
-//     const endpoint = `/api/v1/admin/dashboard?${query}`
-
-//     const headers = {
-//       "x-auth-token": token,
-//     }
-
-//     try {
-//       const { data } = await makeRequest<StatsResponse>(endpoint, {
-//         headers,
-//         method: "GET",
-//       })
-
-//       const pendingCampaigns = {
-//         title: "Pending Campaigns",
-//         value: data.KYCs,
-//       }
-
-//       const activeCampaigns = {
-//         title: "Active Campaigns",
-//         value: data.withdrawals,
-//       }
-
-//       const completedCampaigns = {
-//         title: "Completed Campaigns",
-//         value: data.users,
-//       }
-
-//       return [pendingCampaigns, activeCampaigns, completedCampaigns]
-//     } catch (error) {
-//       const message = extractErrorMessage(error)
-//       throw new Error(message)
-//     }
-//   }
-// }
 
 const dummyStats = [
   {

@@ -1,7 +1,26 @@
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
 import makeRequest from "@/utils/makeRequest"
 import { IBankingDetails, IGetBankingDetails, IGetWithdrawal, IPatchWithdrawal, IWithdrawal } from "./models"
+import { IGetWithdrawalsParams, IGetWithdrawalsResponse } from "./models/GetWithdrawals"
+import axios from "axios"
 
+const getWithdrawals =  async (params: Partial<IGetWithdrawalsParams>) => {
+  const url = `/admin/withdrawals`
+
+  type Key = keyof IGetWithdrawalsParams
+  for (let key in params) {
+    if (params[key as Key] == null || params[key as Key] === "") {
+      delete params[key as Key]
+    }
+  }
+
+  try {
+    const res = await axios.get<IGetWithdrawalsResponse>(url, { params })
+    return res.data.data
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "An error occurred")
+  }
+}
 
 async function fetchWithdrawal({ withdrawalId, authToken }: IGetWithdrawal) {
   const endpoint = `/api/v1/admin/withdrawals/${withdrawalId}`
@@ -75,4 +94,4 @@ async function fetchBankDetails({ userId, authToken }: IGetBankingDetails) {
 
 const refreshWithdrawal = () => {}
 
-export default { fetchWithdrawal, changeWithdrawalStatus, fetchBankDetails, refreshWithdrawal }
+export default { fetchWithdrawal, changeWithdrawalStatus, fetchBankDetails, refreshWithdrawal, getWithdrawals, }
