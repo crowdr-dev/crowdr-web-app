@@ -27,6 +27,11 @@ import withdrawalService from "../common/services/withdrawal"
 import { activeKycIdAtom } from "../admin-dashboard-components/KycPopup"
 import { activeWithdrawalIdAtom } from "../admin-dashboard-components/WithdrawalPopup"
 import { userCountAtom } from "../admin-dashboard-components/Sidebar"
+import {
+  mapCampaignResponseToView,
+  mapKycResponseToView,
+  mapWithdrawalResponseToView,
+} from "../common/utils/mappings"
 import { keys } from "../../(dashboard)/utils/queryKeys"
 
 import {
@@ -47,7 +52,6 @@ import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
-import { mapCampaignResponseToView, mapKycResponseToView, mapWithdrawalResponseToView } from "../common/utils/mappings"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
@@ -330,6 +334,7 @@ const Dashboard = () => {
               <Table.HeadCell>Campaign Type</Table.HeadCell>
               <Table.HeadCell>Progress</Table.HeadCell>
             </Table.Head>
+
             <Table.Body>
               {mapCampaignResponseToView(campaignData.campaigns).map(
                 (campaign, index) => (
@@ -372,7 +377,7 @@ const Dashboard = () => {
             </Table.Body>
 
             <Pagination
-              currentPage={campaignsPage}
+              currentPage={campaignData.pagination.currentPage}
               perPage={campaignData.pagination.perPage}
               total={campaignData.pagination.total}
               onPageChange={(page) =>
@@ -447,8 +452,9 @@ const Dashboard = () => {
                 </Table.Row>
               ))}
             </Table.Body>
+
             <Pagination
-              currentPage={kycPage}
+              currentPage={kycData.pagination.currentPage}
               perPage={kycData.pagination.perPage}
               total={kycData.pagination.total}
               onPageChange={setKycPage}
@@ -472,11 +478,7 @@ const Dashboard = () => {
                   <Table.Row key={index}>
                     <Table.Cell>
                       <div className="flex items-center gap-3 font-medium">
-                        <Image
-                          src={TempLogo}
-                          alt=""
-                          className="shrink-0"
-                        />
+                        <Image src={TempLogo} alt="" className="shrink-0" />
                         {withdrawal.accountName}
                       </div>
                     </Table.Cell>
@@ -525,7 +527,7 @@ const Dashboard = () => {
             </Table.Body>
 
             <Pagination
-              currentPage={withdrawalsPage}
+              currentPage={withdrawalData.pagination.currentPage}
               perPage={withdrawalData.pagination.perPage}
               total={withdrawalData.pagination.total}
               onPageChange={setWithdrawalsPage}
@@ -633,8 +635,6 @@ const _filter = {
     },
   ],
 } as const
-
-
 
 interface TableParams {
   campaigns: Partial<IGetCampaignsParams>

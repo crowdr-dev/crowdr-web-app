@@ -19,6 +19,7 @@ import {
   UserType,
 } from "../../common/services/user/models/GetUsers"
 
+import { FaArrowDown, FaArrowUp } from "react-icons/fa6"
 import SearchIcon from "../../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../../public/temp/c-logo.png"
@@ -58,7 +59,7 @@ const Users = () => {
       label: "All",
       onClick: () => {
         setActiveFilter("")
-        setParams({ ...params, userType: ""})
+        setParams({ ...params, userType: "" })
       },
     },
     {
@@ -78,6 +79,29 @@ const Users = () => {
       },
     },
   ]
+
+  const sort = () => {
+    let nameOrder = undefined as typeof params.nameOrder
+    if (params.nameOrder === "asc") {
+      nameOrder = "desc"
+    } else if (params.nameOrder === "desc" || !params.nameOrder) {
+      nameOrder = "asc"
+    }
+
+    setParams({ ...params, nameOrder })
+  }
+  const sortIcon = () => {
+    switch (params.nameOrder) {
+      case "asc":
+        return <FaArrowDown />
+
+      case "desc":
+        return <FaArrowUp />
+
+      default:
+        return null
+    }
+  }
 
   return (
     <div>
@@ -200,7 +224,14 @@ const Users = () => {
         {data && (
           <Table>
             <Table.Head>
-              <Table.HeadCell>Name</Table.HeadCell>
+              <Table.HeadCell>
+                <div
+                  onClick={sort}
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  Name {sortIcon()}
+                </div>
+              </Table.HeadCell>
               <Table.HeadCell>Email Address</Table.HeadCell>
               <Table.HeadCell>Verification Status</Table.HeadCell>
               <Table.HeadCell>Category</Table.HeadCell>
