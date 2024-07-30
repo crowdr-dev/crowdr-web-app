@@ -27,6 +27,11 @@ import withdrawalService from "../common/services/withdrawal"
 import { activeKycIdAtom } from "../admin-dashboard-components/KycPopup"
 import { activeWithdrawalIdAtom } from "../admin-dashboard-components/WithdrawalPopup"
 import { userCountAtom } from "../admin-dashboard-components/Sidebar"
+import {
+  mapCampaignResponseToView,
+  mapKycResponseToView,
+  mapWithdrawalResponseToView,
+} from "../common/utils/mappings"
 import { keys } from "../../(dashboard)/utils/queryKeys"
 
 import {
@@ -47,14 +52,9 @@ import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
-import { mapCampaignResponseToView, mapKycResponseToView, mapWithdrawalResponseToView } from "../common/utils/mappings"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
-  const [campaignsPage, setCampaignsPage] = useState(1)
-  const [kycPage, setKycPage] = useState(1)
-  const [withdrawalsPage, setWithdrawalsPage] = useState(1)
-
   const [tableParams, setTableParams] = useReducer(filterReducer, {
     campaigns: { page: 1 },
     kycs: { page: 1 },
@@ -125,7 +125,6 @@ const Dashboard = () => {
   const { data: campaignData } = useQuery({
     queryKey: ["GET /admin/campaigns", tableParams.campaigns],
     queryFn: () => campaignService.getCampaigns(tableParams.campaigns),
-    onSuccess: (data) => setCampaignsPage(data.pagination.currentPage),
     enabled: Boolean(user) && selectedTable === "campaigns",
     ...queryConfig,
   })
@@ -133,7 +132,6 @@ const Dashboard = () => {
   const { data: kycData, refetch: refetchKycs } = useQuery({
     queryKey: ["GET /admin/kyc", tableParams.kycs],
     queryFn: () => kycService.getKycs(tableParams.kycs),
-    onSuccess: (data) => setKycPage(data.pagination.currentPage),
     enabled: Boolean(user) && selectedTable === "kycs",
     ...queryConfig,
   })
@@ -141,7 +139,6 @@ const Dashboard = () => {
   const { data: withdrawalData, refetch: refetchWithdrawals } = useQuery({
     queryKey: ["GET /admin/withdrawals", tableParams.withdrawals],
     queryFn: () => withdrawalService.getWithdrawals(tableParams.withdrawals),
-    onSuccess: (data) => setWithdrawalsPage(data.pagination.currentPage),
     enabled: Boolean(user) && selectedTable === "withdrawals",
     ...queryConfig,
   })
@@ -330,6 +327,7 @@ const Dashboard = () => {
               <Table.HeadCell>Campaign Type</Table.HeadCell>
               <Table.HeadCell>Progress</Table.HeadCell>
             </Table.Head>
+
             <Table.Body>
               {mapCampaignResponseToView(campaignData.campaigns).map(
                 (campaign, index) => (
@@ -372,7 +370,7 @@ const Dashboard = () => {
             </Table.Body>
 
             <Pagination
-              currentPage={campaignsPage}
+              currentPage={campaignData.pagination.currentPage}
               perPage={campaignData.pagination.perPage}
               total={campaignData.pagination.total}
               onPageChange={(page) =>
@@ -390,6 +388,7 @@ const Dashboard = () => {
               <Table.HeadCell>Account Type</Table.HeadCell>
               <Table.HeadCell>Status</Table.HeadCell>
             </Table.Head>
+
             <Table.Body>
               {mapKycResponseToView(kycData.kycs).map((kyc, index) => (
                 <Table.Row key={index}>
@@ -447,11 +446,14 @@ const Dashboard = () => {
                 </Table.Row>
               ))}
             </Table.Body>
+
             <Pagination
-              currentPage={kycPage}
+              currentPage={kycData.pagination.currentPage}
               perPage={kycData.pagination.perPage}
               total={kycData.pagination.total}
-              onPageChange={setKycPage}
+              onPageChange={(page) =>
+                setTableParams({ table: "kycs", params: { page } })
+              }
             />
           </Table>
         )}
@@ -472,11 +474,7 @@ const Dashboard = () => {
                   <Table.Row key={index}>
                     <Table.Cell>
                       <div className="flex items-center gap-3 font-medium">
-                        <Image
-                          src={TempLogo}
-                          alt=""
-                          className="shrink-0"
-                        />
+                        <Image src={TempLogo} alt="" className="shrink-0" />
                         {withdrawal.accountName}
                       </div>
                     </Table.Cell>
@@ -525,10 +523,12 @@ const Dashboard = () => {
             </Table.Body>
 
             <Pagination
-              currentPage={withdrawalsPage}
+              currentPage={withdrawalData.pagination.currentPage}
               perPage={withdrawalData.pagination.perPage}
               total={withdrawalData.pagination.total}
-              onPageChange={setWithdrawalsPage}
+              onPageChange={(page) =>
+                setTableParams({ table: "kycs", params: { page } })
+              }
             />
           </Table>
         )}
@@ -633,8 +633,6 @@ const _filter = {
     },
   ],
 } as const
-
-
 
 interface TableParams {
   campaigns: Partial<IGetCampaignsParams>
