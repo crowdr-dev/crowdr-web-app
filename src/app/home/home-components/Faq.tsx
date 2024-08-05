@@ -57,11 +57,11 @@ const faqArr = [
   },
   {
     heading: "How do you ensure campaigns are legitimate?",
-    text: "Our vetting process includes verifying government ID such as one’s NIN, BVN and driver’s license.",
+    text: "We require all campaigners to submit government ID in order to verify their identity before funds can be withdrawn. We also investigate/pull campaigns that are reported as fraudulent. However, donors are asked to exercise good judgement before donating to a campaign.",
   },
   {
-    heading: "Can volunteers track participation for external uses like visa interviews?",
-    text: "Yes, volunteer records will be available in each user’s profile.",
+    heading: "Can I get a refund if I donate to a fraudulent campaign?",
+    text: "Funds are held with our payment processor, so if a campaign is proven to be fraudulent and a withdrawal has not occurred, funds can easily be refunded. We just require a few details to verify that a donation was actually made.",
   },
   {
     heading: "How much does it cost to use Crowdr?",
