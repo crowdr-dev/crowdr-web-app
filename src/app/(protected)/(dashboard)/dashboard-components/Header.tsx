@@ -26,7 +26,7 @@ export  function getInitials(name: string) {
 const Header = () => {
   const user = useUser()
   const accountType =
-    user?.userType === "individual" ? "Individual" : "Non-Profit"
+    user?.userType === "individual" ? "Individual" : "Organization"
 
   
   return (
