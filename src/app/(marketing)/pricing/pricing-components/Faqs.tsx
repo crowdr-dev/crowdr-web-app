@@ -49,8 +49,8 @@ export default function Faqs () {
 
 const faqArr = [
   {
-    heading: "Is there a different pricing structure for non-profits and businesses?",
-    text: "Yes. The above prices apply to registered non-profits (this also applies to registered charity arms of corporations). If you intend to use Crowdr as a business, please schedule a meeting with us via the link below so we can better understand your company’s needs.",
+    heading: "Is there a different pricing structure for organizations and businesses?",
+    text: "Yes. The above prices apply to registered organizations (this also applies to registered charity arms of corporations). If you intend to use Crowdr as a business, please schedule a meeting with us via the link below so we can better understand your company’s needs.",
   },
   {
     heading: "Can I see a demo of how the product works before signing up?",
