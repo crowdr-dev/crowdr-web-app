@@ -174,7 +174,7 @@ const KycPopup = () => {
         )}
 
         <div className="flex gap-6">
-          {kycApproved ? (
+          {false ? (
             <GrayButton
               text="KYC Verified"
               className="h-11 !w-[218px] !justify-center"
@@ -186,7 +186,7 @@ const KycPopup = () => {
                 <ModalTrigger id="kycRejectionForm">
                   <GrayButton
                     text="Decline"
-                    className="h-11 !w-[218px] !justify-center"
+                    className="h-11 !w-[218px] !justify-center !bg-red-600 !text-white"
                     disabled={!otpIsFilled}
                     onClick={() =>
                       setKycToReject({ id: activeKycId!, otp: adminOtp })

@@ -177,7 +177,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
     <nav
       className={
         wrapperStyle +
-        " flex-col max-w-[272px] shrink-0 h-full bg-white overflow-x-hidden"
+        " flex-col justify-start max-w-[272px] shrink-0 h-full bg-white overflow-x-hidden"
       }
     >
       <div
