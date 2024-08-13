@@ -32,8 +32,8 @@ const Intro = () => {
               </h2>
               <div id="account_type">
                 <label htmlFor="non-profit" className={(userType == "non-profit" ? "bg-[#068645]" : "bg-[#F8F8F8]") + " block rounded-[8px] cursor-pointer py-[18px] px-[20px] mb-[11px]"}>
-                    <p className={(userType == "non-profit" ? "text-white" : "text-[#344054]") + " text-[14px] md:text-base font-[600] mb-2"}>Non-Profit</p>
-                    <p className={(userType == "non-profit" ? "text-white" : "text-[#667085]") + " text-[12px] md:text-[13px] font-[300]"}>Select this if you're a non-profit organization<span className="md:hidden text-inherit"> looking to raise funds for your cause</span>.</p>
+                    <p className={(userType == "non-profit" ? "text-white" : "text-[#344054]") + " text-[14px] md:text-base font-[600] mb-2"}>Organization</p>
+                    <p className={(userType == "non-profit" ? "text-white" : "text-[#667085]") + " text-[12px] md:text-[13px] font-[300]"}>Select this if you're an organization<span className="md:hidden text-inherit"> looking to raise funds for your cause</span>.</p>
                   <input type="radio" {...register("userType")} id="non-profit" value="non-profit" className="hidden" />
                 </label>
                 <label htmlFor="individual" className={(userType == "individual" ? "bg-[#068645]" : "bg-[#F8F8F8]") + " block rounded-[8px] cursor-pointer py-[18px] px-[20px]"}>
