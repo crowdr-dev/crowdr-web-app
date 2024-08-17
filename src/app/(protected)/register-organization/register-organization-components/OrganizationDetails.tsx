@@ -29,8 +29,6 @@ const OrganisationDetails = () => {
   const [dragActive, setDragActive] = useState(false)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
 
-  // const inputRef = useRef<HTMLInputElement>(null)
-
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
@@ -56,14 +54,6 @@ const OrganisationDetails = () => {
       previewImage(files[0])
     }
   }
-
-  // const handleLabelClick = (e: React.MouseEvent<HTMLLabelElement>) => {
-  //   if (inputRef.current) {
-  //     inputRef.current.click()
-  //   } else {
-  //     e.preventDefault()
-  //   }
-  // }
 
   const previewImage = (file: File) => {
     if (file instanceof Blob) {
@@ -121,7 +111,6 @@ const OrganisationDetails = () => {
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDrop={handleDrop}
-                // onClick={handleLabelClick}
                 className={`${
                   dragActive ? "border-green-200" : "border-[#e4e7ec]"
                 } flex flex-col items-center cursor-pointer rounded-lg border-[2px] border-dashed py-4 px-6 mb-1`}

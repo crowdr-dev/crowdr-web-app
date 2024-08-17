@@ -174,7 +174,7 @@ const KycPopup = () => {
         )}
 
         <div className="flex gap-6">
-          {false ? (
+          {kycApproved ? (
             <GrayButton
               text="KYC Verified"
               className="h-11 !w-[218px] !justify-center"
