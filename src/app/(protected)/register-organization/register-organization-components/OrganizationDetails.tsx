@@ -1,13 +1,19 @@
-import { useMemo, useRef, useState } from "react";
-import NextImage from "next/image";
-import { Controller, useFormContext } from "react-hook-form";
-import { OrganizationFormContext } from "../utils/useOrganizatonForm";
-import imageCompression from "browser-image-compression";
-import Select from "react-select";
-import { stateOptions } from "../../(dashboard)/common/utils/form";
+import {
+  ReactElement,
+  ReactEventHandler,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
+import NextImage from "next/image"
+import { Controller, useFormContext } from "react-hook-form"
+import { OrganizationFormContext } from "../utils/useOrganizatonForm"
+import imageCompression from "browser-image-compression"
+import Select from "react-select"
+import { stateOptions } from "../../(dashboard)/common/utils/form"
 
-import UploadIcon from "../../../../../public/svg/upload-cloud.svg";
-import { CgSpinner } from "react-icons/cg";
+import UploadIcon from "../../../../../public/svg/upload-cloud.svg"
+import { CgSpinner } from "react-icons/cg"
 
 const OrganisationDetails = () => {
   const {
@@ -16,61 +22,53 @@ const OrganisationDetails = () => {
     setValue,
     watch,
     formState: { errors, isValid, isSubmitting },
-  } = useFormContext() as OrganizationFormContext;
-  const image = watch("image");
-  const imageUploaded = useMemo(() => image?.length && !errors.image, [image]);
+  } = useFormContext() as OrganizationFormContext
+  const image = watch("image")
+  const imageUploaded = useMemo(() => image?.length && !errors.image, [image])
 
-  const [dragActive, setDragActive] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [dragActive, setDragActive] = useState(false)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
     if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
+      setDragActive(true)
     } else if (e.type === "dragleave") {
-      setDragActive(false);
+      setDragActive(false)
     }
-  };
+  }
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragActive(false);
-    const files = e.dataTransfer.files;
-    setValue("image", files);
-    previewImage(files[0]);
-  };
+    e.preventDefault()
+    setDragActive(false)
+    const files = e.dataTransfer.files
+    setValue("image", files)
+    previewImage(files[0])
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
+    const files = Array.from(e.target.files || [])
     if (files && files.length > 0) {
-      setValue("image", files);
-      previewImage(files[0]);
+      setValue("image", files as any)
+      previewImage(files[0])
     }
-  };
-
-  const handleLabelClick = () => {
-    if (inputRef.current) {
-      inputRef.current.click();
-    }
-  };
+  }
 
   const previewImage = (file: File) => {
     if (file instanceof Blob) {
-      const imageUrl = URL.createObjectURL(file);
-      setImagePreview(imageUrl);
+      const imageUrl = URL.createObjectURL(file)
+      setImagePreview(imageUrl)
     } else {
-      console.error("The provided file is not a valid Blob or File object");
+      console.error("The provided file is not a valid Blob or File object")
     }
-  };
+  }
 
   const validateImage = async (fileList: FileList) => {
-    const image = (fileList || [])[0];
-    if (!image) return "Please select an image";
+    const image = (fileList || [])[0]
+    if (!image) return "Please select an image"
 
-    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+    const maxSize = 2 * 1024 * 1024 // 2MB in bytes
     if (image.size > maxSize) {
       const imageStatus = await new Promise<string | boolean>(
         async (resolve) => {
@@ -78,21 +76,21 @@ const OrganisationDetails = () => {
             maxSizeMB: 2,
             maxWidthOrHeight: 800,
             useWebWorker: true,
-          });
+          })
 
           if (compressedBlob.size > maxSize) {
-            resolve("Image size exceeds 2MB");
+            resolve("Image size exceeds 2MB")
           } else {
-            setValue("image", blobToFile(compressedBlob));
-            resolve(true);
+            setValue("image", blobToFile(compressedBlob))
+            resolve(true)
           }
         }
-      );
-      return imageStatus;
+      )
+      return imageStatus
     } else {
-      return true;
+      return true
     }
-  };
+  }
 
   return (
     <section className="font-satoshi">
@@ -113,7 +111,6 @@ const OrganisationDetails = () => {
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDrop={handleDrop}
-                onClick={handleLabelClick}
                 className={`${
                   dragActive ? "border-green-200" : "border-[#e4e7ec]"
                 } flex flex-col items-center cursor-pointer rounded-lg border-[2px] border-dashed py-4 px-6 mb-1`}
@@ -127,7 +124,9 @@ const OrganisationDetails = () => {
                 >
                   <NextImage src={UploadIcon} alt="upload icon" width={24} />
                 </div>
-                {!!imagePreview && <p className="text-[12px] my-2 font-bold"> Image uploaded</p>}
+                {Boolean(imageUploaded) && (
+                  <p className="text-[12px] my-2 font-bold"> Image uploaded</p>
+                )}
                 <div className="text-center">
                   <p className="text-sm mb-1">
                     <span className="text-[#FF5200]">Click to upload</span> or
@@ -144,7 +143,7 @@ const OrganisationDetails = () => {
                   })}
                   id="upload"
                   accept=".svg, .png, .jpg, .jpeg, .gif"
-                  ref={inputRef}
+                  // ref={inputRef}
                   className="hidden"
                   onChange={handleFileChange}
                 />
@@ -172,16 +171,16 @@ const OrganisationDetails = () => {
                 htmlFor="cac_number"
                 className="text-[14px] text-[#344054] mb-[6px]"
               >
-                CAC number (e.g. 1234567)
+                CAC number
               </label>
               <input
                 type="text"
                 {...register("cacNumber", {
                   required: true,
-                  pattern: {
-                    value: /^\d{7}$/,
-                    message: "Enter a valid CAC number",
-                  },
+                  // pattern: {
+                  //   value: /^\d{7}$/,
+                  //   message: "Enter a valid CAC number",
+                  // },
                 })}
                 id="cac_number"
                 placeholder="Enter your organization’s CAC number"
@@ -275,14 +274,14 @@ const OrganisationDetails = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default OrganisationDetails;
+export default OrganisationDetails
 
 function blobToFile(blob: Blob): FileList {
-  const file = new File([blob], blob.name, { type: blob.type });
-  const dataTransfer = new DataTransfer();
-  dataTransfer.items.add(file);
-  return dataTransfer.files;
+  const file = new File([blob], blob.name, { type: blob.type })
+  const dataTransfer = new DataTransfer()
+  dataTransfer.items.add(file)
+  return dataTransfer.files
 }
