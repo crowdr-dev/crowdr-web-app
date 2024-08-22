@@ -28,7 +28,11 @@ export default function Faq() {
                   </div>
                 }
               >
-                <p className="pt-4 faq-collapsible-body">{faq.text}</p>
+                {
+                  index === 0 ? <p className="pt-4 faq-collapsible-body">
+                      Please click the “Start a Campaign” button to create an account! After that, please click <a href="https://blog.oncrowdr.com/starting-a-campaign/" target="_blank" className="text-[#00B964] underline">here</a> for a comprehensive step-by-step guide for creating a campaign. This guide is also located on our blog. If you run into any issues, please don’t hesitate to email us at support@oncrowdr.com.
+                  </p> :<p className="pt-4 faq-collapsible-body">{faq.text}</p>
+                }
               </Collapsible>
             </div>
           ))}
