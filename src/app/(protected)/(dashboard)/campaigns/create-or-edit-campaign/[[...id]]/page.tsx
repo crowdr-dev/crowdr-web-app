@@ -1,5 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation"
+import { useSetAtom } from "jotai"
 import objectToFormData from "@/utils/objectToFormData"
 import makeRequest from "@/utils/makeRequest"
 import { extractErrorMessage } from "@/utils/extractErrorMessage"
@@ -10,12 +11,14 @@ import { useUser } from "../../../common/hooks/useUser"
 import { useModal } from "@/app/common/hooks/useModal"
 import { useToast } from "@/app/common/hooks/useToast"
 import { Mixpanel } from "@/utils/mixpanel"
+import { shareCampaignModalAtom } from "../../layout"
 import kycService from "@/app/(protected)/(dashboard)/common/services/kycService"
 
 import { Route } from "@/app/common/types"
 import { ICampaign } from "@/app/common/types/Campaign"
 
 const CreateEditCampaign = ({ params }: Route) => {
+  const setShareCampaignModal = useSetAtom(shareCampaignModalAtom)
   const router = useRouter()
   const user = useUser()
   const modal = useModal()
@@ -41,8 +44,8 @@ const CreateEditCampaign = ({ params }: Route) => {
       volunteerCommitment,
       additionalNotes,
     } = formFields
-    const isFundraiseRelated = campaignType?.match(/fundraise/i)
-    const isVolunteerRelated = campaignType?.match(/volunteer/i)
+    const isFundraiseRelated = Boolean(campaignType?.match(/fundraise/i))
+    const isVolunteerRelated = Boolean(campaignType?.match(/volunteer/i))
     const isIndividual = user?.userType == "individual"
 
     const payload: any = {
@@ -94,20 +97,23 @@ const CreateEditCampaign = ({ params }: Route) => {
     }
 
     const shareCampaign = async (campaign: ICampaign) => {
-      if (navigator.share) {
-        try {
-          modal.hide()
-          await navigator.share({
-            title: campaign.title,
-            text: campaign.story,
-            url: `https://oncrowdr.com/explore-campaigns/donate-or-volunteer/${campaign._id}`,
-          })
-        } catch (error) {
-          console.error("Error sharing:", error)
-        }
-      } else {
-        console.warn("Web Share API not supported.")
-      }
+      modal.hide()
+      setShareCampaignModal({ isOpen: true, campaign })
+
+      // if (navigator.share) {
+      //   try {
+      //     modal.hide()
+      //     await navigator.share({
+      //       title: campaign.title,
+      //       text: campaign.story,
+      //       url: `https://oncrowdr.com/explore-campaigns/donate-or-volunteer/${campaign._id}`,
+      //     })
+      //   } catch (error) {
+      //     console.error("Error sharing:", error)
+      //   }
+      // } else {
+      //   console.warn("Web Share API not supported.")
+      // }
     }
 
     try {
@@ -129,11 +135,24 @@ const CreateEditCampaign = ({ params }: Route) => {
       )
 
       if (success) {
-        Mixpanel.track(
-          isFundraiseRelated
-            ? "Donation Campaign created"
-            : "Volunteer Campaign created"
-        )
+        // Mixpanel.track(
+        //   isFundraiseRelated
+        //     ? "Donation Campaign created"
+        //     : "Volunteer Campaign created"
+        // )
+
+        switch (true) {
+          case isFundraiseRelated && isVolunteerRelated:
+            Mixpanel.track("Donation and Volunteer Campaign created")
+            break
+          case isFundraiseRelated:
+            Mixpanel.track("Donation Campaign created")
+            break
+          case isVolunteerRelated:
+            Mixpanel.track("Volunteer Campaign created")
+            break
+        }
+
         router.push("/campaigns")
 
         try {
@@ -209,7 +228,6 @@ const CreateEditCampaign = ({ params }: Route) => {
           Go back
         </div>
       </nav>
-
       <CampaignFormContext>
         <CampaignForm submit={submit} campaignId={params.id} />
       </CampaignFormContext>
