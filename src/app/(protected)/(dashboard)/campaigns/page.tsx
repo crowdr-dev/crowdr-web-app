@@ -2,7 +2,11 @@
 import { useState } from "react"
 import { useQuery } from "react-query"
 import CampaignCard from "../dashboard-components/CampaignCard"
-import { Button, GrayButton, WhiteButton } from "../../../common/components/Button"
+import {
+  Button,
+  GrayButton,
+  WhiteButton,
+} from "../../../common/components/Button"
 import TextInput from "../../../common/components/TextInput"
 import DateRange from "../dashboard-components/DateRange"
 import StatCard from "../dashboard-components/StatCard"
@@ -31,22 +35,29 @@ import { Mixpanel } from "@/utils/mixpanel"
 const Campaigns = () => {
   const [dateRange, setDateRange] = useState<IDateRange>()
   const [page, setPage] = useState(1)
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState("")
   const user = useUser()
 
+  const { data: stats } = useQuery(
+    [keys.myCampaigns.stats, user?.token, dateRange],
+    fetchStats,
+    {
+      enabled: Boolean(user?.token),
+      // staleTime: time.mins(2),
+      refetchOnWindowFocus: false,
+    }
+  )
 
-  const { data: stats } = useQuery([keys.myCampaigns.stats, user?.token, dateRange], fetchStats, {
-    enabled: Boolean(user?.token),
-    // staleTime: time.mins(2),
-    refetchOnWindowFocus: false,
-  })
-
-  const {isPreviousData, data} = useQuery([keys.myCampaigns.campaigns, user?.token, page], fetchCampaigns, {
-    enabled: Boolean(user?.token),
-    // keepPreviousData: true,
-    // staleTime: time.mins(10),
-    refetchOnWindowFocus: false
-  })
+  const { isPreviousData, data } = useQuery(
+    [keys.myCampaigns.campaigns, user?.token, page],
+    fetchCampaigns,
+    {
+      enabled: Boolean(user?.token),
+      // keepPreviousData: true,
+      // staleTime: time.mins(10),
+      refetchOnWindowFocus: false,
+    }
+  )
 
   return (
     <div>
@@ -162,15 +173,23 @@ const Campaigns = () => {
           className="px-4 py-3 md:p-0"
         />
       )}
+
+      {/* no campaigns */}
+      {data && data.campaigns.length === 0 && (
+        <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
+          No campaigns available at this moment.
+        </p>
+      )}
     </div>
   )
 }
 
 export default Campaigns
 
-const fetchStats: QF<Nullable<ICampaignStats>, [Nullable<string>, IDateRange?]> = async ({
-  queryKey,
-}) => {
+const fetchStats: QF<
+  Nullable<ICampaignStats>,
+  [Nullable<string>, IDateRange?]
+> = async ({ queryKey }) => {
   const [_, token, dateRange] = queryKey
 
   if (token) {
@@ -200,22 +219,25 @@ const fetchStats: QF<Nullable<ICampaignStats>, [Nullable<string>, IDateRange?]> 
   }
 }
 
-const fetchCampaigns: QF<Nullable<ICampaignResponse>, [Nullable<string>, number]> = async ({queryKey}) => {
+const fetchCampaigns: QF<
+  Nullable<ICampaignResponse>,
+  [Nullable<string>, number]
+> = async ({ queryKey }) => {
   const [_, token, page] = queryKey
-  
+
   if (token) {
     const query = new URLSearchParams({ page: `${page}`, perPage: "4" })
     const endpoint = `/api/v1/my-campaigns?${query}`
     const headers = {
       "x-auth-token": token,
     }
-  
+
     try {
       const { data } = await makeRequest<ICampaignResponse>(endpoint, {
         headers,
         method: "GET",
       })
-  
+
       return data
     } catch (error) {
       const message = extractErrorMessage(error)
