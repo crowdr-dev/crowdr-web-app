@@ -135,12 +135,6 @@ const CreateEditCampaign = ({ params }: Route) => {
       )
 
       if (success) {
-        // Mixpanel.track(
-        //   isFundraiseRelated
-        //     ? "Donation Campaign created"
-        //     : "Volunteer Campaign created"
-        // )
-
         switch (true) {
           case isFundraiseRelated && isVolunteerRelated:
             Mixpanel.track("Donation and Volunteer Campaign created")
