@@ -9,12 +9,12 @@ import { ICampaign } from "@/app/common/types/Campaign"
 export const shareCampaignModalAtom = atom<IShareCampaignModal>({
   isOpen: false,
   campaign: null,
-})
+}) as never
 
 const CampaignsPageLayout: RFC = ({ children }) => {
   const [{ isOpen, campaign }, setShareCampaignModal] = useAtom(
     shareCampaignModalAtom
-  )
+  ) as any
 
   const closeShareModal = () => {
     setShareCampaignModal({ isOpen: false, campaign: null })
@@ -48,7 +48,7 @@ const CampaignsPageLayout: RFC = ({ children }) => {
 
 export default CampaignsPageLayout
 
-interface IShareCampaignModal {
+export interface IShareCampaignModal {
   isOpen: boolean
   campaign: ICampaign | null
 }
