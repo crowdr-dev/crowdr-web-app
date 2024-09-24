@@ -126,7 +126,7 @@ const Campaigns = () => {
       {/* export x withdraw buttons */}
       <div className="flex md:hidden gap-3 mb-[23px] md:mb-[9px]">
         <WhiteButton text="Export Report" iconUrl={FileDownloadIcon} shadow />
-        <Button text="Withdraw Donations" />
+        <Button text="Withdraw Donations" href="/campaigns/withdrawal" />
       </div>
 
       {/* all campaigns x filters */}
