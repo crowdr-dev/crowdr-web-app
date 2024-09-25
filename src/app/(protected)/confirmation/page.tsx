@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import Email from "../../../../public/images/email.png";
+import Email from "../../../../public/images/email.svg";
 import ResendConfirmationEmail from "./confirmation-components/ResendConfirmationEmail";
 
 export default async function Confirmation() {

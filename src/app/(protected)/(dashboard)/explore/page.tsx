@@ -76,7 +76,7 @@ const Explore = () => {
 
 
   return (
-    <div>
+    <div className="relative">
       {user && (
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -143,7 +143,7 @@ const Explore = () => {
             </div>
           )}
           {campaigns?.length < 1 && !isLoading && (
-            <p className="absolute inset-0 flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px] ">
+            <p className="absolute inset-0 flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px] top-64">
               No campaigns available at this moment.
             </p>
           )}

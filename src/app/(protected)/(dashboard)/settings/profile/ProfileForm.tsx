@@ -20,15 +20,13 @@ const ProfileForm = () => {
   const setUser = useSetAtom(userAtom)
   const isIndividual = user?.userType === "individual"
 
-  useEffect(() => {
-    if (user) {
-      const { fullName, organizationName, email } = user
-      const fields = isIndividual
-        ? { fullName, email }
-        : { organizationName, email }
-      reset(fields)
-    }
-  }, [user])
+  if (user) {
+    const { fullName, organizationName, email } = user
+    const fields = isIndividual
+      ? { fullName, email }
+      : { organizationName, email }
+    reset(fields)
+  }
 
   const submit = async (formFields: FormFields) => {
     if (user) {
@@ -63,50 +61,48 @@ const ProfileForm = () => {
 
   return (
     <div className="max-w-[484px]">
-      {user && (
-        <form onSubmit={handleSubmit(submit)}>
-          <div className="flex flex-col mb-[33px] md:mb-[38px]">
-            {isIndividual ? (
-              <TextInput
-                name="fullName"
-                label="Full name"
-                styles={{ wrapper: "mb-[26px]" }}
-              />
-            ) : (
-              <TextInput
-                name="organizationName"
-                label="Organization name"
-                styles={{ wrapper: "mb-[26px]" }}
-              />
-            )}
-
+      <form onSubmit={handleSubmit(submit)}>
+        <div className="flex flex-col mb-[33px] md:mb-[38px]">
+          {isIndividual ? (
             <TextInput
-              name="email"
-              label="Email address"
+              name="fullName"
+              label="Full name"
               styles={{ wrapper: "mb-[26px]" }}
-              disabled
             />
-          </div>
+          ) : (
+            <TextInput
+              name="organizationName"
+              label="Organization name"
+              styles={{ wrapper: "mb-[26px]" }}
+            />
+          )}
 
-          <div className="flex md:justify-end gap-3">
-            <Button
-              href="/explore"
-              text="Cancel"
-              textColor="#344054"
-              bgColor="white"
-              outlineColor="#D0D5DD"
-              className="grow md:grow-0 !justify-center"
-            />
-            <Button
-              text="Save changes"
-              buttonType="submit"
-              disabled={isSubmitting}
-              loading={isSubmitting}
-              className="grow md:grow-0 !justify-center"
-            />
-          </div>
-        </form>
-      )}
+          <TextInput
+            name="email"
+            label="Email address"
+            styles={{ wrapper: "mb-[26px]" }}
+            disabled
+          />
+        </div>
+
+        <div className="flex md:justify-end gap-3">
+          <Button
+            href="/explore"
+            text="Cancel"
+            textColor="#344054"
+            bgColor="white"
+            outlineColor="#D0D5DD"
+            className="grow md:grow-0 !justify-center"
+          />
+          <Button
+            text="Save changes"
+            buttonType="submit"
+            disabled={isSubmitting}
+            loading={isSubmitting}
+            className="grow md:grow-0 !justify-center"
+          />
+        </div>
+      </form>
     </div>
   )
 }
