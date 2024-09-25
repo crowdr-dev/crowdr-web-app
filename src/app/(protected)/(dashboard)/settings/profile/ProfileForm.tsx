@@ -20,13 +20,15 @@ const ProfileForm = () => {
   const setUser = useSetAtom(userAtom)
   const isIndividual = user?.userType === "individual"
 
-  if (user) {
-    const { fullName, organizationName, email } = user
-    const fields = isIndividual
-      ? { fullName, email }
-      : { organizationName, email }
-    reset(fields)
-  }
+  useEffect(() => {
+    if (user) {
+      const { fullName, organizationName, email } = user
+      const fields = isIndividual
+        ? { fullName, email }
+        : { organizationName, email }
+      reset(fields)
+    }
+  }, [user])
 
   const submit = async (formFields: FormFields) => {
     if (user) {
