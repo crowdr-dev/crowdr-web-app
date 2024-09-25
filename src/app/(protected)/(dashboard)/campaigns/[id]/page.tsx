@@ -244,7 +244,7 @@ const Campaign = ({ params }: Route) => {
               Mixpanel.track("Clicked Share Campaign")
             }}
           />
-          <Button text="Withdraw Donations" />
+          <Button text="Withdraw Donations" href="/campaigns/withdrawal" />
         </div>
       </div>
 
