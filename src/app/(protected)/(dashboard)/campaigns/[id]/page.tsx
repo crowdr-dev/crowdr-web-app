@@ -324,7 +324,7 @@ const Campaign = ({ params }: Route) => {
                     <Table.Head>
                       <Table.HeadCell>Volunteers</Table.HeadCell>
                       <Table.HeadCell>Phone number</Table.HeadCell>
-                      <Table.HeadCell>Duration</Table.HeadCell>
+                      <Table.HeadCell>Gender</Table.HeadCell>
                       <Table.HeadCell>Date & time</Table.HeadCell>
                     </Table.Head>
 
