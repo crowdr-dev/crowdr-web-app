@@ -32,7 +32,7 @@ import {
 import { useToast } from "@/app/common/hooks/useToast";
 import { useModal } from "@/app/common/hooks/useModal";
 import { BiSearch } from "react-icons/bi";
-import { IoShareSocial,IoDownload } from "react-icons/io5";
+import { IoShareSocial, IoDownload } from "react-icons/io5";
 import FileDownloadIcon from "../../../../../../public/svg/file-download.svg";
 import OldModal from "@/app/common/components/OldModal";
 import ShareCampaign from "@/app/common/components/share-campaign";
@@ -79,7 +79,6 @@ const Campaign = ({ params }: Route) => {
       refetchOnWindowFocus: false
     }
   );
-
 
   const camelCaseToTitleCase = (str: string) => {
     return str.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
@@ -222,7 +221,7 @@ const Campaign = ({ params }: Route) => {
           {isVolunteerCampaign && (
             <Button
               text="Download CSV"
-            icon={IoDownload}
+              icon={IoDownload}
               bgColor="#FFF"
               textColor="#344054"
               outlineColor="#D0D5DD"
@@ -306,7 +305,6 @@ const Campaign = ({ params }: Route) => {
             />
           )}
 
-
           {isVolunteerCampaign && (
             <Tabs.Item
               heading="Volunteers"
@@ -325,7 +323,9 @@ const Campaign = ({ params }: Route) => {
                       {volunteers.volunteers.map((volunteer, index) => (
                         <Table.Row key={index}>
                           <Table.Cell>{volunteer.title}</Table.Cell>
-                          <Table.HeadCell>{volunteer.phoneNumber}</Table.HeadCell>
+                          <Table.HeadCell>
+                            {volunteer.phoneNumber}
+                          </Table.HeadCell>
                           <Table.Cell>{volunteer.detail}</Table.Cell>
                           <Table.Cell>{volunteer.date}</Table.Cell>
                         </Table.Row>
