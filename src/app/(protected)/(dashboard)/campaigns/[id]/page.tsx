@@ -219,7 +219,7 @@ const Campaign = ({ params }: Route) => {
           </div>
         </OldModal>
         <div className="flex items-start gap-3 mb-[23px] md:mb-[9px]">
-          {/* {isVolunteerCampaign && (
+          {isVolunteerCampaign && (
             <Button
               text="Download CSV"
             icon={IoDownload}
@@ -231,7 +231,7 @@ const Campaign = ({ params }: Route) => {
                 Mixpanel.track("Downloaded volunteer CSV file");
               }}
             />
-          )} */}
+          )}
           <Button
             text="Share Campaign"
             icon={IoShareSocial}
@@ -293,7 +293,7 @@ const Campaign = ({ params }: Route) => {
             </Tabs.Item>
           )}
 
-          {/* {isVolunteerCampaign && (
+          {isVolunteerCampaign && (
             <Button
               text="Download CSV"
               bgColor="#FFF"
@@ -304,7 +304,7 @@ const Campaign = ({ params }: Route) => {
                 Mixpanel.track("Downloaded volunteer CSV file");
               }}
             />
-          )} */}
+          )}
 
 
           {isVolunteerCampaign && (
@@ -316,6 +316,7 @@ const Campaign = ({ params }: Route) => {
                   <Table className="hidden md:block mb-9">
                     <Table.Head>
                       <Table.HeadCell>Volunteers</Table.HeadCell>
+                      <Table.HeadCell>Phone number</Table.HeadCell>
                       <Table.HeadCell>Duration</Table.HeadCell>
                       <Table.HeadCell>Date & time</Table.HeadCell>
                     </Table.Head>
@@ -324,6 +325,7 @@ const Campaign = ({ params }: Route) => {
                       {volunteers.volunteers.map((volunteer, index) => (
                         <Table.Row key={index}>
                           <Table.Cell>{volunteer.title}</Table.Cell>
+                          <Table.HeadCell>{volunteer.phoneNumber}</Table.HeadCell>
                           <Table.Cell>{volunteer.detail}</Table.Cell>
                           <Table.Cell>{volunteer.date}</Table.Cell>
                         </Table.Row>
@@ -490,6 +492,7 @@ function mapVolunteeringResponseToView(
 ) {
   return volunteering.map((volunteer) => ({
     title: volunteer.fullName,
+    phoneNumber: volunteer.phoneNumber,
     detail: volunteer.gender,
     date: moment(volunteer.createdAt).format(DATE_FORMAT)
   }));
