@@ -264,6 +264,13 @@ const PaymentPage = () => {
                 className="px-[18px] py-4"
               />
             )}
+
+            {/* no withdrawals */}
+            {withdrawals && withdrawals.withdrawals.length === 0 && (
+              <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
+                No withdrawals available at this moment.
+              </p>
+            )}
           </details>
         </>
       )}

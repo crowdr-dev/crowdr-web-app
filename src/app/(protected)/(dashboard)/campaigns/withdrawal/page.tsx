@@ -266,6 +266,12 @@ const Withdrawal = () => {
               className="px-[18px] py-4"
             />
           )}
+          {/* no campaigns */}
+          {campaigns && campaigns.campaigns.length === 0 && (
+            <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
+              No campaigns available at this moment.
+            </p>
+          )}
         </>
       )}
     </div>

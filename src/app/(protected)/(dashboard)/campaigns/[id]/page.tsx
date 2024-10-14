@@ -1,30 +1,30 @@
-"use client";
-import { useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useQuery } from "react-query";
-import { useUser } from "../../common/hooks/useUser";
-import moment from "moment";
-import makeRequest from "@/utils/makeRequest";
-import { formatAmount } from "../../common/utils/currency";
-import { mapCampaignResponseToView } from "../../common/utils/campaign";
-import { extractErrorMessage } from "@/utils/extractErrorMessage";
-import { keys } from "../../utils/queryKeys";
+"use client"
+import { useState } from "react"
+import { usePathname, useSearchParams } from "next/navigation"
+import { useQuery } from "react-query"
+import { useUser } from "../../common/hooks/useUser"
+import moment from "moment"
+import makeRequest from "@/utils/makeRequest"
+import { formatAmount } from "../../common/utils/currency"
+import { mapCampaignResponseToView } from "../../common/utils/campaign"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import { keys } from "../../utils/queryKeys"
 
-import { Button, GrayButton } from "../../../../common/components/Button";
-import Detail from "../../dashboard-components/Detail";
-import Pagination from "../../dashboard-components/Pagination";
-import Table from "../../dashboard-components/Table";
-import Tabs from "../../dashboard-components/Tabs";
-import CampaignPageSkeleton from "../../dashboard-components/skeletons/CampaignPageSkeleton";
-import ProgressBar from "../../dashboard-components/ProgressBar";
-import Text from "../../dashboard-components/Text";
-import { pill } from "../../dashboard-components/Pill";
+import { Button, GrayButton } from "../../../../common/components/Button"
+import Detail from "../../dashboard-components/Detail"
+import Pagination from "../../dashboard-components/Pagination"
+import Table from "../../dashboard-components/Table"
+import Tabs from "../../dashboard-components/Tabs"
+import CampaignPageSkeleton from "../../dashboard-components/skeletons/CampaignPageSkeleton"
+import ProgressBar from "../../dashboard-components/ProgressBar"
+import Text from "../../dashboard-components/Text"
+import { pill } from "../../dashboard-components/Pill"
 
-import { Nullable, QF, Route } from "@/app/common/types";
+import { Nullable, QF, Route } from "@/app/common/types"
 import {
   ICampaign,
-  IFundraiseVolunteerCampaign
-} from "@/app/common/types/Campaign";
+  IFundraiseVolunteerCampaign,
+} from "@/app/common/types/Campaign"
 import {
   IDonationResponse,
   IVolunteeringResponse
@@ -40,56 +40,56 @@ import { Parser } from "json2csv";
 import { Mixpanel } from "@/utils/mixpanel";
 
 const Campaign = ({ params }: Route) => {
-  const [donorsPage, setDonorsPage] = useState(1);
-  const [volunteersPage, setVolunteersPage] = useState(1);
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const user = useUser();
-  const modal = useModal();
-  const toast = useToast();
+  const [donorsPage, setDonorsPage] = useState(1)
+  const [volunteersPage, setVolunteersPage] = useState(1)
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const user = useUser()
+  const modal = useModal()
+  const toast = useToast()
 
-  const [shareModal, setShareModal] = useState(false);
+  const [shareModal, setShareModal] = useState(false)
 
   const { data: campaign } = useQuery(
     [keys.campaignPage.details, user?.token, params.id],
     fetchCampaign,
     {
       enabled: Boolean(user?.token),
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
-  );
+  )
 
-  const isFundraiseCampaign = /fundraise/i.test(campaign?.campaignType || "");
-  const isVolunteerCampaign = /volunteer/i.test(campaign?.campaignType || "");
+  const isFundraiseCampaign = /fundraise/i.test(campaign?.campaignType || "")
+  const isVolunteerCampaign = /volunteer/i.test(campaign?.campaignType || "")
 
   const { data: donors } = useQuery(
     [keys.campaignPage.donors, user?.token, params.id, donorsPage],
     fetchDonors,
     {
       enabled: isFundraiseCampaign,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
-  );
+  )
 
   const { data: volunteers } = useQuery(
     [keys.campaignPage.volunteers, user?.token, params.id, volunteersPage],
     fetchVolunteers,
     {
       enabled: isVolunteerCampaign,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
   );
 
   const camelCaseToTitleCase = (str: string) => {
     return str.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
-      return str.toUpperCase();
-    });
-  };
+      return str.toUpperCase()
+    })
+  }
 
   const downloadCSV = () => {
-    if (!volunteers?.unfiltered) return;
+    if (!volunteers?.unfiltered) return
 
-    const volunteerings = volunteers?.unfiltered;
+    const volunteerings = volunteers?.unfiltered
 
     const fields = [
       "fullName",
@@ -100,37 +100,37 @@ const Campaign = ({ params }: Route) => {
       "about",
       "phoneNumber",
       "createdAt",
-      "updatedAt"
-    ];
+      "updatedAt",
+    ]
 
     const headers = fields.map((field) => ({
       label: camelCaseToTitleCase(field),
-      value: field
-    }));
+      value: field,
+    }))
 
-    const json2csvParser = new Parser({ fields: headers });
-    const csv = json2csvParser.parse(volunteerings);
+    const json2csvParser = new Parser({ fields: headers })
+    const csv = json2csvParser.parse(volunteerings)
 
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", `${campaign?.title}.volunteers.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.href = url
+    link.setAttribute("download", `${campaign?.title}.volunteers.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   const shareCampaign = async (campaign: any) => {
-    setShareModal(true);
+    setShareModal(true)
     // downloadCSV();
-  };
+  }
 
   const selectedView =
     searchParams.get("view") ||
     (isFundraiseCampaign && "Donors") ||
     (isVolunteerCampaign && "Volunteers") ||
-    undefined;
+    undefined
 
   return (
     <div>
@@ -147,7 +147,8 @@ const Campaign = ({ params }: Route) => {
             <Text
               characterLimit={128}
               expandText="Read more"
-              className="md:hidden text-[#667085] text-[15px] md:text-[13px] mb-[9px]">
+              className="md:hidden text-[#667085] text-[15px] md:text-[13px] mb-[9px]"
+            >
               {campaign.story}
             </Text>
 
@@ -207,8 +208,9 @@ const Campaign = ({ params }: Route) => {
           <div
             className="relative p-12"
             style={{
-              background: "rgba(76, 76, 76, 0)"
-            }}>
+              background: "rgba(76, 76, 76, 0)",
+            }}
+          >
             <ShareCampaign
               onClose={() => setShareModal(false)}
               campaignId={campaign?._id}
@@ -238,11 +240,11 @@ const Campaign = ({ params }: Route) => {
             textColor="#344054"
             outlineColor="#D0D5DD"
             onClick={() => {
-              shareCampaign(campaign);
-              Mixpanel.track("Clicked Share Campaign");
+              shareCampaign(campaign)
+              Mixpanel.track("Clicked Share Campaign")
             }}
           />
-          <Button text="Withdraw Donations" />
+          <Button text="Withdraw Donations" href="/campaigns/withdrawal" />
         </div>
       </div>
 
@@ -289,6 +291,12 @@ const Campaign = ({ params }: Route) => {
                   className="px-[18px] py-4"
                 />
               )}
+
+              {donors && donors.donors.length === 0 && (
+                <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
+                  No donors available at this moment.
+                </p>
+              )}
             </Tabs.Item>
           )}
 
@@ -308,7 +316,8 @@ const Campaign = ({ params }: Route) => {
           {isVolunteerCampaign && (
             <Tabs.Item
               heading="Volunteers"
-              href={`${pathname}?view=Volunteers`}>
+              href={`${pathname}?view=Volunteers`}
+            >
               {volunteers && (
                 <>
                   <Table className="hidden md:block mb-9">
@@ -350,141 +359,147 @@ const Campaign = ({ params }: Route) => {
                   className="px-[18px] py-4"
                 />
               )}
+
+              {volunteers && volunteers.volunteers.length === 0 && (
+                <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
+                  No volunteers available at this moment.
+                </p>
+              )}
             </Tabs.Item>
           )}
         </Tabs>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Campaign;
+export default Campaign
 
-type ICampaignView = ReturnType<typeof mapCampaignResponseToView>;
+type ICampaignView = ReturnType<typeof mapCampaignResponseToView>
 
 type IDonors = {
-  donors: ReturnType<typeof mapDonationsResponseToView>;
-  pagination: IDonationResponse["pagination"];
-};
+  donors: ReturnType<typeof mapDonationsResponseToView>
+  pagination: IDonationResponse["pagination"]
+}
 
 type IVolunteers = {
-  volunteers: ReturnType<typeof mapVolunteeringResponseToView>;
-  pagination: IVolunteeringResponse["pagination"];
-  unfiltered: IVolunteeringResponse["volunteerings"];
-};
+  volunteers: ReturnType<typeof mapVolunteeringResponseToView>
+  pagination: IVolunteeringResponse["pagination"]
+  unfiltered: IVolunteeringResponse["volunteerings"]
+}
 
-const ITEMS_PER_PAGE = "4";
-const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A";
+const ITEMS_PER_PAGE = "4"
+const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"
 
 const fetchCampaign: QF<
   Nullable<ICampaignView>,
   [Nullable<string>, string]
 > = async ({ queryKey }) => {
-  const [_, token, campaignId] = queryKey;
+  const [_, token, campaignId] = queryKey
 
   if (token) {
     const headers = {
       "Content-Type": "multipart/form-data",
-      "x-auth-token": token
-    };
+      "x-auth-token": token,
+    }
 
-    const endpoint = `/api/v1/my-campaigns/${campaignId}`;
+    const endpoint = `/api/v1/my-campaigns/${campaignId}`
 
     try {
       const { data } = await makeRequest<IFundraiseVolunteerCampaign>(
         endpoint,
         {
           headers,
-          method: "GET"
+          method: "GET",
         }
-      );
+      )
 
-      const campaign = mapCampaignResponseToView(data);
-      return campaign;
+      const campaign = mapCampaignResponseToView(data)
+      return campaign
     } catch (error) {
-      const message = extractErrorMessage(error);
-      throw new Error(message);
+      const message = extractErrorMessage(error)
+      throw new Error(message)
     }
   }
-};
+}
 
 const fetchDonors: QF<
   Nullable<IDonors>,
   [Nullable<string>, string, number]
 > = async ({ queryKey }) => {
-  const [_, token, campaignId, donorsPage] = queryKey;
+  const [_, token, campaignId, donorsPage] = queryKey
 
   if (token) {
     const query = new URLSearchParams({
       page: `${donorsPage}`,
-      perPage: ITEMS_PER_PAGE
-    });
-    const endpoint = `/api/v1/campaigns/${campaignId}/donations?${query}`;
+      perPage: ITEMS_PER_PAGE,
+    })
+    const endpoint = `/api/v1/campaigns/${campaignId}/donations?${query}`
 
     const headers = {
       "Content-Type": "multipart/form-data",
-      "x-auth-token": token
-    };
+      "x-auth-token": token,
+    }
 
     try {
       const { data } = await makeRequest<IDonationResponse>(endpoint, {
         headers,
-        method: "GET"
-      });
+        method: "GET",
+      })
 
       return {
         donors: mapDonationsResponseToView(data.donations),
-        pagination: data.pagination
-      };
+        pagination: data.pagination,
+      }
     } catch (error) {
-      const message = extractErrorMessage(error);
-      throw new Error(message);
+      const message = extractErrorMessage(error)
+      throw new Error(message)
     }
   }
-};
+}
 
 const fetchVolunteers: QF<
   Nullable<IVolunteers>,
   [Nullable<string>, string, number]
 > = async ({ queryKey }) => {
-  const [_, token, campaignId, volunteersPage] = queryKey;
+  const [_, token, campaignId, volunteersPage] = queryKey
 
   if (token) {
     const query = new URLSearchParams({
       page: `${volunteersPage}`,
-      perPage: ITEMS_PER_PAGE
-    });
-    const endpoint = `/api/v1/campaigns/${campaignId}/volunteers?${query}`;
+      perPage: ITEMS_PER_PAGE,
+    })
+    const endpoint = `/api/v1/campaigns/${campaignId}/volunteers?${query}`
 
     const headers = {
       "Content-Type": "multipart/form-data",
-      "x-auth-token": token
-    };
+      "x-auth-token": token,
+    }
 
     try {
       const { data } = await makeRequest<IVolunteeringResponse>(endpoint, {
         headers,
-        method: "GET"
-      });
+        method: "GET",
+      })
 
       return {
         volunteers: mapVolunteeringResponseToView(data.volunteerings),
         pagination: data.pagination,
-        unfiltered: data.volunteerings
-      };
+        unfiltered: data.volunteerings,
+      }
     } catch (error) {
-      const message = extractErrorMessage(error);
-      throw new Error(message);
+      const message = extractErrorMessage(error)
+      throw new Error(message)
     }
   }
-};
+}
 
 function mapDonationsResponseToView(donations: IDonationResponse["donations"]) {
   return donations.map((donation) => ({
     title: donation.fullName,
     detail: formatAmount(Number(donation.amount), donation.currency),
-    date: moment(donation.createdAt).format(DATE_FORMAT)
-  }));
+    date: moment(donation.createdAt).format(DATE_FORMAT),
+  }))
 }
 
 function mapVolunteeringResponseToView(
@@ -494,6 +509,6 @@ function mapVolunteeringResponseToView(
     title: volunteer.fullName,
     phoneNumber: volunteer.phoneNumber,
     detail: volunteer.gender,
-    date: moment(volunteer.createdAt).format(DATE_FORMAT)
-  }));
+    date: moment(volunteer.createdAt).format(DATE_FORMAT),
+  }))
 }

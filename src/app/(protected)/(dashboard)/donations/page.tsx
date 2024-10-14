@@ -156,6 +156,13 @@ const Donations = () => {
               className="px-[18px] py-4"
             />
           )}
+
+          {/* no donations */}
+          {donations && donations.donations.length === 0 && (
+            <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
+              No donations available at this moment.
+            </p>
+          )}
         </Tabs.Item>
 
         <Tabs.Item heading="Volunteering">
@@ -207,6 +214,13 @@ const Donations = () => {
               onPageChange={setVolunteeringPage}
               className="px-[18px] py-4"
             />
+          )}
+
+          {/* no volunteering */}
+          {volunteering && volunteering.volunteerings.length === 0 && (
+            <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
+              No volunteering available at this moment.
+            </p>
           )}
         </Tabs.Item>
       </Tabs>
