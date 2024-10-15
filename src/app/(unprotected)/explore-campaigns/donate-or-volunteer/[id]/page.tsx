@@ -232,7 +232,6 @@ export default function DonateOrVolunteer({
     const endpoint = `/api/v1/campaigns/${params.id}/volunteer`;
 
     const payload = {
-      userId: v4(),
       phoneNumber: volunteerInputs.phoneNumber,
       email: volunteerInputs.email,
       fullName: volunteerInputs.fullName,
