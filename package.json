@@ -76,6 +76,7 @@
     "@types/react-helmet": "^6.1.11",
     "@types/react-modal": "^3.16.0",
     "@types/sanitize-html": "^2.11.0",
+    "@types/uuid": "^10.0.0",
     "tailwindcss-animate": "^1.0.6"
   }
 }

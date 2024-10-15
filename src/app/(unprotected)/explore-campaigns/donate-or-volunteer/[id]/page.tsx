@@ -26,6 +26,7 @@ import NavBar from "../../components/NavBar";
 import Loading from "@/app/loading";
 import { useModal } from "@/app/common/hooks/useModal";
 import { Mixpanel } from "@/utils/mixpanel";
+import {v4} from "uuid";
 
 const activeTabStyle = "text-[#00B964]  border-b-2 border-[#00B964]";
 const inActiveTabStyle = "text-[#667085]";
@@ -231,7 +232,7 @@ export default function DonateOrVolunteer({
     const endpoint = `/api/v1/campaigns/${params.id}/volunteer`;
 
     const payload = {
-      userId: campaign.userId,
+      userId: v4(),
       phoneNumber: volunteerInputs.phoneNumber,
       email: volunteerInputs.email,
       fullName: volunteerInputs.fullName,
