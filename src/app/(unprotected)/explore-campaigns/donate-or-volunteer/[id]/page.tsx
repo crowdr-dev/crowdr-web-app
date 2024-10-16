@@ -494,7 +494,7 @@ export default function DonateOrVolunteer({
                       Total Volunteer(s)
                     </p>
                   </div>
-                  <div className="flex items-start flex-col gap-5 mb-8">
+                 {/* <div className="flex items-start flex-col gap-5 mb-8">
                     {campaign?.campaignVolunteers
                       ?.slice(0, 5)
                       .map(
@@ -529,8 +529,8 @@ export default function DonateOrVolunteer({
                       href={`/explore/donate-or-volunteer/${campaign._id}/all-donations`}>
                       See all
                     </Link>
-                  )}
-                </div>
+                  )}*/}
+                </div> 
               </div>
             ) : (
               <div className="mt-6">
