@@ -27,17 +27,17 @@ import {
 } from "@/app/common/types/Campaign"
 import {
   IDonationResponse,
-  IVolunteeringResponse,
-} from "@/app/common/types/DonationsVolunteering"
-import { useToast } from "@/app/common/hooks/useToast"
-import { useModal } from "@/app/common/hooks/useModal"
-import { BiSearch } from "react-icons/bi"
-import { IoShareSocial, IoDownload } from "react-icons/io5"
-import FileDownloadIcon from "../../../../../../public/svg/file-download.svg"
-import OldModal from "@/app/common/components/OldModal"
-import ShareCampaign from "@/app/common/components/share-campaign"
-import { Parser } from "json2csv"
-import { Mixpanel } from "@/utils/mixpanel"
+  IVolunteeringResponse
+} from "@/app/common/types/DonationsVolunteering";
+import { useToast } from "@/app/common/hooks/useToast";
+import { useModal } from "@/app/common/hooks/useModal";
+import { BiSearch } from "react-icons/bi";
+import { IoShareSocial, IoDownload } from "react-icons/io5";
+import FileDownloadIcon from "../../../../../../public/svg/file-download.svg";
+import OldModal from "@/app/common/components/OldModal";
+import ShareCampaign from "@/app/common/components/share-campaign";
+import { Parser } from "json2csv";
+import { Mixpanel } from "@/utils/mixpanel";
 
 const Campaign = ({ params }: Route) => {
   const [donorsPage, setDonorsPage] = useState(1)
@@ -78,7 +78,7 @@ const Campaign = ({ params }: Route) => {
       enabled: isVolunteerCampaign,
       refetchOnWindowFocus: false,
     }
-  )
+  );
 
   const camelCaseToTitleCase = (str: string) => {
     return str.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
@@ -220,10 +220,10 @@ const Campaign = ({ params }: Route) => {
           </div>
         </OldModal>
         <div className="flex items-start gap-3 mb-[23px] md:mb-[9px]">
-          {/* {isVolunteerCampaign && (
+          {isVolunteerCampaign && (
             <Button
               text="Download CSV"
-            icon={IoDownload}
+              icon={IoDownload}
               bgColor="#FFF"
               textColor="#344054"
               outlineColor="#D0D5DD"
@@ -232,7 +232,7 @@ const Campaign = ({ params }: Route) => {
                 Mixpanel.track("Downloaded volunteer CSV file");
               }}
             />
-          )} */}
+          )}
           <Button
             text="Share Campaign"
             icon={IoShareSocial}
@@ -300,7 +300,7 @@ const Campaign = ({ params }: Route) => {
             </Tabs.Item>
           )}
 
-          {/* {isVolunteerCampaign && (
+          {isVolunteerCampaign && (
             <Button
               text="Download CSV"
               bgColor="#FFF"
@@ -311,7 +311,7 @@ const Campaign = ({ params }: Route) => {
                 Mixpanel.track("Downloaded volunteer CSV file");
               }}
             />
-          )} */}
+          )}
 
           {isVolunteerCampaign && (
             <Tabs.Item
@@ -323,7 +323,8 @@ const Campaign = ({ params }: Route) => {
                   <Table className="hidden md:block mb-9">
                     <Table.Head>
                       <Table.HeadCell>Volunteers</Table.HeadCell>
-                      <Table.HeadCell>Duration</Table.HeadCell>
+                      <Table.HeadCell>Phone number</Table.HeadCell>
+                      <Table.HeadCell>Gender</Table.HeadCell>
                       <Table.HeadCell>Date & time</Table.HeadCell>
                     </Table.Head>
 
@@ -331,6 +332,9 @@ const Campaign = ({ params }: Route) => {
                       {volunteers.volunteers.map((volunteer, index) => (
                         <Table.Row key={index}>
                           <Table.Cell>{volunteer.title}</Table.Cell>
+                          <Table.HeadCell>
+                            {volunteer.phoneNumber}
+                          </Table.HeadCell>
                           <Table.Cell>{volunteer.detail}</Table.Cell>
                           <Table.Cell>{volunteer.date}</Table.Cell>
                         </Table.Row>
@@ -503,6 +507,7 @@ function mapVolunteeringResponseToView(
 ) {
   return volunteering.map((volunteer) => ({
     title: volunteer.fullName,
+    phoneNumber: volunteer.phoneNumber,
     detail: volunteer.gender,
     date: moment(volunteer.createdAt).format(DATE_FORMAT),
   }))
