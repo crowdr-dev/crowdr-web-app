@@ -88,7 +88,11 @@ export type Campaign = {
   };
 };
 
-export const getCampaigns = async (page?: number, noAuth?: boolean) => {
+export const getCampaigns = async (
+  page?: number,
+  noAuth?: boolean,
+  title?: string
+) => {
   let headers: Record<string, string> = {};
   const user = await getUser();
 
@@ -96,7 +100,7 @@ export const getCampaigns = async (page?: number, noAuth?: boolean) => {
     headers["x-auth-token"] = user.token;
   }
 
-  const endpoint = `/api/v1/campaigns?page=${page}&perPage=10`;
+  const endpoint = `/api/v1/campaigns?page=${page}&perPage=10&title=${title}`;
 
   const { data: campaigns } = await makeRequest<CampaignsResponse>(endpoint, {
     headers,
