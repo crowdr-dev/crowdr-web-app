@@ -162,7 +162,7 @@ const Happening = () => {
 
   const loadCampaigns = async () => {
     try {
-      const newCampaigns = await getCampaigns(1);
+      const newCampaigns = await getCampaigns(1,true, "");
       const campaignsArray = newCampaigns?.campaigns as Campaign[];
 
       if (Array.isArray(campaignsArray) && campaignsArray.length > 0) {

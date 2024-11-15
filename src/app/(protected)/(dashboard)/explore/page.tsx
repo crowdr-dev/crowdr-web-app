@@ -1,5 +1,7 @@
 "use client";
 import { useQuery } from "react-query";
+import { Search } from "lucide-react";
+import debounce from 'lodash/debounce';
 import { useUser } from "../common/hooks/useUser";
 import Filter from "../dashboard-components/Filter";
 import ExploreCard from "../dashboard-components/ExploreCard";
@@ -12,9 +14,10 @@ import { campaignsTag } from "@/tags";
 
 import { Nullable, QF } from "@/app/common/types";
 import { ICampaignResponse } from "@/app/common/types/Campaign";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Mixpanel } from "@/utils/mixpanel";
 import { Campaign, getCampaigns } from "@/app/api/campaigns/getCampaigns";
+
 
 const Explore = () => {
   const user = useUser();
@@ -22,6 +25,9 @@ const Explore = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
 
   const [hasNextPage, setHasNextPage] = useState<any>();
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -35,9 +41,9 @@ const Explore = () => {
     setModalIsOpen(false);
   };
 
-  const loadCampaigns = async () => {
+  const loadCampaigns = async ( search: string = "") => {
     try {
-      const newCampaigns = await getCampaigns(page, true);
+      const newCampaigns = await getCampaigns(page, true,  search || "");
       setHasNextPage(newCampaigns?.pagination.hasNextPage);
 
       const campaignsArray = newCampaigns?.campaigns as Campaign[];
@@ -64,8 +70,24 @@ const Explore = () => {
     }
   };
 
+   // Debounced search function
+   const debouncedSearch = useCallback(
+    debounce((search: string) => {
+      setPage(1);
+      loadCampaigns( search);
+    }, 500),
+    []
+  );
+
+   // Handle search input change
+   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    debouncedSearch(value);
+  };
+
   useEffect(() => {
-    loadCampaigns();
+    loadCampaigns("");
     Mixpanel.track("Explore Page viewed");
   }, []);
 
@@ -92,6 +114,18 @@ const Explore = () => {
           </div> */}
         </div>
       )}
+
+       {/* Search Input */}
+       <div className="relative w-full md:w-[400px] mt-2">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              placeholder="Search campaigns..."
+              className="w-full text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] pl-[40px] pr-[14px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            />
+            <Search className="absolute left-[14px] top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          </div>
 
       {campaigns && (
         <>
