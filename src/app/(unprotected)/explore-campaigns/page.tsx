@@ -29,7 +29,11 @@ export default function DynamicExplore() {
   const loadCampaigns = async (pageNum: number, search: string = "") => {
     try {
       setLoadingMore(pageNum > 1);
-      const newCampaigns = await getCampaigns(pageNum, true, search || "");
+      const newCampaigns = await getCampaigns({
+        page: pageNum,
+        noAuth: true,
+        title: search,
+      });
       setHasNextPage(newCampaigns?.pagination.hasNextPage || false);
 
       const campaignsArray = newCampaigns?.campaigns as Campaign[];

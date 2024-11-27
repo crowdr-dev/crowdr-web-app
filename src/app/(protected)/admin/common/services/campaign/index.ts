@@ -1,5 +1,6 @@
 import axios from "axios"
 import { IGetCampaignsParams, IGetCampaignsResponse } from "./models/GetCampaigns"
+import { IGetCampaignStatsResponse } from "./models/GetCampaignStats"
 
 const getCampaigns = async (params: Partial<IGetCampaignsParams> = {}) => {
   const url = `/admin/campaigns`
@@ -12,4 +13,15 @@ const getCampaigns = async (params: Partial<IGetCampaignsParams> = {}) => {
   }
 }
 
-export default { getCampaigns }
+const getCampaignStats = async () => {
+  const url = `/admin/campaigns-stats`
+
+  try {
+    const res = await axios.get<IGetCampaignStatsResponse>(url)
+    return res.data.data
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "An error occurred")
+  }
+}
+
+export default { getCampaigns, getCampaignStats }
