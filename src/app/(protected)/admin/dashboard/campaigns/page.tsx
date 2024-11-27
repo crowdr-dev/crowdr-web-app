@@ -45,6 +45,12 @@ const Campaigns = () => {
     enabled: Boolean(user),
   })
 
+  const campaignStatsQuery = useQuery({
+    queryKey: ["GET /admin/campaigns-stats", user?.token],
+    queryFn: () => campaignService.getCampaignStats(),
+    enabled: Boolean(user),
+  })
+
   const setSearch = useDebounceCallback(
     () =>
       setSearchText((text) => {
@@ -97,8 +103,10 @@ const Campaigns = () => {
 
       {/* stats */}
       <div className="flex gap-6 px-8 pt-8 mb-8">
-        {dummyStats &&
-          dummyStats.map((stat, index) => <StatCard key={index} {...stat} />)}
+        {campaignStatsQuery.data &&
+          campaignStatsQuery.data.map((stat, index) => (
+            <StatCard key={index} title={getStatTitle(stat.status)} value={stat.count} />
+          ))}
       </div>
 
       {/* toggle buttons x search x filters */}
@@ -219,11 +227,7 @@ const Campaigns = () => {
                   <Table.Row key={index}>
                     <Table.Cell>
                       <div className="flex items-center gap-3 font-medium">
-                        <Image
-                          src={TempLogo}
-                          alt=""
-                          className="shrink-0"
-                        />
+                        <Image src={TempLogo} alt="" className="shrink-0" />
                         {campaign.accountName}
                       </div>
                     </Table.Cell>
@@ -276,7 +280,19 @@ const Campaigns = () => {
 
 export default Campaigns
 
+const getStatTitle = (status: string) => {
+  switch (status) {
+    case "pending":
+      return "Pending Campaigns"
+    case "active":
+      return "Active Campaigns"
+    case "completed":
+      return "Completed Campaigns"
 
+    default:
+      return ""
+  }
+}
 
 const dummyStats = [
   {
