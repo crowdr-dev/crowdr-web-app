@@ -12,13 +12,16 @@ import { campaignsTag } from "@/tags"
 
 import { Nullable, QF } from "@/app/common/types"
 import { ICampaignResponse } from "@/app/common/types/Campaign"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Mixpanel } from "@/utils/mixpanel"
 import { Campaign, getCampaigns } from "@/app/api/campaigns/getCampaigns"
 import TextInput from "@/app/common/components/TextInput"
 
 import SearchIcon from "../../../../../public/svg/search.svg"
 import { useDebounceCallback } from "usehooks-ts"
+import { debounce } from "lodash"
+import { Search } from "lucide-react";
+
 
 const Explore = () => {
   const user = useUser()
@@ -40,7 +43,7 @@ const Explore = () => {
     setModalIsOpen(false)
   }
 
-  const loadCampaigns = async () => {
+  const loadCampaigns = async ( search: string = "") => {
     try {
       const newCampaigns = await getCampaigns({
         page,
@@ -72,6 +75,22 @@ const Explore = () => {
       console.error("Error fetching campaigns:", error)
     }
   }
+
+   // Debounced search function
+   const debouncedSearch = useCallback(
+    debounce((search: string) => {
+      setPage(1);
+      loadCampaigns( search);
+    }, 500),
+    []
+  );
+
+   // Handle search input change
+   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchText(value);
+    debouncedSearch(value);
+  };
 
   useEffect(() => {
     loadCampaigns()
@@ -120,6 +139,18 @@ const Explore = () => {
           </div>
         </div>
       )}
+
+       {/* Search Input */}
+       <div className="relative w-full md:w-[400px] mt-2">
+            <input
+              type="text"
+              value={searchText}
+              onChange={handleSearchChange}
+              placeholder="Search campaigns..."
+              className="w-full text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] pl-[40px] pr-[14px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            />
+            <Search className="absolute left-[14px] top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          </div>
 
       {campaigns && (
         <>
