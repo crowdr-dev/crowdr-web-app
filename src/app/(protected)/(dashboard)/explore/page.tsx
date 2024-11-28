@@ -60,6 +60,10 @@ const Explore = () => {
       setIsLoading(false);
       console.error("Error fetching campaigns:", error);
     }
+   finally {
+    setIsLoading(false);
+    setLoadingMore(false);
+  }
   };
 
   // Debounced search function
@@ -193,25 +197,4 @@ export default Explore;
 type Data = ICampaignResponse | undefined;
 type Token = string | undefined;
 type Page = number;
-const fetchCampaigns: QF<Data, [Token, Page]> = async ({ queryKey }) => {
-  const [_, token, page] = queryKey;
 
-  if (token) {
-    const endpoint = `/api/v1/campaigns?page=${page}&perPage=10`;
-    const headers = {
-      "x-auth-token": token
-    };
-
-    try {
-      const { data } = await makeRequest<ICampaignResponse>(endpoint, {
-        headers,
-        tags: [campaignsTag]
-      });
-
-      return data;
-    } catch (error) {
-      const message = extractErrorMessage(error);
-      throw new Error(message);
-    }
-  }
-};
