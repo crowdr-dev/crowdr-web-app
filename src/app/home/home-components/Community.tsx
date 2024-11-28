@@ -12,7 +12,7 @@ export default function Community({openModal} : Props) {
   const router = useRouter()
   return (
        <section className='community'>
-        <div className="flex flex-col md:flex-row justify-between w-full">
+        <div className="flex flex-col md:flex-row justify-between w-full ">
           <div className='flex flex-col items-start gap-5 px-4'>
             <h2 className="text-[24px] md:text-[48px] font-medium text-[#EBECED] leading-none">Join our community! </h2>
             <p className="text-sm md:text-[18px] text-[#EBECED]">Get insider access to the Crowdr-verse,<br/> learn about the social-good ecosystem in Africa and more.</p>

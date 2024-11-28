@@ -184,7 +184,7 @@ const Happening = () => {
   }, []);
 
   return (
-    <section className="happening">
+    <section className="happening max-w-[1484px] mx-auto">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full mb-6">
         <div>
           <h4 className="text-[20px] md:text-[24px] text-[#393E46] font-normal">
