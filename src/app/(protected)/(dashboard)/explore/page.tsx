@@ -29,7 +29,7 @@ const Explore = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [hasNextPage, setHasNextPage] = useState<any>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const loadCampaigns = async (pageNum: number, search: string = "") => {
     try {
@@ -45,7 +45,7 @@ const Explore = () => {
           if (pageNum === 1) {
             return campaignsArray;
           }
-          
+
           // For pagination, merge with existing campaigns
           const existingCampaignIds = new Set(
             prevCampaigns.map((campaign) => campaign._id)
@@ -56,11 +56,13 @@ const Explore = () => {
           return [...prevCampaigns, ...filteredNewCampaigns];
         });
       }
-    }  catch (error) {
+    } catch (error) {
       setIsLoading(false);
       console.error("Error fetching campaigns:", error);
+    } finally {
+      setIsLoading(false);
+      setLoadingMore(false);
     }
-    
   };
 
   // Debounced search function
