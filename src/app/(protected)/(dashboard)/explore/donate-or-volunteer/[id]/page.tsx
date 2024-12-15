@@ -596,7 +596,9 @@ export default function DonateOrVolunteer({
                   showValue
                 />
                 <p className="mt-2 text-sm opacity-50">
-                  {campaign?.campaignDonors?.length} Donation(s)
+                  {campaign?.totalNoOfCampaignDonors > 0 &&
+                    campaign?.totalNoOfCampaignDonors}{" "}
+                  Donation(s)
                 </p>
               </div>
 

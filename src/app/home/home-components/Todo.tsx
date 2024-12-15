@@ -23,7 +23,7 @@ const Todo = () => {
     arrows: false
   };
   return (
-    <section className="todo">
+    <section className="todo max-w-[1484px] mx-auto">
       <h3>How does Crowdr work?</h3>
 
       {width ? (

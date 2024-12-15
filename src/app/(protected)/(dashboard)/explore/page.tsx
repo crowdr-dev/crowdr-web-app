@@ -1,5 +1,7 @@
 "use client"
 import { useQuery } from "react-query"
+import { Search } from "lucide-react"
+import debounce from "lodash/debounce"
 import { useUser } from "../common/hooks/useUser"
 import Filter from "../dashboard-components/Filter"
 import ExploreCard from "../dashboard-components/ExploreCard"
@@ -15,13 +17,11 @@ import { ICampaignResponse } from "@/app/common/types/Campaign"
 import { useCallback, useEffect, useState } from "react"
 import { Mixpanel } from "@/utils/mixpanel"
 import { Campaign, getCampaigns } from "@/app/api/campaigns/getCampaigns"
+import Loading from "@/app/loading"
 import TextInput from "@/app/common/components/TextInput"
 
 import SearchIcon from "../../../../../public/svg/search.svg"
 import { useDebounceCallback } from "usehooks-ts"
-import { debounce } from "lodash"
-import { Search } from "lucide-react";
-
 
 const Explore = () => {
   const user = useUser()
@@ -29,33 +29,31 @@ const Explore = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [page, setPage] = useState(1)
   const [loadingMore, setLoadingMore] = useState(false)
-
-  const [hasNextPage, setHasNextPage] = useState<any>()
-  const [modalIsOpen, setModalIsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
   const [searchText, setSearchText] = useState("")
 
-  const openModal = () => {
-    setModalIsOpen(true)
-  }
+  const [hasNextPage, setHasNextPage] = useState<any>()
+  const [isLoading, setIsLoading] = useState(true)
 
-  const closeModal = () => {
-    setModalIsOpen(false)
-  }
-
-  const loadCampaigns = async ( search: string = "") => {
+  const loadCampaigns = async (pageNum: number, search = "") => {
     try {
+      setLoadingMore(pageNum > 1)
       const newCampaigns = await getCampaigns({
-        page,
+        page: pageNum,
         noAuth: true,
-        title: searchText,
+        title: search,
       })
-      setHasNextPage(newCampaigns?.pagination.hasNextPage)
+      setHasNextPage(newCampaigns.pagination.hasNextPage)
 
       const campaignsArray = newCampaigns?.campaigns as Campaign[]
 
-      if (Array.isArray(campaignsArray) && campaignsArray.length > 0) {
+      if (Array.isArray(campaignsArray)) {
         setCampaigns((prevCampaigns) => {
+          // If it's a new search or first page, replace all campaigns
+          if (pageNum === 1) {
+            return campaignsArray
+          }
+
+          // For pagination, merge with existing campaigns
           const existingCampaignIds = new Set(
             prevCampaigns.map((campaign) => campaign._id)
           )
@@ -64,53 +62,54 @@ const Explore = () => {
           )
           return [...prevCampaigns, ...filteredNewCampaigns]
         })
-      } else {
-        console.error(
-          "Received data is not an array of campaigns or it's empty"
-        )
       }
-      setIsLoading(false)
     } catch (error) {
       setIsLoading(false)
       console.error("Error fetching campaigns:", error)
+    } finally {
+      setIsLoading(false)
+      setLoadingMore(false)
     }
   }
 
-   // Debounced search function
-   const debouncedSearch = useCallback(
+  // Debounced search function
+  const debouncedSearch = useCallback(
     debounce((search: string) => {
-      setPage(1);
-      loadCampaigns( search);
+      setPage(1)
+      loadCampaigns(1, search)
     }, 500),
     []
-  );
+  )
 
-   // Handle search input change
-   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchText(value);
-    debouncedSearch(value);
-  };
+  // Handle search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchText(value)
+    debouncedSearch(value)
+  }
 
   useEffect(() => {
-    loadCampaigns()
+    loadCampaigns(1)
     Mixpanel.track("Explore Page viewed")
   }, [])
 
   const handleSeeMore = () => {
-    setPage((prevPage) => prevPage + 1)
-    loadCampaigns()
+    const nextPage = page + 1
+    setPage(nextPage)
+    loadCampaigns(nextPage, searchText)
   }
 
   const setSearch = useDebounceCallback(() => {
     setPage(1)
-    loadCampaigns()
+    loadCampaigns(1)
   }, 3000)
+
+  if (isLoading) return <Loading />
 
   return (
     <div className="relative">
       {user && (
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mb-4">
+        <div className="flex items-center justify-between gap-8 mb-4">
           <div>
             <h3 className="text-2xl text-black">
               Welcome to Crowdr, {user.organizationName} 💚
@@ -120,7 +119,7 @@ const Explore = () => {
             </p>
           </div>
 
-          <div className="grow max-w-[515px] flex gap-3 items-center self-end ">
+          {/* <div className="grow max-w-[515px] flex gap-3 items-center self-end ">
             <TextInput
               value={searchText}
               onChange={(e) => {
@@ -135,22 +134,22 @@ const Explore = () => {
               }}
             />
 
-            {/* <Filter query="Trending" /> */}
-          </div>
+            <Filter query="Trending" />
+          </div> */}
         </div>
       )}
 
-       {/* Search Input */}
-       <div className="relative w-full md:w-[400px] mt-2">
-            <input
-              type="text"
-              value={searchText}
-              onChange={handleSearchChange}
-              placeholder="Search campaigns..."
-              className="w-full text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] pl-[40px] pr-[14px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-            />
-            <Search className="absolute left-[14px] top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-          </div>
+      {/* Search Input */}
+      <div className="relative w-full md:w-[400px] mt-2">
+        <input
+          type="text"
+          value={searchText}
+          onChange={handleSearchChange}
+          placeholder="Search campaigns..."
+          className="w-full text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] pl-[40px] pr-[14px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+        />
+        <Search className="absolute left-[14px] top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+      </div>
 
       {campaigns && (
         <>
@@ -197,10 +196,14 @@ const Explore = () => {
                 )
               })}
             {hasNextPage && (
-              <div className="flex justify-end items-center mt-4">
-                <span onClick={handleSeeMore} className={"cursor-pointer"}>
-                  {loadingMore ? "...." : "See more"}
-                </span>
+              <div className="flex justify-center mt-8">
+                <button
+                  onClick={handleSeeMore}
+                  disabled={loadingMore}
+                  className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 text-[15px]"
+                >
+                  {loadingMore ? "Loading..." : "Load More"}
+                </button>
               </div>
             )}
             {campaigns?.length < 1 && !isLoading && (

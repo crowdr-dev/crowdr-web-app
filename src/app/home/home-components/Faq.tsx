@@ -7,7 +7,7 @@ import "../home-styles/faq.css";
 export default function Faq() {
   return (
     <section className="faq">
-      <div className="faq-container">
+      <div className="faq-container max-w-[1484px] mx-auto">
         <p className="faq-header">Frequently Asked Questions</p>
         <p className="faq-header-big mt-[20px]">We knew you would ask. See? We’re two peas in a pod.</p>
 

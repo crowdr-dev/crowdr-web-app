@@ -494,7 +494,7 @@ export default function DonateOrVolunteer({
                       Total Volunteer(s)
                     </p>
                   </div>
-                 {/* <div className="flex items-start flex-col gap-5 mb-8">
+                  {/* <div className="flex items-start flex-col gap-5 mb-8">
                     {campaign?.campaignVolunteers
                       ?.slice(0, 5)
                       .map(
@@ -530,7 +530,7 @@ export default function DonateOrVolunteer({
                       See all
                     </Link>
                   )}*/}
-                </div> 
+                </div>
               </div>
             ) : (
               <div className="mt-6">
@@ -546,7 +546,9 @@ export default function DonateOrVolunteer({
                     percent={(donatedAmount / totalDonationAmount) * 100}
                   />
                   <p className="mt-3 text-sm opacity-50">
-                    {campaign?.campaignDonors?.length} Donation(s)
+                    {campaign?.totalNoOfCampaignDonors > 0 &&
+                      campaign?.totalNoOfCampaignDonors}{" "}
+                    Donation(s)
                   </p>
                 </div>
 
