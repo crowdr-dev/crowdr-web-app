@@ -27,21 +27,25 @@ import {
 } from "@/app/common/types/Campaign"
 import {
   IDonationResponse,
-  IVolunteeringResponse
-} from "@/app/common/types/DonationsVolunteering";
-import { useToast } from "@/app/common/hooks/useToast";
-import { useModal } from "@/app/common/hooks/useModal";
-import { BiSearch } from "react-icons/bi";
-import { IoShareSocial, IoDownload } from "react-icons/io5";
-import FileDownloadIcon from "../../../../../../public/svg/file-download.svg";
-import OldModal from "@/app/common/components/OldModal";
-import ShareCampaign from "@/app/common/components/share-campaign";
-import { Parser } from "json2csv";
-import { Mixpanel } from "@/utils/mixpanel";
+  IVolunteeringResponse,
+} from "@/app/common/types/DonationsVolunteering"
+import { useToast } from "@/app/common/hooks/useToast"
+import { useModal } from "@/app/common/hooks/useModal"
+import { BiSearch } from "react-icons/bi"
+import { IoShareSocial, IoDownload } from "react-icons/io5"
+import FileDownloadIcon from "../../../../../../public/svg/file-download.svg"
+import OldModal from "@/app/common/components/OldModal"
+import ShareCampaign from "@/app/common/components/share-campaign"
+import { Parser } from "json2csv"
+import { Mixpanel } from "@/utils/mixpanel"
+import SidebarModal from "../../dashboard-components/SidebarModal"
+import VolunteerProfile from "../../dashboard-components/VolunteerProfile"
+import ModalTrigger from "@/app/common/components/ModalTrigger"
 
 const Campaign = ({ params }: Route) => {
   const [donorsPage, setDonorsPage] = useState(1)
   const [volunteersPage, setVolunteersPage] = useState(1)
+  const [volunteerProfile, setVolunteerProfile] = useState<IVolunteerProfile>()
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const user = useUser()
@@ -78,7 +82,7 @@ const Campaign = ({ params }: Route) => {
       enabled: isVolunteerCampaign,
       refetchOnWindowFocus: false,
     }
-  );
+  )
 
   const camelCaseToTitleCase = (str: string) => {
     return str.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
@@ -133,243 +137,278 @@ const Campaign = ({ params }: Route) => {
     undefined
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row justify-between md:mb-[90px]">
-        {campaign ? (
-          <div className="md:max-w-[570px] grow mb-[33px] md:mb-0">
-            <div className="flex flex-col md:flex-row justify-between mb-[5px]">
-              <p className="text-lg md:text-2xl text-black md:font-semibold">
-                {campaign.title}
+    <>
+      <div>
+        <div className="flex flex-col md:flex-row justify-between md:mb-[90px]">
+          {campaign ? (
+            <div className="md:max-w-[570px] grow mb-[33px] md:mb-0">
+              <div className="flex flex-col md:flex-row justify-between mb-[5px]">
+                <p className="text-lg md:text-2xl text-black md:font-semibold">
+                  {campaign.title}
+                </p>
+                <div className="hidden md:block">{pill(campaign.category)}</div>
+              </div>
+
+              <Text
+                characterLimit={128}
+                expandText="Read more"
+                className="md:hidden text-[#667085] text-[15px] md:text-[13px] mb-[9px]"
+              >
+                {campaign.story}
+              </Text>
+
+              <p className="hidden md:block text-[#667085] text-[15px] md:text-[13px] mb-8">
+                {campaign.story}
               </p>
-              <div className="hidden md:block">{pill(campaign.category)}</div>
-            </div>
 
-            <Text
-              characterLimit={128}
-              expandText="Read more"
-              className="md:hidden text-[#667085] text-[15px] md:text-[13px] mb-[9px]"
-            >
-              {campaign.story}
-            </Text>
+              <div className="md:hidden mb-[5px]">
+                {pill(campaign.category)}
+              </div>
 
-            <p className="hidden md:block text-[#667085] text-[15px] md:text-[13px] mb-8">
-              {campaign.story}
-            </p>
+              <div className="px-[10px] py-3 md:px-0 md:py-0">
+                {campaign.percentage !== undefined ? (
+                  <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px] md:mb-3">
+                    <p className="text-sm text-[#667085] mb-1">
+                      <span className="text-[#292A2E]">Goal</span>{" "}
+                      {campaign.fundsGotten}/{campaign.fundingGoal}
+                    </p>
+                    <ProgressBar percent={campaign.percentage} showValue />
+                  </div>
+                ) : (
+                  <div className="h-20 m-3" />
+                )}
 
-            <div className="md:hidden mb-[5px]">{pill(campaign.category)}</div>
+                <div className="flex flex-col md:flex-row justify-between md:items-end">
+                  <div className="flex flex-col gap-2.5 text-[13px] text-[#5C636E] px-[7px] mb-[13px] md:px-0 md:mb-0">
+                    <p>
+                      <span className="text-black font-medium">Views:</span>{" "}
+                      <span className="text-[#5C636E] font">
+                        {campaign.views}
+                      </span>
+                    </p>
+                    <p>
+                      <span className="text-black font-medium">Donors:</span>{" "}
+                      <span>{campaign.donors}</span>
+                    </p>
+                    <p>
+                      <span className="text-black font-medium">Duration:</span>{" "}
+                      <span>{campaign.duration}</span>
+                    </p>
+                  </div>
 
-            <div className="px-[10px] py-3 md:px-0 md:py-0">
-              {campaign.percentage !== undefined ? (
-                <div className="bg-[#F9F9F9] rounded-lg p-4 mb-[12px] md:mb-3">
-                  <p className="text-sm text-[#667085] mb-1">
-                    <span className="text-[#292A2E]">Goal</span>{" "}
-                    {campaign.fundsGotten}/{campaign.fundingGoal}
-                  </p>
-                  <ProgressBar percent={campaign.percentage} showValue />
+                  <GrayButton
+                    href={`/campaigns/create-or-edit-campaign/${campaign._id}`}
+                    text="Update campaign"
+                    textColor="#667085"
+                    outlineColor="transparent"
+                    className="self-end !px-7 !h-[44px]"
+                  />
                 </div>
-              ) : (
-                <div className="h-20 m-3" />
-              )}
-
-              <div className="flex flex-col md:flex-row justify-between md:items-end">
-                <div className="flex flex-col gap-2.5 text-[13px] text-[#5C636E] px-[7px] mb-[13px] md:px-0 md:mb-0">
-                  <p>
-                    <span className="text-black font-medium">Views:</span>{" "}
-                    <span className="text-[#5C636E] font">
-                      {campaign.views}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="text-black font-medium">Donors:</span>{" "}
-                    <span>{campaign.donors}</span>
-                  </p>
-                  <p>
-                    <span className="text-black font-medium">Duration:</span>{" "}
-                    <span>{campaign.duration}</span>
-                  </p>
-                </div>
-
-                <GrayButton
-                  href={`/campaigns/create-or-edit-campaign/${campaign._id}`}
-                  text="Update campaign"
-                  textColor="#667085"
-                  outlineColor="transparent"
-                  className="self-end !px-7 !h-[44px]"
-                />
               </div>
             </div>
-          </div>
-        ) : (
-          <CampaignPageSkeleton />
-        )}
-        {/* TODO: ADD SKELETON LOADING */}
+          ) : (
+            <CampaignPageSkeleton />
+          )}
+          {/* TODO: ADD SKELETON LOADING */}
 
-        <OldModal isOpen={shareModal} onClose={() => setShareModal(false)}>
-          <div
-            className="relative p-12"
-            style={{
-              background: "rgba(76, 76, 76, 0)",
-            }}
-          >
-            <ShareCampaign
-              onClose={() => setShareModal(false)}
-              campaignId={campaign?._id}
-              title={campaign?.title}
-              story={campaign?.story?.split(" ").slice(0, 30)?.join(" ")}
-            />
-          </div>
-        </OldModal>
-        <div className="flex items-start gap-3 mb-[23px] md:mb-[9px]">
-          {isVolunteerCampaign && (
+          <OldModal isOpen={shareModal} onClose={() => setShareModal(false)}>
+            <div
+              className="relative p-12"
+              style={{
+                background: "rgba(76, 76, 76, 0)",
+              }}
+            >
+              <ShareCampaign
+                onClose={() => setShareModal(false)}
+                campaignId={campaign?._id}
+                title={campaign?.title}
+                story={campaign?.story?.split(" ").slice(0, 30)?.join(" ")}
+              />
+            </div>
+          </OldModal>
+          <div className="flex items-start gap-3 mb-[23px] md:mb-[9px]">
+            {isVolunteerCampaign && (
+              <Button
+                text="Download CSV"
+                icon={IoDownload}
+                bgColor="#FFF"
+                textColor="#344054"
+                outlineColor="#D0D5DD"
+                onClick={() => {
+                  downloadCSV()
+                  Mixpanel.track("Downloaded volunteer CSV file")
+                }}
+              />
+            )}
             <Button
-              text="Download CSV"
-              icon={IoDownload}
+              text="Share Campaign"
+              icon={IoShareSocial}
               bgColor="#FFF"
               textColor="#344054"
               outlineColor="#D0D5DD"
               onClick={() => {
-                downloadCSV();
-                Mixpanel.track("Downloaded volunteer CSV file");
+                shareCampaign(campaign)
+                Mixpanel.track("Clicked Share Campaign")
               }}
             />
-          )}
-          <Button
-            text="Share Campaign"
-            icon={IoShareSocial}
-            bgColor="#FFF"
-            textColor="#344054"
-            outlineColor="#D0D5DD"
-            onClick={() => {
-              shareCampaign(campaign)
-              Mixpanel.track("Clicked Share Campaign")
-            }}
-          />
-          <Button text="Withdraw Donations" href="/campaigns/withdrawal" />
+            <Button text="Withdraw Donations" href="/campaigns/withdrawal" />
+          </div>
         </div>
+
+        {/* donors x volunteers */}
+        {campaign && (
+          <Tabs activeTab={selectedView}>
+            {isFundraiseCampaign && (
+              // TODO: CONFIGURE TABS TO REPLACE NAVIGATION HISTORY INSTEAD OF PUSHING
+              <Tabs.Item heading="Donors" href={`${pathname}?view=Donors`}>
+                {donors && (
+                  <>
+                    <Table className="hidden md:block mb-9">
+                      <Table.Head>
+                        <Table.HeadCell>Donors</Table.HeadCell>
+                        <Table.HeadCell>Amount</Table.HeadCell>
+                        <Table.HeadCell>Date & time</Table.HeadCell>
+                      </Table.Head>
+
+                      <Table.Body>
+                        {donors.donors.map((donation, index) => (
+                          <Table.Row key={index}>
+                            <Table.Cell>{donation.title}</Table.Cell>
+                            <Table.Cell>{donation.detail}</Table.Cell>
+                            <Table.Cell>{donation.date}</Table.Cell>
+                          </Table.Row>
+                        ))}
+                      </Table.Body>
+                    </Table>
+
+                    <div className="flex flex-col md:hidden">
+                      {donors.donors.map((donation, index) => (
+                        <Detail key={index} {...donation} />
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {donors && donors.donors.length !== 0 && (
+                  <Pagination
+                    currentPage={donors.pagination.currentPage}
+                    perPage={donors.pagination.perPage}
+                    total={donors.pagination.total}
+                    onPageChange={setDonorsPage}
+                    className="px-[18px] py-4"
+                  />
+                )}
+
+                {donors && donors.donors.length === 0 && (
+                  <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
+                    No donors available at this moment.
+                  </p>
+                )}
+              </Tabs.Item>
+            )}
+
+            {isVolunteerCampaign && (
+              <Button
+                text="Download CSV"
+                bgColor="#FFF"
+                textColor="#344054"
+                outlineColor="#D0D5DD"
+                onClick={() => {
+                  downloadCSV()
+                  Mixpanel.track("Downloaded volunteer CSV file")
+                }}
+              />
+            )}
+
+            {isVolunteerCampaign && (
+              <Tabs.Item
+                heading="Volunteers"
+                href={`${pathname}?view=Volunteers`}
+              >
+                {volunteers && (
+                  <>
+                    <Table className="hidden md:block mb-9">
+                      <Table.Head>
+                        <Table.HeadCell>Volunteers</Table.HeadCell>
+                        <Table.HeadCell>Phone number</Table.HeadCell>
+                        <Table.HeadCell>Gender</Table.HeadCell>
+                        <Table.HeadCell>Date & time</Table.HeadCell>
+                        <Table.HeadCell></Table.HeadCell>
+                      </Table.Head>
+
+                      <Table.Body>
+                        {volunteers.volunteers.map((volunteer, index) => (
+                          <Table.Row key={index}>
+                            <Table.Cell>{volunteer.title}</Table.Cell>
+                            <Table.HeadCell>
+                              {volunteer.phoneNumber}
+                            </Table.HeadCell>
+                            <Table.Cell>{volunteer.detail}</Table.Cell>
+                            <Table.Cell>{volunteer.date}</Table.Cell>
+                            <Table.Cell>
+                              <div className="flex gap-3">
+                                <ModalTrigger id="volunteer">
+                                  <button
+                                    className="font-semibold text-sm text-[#475467]"
+                                    onClick={() =>
+                                      setVolunteerProfile(volunteer)
+                                    }
+                                  >
+                                    View Profile
+                                  </button>
+                                </ModalTrigger>
+
+                                <ModalTrigger id="volunteer">
+                                  <button
+                                    type="button"
+                                    className="font-semibold text-sm text-primary"
+                                    onClick={() =>
+                                      setVolunteerProfile(volunteer)
+                                    }
+                                  >
+                                    Manage
+                                  </button>
+                                </ModalTrigger>
+                              </div>
+                            </Table.Cell>
+                          </Table.Row>
+                        ))}
+                      </Table.Body>
+                    </Table>
+
+                    <div className="flex flex-col md:hidden">
+                      {volunteers.volunteers.map((volunteer, index) => (
+                        <Detail key={index} {...volunteer} />
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {volunteers && volunteers.volunteers.length !== 0 && (
+                  <Pagination
+                    currentPage={volunteers.pagination.currentPage}
+                    perPage={volunteers.pagination.perPage}
+                    total={volunteers.pagination.total}
+                    onPageChange={setVolunteersPage}
+                    className="px-[18px] py-4"
+                  />
+                )}
+
+                {volunteers && volunteers.volunteers.length === 0 && (
+                  <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
+                    No volunteers available at this moment.
+                  </p>
+                )}
+              </Tabs.Item>
+            )}
+          </Tabs>
+        )}
       </div>
 
-      {/* donors x volunteers */}
-      {campaign && (
-        <Tabs activeTab={selectedView}>
-          {isFundraiseCampaign && (
-            // TODO: CONFIGURE TABS TO REPLACE NAVIGATION HISTORY INSTEAD OF PUSHING
-            <Tabs.Item heading="Donors" href={`${pathname}?view=Donors`}>
-              {donors && (
-                <>
-                  <Table className="hidden md:block mb-9">
-                    <Table.Head>
-                      <Table.HeadCell>Donors</Table.HeadCell>
-                      <Table.HeadCell>Amount</Table.HeadCell>
-                      <Table.HeadCell>Date & time</Table.HeadCell>
-                    </Table.Head>
-
-                    <Table.Body>
-                      {donors.donors.map((donation, index) => (
-                        <Table.Row key={index}>
-                          <Table.Cell>{donation.title}</Table.Cell>
-                          <Table.Cell>{donation.detail}</Table.Cell>
-                          <Table.Cell>{donation.date}</Table.Cell>
-                        </Table.Row>
-                      ))}
-                    </Table.Body>
-                  </Table>
-
-                  <div className="flex flex-col md:hidden">
-                    {donors.donors.map((donation, index) => (
-                      <Detail key={index} {...donation} />
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {donors && donors.donors.length !== 0 && (
-                <Pagination
-                  currentPage={donors.pagination.currentPage}
-                  perPage={donors.pagination.perPage}
-                  total={donors.pagination.total}
-                  onPageChange={setDonorsPage}
-                  className="px-[18px] py-4"
-                />
-              )}
-
-              {donors && donors.donors.length === 0 && (
-                <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
-                  No donors available at this moment.
-                </p>
-              )}
-            </Tabs.Item>
-          )}
-
-          {isVolunteerCampaign && (
-            <Button
-              text="Download CSV"
-              bgColor="#FFF"
-              textColor="#344054"
-              outlineColor="#D0D5DD"
-              onClick={() => {
-                downloadCSV();
-                Mixpanel.track("Downloaded volunteer CSV file");
-              }}
-            />
-          )}
-
-          {isVolunteerCampaign && (
-            <Tabs.Item
-              heading="Volunteers"
-              href={`${pathname}?view=Volunteers`}
-            >
-              {volunteers && (
-                <>
-                  <Table className="hidden md:block mb-9">
-                    <Table.Head>
-                      <Table.HeadCell>Volunteers</Table.HeadCell>
-                      <Table.HeadCell>Phone number</Table.HeadCell>
-                      <Table.HeadCell>Gender</Table.HeadCell>
-                      <Table.HeadCell>Date & time</Table.HeadCell>
-                    </Table.Head>
-
-                    <Table.Body>
-                      {volunteers.volunteers.map((volunteer, index) => (
-                        <Table.Row key={index}>
-                          <Table.Cell>{volunteer.title}</Table.Cell>
-                          <Table.HeadCell>
-                            {volunteer.phoneNumber}
-                          </Table.HeadCell>
-                          <Table.Cell>{volunteer.detail}</Table.Cell>
-                          <Table.Cell>{volunteer.date}</Table.Cell>
-                        </Table.Row>
-                      ))}
-                    </Table.Body>
-                  </Table>
-
-                  <div className="flex flex-col md:hidden">
-                    {volunteers.volunteers.map((volunteer, index) => (
-                      <Detail key={index} {...volunteer} />
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {volunteers && volunteers.volunteers.length !== 0 && (
-                <Pagination
-                  currentPage={volunteers.pagination.currentPage}
-                  perPage={volunteers.pagination.perPage}
-                  total={volunteers.pagination.total}
-                  onPageChange={setVolunteersPage}
-                  className="px-[18px] py-4"
-                />
-              )}
-
-              {volunteers && volunteers.volunteers.length === 0 && (
-                <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
-                  No volunteers available at this moment.
-                </p>
-              )}
-            </Tabs.Item>
-          )}
-        </Tabs>
-      )}
-    </div>
+      <SidebarModal id="volunteer" position="right">
+        <VolunteerProfile volunteer={volunteerProfile}/>
+      </SidebarModal>
+    </>
   )
 }
 
@@ -387,6 +426,8 @@ type IVolunteers = {
   pagination: IVolunteeringResponse["pagination"]
   unfiltered: IVolunteeringResponse["volunteerings"]
 }
+
+export type IVolunteerProfile = ReturnType<typeof mapVolunteeringResponseToView>[number]
 
 const ITEMS_PER_PAGE = "4"
 const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"
@@ -506,6 +547,7 @@ function mapVolunteeringResponseToView(
   volunteering: IVolunteeringResponse["volunteerings"]
 ) {
   return volunteering.map((volunteer) => ({
+    ...volunteer,
     title: volunteer.fullName,
     phoneNumber: volunteer.phoneNumber,
     detail: volunteer.gender,
