@@ -538,7 +538,7 @@ const campaignTypes = [
   Option("fundraiseAndVolunteer", "Fundraise and volunteer"),
 ]
 
-const currencies = [
+export const currencies = [
   Option("", "Select a currency...", true),
   Option("naira", "Naira (₦)"),
   // Option("dollar", "Dollar ($)"),
@@ -573,7 +573,7 @@ const volunteerCommitment = [
   Option("flexible schedule", "Flexible schedule"),
 ]
 
-function mapResponseToForm(
+export function mapResponseToForm(
   campaign: IFundraiseVolunteerCampaign
 ): Partial<FormFields> {
   const {

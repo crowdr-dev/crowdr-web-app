@@ -3,15 +3,15 @@ import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
   
-  if (!request.cookies.has("token")) {
-    let url = request.nextUrl.clone();
-    if (url.pathname.includes('/explore')) {
-      url.pathname = url.pathname.replace('/explore', '/explore-campaigns');
-    } else {
-      url.pathname = '/login';
-    }
-    return  NextResponse.redirect(url);
-  }
+  // if (!request.cookies.has("token")) {
+  //   let url = request.nextUrl.clone();
+  //   if (url.pathname.includes('/explore')) {
+  //     url.pathname = url.pathname.replace('/explore', '/explore-campaigns');
+  //   } else {
+  //     url.pathname = '/login';
+  //   }
+  //   return  NextResponse.redirect(url);
+  // }
   const requestHeaders = new Headers(request.headers);
 
   // Store current request pathname in a custom header

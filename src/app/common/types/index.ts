@@ -24,5 +24,5 @@ export interface IPagination {
 }
 
 export interface Route {
-  params: { id: string }
+  params: { [key: string]: string }
 }
