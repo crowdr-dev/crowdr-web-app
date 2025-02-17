@@ -1,15 +1,11 @@
 "use client";
-import { useQuery } from "react-query";
+import Image from "next/image";
 import { Search } from "lucide-react";
 import debounce from "lodash/debounce";
 import { useUser } from "../common/hooks/useUser";
-import Filter from "../dashboard-components/Filter";
 import ExploreCard from "../dashboard-components/ExploreCard";
-import DynamicExplore from "../dashboard-components/DynamicExplore";
 import makeRequest from "@/utils/makeRequest";
 import { extractErrorMessage } from "@/utils/extractErrorMessage";
-import { isFundraise, isVolunteer } from "../common/utils/campaign";
-import { keys } from "../utils/queryKeys";
 import { campaignsTag } from "@/tags";
 
 import { Nullable, QF } from "@/app/common/types";
@@ -18,6 +14,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Mixpanel } from "@/utils/mixpanel";
 import { Campaign, getCampaigns } from "@/app/api/campaigns/getCampaigns";
 import Loading from "@/app/loading";
+import { campaignCategories as interests } from "@/utils/campaignCategory";
 
 const Explore = () => {
   const user = useUser();
@@ -25,11 +22,23 @@ const Explore = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
-
   const [searchTerm, setSearchTerm] = useState("");
-
   const [hasNextPage, setHasNextPage] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
+
+  // Add "All" as the default selected interest
+  const [selectedInterest, setSelectedInterest] = useState<string>("all");
+  const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
+
+  // Define the "All" category
+  const allCategory = {
+    value: "all",
+    label: "All categories",
+    icon:"",
+    bgColor: "#F8F8F8"
+  };
+  // Combine "All" with existing interests
+  const allInterests = [allCategory, ...interests];
 
   const loadCampaigns = async (pageNum: number, search: string = "") => {
     try {
@@ -41,12 +50,10 @@ const Explore = () => {
 
       if (Array.isArray(campaignsArray)) {
         setCampaigns((prevCampaigns) => {
-          // If it's a new search or first page, replace all campaigns
           if (pageNum === 1) {
             return campaignsArray;
           }
 
-          // For pagination, merge with existing campaigns
           const existingCampaignIds = new Set(
             prevCampaigns.map((campaign) => campaign._id)
           );
@@ -65,7 +72,23 @@ const Explore = () => {
     }
   };
 
-  // Debounced search function
+  // Handle interest selection
+  const handleInterestToggle = (interest: string) => {
+    setSelectedInterest(interest);
+  };
+
+  // Filter campaigns based on selected interests
+  useEffect(() => {
+    if (selectedInterest === "all") {
+      setFilteredCampaigns(campaigns);
+    } else {
+      const filtered = campaigns.filter((campaign) =>
+        campaign.category === selectedInterest
+      );
+      setFilteredCampaigns(filtered);
+    }
+  }, [selectedInterest, campaigns]);
+
   const debouncedSearch = useCallback(
     debounce((search: string) => {
       setPage(1);
@@ -74,7 +97,6 @@ const Explore = () => {
     []
   );
 
-  // Handle search input change
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
@@ -96,39 +118,68 @@ const Explore = () => {
 
   return (
     <div className="relative">
-      {user && (
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h3 className="text-2xl text-black">
-              Welcome to Crowdr, {user.organizationName} 💚
-            </h3>
-            <p className="text-sm text-[#61656B]">
-              Explore campaigns and spread love by donating.{" "}
-            </p>
+      <div className="flex flex-row items-center justify-between w-full">
+        {user && (
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-2xl text-black">
+                Welcome to Crowdr, {user.organizationName} 💚
+              </h3>
+              <p className="text-sm text-[#61656B]">
+                Explore campaigns and spread love by donating.{" "}
+              </p>
+            </div>
           </div>
-          {/* <div>
-            <Filter query="Trending" />
-          </div> */}
-        </div>
-      )}
+        )}
 
-      {/* Search Input */}
-      <div className="relative w-full md:w-[400px] mt-2">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          placeholder="Search campaigns..."
-          className="w-full text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] pl-[40px] pr-[14px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-        />
-        <Search className="absolute left-[14px] top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+        <div className="relative w-full md:w-[400px] mt-2">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search campaigns..."
+            className="w-full text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] pl-[40px] pr-[14px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+          />
+          <Search className="absolute left-[14px] top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+        </div>
       </div>
 
-      {campaigns && (
+      <div
+        id="interests"
+        className="flex flex-row overflow-x-scroll gap-5 mt-6">
+        {allInterests.map(({ value, label, icon, bgColor }) => (
+          <label
+            key={value}
+            style={{
+              backgroundColor: selectedInterest === value ? "#00B964" : bgColor,
+            }}
+            className={`flex justify-center items-center gap-x-[5px] rounded-full cursor-pointer py-[8px] px-[21px] mr-[5.5px] ${bgColor}`}
+            onClick={() => handleInterestToggle(value)}>
+            {icon && (
+              <Image
+                src={`svg/emoji/${icon}.svg`}
+                alt={icon}
+                width={15}
+                height={15}
+              />
+            )}
+            <span
+              className={`${
+                selectedInterest === value
+                ? "text-[#F8F8F8]"
+                : "text-[#0B5351]"
+              } text-[12px] md:text-base w-max`}>
+              {label}
+            </span>
+          </label>
+        ))}
+      </div>
+
+      {filteredCampaigns && (
         <>
           <div className="grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2">
-            {Array.isArray(campaigns) &&
-              campaigns?.map((campaign: Campaign, index: number) => {
+            {Array.isArray(filteredCampaigns) &&
+              filteredCampaigns?.map((campaign: Campaign, index: number) => {
                 const urlsOnly = campaign.campaignAdditionalImages.map(
                   (item) => item.url
                 );
@@ -178,13 +229,12 @@ const Explore = () => {
                 </button>
               </div>
             )}
-            {campaigns?.length < 1 && !isLoading && (
+            {filteredCampaigns?.length < 1 && !isLoading && (
               <p className="absolute inset-0 flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px] top-64">
                 No campaigns available at this moment.
               </p>
             )}
           </div>
-          {/* <DynamicExplore hasNextPage={campaigns.pagination.hasNextPage} /> */}
         </>
       )}
     </div>
@@ -192,29 +242,3 @@ const Explore = () => {
 };
 
 export default Explore;
-
-type Data = ICampaignResponse | undefined;
-type Token = string | undefined;
-type Page = number;
-const fetchCampaigns: QF<Data, [Token, Page]> = async ({ queryKey }) => {
-  const [_, token, page] = queryKey;
-
-  if (token) {
-    const endpoint = `/api/v1/campaigns?page=${page}&perPage=10`;
-    const headers = {
-      "x-auth-token": token
-    };
-
-    try {
-      const { data } = await makeRequest<ICampaignResponse>(endpoint, {
-        headers,
-        tags: [campaignsTag]
-      });
-
-      return data;
-    } catch (error) {
-      const message = extractErrorMessage(error);
-      throw new Error(message);
-    }
-  }
-};
