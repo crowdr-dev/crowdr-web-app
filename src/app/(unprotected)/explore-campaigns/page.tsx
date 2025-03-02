@@ -13,6 +13,8 @@ import Loading from "@/app/loading";
 import { Mixpanel } from "@/utils/mixpanel";
 import { Search } from "lucide-react";
 import debounce from 'lodash/debounce';
+import Image from "next/image";
+import { campaignCategories as interests } from "@/utils/campaignCategory";
 
 export default function DynamicExplore() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -22,6 +24,21 @@ export default function DynamicExplore() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
+  
+  // Add state for selected interest and filtered campaigns
+  const [selectedInterest, setSelectedInterest] = useState<string>("all");
+  const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
+
+  // Define the "All" category
+  const allCategory = {
+    value: "all",
+    label: "All categories",
+    icon: "",
+    bgColor: "#F8F8F8"
+  };
+  
+  // Combine "All" with existing interests
+  const allInterests = [allCategory, ...interests];
 
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
@@ -58,6 +75,23 @@ export default function DynamicExplore() {
       setLoadingMore(false);
     }
   };
+
+  // Handle interest selection
+  const handleInterestToggle = (interest: string) => {
+    setSelectedInterest(interest);
+  };
+
+  // Filter campaigns based on selected interests
+  useEffect(() => {
+    if (selectedInterest === "all") {
+      setFilteredCampaigns(campaigns);
+    } else {
+      const filtered = campaigns.filter((campaign) =>
+        campaign.category === selectedInterest
+      );
+      setFilteredCampaigns(filtered);
+    }
+  }, [selectedInterest, campaigns]);
 
   // Debounced search function
   const debouncedSearch = useCallback(
@@ -105,7 +139,7 @@ export default function DynamicExplore() {
       <NavBar />
       <div
         className={`py-10 px-6 md:px-40 relative ${
-          campaigns?.length < 1 ? "h-screen" : "h-full"
+          filteredCampaigns?.length < 1 ? "h-screen" : "h-full"
         }`}
       >
         <div className="flex flex-col gap-6">
@@ -129,11 +163,43 @@ export default function DynamicExplore() {
             />
             <Search className="absolute left-[14px] top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           </div>
+          
+          {/* Interest Categories Filter */}
+          <div
+            id="interests"
+            className="flex flex-row overflow-x-scroll gap-5 mt-2">
+            {allInterests.map(({ value, label, icon, bgColor }) => (
+              <label
+                key={value}
+                style={{
+                  backgroundColor: selectedInterest === value ? "#00B964" : bgColor,
+                }}
+                className={`flex justify-center items-center gap-x-[5px] rounded-full cursor-pointer py-[8px] px-[21px] mr-[5.5px] ${bgColor}`}
+                onClick={() => handleInterestToggle(value)}>
+                {icon && (
+                  <Image
+                    src={`svg/emoji/${icon}.svg`}
+                    alt={icon}
+                    width={15}
+                    height={15}
+                  />
+                )}
+                <span
+                  className={`${
+                    selectedInterest === value
+                    ? "text-[#F8F8F8]"
+                    : "text-[#0B5351]"
+                  } text-[12px] md:text-base w-max`}>
+                  {label}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-2.5 min-w-full md:grid-cols-2 mt-6">
-          {Array.isArray(campaigns) &&
-            campaigns?.map((campaign: Campaign, index: number) => {
+          {Array.isArray(filteredCampaigns) &&
+            filteredCampaigns?.map((campaign: Campaign, index: number) => {
               const urlsOnly = campaign.campaignAdditionalImages.map(
                 (item) => item.url
               );
@@ -172,7 +238,7 @@ export default function DynamicExplore() {
             })}
         </div>
 
-        {campaigns?.length < 1 && !isLoading && (
+        {filteredCampaigns?.length < 1 && !isLoading && (
           <p className="text-center font-semibold text-[18px] md:text-[30px] mt-10">
             No campaigns found.
           </p>
