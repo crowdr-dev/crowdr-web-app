@@ -15,9 +15,10 @@ import { Mixpanel } from "@/utils/mixpanel";
 import { Campaign, getCampaigns } from "@/app/api/campaigns/getCampaigns";
 import Loading from "@/app/loading";
 import { campaignCategories as interests } from "@/utils/campaignCategory";
+import { useDebounceCallback } from "usehooks-ts";
 
 const Explore = () => {
-  const user = useUser();
+  const user = useUser()
 
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [page, setPage] = useState(1);
@@ -42,35 +43,39 @@ const Explore = () => {
 
   const loadCampaigns = async (pageNum: number, search: string = "") => {
     try {
-      setLoadingMore(pageNum > 1);
-      const newCampaigns = await getCampaigns(pageNum, true, search || "");
-      setHasNextPage(newCampaigns?.pagination.hasNextPage || false);
+      setLoadingMore(pageNum > 1)
+      const newCampaigns = await getCampaigns({
+        page: pageNum,
+        noAuth: true,
+        title: search,
+      })
+      setHasNextPage(newCampaigns.pagination.hasNextPage)
 
-      const campaignsArray = newCampaigns?.campaigns as Campaign[];
+      const campaignsArray = newCampaigns?.campaigns as Campaign[]
 
       if (Array.isArray(campaignsArray)) {
         setCampaigns((prevCampaigns) => {
           if (pageNum === 1) {
-            return campaignsArray;
+            return campaignsArray
           }
 
           const existingCampaignIds = new Set(
             prevCampaigns.map((campaign) => campaign._id)
-          );
+          )
           const filteredNewCampaigns = campaignsArray.filter(
             (campaign) => !existingCampaignIds.has(campaign._id)
-          );
-          return [...prevCampaigns, ...filteredNewCampaigns];
-        });
+          )
+          return [...prevCampaigns, ...filteredNewCampaigns]
+        })
       }
     } catch (error) {
-      setIsLoading(false);
-      console.error("Error fetching campaigns:", error);
+      setIsLoading(false)
+      console.error("Error fetching campaigns:", error)
     } finally {
-      setIsLoading(false);
-      setLoadingMore(false);
+      setIsLoading(false)
+      setLoadingMore(false)
     }
-  };
+  }
 
   // Handle interest selection
   const handleInterestToggle = (interest: string) => {
@@ -91,30 +96,35 @@ const Explore = () => {
 
   const debouncedSearch = useCallback(
     debounce((search: string) => {
-      setPage(1);
-      loadCampaigns(1, search);
+      setPage(1)
+      loadCampaigns(1, search)
     }, 500),
     []
-  );
+  )
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    debouncedSearch(value);
-  };
+    const value = e.target.value
+    setSearchTerm(value)
+    debouncedSearch(value)
+  }
 
   useEffect(() => {
-    loadCampaigns(1, "");
-    Mixpanel.track("Explore Page viewed");
-  }, []);
+    loadCampaigns(1)
+    Mixpanel.track("Explore Page viewed")
+  }, [])
 
   const handleSeeMore = () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
-    loadCampaigns(nextPage, searchTerm);
-  };
+    const nextPage = page + 1
+    setPage(nextPage)
+    loadCampaigns(nextPage, searchTerm)
+  }
 
-  if (isLoading) return <Loading />;
+  const setSearch = useDebounceCallback(() => {
+    setPage(1)
+    loadCampaigns(1)
+  }, 3000)
+
+  if (isLoading) return <Loading />
 
   return (
     <div className="relative">
@@ -182,10 +192,10 @@ const Explore = () => {
               filteredCampaigns?.map((campaign: Campaign, index: number) => {
                 const urlsOnly = campaign.campaignAdditionalImages.map(
                   (item) => item.url
-                );
+                )
 
-                const userDetails = campaign?.user;
-                const donatedAmount = campaign?.totalAmountDonated?.[0].amount;
+                const userDetails = campaign?.user
+                const donatedAmount = campaign?.totalAmountDonated?.[0].amount
                 return (
                   <ExploreCard
                     id={campaign._id}
@@ -209,7 +219,7 @@ const Explore = () => {
                     volunteer={campaign?.volunteer}
                     slideImages={[
                       campaign?.campaignCoverImage?.url,
-                      ...(urlsOnly || [])
+                      ...(urlsOnly || []),
                     ]}
                     donateImage={""}
                     routeTo={`/explore-campaigns/donate-or-volunteer/${campaign._id}`}
@@ -217,14 +227,15 @@ const Explore = () => {
                     key={index}
                     campaignType={campaign.campaignType}
                   />
-                );
+                )
               })}
             {hasNextPage && (
               <div className="flex justify-center mt-8">
                 <button
                   onClick={handleSeeMore}
                   disabled={loadingMore}
-                  className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 text-[15px]">
+                  className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 text-[15px]"
+                >
                   {loadingMore ? "Loading..." : "Load More"}
                 </button>
               </div>
@@ -238,7 +249,7 @@ const Explore = () => {
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
 export default Explore;
