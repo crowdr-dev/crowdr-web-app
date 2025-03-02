@@ -11,14 +11,7 @@ import { twMerge } from "tailwind-merge"
 const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
   const { isEdit, campaignType, setShowPreview, ...form } =
     useFormContext() as CampaignFormContext
-  const isFundraiser = campaignType === "fundraise"
-  const backButtonText = isFundraiser ? "Preview Campaign" : "Back"
   const errors = form.formState.errors
-  const saveButtonText = isFundraiser
-    ? isEdit
-      ? "Save"
-      : "Launch campaign"
-    : "Continue to Volunteer campaign"
 
   const nextStep = (callback: () => void) => {
     const campaignImages = form.getValues("campaignImages")
@@ -30,6 +23,7 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
       form.trigger("campaignImages")
     }
   }
+  
 
   return (
     <div className="pt-10 pb-6">
@@ -38,7 +32,7 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
         <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Upload Engaging Media"
-            detail="Did you know that campaigns with high-quality visuals are 2x more likely to receive donations?"
+            detail="Visuals can make a significant impact on your campaign's success."
           />
 
           <div className="max-w-lg">
@@ -61,18 +55,14 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
         {/* prev x next */}
         <div className="flex justify-end items-center gap-4">
           <WhiteButton
-            text={backButtonText}
+            text="Preview Campaign"
             shadow
-            onClick={() =>
-              isFundraiser
-                ? nextStep(() => setShowPreview(true))
-                : onStep(index - 1)
-            }
-            className="!bg-[#C2C3C6] !text-white justify-center grow max-w-[220px]"
+            onClick={() => nextStep(() => setShowPreview(true))}
+            className=" !text-[#00A85B] !border-[#00A85B] hover:!bg-green-50 justify-center grow max-w-[220px]"
           />
 
           <Button
-            text={saveButtonText}
+            text={"Launch Campaign"}
             disabled={form.formState.isSubmitting}
             loading={form.formState.isSubmitting}
             onClick={() => nextStep(onDone)}
@@ -94,14 +84,3 @@ interface Props {
   onStep: (step: number) => void
   onDone: () => void
 }
-
-const categories = [
-  Option("", "Select a category...", true),
-  ...campaignCategories,
-]
-
-const tips = [
-  "Start with a short introduction of yourself",
-  "Why this campaign is important to you and",
-  "Your plans for the funds.",
-]

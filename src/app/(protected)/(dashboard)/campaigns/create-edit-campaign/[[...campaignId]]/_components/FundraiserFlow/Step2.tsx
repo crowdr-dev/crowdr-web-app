@@ -14,13 +14,29 @@ import { RFC } from "@/app/common/types"
 const Step2: RFC<Props> = ({ index, onStep }) => {
   const { ...form } = useFormContext() as CampaignFormContext
   const errors = form.formState.errors
-  const touched = form.formState.touchedFields
 
-  const isInvalid =
-    Boolean(errors.title) &&
-    Boolean(errors.category) &&
-    Boolean(errors.campaignDuration)
-  Boolean(errors.story)
+  const nextStep = () => {
+    const title = form.getValues("title")
+    const category = form.getValues("category")
+    const campaignDuration = form.getValues("campaignDuration")
+    const story = form.getValues("story")
+    const isInvalid =
+      !title ||
+      !category ||
+      !campaignDuration ||
+      !story ||
+      story.length < 60 ||
+      story.length > 5000
+
+    if (!isInvalid) {
+      onStep(index + 1)
+    } else {
+      form.trigger("title")
+      form.trigger("category")
+      form.trigger("campaignDuration")
+      form.trigger("story")
+    }
+  }
 
   return (
     <div className="pt-10 pb-6">
@@ -138,8 +154,7 @@ const Step2: RFC<Props> = ({ index, onStep }) => {
 
           <Button
             text={"Continue"}
-            disabled={isInvalid}
-            onClick={() => onStep(index + 1)}
+            onClick={nextStep}
             className=" justify-center grow max-w-[220px]"
           />
         </div>

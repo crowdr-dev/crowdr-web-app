@@ -33,7 +33,7 @@
     "eslint-config-next": "13.4.7",
     "flatpickr": "^4.6.13",
     "flowbite": "^1.8.1",
-    "flowbite-react": "^0.6.3",
+    "flowbite-react": "^0.6.4",
     "framer-motion": "^10.12.17",
     "hint": "^7.1.10",
     "jotai": "^2.6.0",

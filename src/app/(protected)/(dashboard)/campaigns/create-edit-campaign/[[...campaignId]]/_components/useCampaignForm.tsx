@@ -29,8 +29,9 @@ import CompletionCard from "@/app/(protected)/(dashboard)/dashboard-components/C
 import { useModal } from "@/app/common/hooks/useModal"
 import { shareCampaignModalAtom } from "@/app/(protected)/(dashboard)/utils/atoms"
 import { useSetAtom } from "jotai"
+import CampaignPreview from "./CampaignPreview"
 
-export const CampaignContext = createContext({} as CampaignFormContext)
+// export const CampaignContext = createContext({} as CampaignFormContext)
 
 const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
   const form = useForm<FormFields>(config)
@@ -42,10 +43,11 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
   const setShareCampaignModal = useSetAtom(shareCampaignModalAtom)
   const [campaignType, setCampaignType] = useState<CampaignType>()
   const [campaignForm, setCampaignForm] = useState<CampaignForm>()
+  const [showPreview, setShowPreview] = useState(false)
 
   useEffect(() => {
     const initCampaignForm = (campaignType: CampaignType) => {
-      console.log(campaignType)
+      // console.log(campaignType)
       if (campaignType === "volunteer") {
         setCampaignForm("volunteer")
       } else {
@@ -92,12 +94,11 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
       setCampaignType(campaignType)
       initCampaignForm(campaignType)
     }
-
-    form.trigger()
   }, [user])
 
   const submit = async (formFields: FormFields) => {
     Mixpanel.track("Create campaign clicked")
+    console.log(formFields)
 
     // const formFields = form.getValues()
     const {
@@ -105,7 +106,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
       campaignImages,
       title,
       story,
-      campaignType,
+      // campaignType,
       skillsNeeded,
       otherSkillsNeeded,
       currency,
@@ -274,6 +275,8 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
     isEdit,
     campaignType,
     campaignForm,
+    showPreview,
+    setShowPreview,
     setCampaignForm,
     submit,
     ...form,
@@ -283,7 +286,12 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
     return "loading"
   }
 
-  return <FormProvider {...formContext}>{children}</FormProvider>
+  return (
+    <FormProvider {...formContext}>
+      {children}
+      <CampaignPreview />
+    </FormProvider>
+  )
 }
 
 export default CampaignProvider
@@ -295,7 +303,18 @@ interface Props {
 export type { CampaignProvider, FormFields }
 
 const config: UseFormConfig = {
-  defaultValues: {},
+  defaultValues: {
+    title: "",
+    category: "" as any,
+    campaignType: "" as any,
+    story: "",
+    currency: "",
+    skillsNeeded: [],
+    ageRange: "",
+    genderPreference: "",
+    volunteerCommitment: "",
+    additionalNotes: "",
+  },
   mode: "onChange",
 }
 
@@ -317,12 +336,14 @@ type FormFields = {
   volunteerCommitment: string
   additionalNotes: string
 }
-type CampaignFormProvider = UseFormReturn<FormFields>
+// type CampaignFormProvider = UseFormReturn<FormFields>
 
 type CampaignForm = "fundraise" | "volunteer"
 export type CampaignFormContext = {
   campaignType: CampaignType | undefined
   campaignForm: CampaignForm | undefined
+  showPreview: boolean
+  setShowPreview: Dispatch<SetStateAction<boolean>>
   setCampaignForm: Dispatch<SetStateAction<CampaignForm | undefined>>
   submit: (formFields: FormFields) => void
   isEdit: boolean

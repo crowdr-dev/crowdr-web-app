@@ -5,8 +5,8 @@ import InputTitle from "@/app/common/components/InputTitle"
 import SelectInput from "@/app/common/components/SelectInput"
 import NumberInput from "@/app/common/components/NumberInput"
 import { Option } from "@/app/(protected)/(dashboard)/common/utils/form"
-import { use, useMemo } from "react"
-import { CampaignContext, CampaignFormContext } from "../useCampaignForm"
+import { useMemo } from "react"
+import { CampaignFormContext } from "../useCampaignForm"
 import { useFormContext } from "react-hook-form"
 import { Button } from "@/app/common/components/Button"
 import { RFC } from "@/app/common/types"
@@ -23,7 +23,18 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
     return (currencyLabel?.label?.match(/\((.)\)/) || [])[1]
   }, [currency])
 
-  const isInvalid = Boolean(errors.currency) && Boolean(errors.fundingGoal)
+  const nextStep = () => {
+    const currency = form.getValues("currency")
+    const fundingGoal = form.getValues("fundingGoal")
+    const isInvalid = !currency || !fundingGoal
+
+    if (!isInvalid) {
+      onStep(index + 1)
+    } else {
+      form.trigger("currency")
+      form.trigger("fundingGoal")
+    }
+  }
 
   return (
     <div className="pt-10 pb-6">
@@ -90,8 +101,7 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
 
         <Button
           text={"Continue"}
-          disabled={isInvalid}
-          onClick={() => onStep(index + 1)}
+          onClick={nextStep}
           className="mt-[30px] grow max-w-[220px] rounded-lg justify-center"
         />
       </div>
