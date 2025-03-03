@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import { useFormContext, useWatch } from "react-hook-form"
 import CampaignFormContext, {
   FormFields,
-} from "../campaigns/create-or-edit-campaign/utils/useCreateCampaign"
+} from "../campaigns/_create-or-edit-campaign/utils/useCreateCampaign"
 import { Button, WhiteButton } from "../../../common/components/Button"
 import TextInput from "../../../common/components/TextInput"
 import SelectInput from "../../../common/components/SelectInput"
@@ -538,7 +538,7 @@ const campaignTypes = [
   Option("fundraiseAndVolunteer", "Fundraise and volunteer"),
 ]
 
-const currencies = [
+export const currencies = [
   Option("", "Select a currency...", true),
   Option("naira", "Naira (₦)"),
   // Option("dollar", "Dollar ($)"),
@@ -573,7 +573,7 @@ const volunteerCommitment = [
   Option("flexible schedule", "Flexible schedule"),
 ]
 
-function mapResponseToForm(
+export function mapResponseToForm(
   campaign: IFundraiseVolunteerCampaign
 ): Partial<FormFields> {
   const {

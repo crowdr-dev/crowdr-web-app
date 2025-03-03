@@ -236,14 +236,16 @@ const Withdrawal = () => {
                   <Table.Cell>{campaign.fundsGotten}</Table.Cell>
                   <Table.Cell>{campaign.endDate}</Table.Cell>
                   <Table.Cell>
-                    <Button
-                      text="Withdraw"
-                      onClick={() => activateWithdrawalModal(campaign)}
-                      disabled={
-                        !campaign.isCompleted ||
-                        campaign.campaignType === "volunteer"
-                      }
-                    />
+                    {campaign.campaignType !== "volunteer" && (
+                      <Button
+                        text="Withdraw"
+                        onClick={() => activateWithdrawalModal(campaign)}
+                        disabled={
+                          (campaign.amountDonated?.amount ?? 0) <= 0 ||
+                          !campaign.isCompleted
+                        }
+                      />
+                    )}
                   </Table.Cell>
                 </Table.Row>
               ))}

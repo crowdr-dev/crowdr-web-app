@@ -527,7 +527,7 @@ const Dashboard = () => {
               perPage={withdrawalData.pagination.perPage}
               total={withdrawalData.pagination.total}
               onPageChange={(page) =>
-                setTableParams({ table: "kycs", params: { page } })
+                setTableParams({ table: "withdrawals", params: { page } })
               }
             />
           </Table>

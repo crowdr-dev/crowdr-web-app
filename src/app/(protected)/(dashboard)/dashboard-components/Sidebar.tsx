@@ -132,8 +132,10 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
           //   modalProps = {}
           // }
 
+          const isValidRoute = isRoute && page.route
+          const NavItem: any = isValidRoute ? Link : "span"
           const linkProps: any = {
-            href: isRoute ? page.route : "",
+            ...(isValidRoute ? { href: page.route } : {}),
             className: pageLinkStyle,
           }
 
@@ -150,7 +152,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
               }}
             >
               <DrawerTrigger id="sidebar_drawer" type="hide">
-                <Link {...linkProps}>
+                <NavItem {...linkProps}>
                   <Image
                     src={icon}
                     width={18}
@@ -164,7 +166,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
                       {label}
                     </span>
                   )}
-                </Link>
+                </NavItem>
               </DrawerTrigger>
             </ModalTrigger>
           )
@@ -194,7 +196,9 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
       </div>
 
       {drawer ? (
-        <div className="flex flex-col overflow-x-hidden overflow-y-auto grow">{sidebarItems}</div>
+        <div className="flex flex-col overflow-x-hidden overflow-y-auto grow">
+          {sidebarItems}
+        </div>
       ) : (
         sidebarItems
       )}
