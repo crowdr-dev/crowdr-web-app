@@ -45,6 +45,7 @@
     "next": "13.4.7",
     "novu": "^0.24.0",
     "postcss": "8.4.24",
+    "posthog-js": "^1.229.5",
     "react": "18.2.0",
     "react-collapsible": "^2.10.0",
     "react-currency-input-field": "^3.6.11",
