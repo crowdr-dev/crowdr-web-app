@@ -20,6 +20,7 @@ import { IoMdClose } from "react-icons/io";
 import { IoShareSocial } from "react-icons/io5";
 import ShareCampaign from "@/app/common/components/share-campaign";
 import { Mixpanel } from "@/utils/mixpanel";
+import { useRouter } from "next/navigation";
 
 const ExploreCard: RFC<ExploreCardProps> = (props) => {
   const {
@@ -40,6 +41,8 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
     volunteer,
     currency
   } = props;
+
+  const router = useRouter();
 
   const { copied, copy } = useClipboard();
 
@@ -72,8 +75,6 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
     volunteerCommitment: volunteer?.requiredCommitment ?? ""
   };
 
-
-
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -88,11 +89,9 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
 
   const wordsArray = subheader?.split(" ");
 
- 
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
-    const [isCollapsed, setIsCollapsed] = useState(true);
-
-    const displayText = isCollapsed
+  const displayText = isCollapsed
     ? wordsArray?.slice(0, 30).join(" ")
     : subheader;
 
@@ -101,15 +100,20 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
 
     const sentences = subheader.split(/(?<=[.!?])\s+/);
     const shortSentences = sentences.slice(0, 3).join(" ");
-    const fullText = sentences.reduce((acc, sentence, index) => {
-      if (index % 3 === 0 && index !== 0) {
-        return acc + "\n\n" + sentence;
-      }
-      return acc + " " + sentence;
-    }, "").trim();
+    const fullText = sentences
+      .reduce((acc, sentence, index) => {
+        if (index % 3 === 0 && index !== 0) {
+          return acc + "\n\n" + sentence;
+        }
+        return acc + " " + sentence;
+      }, "")
+      .trim();
 
     return {
-      shortText: shortSentences.length > 150 ? shortSentences.slice(0, 150) + "..." : shortSentences,
+      shortText:
+        shortSentences.length > 150
+          ? shortSentences.slice(0, 150) + "..."
+          : shortSentences,
       fullText: fullText
     };
   }, [subheader]);
@@ -155,7 +159,11 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
   return (
     <div className="p-6 rounded-xl border-[#393e4614] border mt-8 h-fit bg-white">
       <div className="flex items-center justify-between ">
-        <div className="flex items-center">
+        <div
+          className="flex items-center"
+          onClick={() => {
+            router.push(`/explore/profile/${id}`);
+          }}>
           {avatar ? (
             <Image
               src={avatar}
@@ -172,7 +180,9 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
 
           <div className="pl-3">
             <h3 className="text-sm font-normal text-[#344054]">{name}</h3>
-            <h4 className="text-xs font-normal text-[#667085]">{tier?.toLowerCase() === "non-profit" ? "Organization" : tier}</h4>
+            <h4 className="text-xs font-normal text-[#667085]">
+              {tier?.toLowerCase() === "non-profit" ? "Organization" : tier}
+            </h4>
           </div>
         </div>
         {/* <Image src={Menu} alt='menu' /> */}
@@ -286,15 +296,15 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
         <div className="my-5">
           <h3 className="font-semibold text-[18px]">{header}</h3>
           <p className="mt-2 break-words text-sm whitespace-pre-line">
-          {isCollapsed ? formattedText.shortText : formattedText.fullText}
-          {formattedText.shortText !== formattedText.fullText && (
-            <span
-              onClick={toggleReadMore}
-              className="text-[#00B964] cursor-pointer pl-1 inline-block mt-2">
-              {isCollapsed ? "See more" : "See less"}
-            </span>
-          )}
-        </p>
+            {isCollapsed ? formattedText.shortText : formattedText.fullText}
+            {formattedText.shortText !== formattedText.fullText && (
+              <span
+                onClick={toggleReadMore}
+                className="text-[#00B964] cursor-pointer pl-1 inline-block mt-2">
+                {isCollapsed ? "See more" : "See less"}
+              </span>
+            )}
+          </p>
           {!routeTo && campaignType?.toLowerCase().includes("volunteer") && (
             <div className="mt-4 gap-4">
               {Object.entries(additionalDetails).map(([key, value], index) => (
@@ -365,13 +375,13 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             className="w-full !justify-center"
             onClick={() => {
               setShareModal(true);
-              Mixpanel.track("Clicked Share Campaign")
+              Mixpanel.track("Clicked Share Campaign");
             }}
           />
         </div>
       ) : (
         <div className="flex flex-col item-center">
-         <Button
+          <Button
             text="Share Campaign"
             bgColor="#FFF"
             textColor="#344054"
@@ -379,7 +389,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             className="w-full !justify-center"
             onClick={() => {
               setShareModal(true);
-              Mixpanel.track("Clicked Share Campaign")
+              Mixpanel.track("Clicked Share Campaign");
             }}
           />
           <a
