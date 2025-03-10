@@ -74,6 +74,9 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     capable: true,
     title: "Crowdr - Crowdfund in Nigeria"
+  },
+  verification: {
+    google: "9Yb3G9DGqrNGVcr7mLbrpoIRZD6Kj4YHixwQileL0EI"
   }
 };
 
