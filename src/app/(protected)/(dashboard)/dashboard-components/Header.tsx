@@ -14,6 +14,7 @@ import CrowdrLogo from "../../../../../public/images/brand/crowdr-logo.svg"
 import PuzzleIcon from "../../../../../public/svg/environment-puzzle.svg"
 import BurgerIcon from "../../../../../public/svg/burger-icon.svg"
 import Avatar from "../../../../../public/assets/avatar.png"
+import CreateCampaignDropdown from "./createCampainDropdown"
 
 export  function getInitials(name: string) {
   if (!name) return ''; 
@@ -46,10 +47,7 @@ const Header = () => {
             iconUrl={PuzzleIcon}
             className="hidden md:inline-flex mr-[6px]"
           /> */}
-          <Button
-            text="Create Campaign"
-            href="/campaigns/create-or-edit-campaign"
-          />
+         <CreateCampaignDropdown />
         </div>
 
         {/* profile */}
