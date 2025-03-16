@@ -42,9 +42,9 @@ const Step2: RFC<Props> = ({ index, onStep }) => {
     <div className="pt-10 pb-6">
       <div className="text-sm text-center rounded-lg bg-[#E6F8F0] max-w-[483px] py-[15px] px-4 mx-auto mb-[45px]">
         We've provided{" "}
-        <Link href={"#"} className="underline text-[#019350]">
-          writing prompts
-        </Link>{" "}
+        {/* <Link href={"#"} className="underline text-[#019350]"> */}
+        writing prompts{" "}
+        {/* </Link>{" "} */}
         and guides to help you along the way.
       </div>
 
