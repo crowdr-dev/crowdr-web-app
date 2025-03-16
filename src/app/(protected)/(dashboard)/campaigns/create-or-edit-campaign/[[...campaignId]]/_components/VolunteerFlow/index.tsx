@@ -17,7 +17,8 @@ const VolunteerFlow = () => {
   const pageSubtext = isEdit ? form.getValues().title : "Start a campaign now"
 
   const handleDone = () => {
-    form.handleSubmit(submit)
+    const submitForm = form.handleSubmit(submit)
+    submitForm()
   }
 
   return (
