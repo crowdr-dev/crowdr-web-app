@@ -68,7 +68,12 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
                 ? nextStep(() => setShowPreview(true))
                 : onStep(index - 1)
             }
-            className="!bg-[#C2C3C6] !text-white justify-center grow lg:max-w-[220px]"
+            className={twMerge(
+              "justify-center grow lg:max-w-[220px]",
+              isFundraiser
+                ? "!text-[#00A85B] !border-[#00A85B] hover:!bg-green-50"
+                : "!text-white !bg-[#C2C3C6]"
+            )}
           />
 
           <Button
