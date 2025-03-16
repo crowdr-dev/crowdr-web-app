@@ -59,7 +59,7 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
           </summary>
 
           {/* skills needed */}
-          <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+          <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
             <InputTitle title="Skills Needed" detail="Select all that apply" />
 
             <div className="max-w-lg">
@@ -109,20 +109,20 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
 
       <hr className="border-t border-t-[#E4E7EC]" />
 
-      <div className="flex justify-end items-center gap-4 max-w-[888px]  pt-[52px]">
+      <div className="flex flex-col-reverse lg:flex-row lg:items-center justify-end gap-4 max-w-[888px] pt-[52px]">
         {isFundraiserVolunteer && (
           <WhiteButton
             text="Back to Fundraiser campaign"
             shadow
             onClick={() => setCampaignForm("fundraise")}
-            className="!bg-[#C2C3C6] !text-white justify-center grow max-w-[240px]"
+            className="!bg-[#C2C3C6] !text-white justify-center grow lg:max-w-[240px]"
           />
         )}
 
         <Button
           text={"Continue"}
           onClick={nextStep}
-          className={"justify-center grow max-w-[220px]"}
+          className={"justify-center grow lg:max-w-[220px]"}
         />
       </div>
     </div>

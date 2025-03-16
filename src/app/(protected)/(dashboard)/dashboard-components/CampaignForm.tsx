@@ -134,7 +134,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
       {!isEdit || (isEdit && formFetched) ? (
         <div>
           {/* title */}
-          <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+          <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
             <InputTitle
               title="Title"
               detail="This will be displayed on your campaign."
@@ -153,7 +153,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
 
           {/* campaign type */}
           {!isIndividual && !isEdit && (
-            <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+            <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
               <InputTitle
                 title="Campaign Type"
                 detail="Choose the type that fits the needs of your campaign."
@@ -173,7 +173,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
           )}
 
           {/* category */}
-          <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+          <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
             <InputTitle
               title="Category"
               detail="Choose the most relevant category that best represents your campaign."
@@ -192,7 +192,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
           </div>
 
           {/* choose a campaign duration */}
-          <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+          <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
             <InputTitle
               title="Choose a Campaign Duration"
               detail="Determine the timeframe for your campaign."
@@ -212,7 +212,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
           </div>
 
           {/* tell your story */}
-          <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+          <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
             <InputTitle
               title="Tell Your Story"
               detail="The more details, the better."
@@ -232,7 +232,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
           </div>
 
           {/* upload engaging media */}
-          <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+          <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
             <InputTitle
               title="Upload Engaging Media"
               detail="Visuals can make a significant impact on your campaign's success."
@@ -279,7 +279,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
               </summary>
 
               {/* currency */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle
                   title="Currency"
                   detail="Select the currency type for the fundraiser."
@@ -298,7 +298,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
               </div>
 
               {/* set your funding goal */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle
                   title="Set Your Funding Goal"
                   detail="You can always adjust your goal as your campaign progresses."
@@ -330,7 +330,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
               </summary>
 
               {/* skills needed */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle
                   title="Skills Needed"
                   detail="Select all that apply"
@@ -381,7 +381,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
               </div>
 
               {/* age needed */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Age Range" />
 
                 <div className="max-w-lg">
@@ -406,7 +406,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
               </div>
 
               {/* gender preference */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Gender Preference" />
 
                 <div className="max-w-lg">
@@ -431,7 +431,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
               </div>
 
               {/* date and time needed */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Date and Time Needed" />
 
                 <div className="max-w-lg">
@@ -449,7 +449,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
               </div>
 
               {/* volunteer commitment */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Volunteer Commitment" />
 
                 <div className="max-w-lg">
@@ -474,7 +474,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
               </div>
 
               {/* additional requirements or notes */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle
                   title="Additional Requirements or Notes"
                   id="notes"

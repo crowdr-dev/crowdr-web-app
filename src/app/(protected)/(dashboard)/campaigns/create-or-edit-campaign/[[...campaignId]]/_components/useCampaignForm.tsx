@@ -98,7 +98,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
 
   const submit = async (formFields: FormFields) => {
     Mixpanel.track("Create campaign clicked")
-    console.log(formFields)
+    // console.log(formFields)
 
     // const formFields = form.getValues()
     const {

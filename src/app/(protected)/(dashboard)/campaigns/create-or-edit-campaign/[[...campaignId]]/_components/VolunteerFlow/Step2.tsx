@@ -57,7 +57,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
         {campaignType !== "fundraiseAndVolunteer" && (
           <>
             {/* title */}
-            <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+            <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
               <InputTitle
                 title="Title"
                 detail="Make sure it's brief and eye-catching!"
@@ -75,7 +75,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
             </div>
 
             {/* campaign description */}
-            <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+            <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
               <InputTitle
                 title="Tell Your Story"
                 detail="The more details, the better."
@@ -95,7 +95,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
             </div>
 
             {/* category */}
-            <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+            <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
               <InputTitle
                 title="Category"
                 detail="Choose a category that best represents your campaign."
@@ -114,7 +114,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
             </div>
 
             {/* choose a campaign duration */}
-            <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+            <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
               <InputTitle
                 title="Choose a Campaign Duration"
                 detail="This is how long you want the campaign to run. You can edit this later."
@@ -136,7 +136,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
         )}
 
         {/* age needed */}
-        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle title="Age Range" />
 
           <div className="max-w-lg">
@@ -161,7 +161,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
         </div>
 
         {/* gender preference */}
-        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle title="Gender Preference" />
 
           <div className="max-w-lg">
@@ -186,7 +186,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
         </div>
 
         {/* date and time needed */}
-        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle title="Date and Time Needed" />
 
           <div className="max-w-lg">
@@ -204,7 +204,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
         </div>
 
         {/* volunteer commitment */}
-        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle title="Volunteer Commitment" />
 
           <div className="max-w-lg">
@@ -229,7 +229,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
         </div>
 
         {/* code of conduct */}
-        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-14 lg:mb-[25px]">
           <InputTitle
             title="Code of conduct - Volunteer guidelines and Health and Safety Information"
             id="notes"
@@ -247,27 +247,27 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
 
         {/* prev x next */}
         {campaignType !== "fundraiseAndVolunteer" ? (
-          <div className="flex justify-end items-center gap-4">
+          <div className="flex flex-col-reverse lg:flex-row lg:items-center justify-end gap-4">
             <WhiteButton
               text="Back"
               shadow
               onClick={() => onStep(index - 1)}
-              className="!bg-[#C2C3C6] !text-white justify-center grow max-w-[220px]"
+              className="!bg-[#C2C3C6] !text-white justify-center grow lg:max-w-[220px]"
             />
 
             <Button
               text={"Continue"}
               onClick={() => nextStep(() => onStep(index + 1))}
-              className=" justify-center grow max-w-[220px]"
+              className=" justify-center grow lg:max-w-[220px]"
             />
           </div>
         ) : (
-          <div className="flex justify-end items-center gap-4">
+          <div className="flex flex-col-reverse lg:flex-row lg:items-center justify-end gap-4">
             <WhiteButton
               text="Preview Campaign"
               shadow
               onClick={() => nextStep(() => setShowPreview(true))}
-              className="!text-[#00A85B] !border-[#00A85B] hover:!bg-green-50 justify-center grow max-w-[220px]"
+              className="!text-[#00A85B] !border-[#00A85B] hover:!bg-green-50 justify-center grow lg:max-w-[220px]"
             />
 
             <Button
@@ -275,7 +275,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
               disabled={form.formState.isSubmitting}
               loading={form.formState.isSubmitting}
               onClick={onDone}
-              className="!justify-center grow max-w-[220px]"
+              className="!justify-center grow lg:max-w-[220px]"
             />
           </div>
         )}

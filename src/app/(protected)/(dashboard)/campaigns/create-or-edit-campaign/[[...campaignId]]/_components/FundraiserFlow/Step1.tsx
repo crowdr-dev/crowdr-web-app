@@ -56,7 +56,7 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
         </summary>
 
         {/* currency */}
-        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Currency"
             detail="Select the currency type for the fundraiser."
@@ -75,7 +75,7 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
         </div>
 
         {/* set your funding goal */}
-        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle
             title="Set Your Funding Goal"
             detail="You can always adjust your goal as your campaign progresses."
@@ -93,8 +93,8 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
         </div>
       </details>
 
-      <div className="flex justify-between border-t border-t-[#E4E7EC]">
-        <div className="grow max-w-[435px] text-[#A75003] bg-[#FEF0C7] rounded-lg px-5 py-4 mt-9">
+      <div className="flex flex-col lg:flex-row justify-between border-t border-t-[#E4E7EC]">
+        <div className="grow lg:max-w-[435px] text-sm text-[#A75003] bg-[#FEF0C7] rounded-lg px-5 py-4 mt-9">
           To withdraw funds, you must complete your KYC registration and
           conclude your campaign.
         </div>
@@ -102,7 +102,7 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
         <Button
           text={"Continue"}
           onClick={nextStep}
-          className="mt-[30px] grow max-w-[220px] rounded-lg justify-center"
+          className="mt-[30px] grow lg:max-w-[220px] rounded-lg justify-center"
         />
       </div>
     </div>

@@ -35,7 +35,7 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
     <div className="pt-10 pb-6">
       <div className="max-w-[888px]">
         {/* upload engaging media */}
-        <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+        <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-14 lg:mb-[25px]">
           <InputTitle
             title="Upload Engaging Media"
             detail="Did you know that campaigns with high-quality visuals are 2x more likely to receive donations?"
@@ -59,7 +59,7 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
         </div>
 
         {/* prev x next */}
-        <div className="flex justify-end items-center gap-4">
+        <div className="flex flex-col-reverse lg:flex-row lg:items-center justify-end gap-4">
           <WhiteButton
             text={backButtonText}
             shadow
@@ -68,7 +68,7 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
                 ? nextStep(() => setShowPreview(true))
                 : onStep(index - 1)
             }
-            className="!bg-[#C2C3C6] !text-white justify-center grow max-w-[220px]"
+            className="!bg-[#C2C3C6] !text-white justify-center grow lg:max-w-[220px]"
           />
 
           <Button
@@ -77,8 +77,8 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
             loading={form.formState.isSubmitting}
             onClick={() => nextStep(onDone)}
             className={twMerge(
-              "justify-center grow max-w-[220px]",
-              campaignType === "fundraiseAndVolunteer" && "max-w-[240px]"
+              "justify-center grow lg:max-w-[220px]",
+              campaignType === "fundraiseAndVolunteer" && "lg:max-w-[240px]"
             )}
           />
         </div>

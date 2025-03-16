@@ -128,13 +128,13 @@ const CampaignPreview = () => {
       onClose={() => !form.formState.isSubmitting && setShowPreview(false)}
       size={"5xl"}
     >
-      <Modal.Header className="items-center px-10">
+      <Modal.Header className="items-center md:px-10">
         <span className="font-semibold text-lg mt-6 mb-3">
           Campaign Preview
         </span>
       </Modal.Header>
       <Modal.Body>
-        <div className="max-w-[778px] mx-auto p-6">
+        <div className="max-w-[778px] mx-auto md:p-6">
           <div className="flex items-center justify-between ">
             <div className="flex items-center">
               {/* {avatar ? (
