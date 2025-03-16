@@ -156,7 +156,7 @@ const Explore = () => {
 
       <div
         id="interests"
-        className="flex flex-row overflow-x-scroll gap-5 mt-6">
+        className="flex flex-row scrollbar-thin scrollbar-track-[#f9f9f9] scrollbar-thumb-[#E5E7EB] overflow-x-scroll gap-5 mt-6">
         {allInterests.map(({ value, label, icon, bgColor }) => (
           <label
             key={value}

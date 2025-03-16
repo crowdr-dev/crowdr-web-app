@@ -18,7 +18,8 @@ const FundraiserFlow = () => {
 
   const handleDone = () => {
     if (campaignType === "fundraise") {
-      form.handleSubmit(submit)
+      const submitForm = form.handleSubmit(submit)
+      submitForm()
     } else {
       setCampaignForm("volunteer")
     }
