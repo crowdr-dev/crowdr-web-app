@@ -278,7 +278,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
     showPreview,
     setShowPreview,
     setCampaignForm,
-    submit,
+    submitForm: form.handleSubmit(submit),
     ...form,
   }
 
@@ -345,6 +345,6 @@ export type CampaignFormContext = {
   showPreview: boolean
   setShowPreview: Dispatch<SetStateAction<boolean>>
   setCampaignForm: Dispatch<SetStateAction<CampaignForm | undefined>>
-  submit: (formFields: FormFields) => void
+  submitForm: (e?: React.BaseSyntheticEvent) => Promise<void>
   isEdit: boolean
 } & UseFormReturn<FormFields>
