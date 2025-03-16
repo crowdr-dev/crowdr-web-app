@@ -10,7 +10,7 @@ import { LuImageUp } from "react-icons/lu"
 import { useFormContext } from "react-hook-form"
 
 const FundraiserFlow = () => {
-  const { isEdit, campaignType, setCampaignForm, submit, ...form } =
+  const { isEdit, campaignType, setCampaignForm, submitForm, ...form } =
     useFormContext() as CampaignFormContext
   const [currentStep, setStep] = useState(0)
   const pageTitle = isEdit ? "Edit Campaign" : "Create a campaign"
@@ -18,7 +18,6 @@ const FundraiserFlow = () => {
 
   const handleDone = () => {
     if (campaignType === "fundraise") {
-      const submitForm = form.handleSubmit(submit)
       submitForm()
     } else {
       setCampaignForm("volunteer")

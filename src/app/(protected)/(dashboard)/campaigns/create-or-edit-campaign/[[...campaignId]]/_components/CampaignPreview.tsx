@@ -20,7 +20,7 @@ const CampaignPreview = () => {
   const [hover, setHover] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
-  const { campaignType, showPreview, setShowPreview, submit, ...form } =
+  const { campaignType, showPreview, setShowPreview, submitForm, ...form } =
     useFormContext() as CampaignFormContext
   const user = useUser()
   const values = form.getValues()
@@ -356,7 +356,7 @@ const CampaignPreview = () => {
 
           <div className="flex flex-col w-full gap-3 max-w-[494px] mx-auto mt-4">
             <Button
-              onClick={form.handleSubmit(submit)}
+              onClick={submitForm}
               loading={form.formState.isSubmitting}
               disabled={form.formState.isSubmitting}
               text={"Launch Campaign"}

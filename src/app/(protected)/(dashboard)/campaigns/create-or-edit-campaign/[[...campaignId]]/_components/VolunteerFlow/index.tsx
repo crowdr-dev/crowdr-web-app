@@ -10,14 +10,13 @@ import { LuImageUp } from "react-icons/lu"
 import { useFormContext } from "react-hook-form"
 
 const VolunteerFlow = () => {
-  const { isEdit, campaignType, setCampaignForm, submit, ...form } =
+  const { isEdit, campaignType, setCampaignForm, submitForm, ...form } =
     useFormContext() as CampaignFormContext
   const [currentStep, setStep] = useState(0)
   const pageTitle = isEdit ? "Edit Campaign" : "Create a volunteer campaign"
   const pageSubtext = isEdit ? form.getValues().title : "Start a campaign now"
 
   const handleDone = () => {
-    const submitForm = form.handleSubmit(submit)
     submitForm()
   }
 
