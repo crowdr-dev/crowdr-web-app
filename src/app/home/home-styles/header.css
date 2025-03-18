@@ -10,7 +10,7 @@
   flex-direction: column;
 }
 
-.cta h2 {
+.cta h1 {
   font-size: 32px;
   font-weight: 500;
   color: var(--PRIMARY_DARK_COLOR);
@@ -88,7 +88,7 @@
     min-height: 70vh;
     padding: 35px 30px 0 30px;
   }
-  .cta h2 {
+  .cta h1 {
     font-size: 48px;
     line-height: 52px;
   }
