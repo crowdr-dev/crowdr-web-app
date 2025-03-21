@@ -241,7 +241,8 @@ const Withdrawal = () => {
                         text="Withdraw"
                         onClick={() => activateWithdrawalModal(campaign)}
                         disabled={
-                          (campaign.amountDonated?.amount ?? 0) <= 0
+                          (campaign.amountDonated?.amount ?? 0) <= 0 ||
+                          !campaign.isCompleted
                         }
                       />
                     )}
