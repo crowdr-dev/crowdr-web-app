@@ -72,8 +72,6 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
     volunteerCommitment: volunteer?.requiredCommitment ?? ""
   };
 
-
-
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -88,35 +86,49 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
 
   const wordsArray = subheader?.split(" ");
 
- 
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
-    const [isCollapsed, setIsCollapsed] = useState(true);
-
-    const displayText = isCollapsed
+  const displayText = isCollapsed
     ? wordsArray?.slice(0, 30).join(" ")
     : subheader;
 
   const formattedText = useMemo(() => {
     if (!subheader) return { shortText: "", fullText: "" };
 
-    const sentences = subheader.split(/(?<=[.!?])\s+/);
+    // Use a simpler approach to split sentences while preserving punctuation
+    const pattern = /([^.!?]+[.!?]+)(?:\s+|$)/g;
+    const matches = subheader.match(pattern) || [];
+    const sentences = matches.map((s) => s.trim());
+
+    // Take first 3 sentences for short text
     const shortSentences = sentences.slice(0, 3).join(" ");
-    const fullText = sentences.reduce((acc, sentence, index) => {
+
+    // Format full text with line breaks every 3 sentences
+    let fullText = "";
+    sentences.forEach((sentence, index) => {
       if (index % 3 === 0 && index !== 0) {
-        return acc + "\n\n" + sentence;
+        fullText += "\n\n";
+      } else if (index !== 0) {
+        fullText += " ";
       }
-      return acc + " " + sentence;
-    }, "").trim();
+      fullText += sentence;
+    });
 
     return {
-      shortText: shortSentences.length > 150 ? shortSentences.slice(0, 150) + "..." : shortSentences,
-      fullText: fullText
+      shortText:
+        shortSentences.length > 150
+          ? shortSentences.slice(0, 150) + "..."
+          : shortSentences,
+      fullText: fullText.trim()
     };
   }, [subheader]);
+
 
   const toggleReadMore = () => {
     setIsCollapsed(!isCollapsed);
   };
+
+  
   const progress = totalAmount ? currentAmount / totalAmount : 0;
 
   const settings = (images: string[]) => {
@@ -172,7 +184,9 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
 
           <div className="pl-3">
             <h3 className="text-sm font-normal text-[#344054]">{name}</h3>
-            <h4 className="text-xs font-normal text-[#667085]">{tier?.toLowerCase() === "non-profit" ? "Organization" : tier}</h4>
+            <h4 className="text-xs font-normal text-[#667085]">
+              {tier?.toLowerCase() === "non-profit" ? "Organization" : tier}
+            </h4>
           </div>
         </div>
         {/* <Image src={Menu} alt='menu' /> */}
@@ -286,15 +300,15 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
         <div className="my-5">
           <h3 className="font-semibold text-[18px]">{header}</h3>
           <p className="mt-2 break-words text-sm whitespace-pre-line">
-          {isCollapsed ? formattedText.shortText : formattedText.fullText}
-          {formattedText.shortText !== formattedText.fullText && (
-            <span
-              onClick={toggleReadMore}
-              className="text-[#00B964] cursor-pointer pl-1 inline-block mt-2">
-              {isCollapsed ? "See more" : "See less"}
-            </span>
-          )}
-        </p>
+            {isCollapsed ? formattedText.shortText : formattedText.fullText}
+            {formattedText.shortText !== formattedText.fullText && (
+              <span
+                onClick={toggleReadMore}
+                className="text-[#00B964] cursor-pointer pl-1 inline-block mt-2">
+                {isCollapsed ? "See more" : "See less"}
+              </span>
+            )}
+          </p>
           {!routeTo && campaignType?.toLowerCase().includes("volunteer") && (
             <div className="mt-4 gap-4">
               {Object.entries(additionalDetails).map(([key, value], index) => (
@@ -365,13 +379,13 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             className="w-full !justify-center"
             onClick={() => {
               setShareModal(true);
-              Mixpanel.track("Clicked Share Campaign")
+              Mixpanel.track("Clicked Share Campaign");
             }}
           />
         </div>
       ) : (
         <div className="flex flex-col item-center">
-         <Button
+          <Button
             text="Share Campaign"
             bgColor="#FFF"
             textColor="#344054"
@@ -379,7 +393,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             className="w-full !justify-center"
             onClick={() => {
               setShareModal(true);
-              Mixpanel.track("Clicked Share Campaign")
+              Mixpanel.track("Clicked Share Campaign");
             }}
           />
           <a
