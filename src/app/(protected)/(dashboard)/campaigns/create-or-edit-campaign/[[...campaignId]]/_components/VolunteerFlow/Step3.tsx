@@ -12,12 +12,13 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
   const { isEdit, campaignType, setShowPreview, ...form } =
     useFormContext() as CampaignFormContext
   const errors = form.formState.errors
+  const shouldValidateImage = isEdit ? false : true
 
   const nextStep = (callback: () => void) => {
     const campaignImages = form.getValues("campaignImages")
     const isInvalid = !campaignImages
 
-    if (!isInvalid) {
+    if (!shouldValidateImage || (shouldValidateImage && !isInvalid)) {
       callback()
     } else {
       form.trigger("campaignImages")

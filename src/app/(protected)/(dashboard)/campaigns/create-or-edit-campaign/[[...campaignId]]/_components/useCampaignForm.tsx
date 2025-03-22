@@ -44,6 +44,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
   const [campaignType, setCampaignType] = useState<CampaignType>()
   const [campaignForm, setCampaignForm] = useState<CampaignForm>()
   const [showPreview, setShowPreview] = useState(false)
+  const [uploadedImages, setUploadedImages] = useState<string[]>([])
 
   useEffect(() => {
     const initCampaignForm = (campaignType: CampaignType) => {
@@ -72,8 +73,15 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
             }
           )
 
+          const coverImage = data.campaignCoverImage.url
+          const additionImages = data.campaignAdditionalImages.map(
+            (image) => image.url
+          )
+          setUploadedImages([coverImage, ...additionImages])
+
           const formData = mapResponseToForm(data)
           form.reset(formData)
+          form.setValue("campaignDuration", formData.campaignDuration!)
           setCampaignType(data.campaignType)
           initCampaignForm(data.campaignType)
           // setFormFetched(true)
@@ -127,14 +135,14 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
       category,
       story,
       campaignType: isIndividual ? "fundraise" : campaignType,
-      // campaignStartDate: campaignDuration[0],
-      // campaignEndDate: campaignDuration[1],
-      campaignStartDate: new Date(
-        campaignDuration[0] as any as Date
-      ).toISOString(),
-      campaignEndDate: new Date(
-        campaignDuration[1] as any as Date
-      ).toISOString(),
+      campaignStartDate: campaignDuration[0].toISOString(),
+      campaignEndDate: campaignDuration[1].toISOString(),
+      // campaignStartDate: new Date(
+      //   campaignDuration[0] as any as Date
+      // ).toISOString(),
+      // campaignEndDate: new Date(
+      //   campaignDuration[1] as any as Date
+      // ).toISOString(),
     }
 
     if (campaignImages) {
@@ -276,6 +284,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
     campaignType,
     campaignForm,
     showPreview,
+    uploadedImages,
     setShowPreview,
     setCampaignForm,
     submitForm: form.handleSubmit(submit),
@@ -326,7 +335,7 @@ type FormFields = {
   story: string
   currency: string
   fundingGoal: number
-  campaignDuration: [string, string]
+  campaignDuration: [Date, Date]
   campaignImages?: File[]
   skillsNeeded: string[]
   otherSkillsNeeded: string
@@ -343,6 +352,7 @@ export type CampaignFormContext = {
   campaignType: CampaignType | undefined
   campaignForm: CampaignForm | undefined
   showPreview: boolean
+  uploadedImages: string[]
   setShowPreview: Dispatch<SetStateAction<boolean>>
   setCampaignForm: Dispatch<SetStateAction<CampaignForm | undefined>>
   submitForm: (e?: React.BaseSyntheticEvent) => Promise<void>

@@ -14,7 +14,9 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
   const isFundraiser = campaignType === "fundraise"
   const backButtonText = isFundraiser ? "Preview Campaign" : "Back"
   const errors = form.formState.errors
+  const shouldValidateImage = isEdit ? false : true
   const saveButtonText = isFundraiser
+  // TODO: the save button is not showing the right label in edit campaign mode
     ? isEdit
       ? "Save"
       : "Launch campaign"
@@ -24,7 +26,7 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
     const campaignImages = form.getValues("campaignImages")
     const isInvalid = !campaignImages
 
-    if (!isInvalid) {
+    if (!shouldValidateImage || (shouldValidateImage && !isInvalid)) {
       callback()
     } else {
       form.trigger("campaignImages")
@@ -46,7 +48,7 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
               name="campaignImages"
               rules={{
                 required: {
-                  value: isEdit ? false : true,
+                  value: shouldValidateImage,
                   message: "Campaign image is required",
                 },
               }}

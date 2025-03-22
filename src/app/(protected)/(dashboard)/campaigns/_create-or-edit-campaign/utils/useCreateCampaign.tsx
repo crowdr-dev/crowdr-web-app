@@ -30,7 +30,7 @@ type FormFields = {
   story: string;
   currency: string;
   fundingGoal: number;
-  campaignDuration: [string, string];
+  campaignDuration: [Date, Date];
   campaignImages?: File[];
   skillsNeeded: string[];
   otherSkillsNeeded: string;

@@ -127,7 +127,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
                   })}
                   error={errors.campaignDuration as any}
                   mode="range"
-                  minDate={new Date()}
+                  // minDate={new Date()}
                   // enableTime
                 />
               </div>
@@ -197,7 +197,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
               }}
               error={errors.timeCommitment as any}
               mode="range"
-              minDate={new Date()}
+              // minDate={new Date()}
               // enableTime
             />
           </div>

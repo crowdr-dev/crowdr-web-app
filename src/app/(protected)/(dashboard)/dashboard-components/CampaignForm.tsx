@@ -594,9 +594,9 @@ export function mapResponseToForm(
     timeCommitment: [string, string] | undefined,
     volunteerCommitment,
     additionalNotes
-  const campaignDuration: [string, string] = [
-    campaignStartDate,
-    campaignEndDate,
+  const campaignDuration: [Date, Date] = [
+    new Date(campaignStartDate),
+    new Date(campaignEndDate),
   ]
 
   if (isFundraise(campaign)) {

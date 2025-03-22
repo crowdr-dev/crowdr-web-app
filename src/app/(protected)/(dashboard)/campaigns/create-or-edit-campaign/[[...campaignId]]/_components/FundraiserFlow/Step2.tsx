@@ -15,6 +15,9 @@ const Step2: RFC<Props> = ({ index, onStep }) => {
   const { ...form } = useFormContext() as CampaignFormContext
   const errors = form.formState.errors
 
+  const duration = form.watch('campaignDuration')
+  const values = form.getValues()
+
   const nextStep = () => {
     const title = form.getValues("title")
     const category = form.getValues("category")
@@ -100,7 +103,7 @@ const Step2: RFC<Props> = ({ index, onStep }) => {
               })}
               error={errors.campaignDuration as any}
               mode="range"
-              minDate={new Date()}
+              // minDate={new Date()}
               // enableTime
             />
           </div>

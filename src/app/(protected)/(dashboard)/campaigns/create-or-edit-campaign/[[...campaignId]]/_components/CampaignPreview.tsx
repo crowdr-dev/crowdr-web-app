@@ -20,8 +20,15 @@ const CampaignPreview = () => {
   const [hover, setHover] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
-  const { campaignType, showPreview, setShowPreview, submitForm, ...form } =
-    useFormContext() as CampaignFormContext
+  const {
+    campaignType,
+    showPreview,
+    isEdit,
+    uploadedImages,
+    setShowPreview,
+    submitForm,
+    ...form
+  } = useFormContext() as CampaignFormContext
   const user = useUser()
   const values = form.getValues()
   const subheader = values.story
@@ -29,7 +36,7 @@ const CampaignPreview = () => {
   const currency = values.currency
   const currentAmount = 0
   const progress = 0
-  const [slideImages, setSlideImages] = useState<string[]>()
+  const [slideImages, setSlideImages] = useState(uploadedImages)
   const images = values.campaignImages ?? []
 
   useEffect(() => {
@@ -43,7 +50,9 @@ const CampaignPreview = () => {
       })
       return promise
     })
-    Promise.all(promises).then((images) => setSlideImages(images as any))
+    Promise.all(promises).then((images) =>
+      setSlideImages([...slideImages, ...(images as any)])
+    )
   }, [showPreview])
 
   // if (slideImages.length === 0) {
