@@ -129,7 +129,7 @@ export default function DynamicExplore() {
   return (
     <div className="font-satoshi">
       <Head>
-        <title>Explore campaigns</title>
+        <title>Explore campaigns on Crowdr</title>
         <meta
           name="description"
           content="Explore campaigns and spread love by donating."
@@ -152,7 +152,7 @@ export default function DynamicExplore() {
               Explore
             </h2>
             <p className="text-[14px] font-normal">
-              Explore campaigns and spread love by donating.
+            Explore campaigns on Crowdr.
             </p>
           </div>
           

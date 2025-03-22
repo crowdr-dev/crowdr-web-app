@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     "Crowdfunding in Nigeria",
     "Crowdfunding in Africa"
   ],
-  description: "Explore campaigns and spread love by donating or volunteering",
+  description: "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today.",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     siteName: "Crowdr",
     title: "Crowdr - Crowdfund in Nigeria",
     description:
-      "Explore campaigns and spread love by donating or volunteering",
+      "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today.",
     images: [
       {
         url: "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     creator: "@oncrowdr",
     images:
       "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
-    description: "Explore campaigns and spread love by donating or volunteering"
+    description: "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today."
   },
   appleWebApp: {
     statusBarStyle: "default",
