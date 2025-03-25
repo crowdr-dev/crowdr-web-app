@@ -7,6 +7,8 @@ import { WhiteButton, Button } from "@/app/common/components/Button"
 import { RFC } from "@/app/common/types"
 import FileInput from "@/app/common/components/FileInput"
 import { twMerge } from "tailwind-merge"
+import { ChevronLeft } from "lucide-react"
+import { IoChevronBack } from "react-icons/io5"
 
 const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
   const { isEdit, campaignType, setShowPreview, ...form } =
@@ -16,8 +18,8 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
   const errors = form.formState.errors
   const shouldValidateImage = isEdit ? false : true
   const saveButtonText = isFundraiser
-  // TODO: the save button is not showing the right label in edit campaign mode
-    ? isEdit
+    ? // TODO: the save button is not showing the right label in edit campaign mode
+      isEdit
       ? "Save"
       : "Launch campaign"
     : "Continue to Volunteer campaign"
@@ -62,6 +64,15 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
 
         {/* prev x next */}
         <div className="flex flex-col-reverse lg:flex-row lg:items-center justify-end gap-4">
+          {isFundraiser && (
+            <button
+              onClick={() => onStep(index - 1)}
+              className="flex items-center gap-1 text-[#00B964] hover:underline mr-auto"
+            >
+              <IoChevronBack size={24} stroke="#00B964" /> Back to previous page
+            </button>
+          )}
+
           <WhiteButton
             text={backButtonText}
             shadow

@@ -11,6 +11,7 @@ import TextAreaInput from "@/app/common/components/TextAreaInput"
 import { WhiteButton, Button } from "@/app/common/components/Button"
 import { RFC } from "@/app/common/types"
 import OptionInput from "@/app/common/components/OptionInput"
+import { IoChevronBack } from "react-icons/io5"
 
 const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
   const { campaignType, setShowPreview, ...form } =
@@ -263,6 +264,13 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
           </div>
         ) : (
           <div className="flex flex-col-reverse lg:flex-row lg:items-center justify-end gap-4">
+            <button
+              onClick={() => onStep(index - 1)}
+              className="flex items-center gap-1 text-[#00B964] hover:underline mr-auto"
+            >
+              <IoChevronBack size={24} stroke="#00B964" /> Back to previous page
+            </button>
+
             <WhiteButton
               text="Preview Campaign"
               shadow
