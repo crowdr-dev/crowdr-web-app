@@ -73,7 +73,8 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
 
   const currencySymbol = useMemo(() => {
     const currencyLabel = currencies.find((c) => c.value === currency)!
-    return (currencyLabel?.label?.match(/\((.)\)/) || [])[1]
+    // return (currencyLabel?.label?.match(/\((.)\)/) || [])[1]
+    return currencyLabel?.label?.slice(-3)?.at(1)
   }, [currency])
 
   useEffect(() => {
