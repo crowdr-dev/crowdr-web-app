@@ -61,6 +61,7 @@ const Step2: RFC<Props> = ({ index, onStep }) => {
           <div className="max-w-lg">
             <TextInput
               name="title"
+              placeholder="Help Nicholas go back to college"
               rules={{
                 required: "Title is required",
               }}
