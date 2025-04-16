@@ -111,31 +111,31 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
     }
   }, [pageNum])
 
-  useEffect(() => {
-    if (user?._id) {
-      if (!headlessServiceRef.current) {
-        const headlessService = new HeadlessService({
-          applicationIdentifier: "JyjHr30y-vzW",
-          subscriberId: user._id,
-        })
+  // useEffect(() => {
+  //   if (user?._id) {
+  //     if (!headlessServiceRef.current) {
+  //       const headlessService = new HeadlessService({
+  //         applicationIdentifier: "JyjHr30y-vzW",
+  //         subscriberId: user._id,
+  //       })
 
-        headlessService.initializeSession({
-          listener: (res) => {},
-          onSuccess: (session) => {
-            headlessServiceRef.current = headlessService
-            fetchNotifications()
-            getUnseenCount()
-          },
-          onError: (error) => {
-            console.log("headlessService error:", error)
-          },
-        })
-      } else {
-        fetchNotifications()
-        getUnseenCount()
-      }
-    }
-  }, [fetchNotifications, getUnseenCount, user?._id])
+  //       headlessService.initializeSession({
+  //         listener: (res) => {},
+  //         onSuccess: (session) => {
+  //           headlessServiceRef.current = headlessService
+  //           fetchNotifications()
+  //           getUnseenCount()
+  //         },
+  //         onError: (error) => {
+  //           console.log("headlessService error:", error)
+  //         },
+  //       })
+  //     } else {
+  //       fetchNotifications()
+  //       getUnseenCount()
+  //     }
+  //   }
+  // }, [fetchNotifications, getUnseenCount, user?._id])
 
   // Function to mark notifications as read
   const markNotificationsAsRead = (messageIds: string | string[]) => {

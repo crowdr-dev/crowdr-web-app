@@ -98,29 +98,40 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
   const formattedText = useMemo(() => {
     if (!subheader) return { shortText: "", fullText: "" };
 
-    const sentences = subheader.split(/(?<=[.!?])\s+/);
+    // Use a simpler approach to split sentences while preserving punctuation
+    const pattern = /([^.!?]+[.!?]+)(?:\s+|$)/g;
+    const matches = subheader.match(pattern) || [];
+    const sentences = matches.map((s) => s.trim());
+
+    // Take first 3 sentences for short text
     const shortSentences = sentences.slice(0, 3).join(" ");
-    const fullText = sentences
-      .reduce((acc, sentence, index) => {
-        if (index % 3 === 0 && index !== 0) {
-          return acc + "\n\n" + sentence;
-        }
-        return acc + " " + sentence;
-      }, "")
-      .trim();
+
+    // Format full text with line breaks every 3 sentences
+    let fullText = "";
+    sentences.forEach((sentence, index) => {
+      if (index % 3 === 0 && index !== 0) {
+        fullText += "\n\n";
+      } else if (index !== 0) {
+        fullText += " ";
+      }
+      fullText += sentence;
+    });
 
     return {
       shortText:
         shortSentences.length > 150
           ? shortSentences.slice(0, 150) + "..."
           : shortSentences,
-      fullText: fullText
+      fullText: fullText.trim()
     };
   }, [subheader]);
+
 
   const toggleReadMore = () => {
     setIsCollapsed(!isCollapsed);
   };
+
+  
   const progress = totalAmount ? currentAmount / totalAmount : 0;
 
   const settings = (images: string[]) => {

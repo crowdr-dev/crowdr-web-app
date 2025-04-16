@@ -37,7 +37,7 @@ const ViewCampaign = () => {
           {formData ? (
             <div className="mb-[222px]">
               {/* title */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Title" />
                 <div className="max-w-lg">
                   <TextInput
@@ -50,7 +50,7 @@ const ViewCampaign = () => {
               </div>
 
               {/* campaign type */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Campaign Type" />
                 <div className="max-w-lg">
                   <TextInput
@@ -63,7 +63,7 @@ const ViewCampaign = () => {
               </div>
 
               {/* category */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Category" />
                 <div className="max-w-lg">
                   <TextInput
@@ -76,7 +76,7 @@ const ViewCampaign = () => {
               </div>
 
               {/* campaign duration */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Campaign Duration" />
                 <div className="max-w-lg">
                   <TextInput
@@ -89,7 +89,7 @@ const ViewCampaign = () => {
               </div>
 
               {/* tell your story */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle
                   title="Tell Your Story"
                   detail="The more details, the better."
@@ -105,7 +105,7 @@ const ViewCampaign = () => {
               </div>
 
               {/* upload engaging media */}
-              <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                 <InputTitle title="Upload Engaging Media" />
                 <div className="max-w-lg">
                   {/* <FileItem /> */}
@@ -126,7 +126,7 @@ const ViewCampaign = () => {
                   </summary>
 
                   {/* currency */}
-                  <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+                  <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                     <InputTitle title="Currency" />
                     <div className="max-w-lg">
                       <TextInput
@@ -139,7 +139,7 @@ const ViewCampaign = () => {
                   </div>
 
                   {/* funding goal */}
-                  <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+                  <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                     <InputTitle title="Funding Goal" />
                     <div className="max-w-lg">
                       <TextInput controlled name="fundingGoal" disabled />
@@ -161,7 +161,7 @@ const ViewCampaign = () => {
                   </summary>
 
                   {/* skills needed */}
-                  <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+                  <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                     <InputTitle
                       title="Skills Needed"
                     />
@@ -174,7 +174,7 @@ const ViewCampaign = () => {
                   </div>
 
                   {/* age needed */}
-                  <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+                  <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                     <InputTitle title="Age Range" />
                     <div className="max-w-lg">
                       <p>18 - 36</p>
@@ -182,7 +182,7 @@ const ViewCampaign = () => {
                   </div>
 
                   {/* gender preference */}
-                  <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+                  <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                     <InputTitle title="Gender Preference" />
                     <div className="max-w-lg">
                       <p>No preference</p>
@@ -190,7 +190,7 @@ const ViewCampaign = () => {
                   </div>
 
                   {/* date and time needed */}
-                  <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+                  <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                     <InputTitle title="Date and Time Needed" />
                     <div className="max-w-lg">
                       <TextInput controlled name="timeCommitment" disabled />
@@ -198,7 +198,7 @@ const ViewCampaign = () => {
                   </div>
 
                   {/* volunteer commitment */}
-                  <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+                  <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                     <InputTitle title="Volunteer Commitment" />
                     <div className="max-w-lg">
                       <p>One-time event</p>
@@ -206,7 +206,7 @@ const ViewCampaign = () => {
                   </div>
 
                   {/* additional requirements or notes */}
-                  <div className="grid md:grid-cols-[350px_minmax(0,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+                  <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
                     <InputTitle
                       title="Additional Requirements or Notes"
                       id="notes"

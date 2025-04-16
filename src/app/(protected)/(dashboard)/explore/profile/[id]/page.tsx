@@ -220,7 +220,7 @@ const OrganizationProfilePage: React.FC = () => {
   };
   
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div className="max-w-7xl mx-auto py-8">
       {/* Two-column layout for the entire page */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left column (2/3) */}

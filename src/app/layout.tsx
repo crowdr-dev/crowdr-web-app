@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     "Crowdfunding in Nigeria",
     "Crowdfunding in Africa"
   ],
-  description: "Explore campaigns and spread love by donating or volunteering",
+  description: "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today.",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     siteName: "Crowdr",
     title: "Crowdr - Crowdfund in Nigeria",
     description:
-      "Explore campaigns and spread love by donating or volunteering",
+      "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today.",
     images: [
       {
         url: "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
@@ -68,12 +68,15 @@ export const metadata: Metadata = {
     creator: "@oncrowdr",
     images:
       "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
-    description: "Explore campaigns and spread love by donating or volunteering"
+    description: "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today."
   },
   appleWebApp: {
     statusBarStyle: "default",
     capable: true,
     title: "Crowdr - Crowdfund in Nigeria"
+  },
+  verification: {
+    google: "9Yb3G9DGqrNGVcr7mLbrpoIRZD6Kj4YHixwQileL0EI"
   }
 };
 
@@ -82,6 +85,16 @@ const inter = Public_Sans({ subsets: ["latin"] });
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
+      {/* Google Tag Manager */}
+      <Script id="google-tag-manager" strategy="afterInteractive">
+        {`
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-N95QRZ5K');
+        `}
+      </Script>
       <Script
         strategy="afterInteractive"
         src="https://www.googletagmanager.com/gtag/js?id=G-JL3VDJ3QRX"
@@ -96,6 +109,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           gtag('config', 'G-JL3VDJ3QRX');
         `}
       </Script>
+
       <Script type="text/javascript" id="tawk">
         {`
           var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -111,6 +125,15 @@ export default function RootLayout({ children }: PropsWithChildren) {
       </Script>
       <body className={`${satoshi.variable} ${inter.className}`}>
         <RootApp>{children}</RootApp>
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-N95QRZ5K"
+            height="0"
+            width="0"
+            style={
+              { display: "none", visibility: "hidden" }
+            }></iframe>
+        </noscript>
       </body>
     </html>
   );

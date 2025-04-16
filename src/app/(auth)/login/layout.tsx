@@ -3,17 +3,17 @@ import type { Metadata } from 'next'
 
 
 export const metadata: Metadata = {
-  title: "Explore Crowdr",
+  title: "Login",
   description:
-    "Explore Crowdr | Discover Crowdfunding Campaigns in Nigeria",
+    "Sign in to your Crowdr account to find volunteers, track donations, update your campaign, and connect with supporters.",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://www.oncrowdr.com/",
     siteName: "Crowdr",
-    title: "Sign Up",
+    title: "Login",
     description:
-      "Explore Crowdr | Discover Crowdfunding Campaigns in Nigeria",
+      "Sign in to your Crowdr account to find volunteers, track donations, update your campaign, and connect with supporters.",
     images: [
       {
         url: "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
