@@ -13,6 +13,7 @@ const Page: RFC = ({ children }) => {
   const logout = async () => {
     await deleteCookie("token")
     location.replace("/login")
+    localStorage.removeItem("USER")
   }
 
   const hideLogoutModal = () => {

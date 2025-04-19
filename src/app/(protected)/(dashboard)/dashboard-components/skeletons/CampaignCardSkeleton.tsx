@@ -8,9 +8,9 @@ const CampaignCardSkeleton = () => {
           <Skeleton width={90} height={25} borderRadius={100} />
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between mb-8 md:mb-[19px]">
-          <Skeleton width={220} height={20} borderRadius={100} containerClassName="mb-2 md:mb-0" />
-          <Skeleton width={105} height={35} borderRadius={100} />
+        <div className="flex flex-col md:flex-row gap-x-2 justify-between mb-8 md:mb-[19px]">
+          <Skeleton height={20} borderRadius={100} className="max-w-[220px]" containerClassName="flex-1 max-w-[220px] mb-2 md:mb-0" />
+          <Skeleton height={35} borderRadius={100} className="max-w-[105px]" containerClassName="flex-1 max-w-[105px]" />
         </div>
       </div>
 
