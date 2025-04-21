@@ -418,7 +418,7 @@ const OrganizationProfilePage: React.FC = () => {
 
         {/* Right column (1/3) - Ongoing Campaign */}
         <div className="lg:col-span-1 h-full">
-          {selectedCampaign && (
+          {/* {selectedCampaign && (
             <OngoingCampaign
               campaign={{
                 id: selectedCampaign.id,
@@ -435,7 +435,7 @@ const OrganizationProfilePage: React.FC = () => {
               }}
               onDonate={handleDonate}
             />
-          )}
+          )} */}
            {/* Donors list */}
            {selectedCampaign && (
                 <RecentDonors
