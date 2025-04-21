@@ -16,6 +16,7 @@ const UserProvider: RFC<UserProviderProps> = ({ children }) => {
     getUser().then((user) => {
       if (user) {
         axios.defaults.headers.common["x-auth-token"] = user.token
+        localStorage.setItem("USER", JSON.stringify(user))
       }
 
       setUser(user)

@@ -45,7 +45,7 @@ const NumberInput: RFC<NumberInputProps> = ({
       if (value.endsWith(".")) value += "0"
 
       if (config) {
-        setValue(config.name, value ? Number(value) : undefined)
+        setValue(config.name, value ? Number(value) : "")
         trigger(config.name)
       }
 

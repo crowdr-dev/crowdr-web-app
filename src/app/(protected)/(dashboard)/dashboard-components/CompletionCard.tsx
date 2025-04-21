@@ -67,6 +67,7 @@ const CompletionCard: RFC<CompletionCardProps> = ({
           onClick={primaryButton.onClick}
           className={buttonClasses}
           bgColor={primaryButton.bgColor}
+          loading={primaryButton.loading}
           shadow
         />
         {secondaryButton && (
@@ -100,6 +101,7 @@ type Button = {
   href?: string
   onClick?: () => void
   bgColor?: string
+  loading?: boolean
 }
 
 const Rings = ({ icon }: any) => {

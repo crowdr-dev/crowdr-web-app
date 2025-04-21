@@ -31,7 +31,7 @@ const Header = () => {
 
   
   return (
-    <header className="flex justify-between items-center w-full min-h-[62px] md:min-h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
+    <header className="flex justify-between items-center bg-white z-[1] w-full min-h-[62px] md:min-h-[74px] border-b-[0.7px] border-[rgba(56, 56, 56, 0.08)] px-[25px]">
       <div>
         <Image
           src={CrowdrLogo}
