@@ -21,6 +21,7 @@ const config: UseFormConfig = {
     fullName: "",
     organizationName: "",
     email: "",
+    phoneNumber: "",
     password: "",
     confirmPassword: "",
     gender: "",
@@ -39,6 +40,7 @@ type FormFields = {
   fullName:             string;
   organizationName:     string;
   email:                string;
+  phoneNumber:          string;
   password:             string;
   confirmPassword:      string;
   gender:               string;

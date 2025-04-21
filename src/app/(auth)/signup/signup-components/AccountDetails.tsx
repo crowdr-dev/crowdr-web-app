@@ -12,6 +12,7 @@ const AccountDetails = () => {
   const [passIsVisible, setPassIsVisible] = useState(false)
   const [confirmPassIsVisible, setConfirmPassIsVisible] = useState(false)
   const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/
+  const phoneNumberRegex = /\d{11}/
 
   const prevPage = () => {
     window.scroll({top: 0, left: 0, behavior: 'smooth'})
@@ -46,6 +47,12 @@ const AccountDetails = () => {
                   <label htmlFor="email_address" className="text-[14px] text-[#344054] mb-[6px]">Email address</label>
                   <input type="text" {...register("email", {required: {value: true, message: "Email is required"}, pattern: {value: emailRegex, message: "Enter a valid email"}})} id="email_address" placeholder="Enter your email" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
                   {errors.email && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.email?.message}</span>}
+              </div>
+
+              <div className="flex flex-col mb-[9px]">
+                  <label htmlFor="phone_number" className="text-[14px] text-[#344054] mb-[6px]">Phone number</label>
+                  <input type="text" {...register("phoneNumber", {required: {value: true, message: "Phone number is required"}, pattern: {value: phoneNumberRegex, message: "Enter a valid phone number"}})} id="phone_number" placeholder="Enter your phone number" className="text-[15px] rounded-lg border border-[#D0D5DD] py-[10px] px-[14px]" />
+                  {errors.phoneNumber && <span className="text-[13px] text-[#667085] opacity-[0.67] mt-[6px]">{errors.phoneNumber?.message}</span>}
               </div>
 
               <div className="flex flex-col mb-[9px]">
