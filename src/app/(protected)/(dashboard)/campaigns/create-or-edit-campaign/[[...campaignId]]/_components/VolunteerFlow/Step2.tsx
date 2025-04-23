@@ -230,19 +230,6 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
           </div>
         </div>
 
-        {/* phone number */}
-        <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
-          <InputTitle title="Phone Number" />
-
-          <div className="max-w-lg">
-            <TextInput
-              name="phoneNumber"
-              error={errors.phoneNumber}
-              ariaLabel="Phone Number"
-            />
-          </div>
-        </div>
-
         {/* code of conduct */}
         <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-14 lg:mb-[25px]">
           <InputTitle

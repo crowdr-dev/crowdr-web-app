@@ -19,13 +19,16 @@ const ProfileForm = () => {
   const toast = useToast()
   const setUser = useSetAtom(userAtom)
   const isIndividual = user?.userType === "individual"
+  const phoneNumberRegex = /\d{11}/
 
   useEffect(() => {
     if (user) {
-      const { fullName, organizationName, email } = user
-      const fields = isIndividual
-        ? { fullName, email }
-        : { organizationName, email }
+      const { fullName, organizationName, email, phoneNumber } = user
+      const fields = {
+        email,
+        phoneNumber,
+        ...(isIndividual ? { fullName } : { organizationName }),
+      }
       reset(fields)
     }
   }, [user])
@@ -33,16 +36,18 @@ const ProfileForm = () => {
   const submit = async (formFields: FormFields) => {
     if (user) {
       const { userType } = user
-      const { fullName, organizationName } = formFields
+      const { fullName, organizationName, phoneNumber } = formFields
 
       const endpoint = "/api/v1/settings/edit-profile"
       const headers = {
         "x-auth-token": user.token,
       }
 
-      const payload = isIndividual
-        ? { userType, fullName }
-        : { userType, organizationName }
+      const payload = {
+        userType,
+        phoneNumber,
+        ...(isIndividual ? { fullName } : { organizationName }),
+      }
 
       try {
         const { success, message } = await makeRequest(endpoint, {
@@ -53,7 +58,7 @@ const ProfileForm = () => {
 
         if (success) {
           toast({ title: "Well done!", body: message })
-          setUser({ ...user, fullName, organizationName })
+          setUser({ ...user, fullName, organizationName, phoneNumber })
         }
       } catch (error) {
         console.log(error)
@@ -78,6 +83,19 @@ const ProfileForm = () => {
               styles={{ wrapper: "mb-[26px]" }}
             />
           )}
+
+          <TextInput
+            name="phoneNumber"
+            label="Phone number"
+            styles={{ wrapper: "mb-[26px]" }}
+            rules={{
+              required: { value: true, message: "Phone number is required" },
+              pattern: {
+                value: phoneNumberRegex,
+                message: "Enter a valid phone number",
+              },
+            }}
+          />
 
           <TextInput
             name="email"
