@@ -116,5 +116,8 @@ const genderOptions = [
 const referrerOptions = [
   {value: 'google', label: 'Google'},
   {value: 'facebook', label: 'Facebook'},
+  {value: 'twitter', label: 'Twitter'},
+  {value: 'instagram', label: 'Instagram'},
+  {value: 'linkedin', label: 'LinkedIn'},
   {value: 'other', label: 'Other'},
 ]
