@@ -2,7 +2,7 @@ import { RFC } from "@/app/common/types"
 import { Fragment } from "react"
 import { IconType } from "react-icons/lib"
 
-const Stepper: RFC<Props> = ({ value, steps }) => {
+const Stepper: RFC<Props> = ({ value, steps, setStep }) => {
   return (
     <div className="grid place-items-center mb-10 px-2 lg:px-0">
       <div className="flex items-center w-full max-w-[713px]">
@@ -21,8 +21,9 @@ const Stepper: RFC<Props> = ({ value, steps }) => {
               )}
 
               <div
-                className="relative rounded-lg border border-[#EAECF0] p-2.5"
+                className="relative rounded-lg border border-[#EAECF0] p-2.5 cursor-pointer"
                 style={{ boxShadow: "0px 1px 2px 0px #1018280D" }}
+                onClick={() => setStep(index)}
               >
                 <step.icon size={20} {...props} />
                 <div
@@ -45,6 +46,7 @@ export default Stepper
 interface Props {
   value: number
   steps: Step[]
+  setStep: React.Dispatch<React.SetStateAction<number>>
 }
 
 interface Step {
