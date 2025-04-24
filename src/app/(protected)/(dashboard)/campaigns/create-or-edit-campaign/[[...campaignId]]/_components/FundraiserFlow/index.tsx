@@ -31,7 +31,7 @@ const FundraiserFlow = () => {
         <p className="text-sm text-[#61656B]">{pageSubtext}</p>
       </hgroup>
 
-      <Stepper value={currentStep} steps={steps} />
+      <Stepper value={currentStep} steps={steps}  setStep={setStep}/>
 
       {currentStep === 0 && <Step1 index={0} onStep={setStep} />}
       {currentStep === 1 && <Step2 index={1} onStep={setStep} />}
