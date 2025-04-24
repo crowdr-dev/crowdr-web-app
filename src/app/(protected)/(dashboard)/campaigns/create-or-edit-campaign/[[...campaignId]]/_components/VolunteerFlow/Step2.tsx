@@ -69,6 +69,10 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
                   placeholder="Help Nicholas go back to college"
                   rules={{
                     required: "Title is required",
+                    minLength: {
+                      value: 15,
+                      message: "Title must be at least 15 characters",
+                    },
                   }}
                   error={errors.title}
                   ariaLabel="Title"
@@ -87,11 +91,35 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
                   name="story"
                   rules={{
                     required: "Story is required",
+                    minLength: {
+                      value: 60,
+                      message: "Story must be at least 60 characters",
+                    }
                   }}
                   characterLimit={5000}
-                  additionalCharacterInfo="(must be between 60 - 5000 characters)"
+                  additionalCharacterInfo="  (must be between 60 - 5000 characters)"
                   error={errors.story}
                   ariaLabel="Tell Your Story"
+                />
+              </div>
+            </div>
+
+            {/* campaign address */}
+            <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+              <InputTitle
+                title="Campaign Address"
+                detail="Provide the address related to the campaign."
+              />
+              <div className="max-w-lg">
+                <TextAreaInput
+                  name="campaignAddress"
+                  placeholder="123 Main St, City, State"
+                  rules={{
+                    required: "Campaign address is required",
+                  }}
+                  characterLimit={5000}
+                  error={errors.campaignAddress}
+                  ariaLabel="Campaign Address"
                 />
               </div>
             </div>
@@ -239,6 +267,25 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
               name="phoneNumber"
               error={errors.phoneNumber}
               ariaLabel="Phone Number"
+            />
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
+          <InputTitle title="Contact email address" />
+
+          <div className="max-w-lg">
+            <TextInput
+              name="contactEmail"
+              error={errors.contactEmail}
+              ariaLabel="Contact Email Address"
+              rules={{
+                required: "Contact email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Invalid email address",
+                },
+              }}
             />
           </div>
         </div>

@@ -25,6 +25,7 @@ const TextInput: RFC<TextInputProps> = ({
   ariaLabel,
   disabled,
   iconUrl,
+  type,
   ...props
 }) => {
   if (!controlled && !config && name) {
@@ -69,7 +70,7 @@ const TextInput: RFC<TextInputProps> = ({
           </div>
         )}
         <input
-          type="text"
+          type={type || "text"}
           {...config}
           id={id || config?.name || name}
           value={value}
@@ -105,6 +106,7 @@ type TextInputProps = {
   showOptionalLabel?: boolean
   ariaLabel?: string
   ariaLabelledBy?: string
+  type?: string;
   icon?: any
   iconUrl?: string
   name?: string
