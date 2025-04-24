@@ -93,7 +93,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
                     required: "Story is required",
                     minLength: {
                       value: 60,
-                      message: "Story must be at least 60 characters  ",
+                      message: "Story must be at least 60 characters",
                     }
                   }}
                   characterLimit={5000}
