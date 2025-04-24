@@ -14,6 +14,7 @@ export type IUser = {
   interests: string[]
   isEmailVerified: boolean
   organizationName: string
+  phoneNumber?: string
   isAdmin?: boolean
 };
 

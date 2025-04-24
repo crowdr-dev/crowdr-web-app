@@ -29,6 +29,7 @@ const VolunteerFlow = () => {
 
       <Stepper
         value={currentStep}
+        setStep={setStep}
         steps={steps.slice(0, campaignType == "fundraiseAndVolunteer" ? 2 : 3)}
       />
 

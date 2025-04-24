@@ -24,5 +24,6 @@ type FormFields = {
   fullName: string;
   organizationName: string
   email: string;
+  phoneNumber: string;
 };
 type ProfileFormContext = UseFormReturn<FormFields>;
