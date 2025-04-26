@@ -26,7 +26,7 @@ const FormPages = () => {
       _.pick(formFields, [
         "userType",
         "email",
-        // "phoneNumber",
+        "phoneNumber",
         "interests",
         "password",
         "referrer",
