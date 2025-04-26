@@ -1,4 +1,5 @@
 import { RFC } from "@/app/common/types"
+import { ChangeEvent, ClipboardEvent, KeyboardEvent } from "react"
 import CurrencyInput from "react-currency-input-field"
 import {
   useFormContext,
@@ -6,6 +7,7 @@ import {
   UseFormRegisterReturn,
   RegisterOptions,
 } from "react-hook-form"
+import { regex } from "regex"
 
 const NumberInput: RFC<NumberInputProps> = ({
   config,
@@ -25,7 +27,10 @@ const NumberInput: RFC<NumberInputProps> = ({
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {register, formState: {errors}} = useFormContext()
+    const {
+      register,
+      formState: { errors },
+    } = useFormContext()
     config = register(name, rules)
     error = errors[name] as FieldError
   }
@@ -35,35 +40,128 @@ const NumberInput: RFC<NumberInputProps> = ({
     var { setValue, trigger, getValues } = useFormContext()
     value = getValues(config.name)
   }
-  const regex = /[^0-9.]/gi
 
-  const handleInput = (e: InputEvent) => {
-    const currentInput = config ? getValues(config.name) : value
+  // const regex = /[^0-9.]/gi
+  // const handleInput = (e: InputEvent) => {
+  //   const currentInput = config ? getValues(config.name) : value
 
-    if (isChangeEvent(e)) {
-      let value = e.target.value.replace(regex, "")
-      if (value.endsWith(".")) value += "0"
+  //   if (isChangeEvent(e)) {
+  //     let value = e.target.value.replace(regex, "")
+  //     if (value.endsWith(".")) value += "0"
+
+  //     if (config) {
+  //       setValue(config.name, value ? Number(value) : "")
+  //       trigger(config.name)
+  //     }
+
+  //     if (onChange) {
+  //       onChange({ ...e, target: { ...e.target, value } })
+  //     }
+  //   } else if (isKeyboardEvent(e)) {
+  //     if (e.ctrlKey) {
+  //     } else if (e.key == ".") {
+  //       if (currentInput?.includes(".")) e.preventDefault() // BUG: CAN'T INPUT DECIMALS
+  //       else if (currentInput?.length === 0) e.preventDefault()
+  //     } else if (e.key.match(/^[^0-9.]$/i)) {
+  //       e.preventDefault()
+  //     }
+  //   } else {
+  //     // TODO: HANDLE CASE WITH PASTED TEXT
+  //     const pastedText = e.clipboardData.getData("text")
+  //     // console.log("Pasted text:", pastedText);
+  //   }
+  // }
+
+  const nonNumericGlobal = regex("gi")`[^0-9.]` // replaces /[^0-9.]/gi
+  const nonNumericSingle = regex("i")`^[^0-9.]$` // replaces /^[^0-9.]$/i
+
+  function handleInput(
+    e:
+      | ChangeEvent<HTMLInputElement>
+      | KeyboardEvent<HTMLInputElement>
+      | ClipboardEvent<HTMLInputElement>
+  ) {
+    const inputEl = e.currentTarget // always HTMLInputElement
+    const rawValue = inputEl.value
+
+    if (e.type === "change") {
+      // --- ChangeEvent branch ---
+      const changeEvent = e as ChangeEvent<HTMLInputElement>
+      let clean = changeEvent.target.value.replace(nonNumericGlobal, "")
+
+      // FIX: allow leading "." by prefixing zero; ensure trailing "." gets a "0"
+      if (clean.startsWith(".")) {
+        clean = "0" + clean
+      }
+      if (clean.endsWith(".")) {
+        clean += "0"
+      }
 
       if (config) {
-        setValue(config.name, value ? Number(value) : "")
+        setValue(config.name, clean ? Number(clean) : "")
         trigger(config.name)
       }
-
       if (onChange) {
-        onChange({ ...e, target: { ...e.target, value } })
+        onChange({ ...changeEvent, target: inputEl, currentTarget: inputEl })
       }
-    } else if (isKeyboardEvent(e)) {
-      if (e.ctrlKey) {
-      } else if (e.key == ".") {
-        if (currentInput?.includes(".")) e.preventDefault() // BUG: CAN'T INPUT DECIMALS
-        else if (currentInput?.length === 0) e.preventDefault()
-      } else if (e.key.match(/^[^0-9.]$/i)) {
-        e.preventDefault()
+    } else if (e.type === "keydown") {
+      // --- KeyboardEvent branch ---
+      const keyEvent = e as KeyboardEvent<HTMLInputElement>
+
+      if (keyEvent.ctrlKey) {
+        // allow ctrl+X/C/V/etc.
+      } else if (keyEvent.key === ".") {
+        // only block if there's already a decimal
+        if (rawValue.includes(".")) {
+          keyEvent.preventDefault()
+        }
+        // otherwise allow a leading dot—change handler will prefix "0"
+      } else if (keyEvent.key.match(nonNumericSingle)) {
+        // block any non-digit/non-dot single key
+        keyEvent.preventDefault()
       }
-    } else {
-      // TODO: HANDLE CASE WITH PASTED TEXT
-      const pastedText = e.clipboardData.getData("text")
-      // console.log("Pasted text:", pastedText);
+    } else if (e.type === "paste") {
+      // --- ClipboardEvent branch ---
+      const pasteEvent = e as ClipboardEvent<HTMLInputElement>
+      pasteEvent.preventDefault()
+
+      // 1) sanitize the pasted string
+      let pasted = pasteEvent.clipboardData
+        .getData("text")
+        .replace(nonNumericGlobal, "")
+
+      // 2) collapse extra dots: keep only the first
+      const parts = pasted.split(".")
+      if (parts.length > 2) {
+        pasted = parts.shift()! + "." + parts.join("")
+      }
+
+      // 3) ensure valid leading/trailing dot
+      if (pasted.startsWith(".")) pasted = "0" + pasted
+      if (pasted.endsWith(".")) pasted += "0"
+
+      // 4) splice into the input at the caret/selection
+      const start = inputEl.selectionStart ?? 0
+      const end = inputEl.selectionEnd ?? 0
+      const before = rawValue.slice(0, start)
+      const after = rawValue.slice(end)
+      const newValue = before + pasted + after
+
+      inputEl.value = newValue
+
+      if (config) {
+        setValue(config.name, newValue ? Number(newValue) : "")
+        trigger(config.name)
+      }
+      if (onChange) {
+        // fire a synthetic ChangeEvent with updated target
+        const synthetic: ChangeEvent<HTMLInputElement> = {
+          ...pasteEvent,
+          target: inputEl,
+          currentTarget: inputEl,
+        } as any
+        onChange(synthetic)
+      }
     }
   }
 

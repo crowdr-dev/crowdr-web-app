@@ -2,6 +2,7 @@ import Label from "./Label"
 import { RFC } from "@/app/common/types"
 import { ReactElement } from "react"
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6"
+import { regex } from "regex"
 
 const Detail: RFC<DetailProps> = ({
   title,
@@ -36,7 +37,7 @@ const Detail: RFC<DetailProps> = ({
 
           {status &&
             !button &&
-            (status.match(/success/i) ? (
+            (status.match(regex("i")`success`) ? (
               <Label text={status} />
             ) : (
               <Label text={status} textColor="#B42318" bgColor="#FEF3F2" />
