@@ -349,5 +349,6 @@ const referrerOptions = [
   { value: "twitter", label: "Twitter" },
   { value: "instagram", label: "Instagram" },
   { value: "linkedin", label: "LinkedIn" },
+  {value: 'wordofmouth', label: 'Word of mouth'},
   { value: "other", label: "Other" }
 ];

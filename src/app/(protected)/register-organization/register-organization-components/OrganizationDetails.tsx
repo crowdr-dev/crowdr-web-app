@@ -240,7 +240,7 @@ const OrganisationDetails = () => {
               </label>
               <div className="grid grid-cols-[146px_minmax(0,_1fr)]">
                 <input
-                  placeholder="app.crowdr.com/"
+                  placeholder="oncrowdr.com/"
                   disabled
                   className="placeholder:text-[#667085] bg-white rounded-tl-lg rounded-bl-lg border border-[#D0D5DD] border-r-0 py-[10px] pl-[14px]"
                 />
