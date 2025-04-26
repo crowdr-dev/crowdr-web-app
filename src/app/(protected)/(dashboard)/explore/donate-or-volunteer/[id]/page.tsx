@@ -22,6 +22,7 @@ import Loading from "@/app/loading";
 import { calculateTransactionFee, formatCurrency } from "@/utils/seperateText";
 import { useModal } from "@/app/common/hooks/useModal";
 import { Mixpanel } from "@/utils/mixpanel";
+import PhoneNumberInput from "@/app/common/components/PhoneNumberInput";
 
 const activeTabStyle = "text-[#00B964]  border-b-2 border-[#00B964]";
 const inActiveTabStyle = "text-[#667085]";
@@ -167,7 +168,7 @@ export default function DonateOrVolunteer({
     setVolunteerInputs({
       ...volunteerInputs,
       email: user?.email,
-      phoneNumber: "+234"
+      phoneNumber: ""
     });
   };
 
@@ -452,13 +453,20 @@ export default function DonateOrVolunteer({
                   onChange={updateVolunteerProps}
                 />
 
-                <Input
-                  label={"Phone number"}
-                  placeholder="08012345678"
+                <PhoneNumberInput
+                  label="Phone number"
+                  placeholder="Enter phone number"
                   name="phoneNumber"
                   id="phoneNumber"
                   value={volunteerInputs.phoneNumber}
-                  onChange={updateVolunteerProps}
+                  onChange={(value) => {
+                    setVolunteerInputs((prevState) => ({
+                      ...prevState,
+                      phoneNumber: value
+                    }));
+                  }}
+                  required={true}
+                  error={""} // Add error handling if needed
                 />
                 <Select
                   label={"Gender"}

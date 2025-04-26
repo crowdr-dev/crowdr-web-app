@@ -166,14 +166,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
     }
 
     if (isVolunteerRelated) {
-      let formattedPhoneNumber = formFields.phoneNumber.trim(); // Remove spaces
-
-      // Apply the country code formatting
-      if (formattedPhoneNumber.startsWith("0")) {
-        formattedPhoneNumber = "+234" + formattedPhoneNumber.substring(1);
-      } else if (formattedPhoneNumber.startsWith("234")) {
-        formattedPhoneNumber = "+" + formattedPhoneNumber;
-      }
+     
       payload.volunteer = JSON.stringify({
         skillsNeeded,
         otherSkillsNeeded,
@@ -185,7 +178,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
         additonalNotes: additionalNotes,
         volunteersNeeded: Number(formFields.volunteerCount),
         address: formFields.campaignAddress,
-        phoneNumber: formattedPhoneNumber,
+        phoneNumber: formFields.phoneNumber,
         email: formFields.contactEmail
       });
     }

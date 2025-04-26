@@ -31,7 +31,7 @@ const ShareCampaign = (props: ShareCampaignProps) => {
   const getWhatsAppShareLink = () => {
     const header = encodeURIComponent(`\n\n*${title}*`);
     const body = encodeURIComponent(
-      `\n\n${story}…\n\nRead more here: ${shareUrl}`
+      `\n\n${story}…\n\nDonate here: ${shareUrl}`
     );
     const footer = encodeURIComponent(
       `\n\nForward this message to your contacts to help this campaign reach its goal!`

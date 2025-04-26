@@ -14,5 +14,5 @@ export const handleUserRedirection = (
   if (user.userType === "non-profit" && !user.organizationId) {
    return redirectFn("/register-organization");
   }
-  return redirectFn("/explore");
+  return redirectFn("/campaigns");
 };

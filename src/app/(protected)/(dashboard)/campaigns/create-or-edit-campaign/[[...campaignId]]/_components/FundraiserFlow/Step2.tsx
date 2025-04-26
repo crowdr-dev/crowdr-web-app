@@ -64,6 +64,10 @@ const Step2: RFC<Props> = ({ index, onStep }) => {
               placeholder="Help Nicholas go back to college"
               rules={{
                 required: "Title is required",
+                minLength: {
+                  value: 15,
+                  message: "Title must be at least 15 characters",
+                },
               }}
               error={errors.title}
               ariaLabel="Title"
@@ -126,6 +130,10 @@ const Step2: RFC<Props> = ({ index, onStep }) => {
               name="story"
               rules={{
                 required: "Story is required",
+                minLength: {
+                  value: 60,
+                  message: "Story must be at least 60 characters",
+                }
               }}
               characterLimit={5000}
               additionalCharacterInfo="(must be between 60 - 5000 characters)"
