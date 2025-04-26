@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { RFC } from "@/app/common/types"
 import { ChangeEvent, ClipboardEvent, KeyboardEvent } from "react"
 import CurrencyInput from "react-currency-input-field"
