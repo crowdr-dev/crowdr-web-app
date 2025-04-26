@@ -41,6 +41,7 @@ import { Mixpanel } from "@/utils/mixpanel"
 import SidebarModal from "../../dashboard-components/SidebarModal"
 import VolunteerProfile from "../../dashboard-components/VolunteerProfile"
 import ModalTrigger from "@/app/common/components/ModalTrigger"
+import { regex } from "regex"
 
 const Campaign = ({ params }: Route) => {
   const [donorsPage, setDonorsPage] = useState(1)
@@ -85,8 +86,15 @@ const Campaign = ({ params }: Route) => {
   )
 
   const camelCaseToTitleCase = (str: string) => {
-    return str.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
-      return str.toUpperCase()
+    // 1. Split before each uppercase letter (global)
+    const splitter = regex("g")`([A-Z])`
+
+    // 2. Match the very first character of the string
+    const firstChar = regex`^.`
+
+    // return str.replace(/([A-Z])/g, " $1").replace(/^./, function (ch) {
+    return str.replace(splitter, " $1").replace(firstChar, function (ch) {
+      return ch.toUpperCase()
     })
   }
 
@@ -251,7 +259,9 @@ const Campaign = ({ params }: Route) => {
                 Mixpanel.track("Clicked Share Campaign")
               }}
             />
-            {!isVolunteerCampaign &&<Button text="Withdraw Donations" href="/campaigns/withdrawal" />}
+            {!isVolunteerCampaign && (
+              <Button text="Withdraw Donations" href="/campaigns/withdrawal" />
+            )}
           </div>
         </div>
 
@@ -406,7 +416,7 @@ const Campaign = ({ params }: Route) => {
       </div>
 
       <SidebarModal id="volunteer" position="right">
-        <VolunteerProfile volunteer={volunteerProfile}/>
+        <VolunteerProfile volunteer={volunteerProfile} />
       </SidebarModal>
     </>
   )
@@ -427,7 +437,9 @@ type IVolunteers = {
   unfiltered: IVolunteeringResponse["volunteerings"]
 }
 
-export type IVolunteerProfile = ReturnType<typeof mapVolunteeringResponseToView>[number]
+export type IVolunteerProfile = ReturnType<
+  typeof mapVolunteeringResponseToView
+>[number]
 
 const ITEMS_PER_PAGE = "4"
 const DATE_FORMAT = "ddd DD MMM, YYYY; hh:mm A"

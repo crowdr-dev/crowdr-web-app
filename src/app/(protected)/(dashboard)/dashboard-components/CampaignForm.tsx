@@ -24,10 +24,9 @@ import { isFundraise, isVolunteer } from "../common/utils/campaign"
 
 import { campaignCategories } from "@/utils/campaignCategory"
 import { RFC } from "@/app/common/types"
-import {
-  IFundraiseVolunteerCampaign,
-} from "@/app/common/types/Campaign"
+import { IFundraiseVolunteerCampaign } from "@/app/common/types/Campaign"
 import CaretIcon from "../../../../../public/svg/caret.svg"
+import { regex } from "regex"
 
 const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
   const {
@@ -48,10 +47,12 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
     name: ["skillsNeeded", "campaignType", "currency"],
   })
   const [formFetched, setFormFetched] = useState(false)
+  const fundraiseRegex = regex("i")`fundraise`
+  const volunteerRegex = regex("i")`volunteer`
   const isIndividual = user?.userType == "individual"
   const showFundraiseSection =
-    Boolean(campaignType?.match(/fundraise/i)) || isIndividual
-  const showVolunteerSection = Boolean(campaignType?.match(/volunteer/i))
+    Boolean(campaignType?.match(fundraiseRegex)) || isIndividual
+  const showVolunteerSection = Boolean(campaignType?.match(volunteerRegex))
   const otherSkillsRef = useRef<HTMLInputElement>(null)
   const isEdit = Boolean(campaignId)
   const saveButtonText = isEdit ? "Save" : "Launch Campaign"
@@ -87,10 +88,13 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
             "x-auth-token": user.token,
           }
 
-          const { data } = await makeRequest<IFundraiseVolunteerCampaign>(endpoint, {
-            headers,
-            method: "GET",
-          })
+          const { data } = await makeRequest<IFundraiseVolunteerCampaign>(
+            endpoint,
+            {
+              headers,
+              method: "GET",
+            }
+          )
 
           const formData = mapResponseToForm(data)
           reset(formData)
@@ -606,13 +610,16 @@ export function mapResponseToForm(
     fundingGoal = fundingGoalDetail.amount
     currency = fundingGoalDetail.currency
   }
-  
+
   if (isVolunteer(campaign)) {
     const { volunteer } = campaign
     skillsNeeded = volunteer.skillsNeeded
     ageRange = volunteer.ageRange
     genderPreference = volunteer.genderPreference
-    timeCommitment = [volunteer.commitementStartDate, volunteer.commitementEndDate]
+    timeCommitment = [
+      volunteer.commitementStartDate,
+      volunteer.commitementEndDate,
+    ]
     volunteerCommitment = volunteer.requiredCommitment
     additionalNotes = volunteer.additonalNotes
     otherSkillsNeeded = volunteer.otherSkillsNeeded
@@ -632,6 +639,6 @@ export function mapResponseToForm(
     genderPreference,
     timeCommitment,
     volunteerCommitment,
-    additionalNotes
+    additionalNotes,
   }
 }

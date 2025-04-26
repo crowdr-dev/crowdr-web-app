@@ -19,6 +19,7 @@ import { QF } from "@/app/common/types"
 import CaretIcon from "../../../../../../public/svg/caret.svg"
 import { formatAmount } from "../../common/utils/currency"
 import moment from "moment"
+import { regex } from "regex"
 
 const PaymentPage = () => {
   const [page, setPage] = useState(1)
@@ -231,7 +232,7 @@ const PaymentPage = () => {
                           {moment(withdrawal.createdAt).format(DATE_FORMAT)}
                         </Table.Cell>
                         <Table.Cell>
-                          {withdrawal.status.match(/success/i) ? (
+                          {withdrawal.status.match(regex("i")`success`) ? (
                             <Label text={withdrawal.status} />
                           ) : (
                             <Label
