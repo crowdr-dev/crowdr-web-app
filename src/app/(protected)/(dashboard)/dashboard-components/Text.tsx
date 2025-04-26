@@ -1,6 +1,7 @@
 "use client"
 import { useMemo, useState } from "react"
 import { RFC } from "@/app/common/types"
+import { regex } from "regex"
 
 const Text: RFC<TextProps> = ({
   children,
@@ -20,7 +21,9 @@ const Text: RFC<TextProps> = ({
       return (
         <>
           {shortenedText}{" "}
-          <span className={`${expandTextClassName} cursor-pointer`}>{expandText}</span>
+          <span className={`${expandTextClassName} cursor-pointer`}>
+            {expandText}
+          </span>
         </>
       )
     } else {
@@ -38,8 +41,10 @@ const Text: RFC<TextProps> = ({
   return (
     <p {...props}>
       {text}{" "}
-      {(toggle && !isCollapsed) && (
-        <span className={`${collaspseTextClassName} cursor-pointer`}>{collaspseText}</span>
+      {toggle && !isCollapsed && (
+        <span className={`${collaspseTextClassName} cursor-pointer`}>
+          {collaspseText}
+        </span>
       )}
     </p>
   )
@@ -74,7 +79,11 @@ const shortenText = (string: string, characterLimit: number) => {
   if (text.length > characterLimit) {
     text = text.slice(0, characterLimit)
   }
-  text = text.replace(/[^\w]$/, "")
+
+  // replace any trailing non-word character at end of string
+  const trailingNonWord = regex`[^\w]$`
+  text = text.replace(trailingNonWord, "")
+  // text = text.replace(/[^\w]$/, "")
 
   return text + "... "
 }

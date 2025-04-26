@@ -16,6 +16,7 @@ import { shareCampaignModalAtom } from "../../../utils/atoms"
 
 import { Route } from "@/app/common/types"
 import { ICampaign } from "@/app/common/types/Campaign"
+import { regex } from "regex"
 
 const CreateEditCampaign = ({ params }: Route) => {
   const setShareCampaignModal = useSetAtom(shareCampaignModalAtom)
@@ -44,8 +45,12 @@ const CreateEditCampaign = ({ params }: Route) => {
       volunteerCommitment,
       additionalNotes,
     } = formFields
-    const isFundraiseRelated = Boolean(campaignType?.match(/fundraise/i))
-    const isVolunteerRelated = Boolean(campaignType?.match(/volunteer/i))
+    // const isFundraiseRelated = Boolean(campaignType?.match(/fundraise/i))
+    // const isVolunteerRelated = Boolean(campaignType?.match(/volunteer/i))
+    const fundraiseRegex = regex("i")`fundraise`
+    const volunteerRegex = regex("i")`volunteer`
+    const isFundraiseRelated = Boolean(campaignType?.match(fundraiseRegex))
+    const isVolunteerRelated = Boolean(campaignType?.match(volunteerRegex))
     const isIndividual = user?.userType == "individual"
 
     const payload: any = {
