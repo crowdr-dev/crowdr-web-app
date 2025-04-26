@@ -1,7 +1,7 @@
 import InputTitle from "@/app/common/components/InputTitle"
 import TextInput from "@/app/common/components/TextInput"
 import Link from "next/link"
-import { useFormContext } from "react-hook-form"
+import { Controller, useFormContext } from "react-hook-form"
 import { CampaignFormContext } from "../useCampaignForm"
 import SelectInput from "@/app/common/components/SelectInput"
 import { Option } from "@/app/(protected)/(dashboard)/common/utils/form"
@@ -12,6 +12,7 @@ import { WhiteButton, Button } from "@/app/common/components/Button"
 import { RFC } from "@/app/common/types"
 import OptionInput from "@/app/common/components/OptionInput"
 import { IoChevronBack } from "react-icons/io5"
+import PhoneNumberInput from "@/app/common/components/PhoneNumberInput"
 
 const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
   const { campaignType, setShowPreview, ...form } =
@@ -51,6 +52,10 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
       }
     }
   }
+
+  const handlePhoneChange = (value: string) => {
+    form.setValue('phoneNumber', value, { shouldValidate: true });
+  };
 
   return (
     <div className="pt-10 pb-6">
@@ -263,10 +268,25 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
           <InputTitle title="Phone Number" />
 
           <div className="max-w-lg">
-            <TextInput
+            <Controller
               name="phoneNumber"
-              error={errors.phoneNumber}
-              ariaLabel="Phone Number"
+              control={form.control}
+              defaultValue=""
+              rules={{
+                required: "Phone number is required"
+              }}
+              render={({ field }) => (
+                <PhoneNumberInput
+                  label=""
+                  name="phoneNumber"
+                  id="campaign_phone_number"
+                  value={field.value}
+                  onChange={handlePhoneChange}
+                  placeholder="Enter phone number"
+                  required={true}
+                  error={errors.phoneNumber?.message as string}
+                />
+              )}
             />
           </div>
         </div>

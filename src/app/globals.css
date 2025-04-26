@@ -134,3 +134,13 @@ input::-webkit-inner-spin-button {
   text-align: center;
 }
 
+.PhoneInputInput {
+  border-width: 0px;
+  border-radius: 0.5rem;
+}
+
+.PhoneInputInput:focus {
+  outline: none;
+  border-color: none;
+  --tw-ring-color: none;
+}
