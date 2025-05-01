@@ -73,8 +73,9 @@ const CampaignPreview = () => {
   const formattedText = useMemo(() => {
     if (!subheader) return { shortText: "", fullText: "" }
 
-    // const sentences = subheader.split(/(?<=[.!?])\s+/)
-    const sentenceSplitter = regex`(?<=[.!?])\s+`
+    // WARN: Commented code uses look-behind which isn't compaitble with older safari browsers
+    // const sentences = subheader.split(/(?<=[.!?])\s+/) 
+    const sentenceSplitter = /([.!?])\s+/
     const sentences = subheader.split(sentenceSplitter)
     const shortSentences = sentences.slice(0, 3).join(" ")
     const fullText = sentences
