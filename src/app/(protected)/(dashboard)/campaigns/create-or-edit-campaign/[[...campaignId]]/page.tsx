@@ -47,12 +47,10 @@ const CreateOrEditCampaign = ({ params }: Route) => {
       volunteerCommitment,
       additionalNotes,
     } = formFields
-    // const isFundraiseRelated = Boolean(campaignType?.match(/fundraise/i))
-    // const isVolunteerRelated = Boolean(campaignType?.match(/volunteer/i))
-    const fundraiseRegex = regex("i")`fundraise`
-    const volunteerRegex = regex("i")`volunteer`
-    const isFundraiseRelated = Boolean(campaignType?.match(fundraiseRegex))
-    const isVolunteerRelated = Boolean(campaignType?.match(volunteerRegex))
+    const isFundraiseRelated = Boolean(campaignType?.match(/fundraise/i))
+    const isVolunteerRelated = Boolean(campaignType?.match(/volunteer/i))
+    // const isFundraiseRelated = campaignType.toLowerCase().includes('fundraise')
+    // const isVolunteerRelated = campaignType.toLowerCase().includes('volunteer')
     const isIndividual = user?.userType == "individual"
 
     const payload: any = {

@@ -81,9 +81,21 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign, onDelete }) => {
     modal?.hide()
   }
 
+  const cardProps = {
+    onClick: () => router.push(`campaigns/${_id}`),
+    onHover: () => router.prefetch(`campaigns/${_id}`),
+  }
+
+  const dontPropagate = {
+    onClick: (e: any) => e.stopPropagation(),
+  }
+
   return (
     <>
-      <div className="bg-white border border-[rgba(57, 62, 70, 0.08)] rounded-xl px-[10px] pt-6 pb-[10px] md:py-[26px] md:px-6">
+      <div
+        {...cardProps}
+        className="bg-white border border-[rgba(57, 62, 70, 0.08)] hover:cursor-pointer rounded-xl px-[10px] pt-6 pb-[10px] md:py-[26px] md:px-6"
+      >
         <div className="px-[7px] md:px-0">
           <div className="flex items-center justify-between mb-2 md:mb-[10px]">
             {label(status)}
@@ -93,7 +105,10 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign, onDelete }) => {
               targetId={`campaignCardOptions-${_id}`}
               options={{ placement: "left-start" }}
             >
-              <button className="relative left-2 hover:bg-gray-100 rounded-full transition-colors p-2">
+              <button
+                {...dontPropagate}
+                className="relative left-2 hover:bg-gray-100 rounded-full transition-colors p-2"
+              >
                 <BsThreeDotsVertical size={22} />
               </button>
             </DropdownTrigger>
@@ -134,6 +149,7 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign, onDelete }) => {
             </p>
           </div>
           <GrayButton
+            {...dontPropagate}
             href={`/campaigns/create-or-edit-campaign/${_id}`}
             text="Update campaign"
             textColor="#667085"

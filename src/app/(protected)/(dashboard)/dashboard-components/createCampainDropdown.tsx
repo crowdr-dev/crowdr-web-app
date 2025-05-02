@@ -67,6 +67,7 @@ const CreateCampaignDropdown = (): JSX.Element => {
       fill="#fff"
     />
   );
+
   return (
     <div className="relative" ref={dropdownRef}>
       <Button
@@ -78,7 +79,7 @@ const CreateCampaignDropdown = (): JSX.Element => {
       />
 
       {isOpen && (
-        <div className="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-lg z-20 border border-gray-200 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg z-20 border border-gray-200 overflow-hidden">
           {campaignOptions.map((option) => (
             <div
               key={option.id}

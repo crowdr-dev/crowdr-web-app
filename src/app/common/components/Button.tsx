@@ -80,6 +80,7 @@ export const Button: RFC<ButtonProps> = ({
       ref={buttonRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={onClick}
       href={href}
       style={buttonStyle}
       className={buttonClasses}
@@ -156,7 +157,7 @@ export const WhiteButton: RFC<ButtonProps> = ({ ...props }) => {
 
 type ButtonProps = ButtonContentProps & {
   href?: string
-  onClick?: () => void
+  onClick?: (e: any) => void
   buttonType?: "button" | "submit" | "reset"
   bgColor?: string
   outlineColor?: string
