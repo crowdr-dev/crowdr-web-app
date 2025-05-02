@@ -1,41 +1,42 @@
-import { useUser } from "@/app/(protected)/(dashboard)/common/hooks/useUser"
-import CaretIcon from "../../../../../../../../../public/svg/caret.svg"
-import Image from "next/image"
-import InputTitle from "@/app/common/components/InputTitle"
-import SelectInput from "@/app/common/components/SelectInput"
-import NumberInput from "@/app/common/components/NumberInput"
-import { Option } from "@/app/(protected)/(dashboard)/common/utils/form"
-import { useMemo } from "react"
-import { CampaignFormContext } from "../useCampaignForm"
-import { useFormContext } from "react-hook-form"
-import { Button } from "@/app/common/components/Button"
-import { RFC } from "@/app/common/types"
+import { useUser } from "@/app/(protected)/(dashboard)/common/hooks/useUser";
+import CaretIcon from "../../../../../../../../../public/svg/caret.svg";
+import Image from "next/image";
+import InputTitle from "@/app/common/components/InputTitle";
+import SelectInput from "@/app/common/components/SelectInput";
+import NumberInput from "@/app/common/components/NumberInput";
+import { Option } from "@/app/(protected)/(dashboard)/common/utils/form";
+import { useMemo } from "react";
+import { CampaignFormContext } from "../useCampaignForm";
+import { useFormContext } from "react-hook-form";
+import { Button } from "@/app/common/components/Button";
+import { RFC } from "@/app/common/types";
+import Link from "next/link";
 
 const Step1: RFC<Props> = ({ index, onStep }) => {
-  const user = useUser()
-  const { ...form } = useFormContext() as CampaignFormContext
-  const errors = form.formState.errors
-  const isIndividual = user?.userType == "individual"
-  const currency = form.watch("currency")
+  const user = useUser();
+  const { ...form } = useFormContext() as CampaignFormContext;
+  const errors = form.formState.errors;
+  const isIndividual = user?.userType == "individual";
+  const currency = form.watch("currency");
 
   const currencySymbol = useMemo(() => {
-    const currencyLabel = currencies.find((c) => c.value === currency)!
+    const currencyLabel = currencies.find((c) => c.value === currency)!;
     // return (currencyLabel?.label?.match(/\((.)\)/) || [])[1]
-    return currencyLabel?.label?.slice(-3)?.at(1)
-  }, [currency])
+    return currencyLabel?.label?.slice(-3)?.at(1);
+  }, [currency]);
 
   const nextStep = () => {
-    const currency = form.getValues("currency")
-    const fundingGoal = form.getValues("fundingGoal")
-    const isInvalid = !currency || !fundingGoal
+    const currency = form.getValues("currency");
+    const fundingGoal = form.getValues("fundingGoal");
+    const isInvalid = !currency || !fundingGoal;
 
     if (!isInvalid) {
-      onStep(index + 1)
+      onStep(index + 1);
     } else {
-      form.trigger("currency")
-      form.trigger("fundingGoal")
+      form.trigger("currency");
+      form.trigger("fundingGoal");
     }
-  }
+  };
 
   return (
     <div className="pt-10 pb-6">
@@ -43,15 +44,13 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
       <details
         open
         style={{ paddingTop: isIndividual ? 8 : 0 }}
-        className="group open:mb-10 md:open:mb-14"
-      >
+        className="group open:mb-10 md:open:mb-14">
         <summary
           hidden={isIndividual}
           className={
             (isIndividual ? "hidden" : "flex") +
             " gap-[10px] text-primary cursor-pointer mb-2"
-          }
-        >
+          }>
           Fundraise
           <Image src={CaretIcon} alt="" className="group-open:-scale-y-[1]" />
         </summary>
@@ -67,7 +66,7 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
               name="currency"
               options={currencies}
               rules={{
-                required: "Currency is required",
+                required: "Currency is required"
               }}
               error={errors.currency}
               ariaLabel="Currency"
@@ -85,7 +84,7 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
             <NumberInput
               name="fundingGoal"
               rules={{
-                required: "Funding goal is required",
+                required: "Funding goal is required"
               }}
               error={errors.fundingGoal}
               prefix={currencySymbol}
@@ -97,7 +96,14 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
       <div className="flex flex-col lg:flex-row justify-between border-t border-t-[#E4E7EC]">
         <div className="grow lg:max-w-[435px] text-sm text-[#A75003] bg-[#FEF0C7] rounded-lg px-5 py-4 mt-9">
           To withdraw funds, you must complete your KYC registration and
-          conclude your campaign.
+          conclude your campaign.{" "}
+          <Link
+            href="/settings/verification"
+            className="
+            text-[#A75003] font-semibold underline">
+            Click here
+          </Link>{" "}
+          to proceed with KYC registration if you have not done so yet.
         </div>
 
         <Button
@@ -107,18 +113,18 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Step1
+export default Step1;
 
 interface Props {
-  index: number
-  onStep: (step: number) => void
+  index: number;
+  onStep: (step: number) => void;
 }
 
 const currencies = [
   Option("", "Select a currency...", true),
-  Option("naira", "Naira (₦)"),
+  Option("naira", "Naira (₦)")
   // Option("dollar", "Dollar ($)"),
-]
+];
