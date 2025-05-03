@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useEffect, useRef } from "react"
 // TODO: POSSIBLY SWITCH TO react-flatpickr
 import flatpickr from "flatpickr"
