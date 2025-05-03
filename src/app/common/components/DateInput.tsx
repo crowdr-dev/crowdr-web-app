@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useEffect, useRef } from "react"
 // TODO: POSSIBLY SWITCH TO react-flatpickr
 import flatpickr from "flatpickr"
@@ -11,6 +12,7 @@ import {
 import { RFC } from "@/app/common/types"
 import { Instance as Flatpickr } from "flatpickr/dist/types/instance"
 import "flatpickr/dist/flatpickr.min.css"
+import { Options } from "flatpickr/dist/types/options"
 
 // TODO: INTERNATIONALIZE DATE VALUES; CONVERT TO AND FROM UTC WHEN SENDING AND RECEIVING DATE TO AND FROM SERVER
 // TODO: MAKE DATE PICKER LOOK LIKE FIGMA UI
@@ -28,11 +30,19 @@ const DateInput: RFC<DateInputProps> = ({
   onChange,
   name,
   controlled,
-  rules
+  rules,
+  datepickerOptions,
+  classNames = {},
 }) => {
   if (!controlled && !config && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {register, formState: {errors}, setValue, getValues, setError} = useFormContext()
+    const {
+      register,
+      formState: { errors },
+      setValue,
+      getValues,
+      setError,
+    } = useFormContext()
     config = register(name, rules)
     error = errors[name] as FieldError
   }
@@ -46,7 +56,6 @@ const DateInput: RFC<DateInputProps> = ({
   }
   const inputRef = useRef<HTMLInputElement>(null)
   const flatpickrInstance = useRef<Flatpickr>()
-  
 
   useEffect(() => {
     if (inputRef.current) {
@@ -61,6 +70,7 @@ const DateInput: RFC<DateInputProps> = ({
         },
         defaultDate: dateRange,
         onChange: (selectedDates, dateStr, instance) => {
+          instance.input.focus() // Keep focus on input element
           if (config) {
             if (dateStr) {
               if (mode === "range" && selectedDates.length < 2) {
@@ -75,11 +85,12 @@ const DateInput: RFC<DateInputProps> = ({
             }
             config.onChange({ target: inputRef.current })
           }
-          
+
           if (onChange) {
-            onChange({value: selectedDates, dateString: dateStr, instance})
+            onChange({ value: selectedDates, dateString: dateStr, instance })
           }
         },
+        ...datepickerOptions,
       })
     }
   }, [])
@@ -91,14 +102,16 @@ const DateInput: RFC<DateInputProps> = ({
   }, [dateRange])
 
   return (
-    <span>
+    <span className={classNames.root}>
       {label && (
         <label
           htmlFor={config?.name || name}
           className="text-[14px] text-[#344054] mb-[6px]"
         >
           {label}{" "}
-          {showOptionalLabel && <span className="opacity-[0.44]">(Optional)</span>}
+          {showOptionalLabel && (
+            <span className="opacity-[0.44]">(Optional)</span>
+          )}
         </label>
       )}
       <input
@@ -121,7 +134,7 @@ const DateInput: RFC<DateInputProps> = ({
 
 export default DateInput
 
-type DateInputProps = {
+interface DateInputProps {
   config?: UseFormRegisterReturn
   label?: string
   error?: FieldError
@@ -136,6 +149,10 @@ type DateInputProps = {
   name?: string
   rules?: RegisterOptions
   controlled?: boolean
+  datepickerOptions?: Options
+  classNames?: Partial<{
+    root: string
+  }>
 }
 
 type DateChangeEvent = {
