@@ -73,6 +73,10 @@ export interface Volunteer {
   commitementEndDate: string;
   requiredCommitment: string;
   additonalNotes: string;
+  volunteersNeeded: number
+  address: string
+  email: string
+  phoneNumber: string
 }
 
 export interface ICampaignResponse {

@@ -109,7 +109,7 @@ const Step1: RFC<Props> = ({ index, onStep }) => {
             </div>
           </div>
 
-          {/* Volunteer Counte */}
+          {/* Volunteer Count */}
           <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
             <InputTitle
               title="Volunteer Count"

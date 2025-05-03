@@ -31,6 +31,7 @@ import { shareCampaignModalAtom } from "@/app/(protected)/(dashboard)/utils/atom
 import { useSetAtom } from "jotai"
 import CampaignPreview from "./CampaignPreview"
 import { regex } from "regex"
+import FormSkeleton from "@/app/(protected)/(dashboard)/dashboard-components/skeletons/FormSkeleton"
 
 // export const CampaignContext = createContext({} as CampaignFormContext)
 
@@ -129,8 +130,6 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
     } = formFields
     const isFundraiseRelated = Boolean(campaignType?.match(/fundraise/i))
     const isVolunteerRelated = Boolean(campaignType?.match(/volunteer/i))
-    // const isFundraiseRelated = campaignType?.toLowerCase()?.includes('fundraise')
-    // const isVolunteerRelated = campaignType?.toLowerCase()?.includes('volunteer')
     const isIndividual = user?.userType == "individual"
 
     const payload: any = {
@@ -169,7 +168,6 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
     }
 
     if (isVolunteerRelated) {
-     
       payload.volunteer = JSON.stringify({
         skillsNeeded,
         otherSkillsNeeded,
@@ -182,8 +180,8 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
         volunteersNeeded: Number(formFields.volunteerCount),
         address: formFields.campaignAddress,
         phoneNumber: formFields.phoneNumber,
-        email: formFields.contactEmail
-      });
+        email: formFields.contactEmail,
+      })
     }
 
     const shareCampaign = async (campaign: ICampaign) => {
@@ -206,6 +204,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
           headers,
           method: isEdit ? "PUT" : "POST",
           payload: objectToFormData(payload),
+          extractError: false
         }
       )
 
@@ -283,7 +282,14 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
     } catch (error: any) {
       Mixpanel.track("Campaign creation error")
       const message = extractErrorMessage(error)
-      toast({ title: "Oops!", body: message, type: "error" })
+
+      if (Array.isArray(message)) {
+        for (let msg of message) {
+          toast({ title: "Oops!", body: msg, type: "error" })
+        }
+      } else {
+        toast({ title: "Oops!", body: message, type: "error" })
+      }
     }
   }
 
@@ -300,7 +306,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
   }
 
   if (campaignId && !form.getValues().title) {
-    return "loading"
+    return <FormSkeleton />
   }
 
   return (

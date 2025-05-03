@@ -39,5 +39,9 @@ type FormFields = {
   timeCommitment: [string, string];
   volunteerCommitment: string;
   additionalNotes: string;
+  volunteerCount: number;
+  campaignAddress: string;
+  phoneNumber: string;
+  contactEmail: string;
 };
 type CampaignFormContext = UseFormReturn<FormFields>;
