@@ -242,7 +242,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
           <InputTitle title="Date and Time Needed" />
 
           <div className="max-w-lg">
-            <div className="flex gap-6">
+            <div className="flex gap-5">
               <DateInput
                 name="timeCommitment"
                 rules={{
@@ -258,9 +258,11 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
               <DateInput
                 value={timeNeeded}
                 onChange={(value) => setTimeNeeded([value.dateString])}
+                classNames={{root: 'max-w-[90px]'}}
                 datepickerOptions={{
                   enableTime: true,
                   noCalendar: true,
+                  disableMobile: true,
                   dateFormat: "h:i K",
                   position: (self, customElement) => {
                     self.calendarContainer.style.right = "0px"
