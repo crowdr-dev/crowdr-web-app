@@ -598,7 +598,11 @@ export function mapResponseToForm(
     genderPreference,
     timeCommitment: [string, string] | undefined,
     volunteerCommitment,
-    additionalNotes
+    additionalNotes,
+    volunteerCount,
+    campaignAddress,
+    phoneNumber,
+    contactEmail
   const campaignDuration: [Date, Date] = [
     new Date(campaignStartDate),
     new Date(campaignEndDate),
@@ -623,6 +627,10 @@ export function mapResponseToForm(
     volunteerCommitment = volunteer.requiredCommitment
     additionalNotes = volunteer.additonalNotes
     otherSkillsNeeded = volunteer.otherSkillsNeeded
+    volunteerCount = volunteer.volunteersNeeded
+    campaignAddress = volunteer.address
+    phoneNumber = volunteer.phoneNumber
+    contactEmail = volunteer.email
   }
 
   return {
@@ -640,5 +648,9 @@ export function mapResponseToForm(
     timeCommitment,
     volunteerCommitment,
     additionalNotes,
+    volunteerCount,
+    campaignAddress,
+    phoneNumber,
+    contactEmail
   }
 }

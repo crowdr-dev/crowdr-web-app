@@ -1,6 +1,7 @@
 import {
   ReactElement,
   ReactEventHandler,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -91,6 +92,14 @@ const OrganisationDetails = () => {
       return true
     }
   }
+
+  useEffect(() => {
+    return () => {
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview)
+      }
+    }
+  }, [])
 
   return (
     <section className="font-satoshi">
