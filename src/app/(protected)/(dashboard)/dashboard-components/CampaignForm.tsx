@@ -47,12 +47,10 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
     name: ["skillsNeeded", "campaignType", "currency"],
   })
   const [formFetched, setFormFetched] = useState(false)
-  const fundraiseRegex = regex("i")`fundraise`
-  const volunteerRegex = regex("i")`volunteer`
   const isIndividual = user?.userType == "individual"
   const showFundraiseSection =
-    Boolean(campaignType?.match(fundraiseRegex)) || isIndividual
-  const showVolunteerSection = Boolean(campaignType?.match(volunteerRegex))
+    Boolean(campaignType?.match(/fundraise/i)) || isIndividual
+  const showVolunteerSection = Boolean(campaignType?.match(/volunteer/i))
   const otherSkillsRef = useRef<HTMLInputElement>(null)
   const isEdit = Boolean(campaignId)
   const saveButtonText = isEdit ? "Save" : "Launch Campaign"
@@ -543,7 +541,7 @@ const campaignTypes = [
   Option("fundraiseAndVolunteer", "Fundraise and volunteer"),
 ]
 
-export const currencies = [
+const currencies = [
   Option("", "Select a currency...", true),
   Option("naira", "Naira (₦)"),
   // Option("dollar", "Dollar ($)"),

@@ -73,8 +73,8 @@ const NumberInput: RFC<NumberInputProps> = ({
   //   }
   // }
 
-  const nonNumericGlobal = regex("gi")`[^0-9.]` // replaces /[^0-9.]/gi
-  const nonNumericSingle = regex("i")`^[^0-9.]$` // replaces /^[^0-9.]$/i
+  const nonNumericGlobal = /[^0-9.]/gi
+  const nonNumericSingle = /^[^0-9.]$/i
 
   function handleInput(
     e:
