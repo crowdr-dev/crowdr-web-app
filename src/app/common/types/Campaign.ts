@@ -1,5 +1,6 @@
 import { CampaignCategory } from "@/utils/campaignCategory";
 import { IPagination } from ".";
+import { CampaignType } from "@/app/(protected)/admin/common/services/campaign/models/GetCampaigns";
 
 export interface ICampaign {
   _id: string;
@@ -89,4 +90,4 @@ export type CampaignStatus =
   | "in-progress"
   | "declined"
   | "in-review";
-export type CampaignType = "fundraise" | "volunteer" | "fundraiseAndVolunteer";
+// export type CampaignType = "fundraise" | "volunteer" | "fundraiseAndVolunteer";

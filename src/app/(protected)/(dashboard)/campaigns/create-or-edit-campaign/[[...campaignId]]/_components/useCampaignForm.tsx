@@ -4,7 +4,7 @@ import { UseFormReturn } from "react-hook-form/dist/types"
 import { RFC } from "@/app/common/types"
 import { CampaignCategory } from "@/utils/campaignCategory"
 import {
-  CampaignType,
+  // CampaignType,
   ICampaign,
   IFundraiseVolunteerCampaign,
 } from "@/app/common/types/Campaign"
@@ -32,6 +32,7 @@ import { useSetAtom } from "jotai"
 import CampaignPreview from "./CampaignPreview"
 import { regex } from "regex"
 import FormSkeleton from "@/app/(protected)/(dashboard)/dashboard-components/skeletons/FormSkeleton"
+import { CampaignType } from "@/app/(protected)/admin/common/services/campaign/models/GetCampaigns"
 
 // export const CampaignContext = createContext({} as CampaignFormContext)
 
@@ -99,8 +100,14 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
       const currentUrl = window.location.href
       const url = new URL(currentUrl)
       const queryParams = url.searchParams
-      const campaignType = (queryParams.get("type") ||
-        "fundraise") as CampaignType
+      const typeParam = queryParams.get("type") as CampaignType
+      const campaignType = [
+        CampaignType.Fundraise,
+        CampaignType.Volunteer,
+        CampaignType.FundraiseVolunteer,
+      ].includes(typeParam)
+        ? typeParam
+        : CampaignType.Fundraise
       setCampaignType(campaignType)
       initCampaignForm(campaignType)
     }
@@ -108,9 +115,6 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
 
   const submit = async (formFields: FormFields) => {
     Mixpanel.track("Create campaign clicked")
-    // console.log(formFields)
-
-    // const formFields = form.getValues()
     const {
       category,
       campaignImages,
@@ -128,15 +132,19 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
       volunteerCommitment,
       additionalNotes,
     } = formFields
-    const isFundraiseRelated = Boolean(campaignType?.match(/fundraise/i))
-    const isVolunteerRelated = Boolean(campaignType?.match(/volunteer/i))
+    const isFundraiseRelated = campaignType
+      ?.toLowerCase()
+      ?.includes("fundraise")
+    const isVolunteerRelated = campaignType
+      ?.toLowerCase()
+      ?.includes("volunteer")
     const isIndividual = user?.userType == "individual"
 
     const payload: any = {
       title,
       category,
       story,
-      campaignType: isIndividual ? "fundraise" : campaignType,
+      campaignType: isIndividual ? CampaignType.Fundraise : campaignType,
       campaignStartDate: campaignDuration[0].toISOString(),
       campaignEndDate: campaignDuration[1].toISOString(),
       // campaignStartDate: new Date(
@@ -204,7 +212,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
           headers,
           method: isEdit ? "PUT" : "POST",
           payload: objectToFormData(payload),
-          extractError: false
+          extractError: false,
         }
       )
 
@@ -225,23 +233,6 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
 
         try {
           await kycService.getKyc({ userToken: user?.token || "" })
-
-          if (isEdit) {
-            toast({ title: "Well done!", body: message })
-          } else {
-            modal.show(
-              <CompletionCard
-                title="Campaign created successfully"
-                text="This campaign has been created successfully. You will be able to edit this campaign and republish changes."
-                primaryButton={{
-                  label: "Share on your Socials",
-                  onClick: () => shareCampaign(data),
-                }}
-                secondaryButton={{ label: "Cancel", onClick: modal.hide }}
-                clearModal={modal.hide}
-              />
-            )
-          }
         } catch (error) {
           modal.show(
             <CompletionCard
@@ -275,6 +266,23 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
                   </svg>
                 </div>
               }
+            />
+          )
+        }
+
+        if (isEdit) {
+          toast({ title: "Well done!", body: message })
+        } else {
+          modal.show(
+            <CompletionCard
+              title="Campaign created successfully"
+              text="This campaign has been created successfully. You will be able to edit this campaign and republish changes."
+              primaryButton={{
+                label: "Share on your Socials",
+                onClick: () => shareCampaign(data),
+              }}
+              secondaryButton={{ label: "Cancel", onClick: modal.hide }}
+              clearModal={modal.hide}
             />
           )
         }
