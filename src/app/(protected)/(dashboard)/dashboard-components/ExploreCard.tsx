@@ -171,7 +171,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
       <div className="flex items-center justify-between ">
         <Link
           href={`/explore/profile/${id}`}
-          className="flex items-center group"
+          className="group flex items-center"
           onClick={() => {
             router.push(`/explore/profile/${id}`)
           }}
@@ -190,8 +190,8 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             </div>
           )}
 
-          <div className="pl-3 group-hover:underline">
-            <h3 className="text-sm font-normal text-[#344054]">{name}</h3>
+          <div className="pl-3">
+            <h3 className="group-hover:underline text-sm font-normal text-[#344054]">{name}</h3>
             <h4 className="text-xs font-normal text-[#667085]">
               {tier?.toLowerCase() === "non-profit" ? "Organization" : tier}
             </h4>

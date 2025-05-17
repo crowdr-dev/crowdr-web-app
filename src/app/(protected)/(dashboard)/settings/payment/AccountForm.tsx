@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
-import { useFormContext, Controller } from "react-hook-form";
-import TextInput from "../../../../common/components/TextInput";
-import SelectInput from "../../../../common/components/SelectInput";
-import AccountFormContext, { FormFields } from "../utils/useAccountForm";
-import { Option } from "../../common/utils/form";
-import { Button } from "../../../../common/components/Button";
-import _banks from "../../common/utils/banks";
-import { IBankDetail } from "./page";
-import { QF, RFC } from "@/app/common/types";
-import { useQuery } from "react-query";
-import makeRequest from "@/utils/makeRequest";
-import { extractErrorMessage } from "@/utils/extractErrorMessage";
-import { keys } from "../../utils/queryKeys";
-import { useToast } from "@/app/common/hooks/useToast";
+import { useEffect, useState } from "react"
+import { useFormContext, Controller } from "react-hook-form"
+import TextInput from "../../../../common/components/TextInput"
+import SelectInput from "../../../../common/components/SelectInput"
+import AccountFormContext, { FormFields } from "../utils/useAccountForm"
+import { Option } from "../../common/utils/form"
+import { Button } from "../../../../common/components/Button"
+import _banks from "../../common/utils/banks"
+import { IBankDetail } from "./page"
+import { QF, RFC } from "@/app/common/types"
+import { useQuery } from "react-query"
+import makeRequest from "@/utils/makeRequest"
+import { extractErrorMessage } from "@/utils/extractErrorMessage"
+import { keys } from "../../utils/queryKeys"
+import { useToast } from "@/app/common/hooks/useToast"
 
 const AccountForm: RFC<AccountFormProps> = ({
   onSubmit,
@@ -26,89 +26,92 @@ const AccountForm: RFC<AccountFormProps> = ({
     setValue,
     control,
     formState: { isSubmitting, errors },
-  } = useFormContext() as AccountFormContext;
-  const toast = useToast();
+  } = useFormContext() as AccountFormContext
+  const toast = useToast()
 
   // Local state for account resolution
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [verifiedAccount, setVerifiedAccount] = useState<string | null>(null);
-  
+  const [isVerifying, setIsVerifying] = useState(false)
+  const [verifiedAccount, setVerifiedAccount] = useState<string | null>(null)
+
   // Watch for changes to account number and bank
-  const accountNumber = watch("accountNumber");
-  const bankName = watch("bankName");
-  
+  const accountNumber = watch("accountNumber")
+  const bankName = watch("bankName")
+
   // Find the bank code based on selected bank name
-  const selectedBank = _banks.find(bank => bank.name === bankName);
-  const bankCode = selectedBank?.code || "";
+  const selectedBank = _banks.find((bank) => bank.name === bankName)
+  const bankCode = selectedBank?.code || ""
 
   // Format banks for dropdown
   const banks = [Option("", "Select a bank...", true)].concat(
     _banks
       .map(({ name }) => Option(name, name))
       .sort((a, b) => a.label.localeCompare(b.label))
-  );
+  )
 
   // Verify account number when both account number and bank are selected
   const verifyAccount = async () => {
     if (!accountNumber || !bankCode || accountNumber.length !== 10) {
-      return;
+      return
     }
 
-    setIsVerifying(true);
-    setVerifiedAccount(null);
-    
+    setIsVerifying(true)
+    setVerifiedAccount(null)
+
     try {
-      const endpoint = `/api/v1/payments/banks/resolve/account_number/${accountNumber}/bank_code/${bankCode}`;
-      const { data } = await makeRequest<{account_name: string}>(endpoint, {
+      const endpoint = `/api/v1/payments/banks/resolve/account_number/${accountNumber}/bank_code/${bankCode}`
+      const { data } = await makeRequest<{ account_name: string }>(endpoint, {
         method: "GET",
-      });
-      
+      })
+
       if (data && data.account_name) {
-        setVerifiedAccount(data.account_name);
-        setValue("accountName", data.account_name, { shouldValidate: true });
-        toast({ 
-          title: "Account Verified", 
+        setVerifiedAccount(data.account_name)
+        setValue("accountName", data.account_name, { shouldValidate: true })
+        toast({
+          title: "Account Verified",
           body: "Account details have been verified successfully.",
-          type: "success" 
-        });
+          type: "success",
+        })
       }
     } catch (error) {
-      const message = extractErrorMessage(error);
-      toast({ 
-        title: "Verification Failed", 
-        body: message || "Could not verify account. Please check your details.", 
-        type: "error" 
-      });
-      setValue("accountName", "", { shouldValidate: true });
+      const message = extractErrorMessage(error)
+      toast({
+        title: "Verification Failed",
+        body: message || "Could not verify account. Please check your details.",
+        type: "error",
+      })
+      setValue("accountName", "", { shouldValidate: true })
     } finally {
-      setIsVerifying(false);
+      setIsVerifying(false)
     }
-  };
+  }
 
   // Effect to handle auto-verification when both fields have values
   useEffect(() => {
     // Only verify if account number is complete (10 digits) and bank is selected
     if (accountNumber?.length === 10 && bankCode) {
-      verifyAccount();
+      verifyAccount()
     }
-  }, [accountNumber, bankCode]);
+  }, [accountNumber, bankCode])
 
   // Populate form with existing account details
   useEffect(() => {
     if (accountDetails) {
-      const { accountNumber, bankName, accountName, accountType } = accountDetails;
+      const { accountNumber, bankName, accountName, accountType } =
+        accountDetails
       reset({
         accountNumber,
         bankName,
         accountName,
         accountType,
-      });
+      })
     }
-  }, [accountDetails, reset]);
+  }, [accountDetails, reset])
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit((formFields) =>
+        onSubmit({ ...formFields, bankCode })
+      )}
       className="max-w-lg flex flex-col gap-[26px] mb-[33px] md:mb-[35px]"
     >
       <div className="flex flex-col gap-5 mb-[33px] md:mb-[31px]">
@@ -138,12 +141,16 @@ const AccountForm: RFC<AccountFormProps> = ({
 
         {/* Verification Status */}
         {(isVerifying || verifiedAccount) && (
-          <div className={`text-sm ${verifiedAccount ? "text-green-600" : "text-gray-500"} pl-1`}>
-            {isVerifying ? (
-              "Verifying account details..."
-            ) : verifiedAccount ? (
-              `✓ Account verified: ${verifiedAccount}`
-            ) : null}
+          <div
+            className={`text-sm ${
+              verifiedAccount ? "text-green-600" : "text-gray-500"
+            } pl-1`}
+          >
+            {isVerifying
+              ? "Verifying account details..."
+              : verifiedAccount
+              ? `✓ Account verified: ${verifiedAccount}`
+              : null}
           </div>
         )}
 
@@ -172,10 +179,12 @@ const AccountForm: RFC<AccountFormProps> = ({
                 readOnly
                 placeholder="Account name will appear here after verification"
                 className={`text-[15px] rounded-lg border ${
-                  verifiedAccount 
-                    ? "border-green-500 bg-green-50" 
+                  verifiedAccount
+                    ? "border-green-500 bg-green-50"
                     : "border-[#D0D5DD] bg-gray-100"
-                } py-[10px] px-[14px] ${verifiedAccount ? "" : "cursor-not-allowed"}`}
+                } py-[10px] px-[14px] ${
+                  verifiedAccount ? "" : "cursor-not-allowed"
+                }`}
               />
               {errors.accountName && (
                 <span className="text-[13px] text-[#B42318] mt-[6px]">
@@ -205,31 +214,31 @@ const AccountForm: RFC<AccountFormProps> = ({
         />
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default AccountForm;
+export default AccountForm
 
 // Types
 type AccountFormProps = {
-  onSubmit: (formFields: FormFields) => void;
-  onCloseForm: () => void;
-  accountDetails?: IBankDetail;
-};
+  onSubmit: (formFields: FormFields & { bankCode: string }) => void
+  onCloseForm: () => void
+  accountDetails?: IBankDetail
+}
 
 // Bank account types
 const accountTypes = [
   Option("", "Select an account type", true),
   Option("naira", "Naira"),
-];
+]
 
 // Additional interfaces for account verification
 export interface IAccountVerificationResponse {
-  status: string;
-  message: string;
+  status: string
+  message: string
   data: {
-    account_number: string;
-    account_name: string;
-    bank_code: string;
-  };
+    account_number: string
+    account_name: string
+    bank_code: string
+  }
 }
