@@ -1,7 +1,7 @@
 import InputTitle from "@/app/common/components/InputTitle"
 import TextInput from "@/app/common/components/TextInput"
 import Link from "next/link"
-import { useFormContext } from "react-hook-form"
+import { Controller, useFormContext } from "react-hook-form"
 import { CampaignFormContext } from "../useCampaignForm"
 import SelectInput from "@/app/common/components/SelectInput"
 import { Option } from "@/app/(protected)/(dashboard)/common/utils/form"
@@ -12,11 +12,29 @@ import { WhiteButton, Button } from "@/app/common/components/Button"
 import { RFC } from "@/app/common/types"
 import OptionInput from "@/app/common/components/OptionInput"
 import { IoChevronBack } from "react-icons/io5"
+import PhoneNumberInput from "@/app/common/components/PhoneNumberInput"
+import { useEffect, useState } from "react"
+import moment from "moment"
 
 const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
   const { campaignType, setShowPreview, ...form } =
     useFormContext() as CampaignFormContext
   const errors = form.formState.errors
+  const timeCommitment = form.getValues("timeCommitment")
+  const [timeNeeded, setTimeNeeded] = useState(() =>
+    // it's an array because the flatpickr takes its values as an array
+    timeCommitment ? [moment(timeCommitment[0]).format("hh:mm A")] : undefined
+  )
+
+  // once time is changed, updated selected commitment date with time picked
+  useEffect(() => {
+    if (timeCommitment && timeNeeded) {
+      const dateWithTime0 = setDateWithTime(timeCommitment[0], timeNeeded[0])
+      const dateWithTime1 = setDateWithTime(timeCommitment[1], timeNeeded[0])
+      form.setValue('timeCommitment', [dateWithTime0, dateWithTime1] as any)
+
+    }
+  }, [timeNeeded])
 
   const nextStep = (callback: () => void) => {
     const title = form.getValues("title")
@@ -50,6 +68,10 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
         form.trigger("campaignDuration")
       }
     }
+  }
+
+  const handlePhoneChange = (value: string) => {
+    form.setValue("phoneNumber", value, { shouldValidate: true })
   }
 
   return (
@@ -94,7 +116,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
                     minLength: {
                       value: 60,
                       message: "Story must be at least 60 characters",
-                    }
+                    },
                   }}
                   characterLimit={5000}
                   additionalCharacterInfo="  (must be between 60 - 5000 characters)"
@@ -220,16 +242,34 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
           <InputTitle title="Date and Time Needed" />
 
           <div className="max-w-lg">
-            <DateInput
-              name="timeCommitment"
-              rules={{
-                required: "Time commitment is required",
-              }}
-              error={errors.timeCommitment as any}
-              mode="range"
-              // minDate={new Date()}
-              // enableTime
-            />
+            <div className="flex gap-5">
+              <DateInput
+                name="timeCommitment"
+                rules={{
+                  required: "Time commitment is required",
+                }}
+                error={errors.timeCommitment as any}
+                mode="range"
+                classNames={{ root: "flex-1" }}
+                // minDate={new Date()}
+                // enableTime
+              />
+
+              <DateInput
+                value={timeNeeded}
+                onChange={(value) => setTimeNeeded([value.dateString])}
+                classNames={{root: 'max-w-[90px]'}}
+                datepickerOptions={{
+                  enableTime: true,
+                  noCalendar: true,
+                  disableMobile: true,
+                  dateFormat: "h:i K",
+                  position: (self, customElement) => {
+                    self.calendarContainer.style.right = "0px"
+                  },
+                }}
+              />
+            </div>
           </div>
         </div>
 
@@ -263,14 +303,30 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
           <InputTitle title="Phone Number" />
 
           <div className="max-w-lg">
-            <TextInput
+            <Controller
               name="phoneNumber"
-              error={errors.phoneNumber}
-              ariaLabel="Phone Number"
+              control={form.control}
+              defaultValue=""
+              rules={{
+                required: "Phone number is required",
+              }}
+              render={({ field }) => (
+                <PhoneNumberInput
+                  label=""
+                  name="phoneNumber"
+                  id="campaign_phone_number"
+                  value={field.value}
+                  onChange={handlePhoneChange}
+                  placeholder="Enter phone number"
+                  required={true}
+                  error={errors.phoneNumber?.message as string}
+                />
+              )}
             />
           </div>
         </div>
 
+        {/* contact email */}
         <div className="grid md:grid-cols-[minmax(200px,_350px)_minmax(210px,_1fr)] gap-y-4 gap-x-[25px] mb-[25px]">
           <InputTitle title="Contact email address" />
 
@@ -387,3 +443,22 @@ const volunteerCommitment = [
   Option("monthly commitment", "Monthly commitment"),
   Option("flexible schedule", "Flexible schedule"),
 ]
+
+function setDateWithTime(date: string | Date, time: string): Date {
+  // Parse the date argument into a moment object
+  const dateMoment = moment(date);
+
+  // Parse the time argument into a moment object
+  const timeMoment = moment(time, "hh:mm A");
+
+  // Set the time of the dateMoment to match the timeMoment
+  dateMoment.set({
+    hour: timeMoment.hour(),
+    minute: timeMoment.minute(),
+    second: 0,
+    millisecond: 0,
+  });
+
+  // Return the updated date as a JavaScript Date object
+  return dateMoment.toDate();
+}

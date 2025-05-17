@@ -5,6 +5,6 @@ import { cookies } from "next/headers";
 export default async function setUserCookie(token: string) {
   const cookieStore = cookies();
   cookieStore.set("token", token, COOKIE_CONFIG);
-
   return;
 }
+

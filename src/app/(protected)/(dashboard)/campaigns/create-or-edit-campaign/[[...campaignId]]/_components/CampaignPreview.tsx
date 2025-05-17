@@ -12,6 +12,7 @@ import React from "react"
 import ProgressBar from "@/app/(protected)/(dashboard)/dashboard-components/ProgressBar"
 import { Button } from "@/app/common/components/Button"
 import moment from "moment"
+import { regex } from "regex"
 import { formatAmount } from "@/app/(protected)/(dashboard)/common/utils/currency"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
@@ -72,7 +73,10 @@ const CampaignPreview = () => {
   const formattedText = useMemo(() => {
     if (!subheader) return { shortText: "", fullText: "" }
 
-    const sentences = subheader.split(/(?<=[.!?])\s+/)
+    // WARN: Commented code uses look-behind which isn't compaitble with older safari browsers
+    // const sentences = subheader.split(/(?<=[.!?])\s+/) 
+    const sentenceSplitter = /([.!?])\s+/
+    const sentences = subheader.split(sentenceSplitter)
     const shortSentences = sentences.slice(0, 3).join(" ")
     const fullText = sentences
       .reduce((acc, sentence, index) => {

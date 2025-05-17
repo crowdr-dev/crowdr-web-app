@@ -18,6 +18,7 @@ import { Route } from "@/app/common/types"
 import { ICampaign } from "@/app/common/types/Campaign"
 import CreateEditCampaign from "./_components/CreateEditCampaign"
 import CampaignProvider from "./_components/useCampaignForm"
+import { regex } from "regex"
 
 const CreateOrEditCampaign = ({ params }: Route) => {
   const setShareCampaignModal = useSetAtom(shareCampaignModalAtom)
@@ -48,6 +49,8 @@ const CreateOrEditCampaign = ({ params }: Route) => {
     } = formFields
     const isFundraiseRelated = Boolean(campaignType?.match(/fundraise/i))
     const isVolunteerRelated = Boolean(campaignType?.match(/volunteer/i))
+    // const isFundraiseRelated = campaignType.toLowerCase().includes('fundraise')
+    // const isVolunteerRelated = campaignType.toLowerCase().includes('volunteer')
     const isIndividual = user?.userType == "individual"
 
     const payload: any = {

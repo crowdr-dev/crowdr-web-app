@@ -10,6 +10,7 @@ import { handleUserRedirection } from "@/utils/handleUserRedirection"
 import makeRequest from "@/utils/makeRequest"
 import { IUser } from "@/app/api/user/getUser"
 import { Mixpanel } from "@/utils/mixpanel"
+import { setClientSideCookie } from "@/utils/cookie-setup"
 
 const FormPages = () => {
   const { handleSubmit } = useFormContext() as LoginFormContext
@@ -28,7 +29,11 @@ const FormPages = () => {
       })
 
       const { token } = user
-      if (token) await setUserCookie(token)
+      if (token) {
+        // Set server-side cookie
+        await setUserCookie(token);
+        setClientSideCookie("token", token, 7); 
+      }
       handleUserRedirection(user, router.push)
     } catch (error) {
       Mixpanel.track("Login failed")

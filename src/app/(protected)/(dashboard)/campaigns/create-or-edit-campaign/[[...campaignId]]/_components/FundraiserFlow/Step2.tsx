@@ -15,7 +15,7 @@ const Step2: RFC<Props> = ({ index, onStep }) => {
   const { ...form } = useFormContext() as CampaignFormContext
   const errors = form.formState.errors
 
-  const duration = form.watch('campaignDuration')
+  const duration = form.watch("campaignDuration")
   const values = form.getValues()
 
   const nextStep = () => {
@@ -45,9 +45,15 @@ const Step2: RFC<Props> = ({ index, onStep }) => {
     <div className="pt-10 pb-6">
       <div className="text-sm text-center rounded-lg bg-[#E6F8F0] max-w-[483px] py-[15px] px-4 mx-auto mb-[45px]">
         We've provided{" "}
-        {/* <Link href={"#"} className="underline text-[#019350]"> */}
-        writing prompts{" "}
-        {/* </Link>{" "} */}
+        <a
+          target="_blank"
+          href={
+            "https://blog.oncrowdr.com/how-to-raise-money-online-in-nigeria-3-step-formula/"
+          }
+          className="underline text-[#019350]"
+        >
+          writing prompts
+        </a>{" "}
         and guides to help you along the way.
       </div>
 
@@ -64,6 +70,10 @@ const Step2: RFC<Props> = ({ index, onStep }) => {
               placeholder="Help Nicholas go back to college"
               rules={{
                 required: "Title is required",
+                minLength: {
+                  value: 15,
+                  message: "Title must be at least 15 characters",
+                },
               }}
               error={errors.title}
               ariaLabel="Title"
@@ -126,6 +136,10 @@ const Step2: RFC<Props> = ({ index, onStep }) => {
               name="story"
               rules={{
                 required: "Story is required",
+                minLength: {
+                  value: 60,
+                  message: "Story must be at least 60 characters",
+                },
               }}
               characterLimit={5000}
               additionalCharacterInfo="(must be between 60 - 5000 characters)"

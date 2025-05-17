@@ -52,6 +52,7 @@ import SearchIcon from "../../../../../public/svg/search.svg"
 import FilterIcon from "../../../../../public/svg/filter-2.svg"
 import TempLogo from "../../../../../public/temp/c-logo.png"
 import UserIcon from "../../../../../public/svg/user-01.svg"
+import { regex } from "regex"
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("")
@@ -423,7 +424,7 @@ const Dashboard = () => {
                         </button>
                       </ModalTrigger>
 
-                      {kyc.status.match(/pending/i) ? (
+                      {kyc.status.match(regex("i")`pending`) ? (
                         <ModalTrigger id="kycPopup">
                           <button
                             type="button"
