@@ -754,7 +754,7 @@ export default function DonateOrVolunteer({
                     disabled={!areAllInputsFilled(donationInputs)}
                   />
 
-                  {/* {paystackLoaded && applePaySupported && ( */}
+                  {paystackLoaded && applePaySupported && (
                     <button
                       onClick={donate}
                       className="apple-pay-button"
@@ -767,7 +767,7 @@ export default function DonateOrVolunteer({
                         fill="#fff"
                       />
                     </button>
-                  {/* )} */}
+                  )}
                 </div>
 
                 <div className="mt-10">
