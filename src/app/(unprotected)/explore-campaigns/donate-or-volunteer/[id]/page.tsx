@@ -113,7 +113,7 @@ export default function DonateOrVolunteer({
         key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
         email: donationInputs.email,
         amount: parseFloat(donationInputs.amount) * 100,
-        currency: currency,
+        currency: "NGN",
         ref: data.reference,
         channels: [
           "apple_pay",
