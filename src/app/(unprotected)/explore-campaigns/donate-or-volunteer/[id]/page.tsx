@@ -755,7 +755,7 @@ export default function DonateOrVolunteer({
 
                   {/* {paystackLoaded && applePaySupported && ( */}
                     <button
-                      onClick={initiateApplePay}
+                      onClick={donate}
                       className="apple-pay-button"
                       disabled={!areAllInputsFilled(donationInputs) || loading}>
                       <span className="apple-pay-text">Donate with</span>
