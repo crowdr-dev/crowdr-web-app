@@ -821,41 +821,6 @@ export default function DonateOrVolunteer({
         </div>
       </div>
       <Footer />
-      <style jsx global>{`
-        .apple-pay-button {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 48px;
-          padding: 0 16px;
-          border-radius: 6px;
-          background-color: #000;
-          color: #fff;
-          font-size: 16px;
-          font-weight: 500;
-          border: none;
-          cursor: pointer;
-          transition: background-color 0.2s;
-        }
-
-        .apple-pay-button:hover {
-          background-color: #1a1a1a;
-        }
-
-        .apple-pay-button:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-
-        .apple-pay-text {
-          margin-right: 8px;
-        }
-
-        .apple-pay-logo {
-          color: #fff;
-        }
-      `}</style>
     </div>
   );
 }
