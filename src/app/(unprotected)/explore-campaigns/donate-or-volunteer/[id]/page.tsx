@@ -76,6 +76,19 @@ export default function DonateOrVolunteer({
     }
   };
 
+  const generateRandomString = (length = 10) => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  const randomValues = new Uint32Array(length);
+  window.crypto.getRandomValues(randomValues);
+  
+  for (let i = 0; i < length; i++) {
+    result += chars[randomValues[i] % chars.length];
+  }
+  
+  return result;
+};
+
   const initiateApplePay = async () => {
     if (!paystackLoaded) {
       toast({
@@ -114,15 +127,15 @@ export default function DonateOrVolunteer({
         email: donationInputs.email,
         amount: parseFloat(donationInputs.amount) * 100,
         currency: "NGN",
-        ref: data.reference,
+        ref: `${data.reference}_${generateRandomString(12)}_${Date.now()}`,
         channels: [
           "apple_pay",
-          "card",
-          "bank",
-          "ussd",
-          "qr",
-          "mobile_money",
-          "bank_transfer"
+          // "card",
+          // "bank",
+          // "ussd",
+          // "qr",
+          // "mobile_money",
+          // "bank_transfer"
         ],
         onClose: () => {
           setLoading(false);
