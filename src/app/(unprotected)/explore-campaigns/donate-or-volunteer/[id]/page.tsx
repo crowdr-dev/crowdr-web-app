@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { getUser } from "@/app/api/user/getUser";
 import ProgressBar from "../../../../(protected)/(dashboard)/dashboard-components/ProgressBar";
 import ExploreCard from "../../../../(protected)/(dashboard)/dashboard-components/ExploreCard";
 import Filter from "../../../../(protected)/(dashboard)/dashboard-components/Filter";
@@ -21,48 +20,13 @@ import WaitlistForm from "@/app/home/home-components/WaitlistForm";
 import { formatAmount } from "@/app/(protected)/(dashboard)/common/utils/currency";
 import { calculateTransactionFee, formatCurrency } from "@/utils/seperateText";
 import Footer from "@/app/common/components/Footer";
-import Head from "next/head";
 import NavBar from "../../components/NavBar";
 import Loading from "@/app/loading";
 import { useModal } from "@/app/common/hooks/useModal";
 import { Mixpanel } from "@/utils/mixpanel";
 import PhoneNumberInput from "@/app/common/components/PhoneNumberInput";
-
-const activeTabStyle = "text-[#00B964]  border-b-2 border-[#00B964]";
-const inActiveTabStyle = "text-[#667085]";
-const genderOptions = [
-  {
-    name: "Male",
-    value: "male"
-  },
-  {
-    name: "Female",
-    value: "female"
-  }
-];
-
-const ageRange = [
-  {
-    name: "18 - 25",
-    value: "18 - 25"
-  },
-  {
-    name: "26 - 35",
-    value: "26 - 35"
-  },
-  {
-    name: "36 - 45",
-    value: "36 - 45"
-  },
-  {
-    name: "46 - 55",
-    value: "46 - 55"
-  },
-  {
-    name: "56 and above",
-    value: "56 and above"
-  }
-];
+import NotFound from "@/app/not-found";
+import NumberInput from "@/app/common/components/NumberInput";
 
 export default function DonateOrVolunteer({
   params
@@ -88,11 +52,36 @@ export default function DonateOrVolunteer({
   };
 
   const fetchSingleCampaign = async () => {
-    const singleCampaign = await getSingleCampaign(params.id, true);
-    setCampaign(singleCampaign);
-    setLoadingCampaign(false);
-  };
+    setLoadingCampaign(true);
+    try {
+      const singleCampaign = await getSingleCampaign(params.id, true);
 
+      if (!singleCampaign) {
+        toast({
+          title: "Campaign not found",
+          body: "Unable to load the campaign. It may have been removed or is no longer available.",
+          type: "error"
+        });
+        // Redirect to explore page or handle empty state
+        // You could add router.push('/explore') here if you want
+      } else {
+        setCampaign(singleCampaign);
+      }
+    } catch (error) {
+      const message = extractErrorMessage(error);
+      toast({
+        title: "Error loading campaign",
+        body:
+          message ||
+          "There was a problem loading this campaign. Please try again later.",
+        type: "error"
+      });
+      Mixpanel.track("Error loading campaign", { campaignId: params.id });
+      console.error("Error fetching campaign:", error);
+    } finally {
+      setLoadingCampaign(false);
+    }
+  };
   interface initTypes {
     amount?: string;
     fullName?: "";
@@ -312,6 +301,13 @@ export default function DonateOrVolunteer({
   }, [redirectUrl]);
 
   if (loadingCampaign) return <Loading />;
+  if (!campaign)
+    return (
+      <NotFound
+        errorTitle="Campaign not found"
+        errorMessage="The campaign you are looking for does not exist, has ended or has been removed. Please check the URL or return to the homepage."
+      />
+    );
 
   return (
     <div className="font-satoshi">
@@ -428,21 +424,21 @@ export default function DonateOrVolunteer({
                     onChange={updateVolunteerProps}
                   />
 
-<PhoneNumberInput
-                  label="Phone number"
-                  placeholder="Enter phone number"
-                  name="phoneNumber"
-                  id="phoneNumber"
-                  value={volunteerInputs.phoneNumber}
-                  onChange={(value) => {
-                    setVolunteerInputs((prevState) => ({
-                      ...prevState,
-                      phoneNumber: value
-                    }));
-                  }}
-                  required={true}
-                  error={""} // Add error handling if needed
-                />
+                  <PhoneNumberInput
+                    label="Phone number"
+                    placeholder="Enter phone number"
+                    name="phoneNumber"
+                    id="phoneNumber"
+                    value={volunteerInputs.phoneNumber}
+                    onChange={(value) => {
+                      setVolunteerInputs((prevState) => ({
+                        ...prevState,
+                        phoneNumber: value
+                      }));
+                    }}
+                    required={true}
+                    error={""} // Add error handling if needed
+                  />
                   <Select
                     label={"Gender"}
                     name="gender"
@@ -559,13 +555,13 @@ export default function DonateOrVolunteer({
                     Donation(s)
                   </p>
                 </div>
-
                 <div className="mt-4">
                   <Input
                     label={"Donation Amount"}
                     placeholder="N10.00"
                     name="amount"
                     id="amount"
+
                     type="number"
                     onChange={updateProps}
                     value={donationInputs.amount}
@@ -647,7 +643,7 @@ export default function DonateOrVolunteer({
                 />
 
                 <div className="mt-10">
-                  <div className="flex flex-row items-start justify-between mb-2">
+                  {campaign?.totalNoOfCampaignDonors > 0 && <div className="flex flex-row items-start justify-between mb-2">
                     <p className="text-[#292A2E] text-base">
                       {campaign?.totalNoOfCampaignDonors > 0 &&
                         campaign?.totalNoOfCampaignDonors}{" "}
@@ -655,7 +651,7 @@ export default function DonateOrVolunteer({
                     </p>
 
                     <Filter query="Top Donors" />
-                  </div>
+                  </div>}
                   <div className="flex items-start flex-col gap-5 mb-8">
                     {campaign?.campaignDonors?.slice(0, 5).map(
                       (
@@ -714,3 +710,39 @@ export default function DonateOrVolunteer({
     </div>
   );
 }
+
+const activeTabStyle = "text-[#00B964]  border-b-2 border-[#00B964]";
+const inActiveTabStyle = "text-[#667085]";
+const genderOptions = [
+  {
+    name: "Male",
+    value: "male"
+  },
+  {
+    name: "Female",
+    value: "female"
+  }
+];
+
+const ageRange = [
+  {
+    name: "18 - 25",
+    value: "18 - 25"
+  },
+  {
+    name: "26 - 35",
+    value: "26 - 35"
+  },
+  {
+    name: "36 - 45",
+    value: "36 - 45"
+  },
+  {
+    name: "46 - 55",
+    value: "46 - 55"
+  },
+  {
+    name: "56 and above",
+    value: "56 and above"
+  }
+];
