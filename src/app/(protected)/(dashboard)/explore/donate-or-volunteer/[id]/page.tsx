@@ -23,6 +23,7 @@ import { calculateTransactionFee, formatCurrency } from "@/utils/seperateText";
 import { useModal } from "@/app/common/hooks/useModal";
 import { Mixpanel } from "@/utils/mixpanel";
 import PhoneNumberInput from "@/app/common/components/PhoneNumberInput";
+import NotFound from "@/app/not-found";
 
 const activeTabStyle = "text-[#00B964]  border-b-2 border-[#00B964]";
 const inActiveTabStyle = "text-[#667085]";
@@ -78,9 +79,35 @@ export default function DonateOrVolunteer({
   const [userId, setUserId] = useState<any>("");
 
   const fetchSingleCampaign = async () => {
-    const singleCampaign = await getSingleCampaign(params.id);
-    setCampaign(singleCampaign);
-    setLoadingCampaign(false);
+    setLoadingCampaign(true);
+    try {
+      const singleCampaign = await getSingleCampaign(params.id, true);
+
+      if (!singleCampaign) {
+        toast({
+          title: "Campaign not found",
+          body: "Unable to load the campaign. It may have been removed or is no longer available.",
+          type: "error"
+        });
+        // Redirect to explore page or handle empty state
+        // You could add router.push('/explore') here if you want
+      } else {
+        setCampaign(singleCampaign);
+      }
+    } catch (error) {
+      const message = extractErrorMessage(error);
+      toast({
+        title: "Error loading campaign",
+        body:
+          message ||
+          "There was a problem loading this campaign. Please try again later.",
+        type: "error"
+      });
+      Mixpanel.track("Error loading campaign", { campaignId: params.id });
+      console.error("Error fetching campaign:", error);
+    } finally {
+      setLoadingCampaign(false);
+    }
   };
 
   interface initTypes {
@@ -343,6 +370,13 @@ export default function DonateOrVolunteer({
   }, [redirectUrl]);
 
   if (loadingCampaign) return <Loading />;
+  if (!campaign)
+      return (
+        <NotFound
+          errorTitle="Campaign not found"
+          errorMessage="The campaign you are looking for does not exist, has ended or has been removed. Please check the URL or return to the homepage."
+        />
+      );
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between mb-4">
