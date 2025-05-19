@@ -22,6 +22,7 @@ import ShareCampaign from "@/app/common/components/share-campaign"
 import { Mixpanel } from "@/utils/mixpanel"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { Campaign } from "@/app/api/campaigns/getCampaigns"
 
 const ExploreCard: RFC<ExploreCardProps> = (props) => {
   const {
@@ -41,6 +42,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
     category,
     volunteer,
     currency,
+    user
   } = props
 
   const router = useRouter()
@@ -170,11 +172,11 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
     <div className="p-6 rounded-xl border-[#393e4614] border mt-8 h-fit bg-white">
       <div className="flex items-center justify-between ">
         <Link
-          href={`/explore/profile/${id}`}
+          href={`/explore/profile/${user?._id}`}
           className="group flex items-center"
-          onClick={() => {
-            router.push(`/explore/profile/${id}`)
-          }}
+          // onClick={() => {
+          //   router.push(`/explore/profile/${id}`)
+          // }}
         >
           {avatar ? (
             <Image
@@ -450,4 +452,5 @@ type ExploreCardProps = {
   category?: string
   volunteer?: VolunteerDetails
   currency?: string
+  user?: Campaign['user']
 }

@@ -14,10 +14,14 @@ import queryKeys from "@/utils/queryKeys"
 import query from "../../../../../../../api/query"
 import _profile from "../../../../../../../api/_profile"
 import { useUser } from "../../../common/hooks/useUser"
+import toast from "react-hot-toast"
+import ProfileCard from "./_components/ProfileCard"
+import useCampaignSummaryQuery from "../../../../../../../api/query/useCampaignSummaryQuery"
+import useCampaignsQuery from "../../../../../../../api/query/useCampaignsQuery"
+import { RunningStatus } from "../../../../../../../api/_campaigns/models/GetCampaigns"
 
 const OrganizationProfilePage: React.FC = () => {
   const { id: userId } = useParams() as { id: string }
-  const user = useUser()
   const [activeTab, setActiveTab] = useState<string>("Campaigns")
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(
     null
@@ -25,8 +29,24 @@ const OrganizationProfilePage: React.FC = () => {
 
   const profleQuery = useQuery({
     queryKey: [query.keys.GET_PROFILE, userId],
-    queryFn: () => _profile.getProfile({ userId: user?._id ?? "" }),
-    enabled: !!user,
+    queryFn: () => _profile.getProfile({ userId }),
+  })
+  const profile = profleQuery.data
+
+  const campaignStatsQuery = useCampaignSummaryQuery({
+    params: { userId },
+  })
+
+  const activeCampaignsQuery = useCampaignsQuery({
+    params: { perPage: 1000000, runningStatus: RunningStatus.Active, userId },
+  })
+
+  const previousCampaignsQuery = useCampaignsQuery({
+    params: {
+      perPage: 1000000,
+      runningStatus: RunningStatus.Completed,
+      userId,
+    },
   })
 
   useEffect(() => {
@@ -41,11 +61,6 @@ const OrganizationProfilePage: React.FC = () => {
     // Implement donation logic here
   }
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(`https://${organizationData.profileLink}`)
-    // Show toast or notification
-  }
-
   return (
     <div className="max-w-7xl mx-auto py-8">
       {/* Two-column layout for the entire page */}
@@ -53,215 +68,137 @@ const OrganizationProfilePage: React.FC = () => {
         {/* Left column (2/3) */}
         <div className="lg:col-span-2">
           {/* Main card with cover photo and organization info */}
-          <div className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm mb-8">
-            {/* Cover photo with logo */}
-            <div className="relative h-64 w-full bg-pink-100">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Image
-                  src="/images/beauty-hut-logo.svg"
-                  alt="Beauty Hut"
-                  width={280}
-                  height={180}
-                />
-              </div>
-            </div>
-
-            {/* Profile section */}
-            <div className="p-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between">
-                <div className="flex items-start mb-4 md:mb-0">
-                  <div className="h-16 w-16 rounded-full bg-pink-100 p-2 mr-4 flex-shrink-0">
-                    <Image
-                      src="/images/beauty-hut-logo.svg"
-                      alt="Beauty Hut"
-                      width={64}
-                      height={64}
-                      className="rounded-full"
-                    />
-                  </div>
-                  <div>
-                    <div className="flex items-center mb-1">
-                      <h1 className="text-xl font-bold mr-2">
-                        {organizationData.name}
-                      </h1>
-                      <span className="text-sm bg-gray-100 text-gray-800 px-1 py-0.5 rounded">
-                        🇺🇸
-                      </span>
-                    </div>
-                    <p className="text-gray-600 mb-2">
-                      {organizationData.type}
-                    </p>
-                    <button
-                      onClick={handleCopyLink}
-                      className="text-green-600 flex items-center text-sm hover:underline"
-                    >
-                      <span>Copy Profile Link</span>
-                      <ExternalLink size={14} className="ml-1" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex space-x-2">
-                  {organizationData.socials.email && (
-                    <a
-                      href={`mailto:${organizationData.socials.email}`}
-                      className="h-10 w-10 flex items-center justify-center rounded-full border border-gray-200"
-                    >
-                      <Mail size={20} />
-                    </a>
-                  )}
-                  {organizationData.socials.instagram && (
-                    <a
-                      href={`https://instagram.com/${organizationData.socials.instagram}`}
-                      className="h-10 w-10 flex items-center justify-center rounded-full border border-gray-200"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Instagram size={20} />
-                    </a>
-                  )}
-                  {organizationData.socials.twitter && (
-                    <a
-                      href={`https://twitter.com/${organizationData.socials.twitter}`}
-                      className="h-10 w-10 flex items-center justify-center rounded-full border border-gray-200"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Twitter size={20} />
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              {/* Bio section */}
-              <div className="mt-8">
-                <h2 className="text-lg font-semibold mb-2">Bio</h2>
-                <p className="text-gray-700">{organizationData.bio}</p>
-              </div>
-            </div>
-          </div>
+          {profleQuery.data ? (
+            <ProfileCard profile={profleQuery.data} />
+          ) : (
+            <ProfileCard.Skeleton />
+          )}
 
           {/* Campaign stats */}
-          <CampaignProgress stats={organizationData.stats} />
+          {campaignStatsQuery.data && (
+            <CampaignProgress stats={campaignStatsQuery.data} />
+          )}
 
-          {/* Tabs */}
-          <div className="mt-8 mb-6 flex space-x-2">
-            <Tab
-              label="Campaigns"
-              isActive={activeTab === "Campaigns"}
-              onClick={() => setActiveTab("Campaigns")}
-            />
-            <Tab
-              label="Media"
-              isActive={activeTab === "Media"}
-              onClick={() => setActiveTab("Media")}
-            />
-            <Tab
-              label="Members"
-              isActive={activeTab === "Members"}
-              onClick={() => setActiveTab("Members")}
-            />
-          </div>
-
-          {/* Tab Content */}
-          {activeTab === "Campaigns" && (
+          {profile && (
             <>
-              {/* Active campaigns */}
-              <div className="mb-10">
-                <h2 className="text-lg font-semibold mb-2">Active Campaigns</h2>
-                <p className="text-gray-600 mb-4">
-                  View all present and active campaigns of Beauty Hut and feel
-                  free to donate.
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {campaignsData
-                    .filter((campaign) => campaign.status === "ongoing")
-                    .map((campaign) => (
-                      <ActiveCampaign
-                        key={campaign.id}
-                        id={campaign.id}
-                        title={campaign.title}
-                        image={campaign.image}
-                        category={campaign.category}
-                        goal={{
-                          amount: campaign.goal.amount,
-                          currency: campaign.goal.currency,
-                        }}
-                        raised={campaign.goal.raised}
-                        percentComplete={campaign.percentComplete}
-                        logoImg="/images/beauty-hut-logo.svg"
-                        organizationName={organizationData.name}
-                      />
-                    ))}
-                </div>
+              {/* Tabs */}
+              <div className="mt-8 mb-6 flex space-x-2">
+                <Tab
+                  label="Campaigns"
+                  isActive={activeTab === "Campaigns"}
+                  onClick={() => setActiveTab("Campaigns")}
+                />
+                <Tab
+                  label="Media"
+                  isActive={activeTab === "Media"}
+                  onClick={() => setActiveTab("Media")}
+                />
+                <Tab
+                  label="Members"
+                  isActive={activeTab === "Members"}
+                  onClick={() => setActiveTab("Members")}
+                />
               </div>
 
-              {/* Previous campaigns */}
-              <div className="mb-10">
-                <h2 className="text-lg font-semibold mb-2">
-                  Previous Campaigns
-                </h2>
-                <p className="text-gray-600 mb-4">
-                  These campaigns were successfully completed thanks to people
-                  like you.
-                </p>
+              {/* Tab Content */}
+              {activeTab === "Campaigns" && (
+                <>
+                  {/* Active campaigns */}
+                  {activeCampaignsQuery.data && (
+                    <div className="mb-10">
+                      <h2 className="text-lg font-semibold mb-2">
+                        Active Campaigns
+                      </h2>
+                      <p className="text-gray-600 mb-4">
+                        View all present and active campaigns of{" "}
+                        {profile.user.fullName} and feel free to donate.
+                      </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {campaignsData
-                    .filter((campaign) => campaign.status === "completed")
-                    .map((campaign) => (
-                      <ActiveCampaign
-                        key={campaign.id}
-                        id={campaign.id}
-                        title={campaign.title}
-                        image={campaign.image}
-                        category={campaign.category}
-                        goal={{
-                          amount: campaign.goal.amount,
-                          currency: campaign.goal.currency,
-                        }}
-                        raised={campaign.goal.raised}
-                        percentComplete={campaign.percentComplete}
-                        logoImg="/images/beauty-hut-logo.svg"
-                        organizationName={organizationData.name}
-                      />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {activeCampaignsQuery.data.campaigns.map((campaign) => (
+                          <ActiveCampaign
+                            key={campaign._id}
+                            campaign={campaign}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Previous campaigns */}
+                  {previousCampaignsQuery.data && (
+                    <div className="mb-10">
+                      <h2 className="text-lg font-semibold mb-2">
+                        Previous Campaigns
+                      </h2>
+                      <p className="text-gray-600 mb-4">
+                        These campaigns were successfully completed thanks to
+                        people like you.
+                      </p>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {previousCampaignsQuery.data.campaigns.map(
+                          (campaign) => (
+                            <ActiveCampaign
+                              key={campaign._id}
+                              campaign={campaign}
+                            />
+                          )
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* loading campaigns */}
+                  {!activeCampaignsQuery.data &&
+                    !previousCampaignsQuery.data && (
+                      <p className="text-gray-600 italic">Loading...</p>
+                    )}
+
+                  {/* no campaigns */}
+                  {activeCampaignsQuery.data &&
+                    previousCampaignsQuery.data &&
+                    activeCampaignsQuery.data.pagination.total === 0 &&
+                    previousCampaignsQuery.data.pagination.total === 0 && (
+                      <p className="text-gray-600 italic">
+                        No campaigns yet...
+                      </p>
+                    )}
+                </>
+              )}
+
+              {activeTab === "Media" && (
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">
+                    Outreaches/Campaign Media
+                  </h2>
+                  <p className="text-gray-600 mb-4">
+                    Here are images to show that we are using every penny
+                    effectively
+                  </p>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    {[1, 2, 3, 4, 5, 6].map((item) => (
+                      <div
+                        key={item}
+                        className="bg-gray-200 rounded aspect-square h-auto"
+                      >
+                        {/* Placeholder for media images */}
+                      </div>
                     ))}
-                </div>
-              </div>
-            </>
-          )}
-
-          {activeTab === "Media" && (
-            <div>
-              <h2 className="text-lg font-semibold mb-2">
-                Outreaches/Campaign Media
-              </h2>
-              <p className="text-gray-600 mb-4">
-                Here are images to show that we are using every penny
-                effectively
-              </p>
-
-              <div className="grid grid-cols-3 gap-2">
-                {[1, 2, 3, 4, 5, 6].map((item) => (
-                  <div
-                    key={item}
-                    className="bg-gray-200 rounded aspect-square h-auto"
-                  >
-                    {/* Placeholder for media images */}
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
+                </div>
+              )}
 
-          {activeTab === "Members" && (
-            <div className="bg-white p-6 rounded-lg border border-gray-200">
-              <h3 className="font-medium mb-2">Team Members</h3>
-              <p className="text-gray-600">
-                No team members information available at this time.
-              </p>
-            </div>
+              {activeTab === "Members" && (
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                  <h3 className="font-medium mb-2">Team Members</h3>
+                  <p className="text-gray-600">
+                    No team members information available at this time.
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </div>
 
@@ -483,3 +420,70 @@ const organizationData: OrganizationProfile = {
     twitter: "beautyhut",
   },
 }
+
+// ProfileCard.Skeleton = () => {
+//   return (
+//     <div className="animate-pulse max-w-7xl mx-auto py-8">
+//       {/* Two-column layout for the entire page */}
+//       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+//         {/* Left column (2/3) */}
+//         <div className="lg:col-span-2">
+//           {/* Main card with cover photo and organization info */}
+//           <div className="rounded-xl overflow-hidden border border-gray-100 mb-8">
+//             {/* Cover photo with logo */}
+//             <div className="relative h-64 w-full bg-gray-200"></div>
+
+//             {/* Profile section */}
+//             <div className="p-6">
+//               <div className="flexspace-x-4 flex gap-x-4">
+//                 <div className="size-16 h-16 w-16 rounded-full bg-gray-200"></div>
+//                 <div className="flex-1 space-y-6 py-1 max-w-[200px]">
+//                   <div className="space-y-3">
+//                     <div className="h-2 rounded bg-gray-200"></div>
+//                     <div className="grid grid-cols-3 gap-4">
+//                       <div className="col-span-2 h-2 rounded bg-gray-200"></div>
+//                       <div className="col-span-1 h-2 rounded bg-gray-200"></div>
+//                     </div>
+//                     <div className="h-2 rounded bg-gray-200 max-w-[100px]"></div>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               {/* Bio section */}
+//               <div className="mt-8 space-y-3">
+//                 <div className="h-2 rounded bg-gray-200"></div>
+//                 <div className="h-2 rounded bg-gray-200"></div>
+//                 <div className="grid grid-cols-3 gap-4">
+//                   <div className="col-span-2 h-2 rounded bg-gray-200"></div>
+//                   <div className="col-span-1 h-2 rounded bg-gray-200"></div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Right column (1/3) - Ongoing Campaign */}
+//         <div className="lg:col-span-1 h-full">
+//           <div className="mt-8">
+//             <div className="flex flex-row items-start justify-between mb-4">
+//               <div className="flex-1 h-2.5 rounded bg-gray-200 max-w-[150px]"></div>
+//               <div className="flex-1 h-2 rounded bg-gray-200 max-w-[100px]"></div>
+//             </div>
+
+//             <div className="flex flex-col gap-5 mb-8">
+//               {Array.from({ length: 4 }).map((item, index) => (
+//                 <div key={index} className="flex gap-x-4">
+//                   <div className="size-10 h-10 w-10 rounded-full bg-gray-200"></div>
+//                   <div className="flex flex-col flex-1 space-y-3 py-1 max-w-[200px]">
+//                     <div className="h-2 rounded bg-gray-200 max-w-[100px]"></div>
+//                     <div className="h-2 rounded bg-gray-200"></div>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }

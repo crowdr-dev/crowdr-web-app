@@ -1,14 +1,14 @@
 import api from ".."
 import { IDeleteMediaPath } from "./models/DeleteMedia"
-import { IGetProfileParams } from "./models/GetProfile"
+import { IGetProfilePath, IGetProfileResponse } from "./models/GetProfile"
 import { IPatchUpdateProfileBody } from "./models/PatchUpdateProfile"
 
-const getProfile = async (params: IGetProfileParams) => {
-  const url = `/api/v1/profile`
+const getProfile = async ({ userId }: IGetProfilePath) => {
+  const url = `/api/v1/profile/${userId}`
 
   try {
-    const { data } = await api.get(url, { params })
-    return data
+    const { data } = await api.get<IGetProfileResponse>(url)
+    return data.data
   } catch (error) {
     throw error
   }

@@ -226,6 +226,7 @@ const Explore = () => {
                     avatar={campaign?.photo?.url || ""}
                     key={index}
                     campaignType={campaign.campaignType}
+                    user={campaign.user}
                   />
                 )
               })}
