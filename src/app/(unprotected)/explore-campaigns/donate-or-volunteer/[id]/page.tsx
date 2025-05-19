@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import ProgressBar from "../../../../(protected)/(dashboard)/dashboard-components/ProgressBar";
 import ExploreCard from "../../../../(protected)/(dashboard)/dashboard-components/ExploreCard";
@@ -15,10 +15,6 @@ import { extractErrorMessage } from "@/utils/extractErrorMessage";
 import HeartHand from "../../../../../../public/svg/hand-holding-heart.svg";
 import { useToast } from "@/app/common/hooks/useToast";
 import Link from "next/link";
-import OldModal from "@/app/common/components/OldModal";
-import WaitlistForm from "@/app/home/home-components/WaitlistForm";
-import { formatAmount } from "@/app/(protected)/(dashboard)/common/utils/currency";
-import { calculateTransactionFee } from "@/utils/seperateText";
 import Footer from "@/app/common/components/Footer";
 import NavBar from "../../components/NavBar";
 import Loading from "@/app/loading";
@@ -27,12 +23,15 @@ import { Mixpanel } from "@/utils/mixpanel";
 import PhoneNumberInput from "@/app/common/components/PhoneNumberInput";
 import NotFound from "@/app/not-found";
 import { FaApplePay } from "react-icons/fa";
+import { formatAmount } from "@/app/(protected)/(dashboard)/common/utils/currency";
+import { calculateTransactionFee } from "@/utils/seperateText";
 
 declare global {
   interface Window {
     PaystackPop: any;
   }
 }
+
 export default function DonateOrVolunteer({
   params
 }: {
@@ -40,13 +39,10 @@ export default function DonateOrVolunteer({
 }) {
   const toast = useToast();
   const modal = useModal();
-  const iframeRef = useRef<any>();
-  const [redirectUrl, setRedirectUrl] = useState("");
   const [loadingCampaign, setLoadingCampaign] = useState(true);
   const [loading, setLoading] = useState(false);
   const [campaign, setCampaign] = useState<any>();
   const [tab, setTab] = useState("");
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [paystackLoaded, setPaystackLoaded] = useState(false);
   const [applePaySupported, setApplePaySupported] = useState(false);
 
@@ -77,17 +73,17 @@ export default function DonateOrVolunteer({
   };
 
   const generateRandomString = (length = 10) => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  const randomValues = new Uint32Array(length);
-  window.crypto.getRandomValues(randomValues);
-  
-  for (let i = 0; i < length; i++) {
-    result += chars[randomValues[i] % chars.length];
-  }
-  
-  return result;
-};
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const randomValues = new Uint32Array(length);
+    window.crypto.getRandomValues(randomValues);
+    
+    for (let i = 0; i < length; i++) {
+      result += chars[randomValues[i] % chars.length];
+    }
+    
+    return result;
+  };
 
   const initiateApplePay = async () => {
     if (!paystackLoaded) {
@@ -130,12 +126,12 @@ export default function DonateOrVolunteer({
         ref: `${data.reference}_${generateRandomString(12)}_${Date.now()}`,
         channels: [
           "apple_pay",
-          // "card",
-          // "bank",
-          // "ussd",
-          // "qr",
-          // "mobile_money",
-          // "bank_transfer"
+          "card",
+          "bank",
+          "ussd",
+          "qr",
+          "mobile_money",
+          "bank_transfer"
         ],
         onClose: () => {
           setLoading(false);
@@ -187,8 +183,6 @@ export default function DonateOrVolunteer({
           body: "Unable to load the campaign. It may have been removed or is no longer available.",
           type: "error"
         });
-        // Redirect to explore page or handle empty state
-        // You could add router.push('/explore') here if you want
       } else {
         setCampaign(singleCampaign);
       }
@@ -207,6 +201,7 @@ export default function DonateOrVolunteer({
       setLoadingCampaign(false);
     }
   };
+  
   interface initTypes {
     amount: string;
     fullName?: "";
@@ -280,6 +275,7 @@ export default function DonateOrVolunteer({
     }));
   };
 
+  // Effect to load campaign data and set tab
   useEffect(() => {
     Mixpanel.track(
       campaign?.campaignType === "fundraiseAndVolunteer"
@@ -294,17 +290,79 @@ export default function DonateOrVolunteer({
         ? "donate"
         : "volunteer"
     );
-  }, [params.id, campaign?.campaignType, redirectUrl]);
+  }, [params.id, campaign?.campaignType]);
 
-  const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails.reduce(
+  // Effect to check for payment completion in URL parameters
+  useEffect(() => {
+    // Check if we're in a browser environment
+    if (typeof window !== "undefined") {
+      // Parse URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const reference = urlParams.get('reference');
+      const cancelled = urlParams.get('cancelled');
+      
+      // Handle payment completion
+      if (reference) {
+        Mixpanel.track("Successful Donation");
+        toast({
+          title: "Success",
+          body: "Donation successful",
+          type: "success"
+        });
+        // Refresh campaign data to show updated donations
+        fetchSingleCampaign();
+        
+        // Clean up URL parameters using history API
+        const url = new URL(window.location.href);
+        url.searchParams.delete('reference');
+        window.history.replaceState({}, document.title, url.toString());
+      }
+      
+      // Handle cancelled payment
+      if (cancelled) {
+        toast({
+          title: "Payment Cancelled",
+          body: "Your donation was not completed",
+          type: "info"
+        });
+        
+        // Clean up URL parameters
+        const url = new URL(window.location.href);
+        url.searchParams.delete('cancelled');
+        window.history.replaceState({}, document.title, url.toString());
+      }
+    }
+  }, []);
+
+  // Effect to load Paystack script
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://js.paystack.co/v2/inline.js";
+    script.async = true;
+    script.onload = () => {
+      setPaystackLoaded(true);
+      const supported = checkApplePaySupport();
+      setApplePaySupported(supported);
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
+
+  const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails?.reduce(
     (accumulator: number, current: { amount: number }) => {
       return accumulator + current.amount;
     },
     0
-  );
+  ) || 0;
+  
   const userDetails = campaign?.user;
-  const donatedAmount = campaign?.totalAmountDonated?.[0].amount;
-  const currency = campaign?.fundraise?.fundingGoalDetails[0].currency;
+  const donatedAmount = campaign?.totalAmountDonated?.[0]?.amount || 0;
+  const currency = campaign?.fundraise?.fundingGoalDetails?.[0]?.currency || 'NGN';
 
   const donate = async () => {
     setLoading(true);
@@ -331,8 +389,9 @@ export default function DonateOrVolunteer({
       });
       Mixpanel.track("Routes to Paystack Gateway");
 
-      setRedirectUrl(data.authorization_url);
-      setLoading(false);
+      // Redirect in the same tab
+      window.location.href = data.authorization_url;
+      
     } catch (error) {
       Mixpanel.track("Error completing donation");
       setLoading(false);
@@ -369,79 +428,13 @@ export default function DonateOrVolunteer({
     }
   };
 
-  const urlsOnly = campaign?.campaignAdditionalImages.map(
+  const urlsOnly = campaign?.campaignAdditionalImages?.map(
     (item: { url: string }) => item.url
-  );
+  ) || [];
 
   const areAllInputsFilled = (input: any) => {
     return Object.values(input).every((value) => value !== "");
   };
-
-  const closeIframe = () => {
-    if (iframeRef.current) {
-      iframeRef.current.src = "about:blank"; // Reset iframe source
-      iframeRef.current = null;
-    }
-    setRedirectUrl(""); // Reset redirect URL
-    modal.hide(); // Hide modal
-    scrollTo(0, 0); // Scroll to top of page
-    setDonationInputs(initProps); // Reset donation inputs
-  };
-
-  const checkIframeUrl = () => {
-    const iframe = iframeRef.current;
-    if (redirectUrl && iframe) {
-      const iframeUrl = iframe.contentWindow?.location.href;
-      if (
-        (iframeUrl && iframeUrl.includes("reference")) ||
-        (iframeUrl && iframeUrl.includes("cancelled"))
-      ) {
-        // Check for specific URL indicating success
-        closeIframe();
-        if (iframeUrl.includes("reference")) {
-          Mixpanel.track("Successful Donation");
-
-          toast({
-            title: "Success",
-            body: "Donation successful",
-            type: "success"
-          });
-        }
-      }
-    }
-  };
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://js.paystack.co/v2/inline.js";
-    script.async = true;
-    script.onload = () => {
-      setPaystackLoaded(true);
-      const supported = checkApplePaySupport();
-      setApplePaySupported(supported);
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (redirectUrl) {
-      modal.show(
-        <iframe
-          src={redirectUrl}
-          style={{ height: "100vh", width: "100%", background: "#fff" }}
-          id="paystack-gateway"
-          ref={iframeRef}></iframe>
-      );
-      const intervalId = setInterval(checkIframeUrl, 1000); // Check URL every second
-      return () => clearInterval(intervalId);
-    }
-  }, [redirectUrl]);
 
   if (loadingCampaign) return <Loading />;
   if (!campaign)
@@ -467,7 +460,7 @@ export default function DonateOrVolunteer({
             </h3>
           </div>
         </div>
-        <div className="grid grid-col-1 gap-12 min-w-full md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-12 min-w-full md:grid-cols-2">
           <ExploreCard
             id={campaign._id}
             name={
@@ -486,7 +479,7 @@ export default function DonateOrVolunteer({
             avatar={campaign?.photo?.url || ""}
             slideImages={[
               campaign?.campaignCoverImage?.url,
-              ...(urlsOnly || [])
+              ...urlsOnly
             ]}
             donateImage={campaign?.campaignCoverImage?.url}
             routeTo={``}
@@ -580,7 +573,7 @@ export default function DonateOrVolunteer({
                       }));
                     }}
                     required={true}
-                    error={""} // Add error handling if needed
+                    error={""} 
                   />
                   <Select
                     label={"Gender"}
@@ -612,7 +605,7 @@ export default function DonateOrVolunteer({
                     <label
                       htmlFor="about"
                       className="text-[14px] text-[#344054] mb-[6px]">
-                      Tell us a bit about yourself and why you’re interested in
+                      Tell us a bit about yourself and why you're interested in
                       this project!
                     </label>
                     <textarea
@@ -641,42 +634,6 @@ export default function DonateOrVolunteer({
                       Total Volunteer(s)
                     </p>
                   </div>
-                  {/* <div className="flex items-start flex-col gap-5 mb-8">
-                    {campaign?.campaignVolunteers
-                      ?.slice(0, 5)
-                      .map(
-                        (
-                          donor: { fullName: string; amount: string },
-                          index: number
-                        ) => {
-                          return (
-                            <div
-                              className="flex items-center flex-row justify-start"
-                              key={index}>
-                              <div className="p-2 bg-[#F8F8F8] rounded-full">
-                                <Image
-                                  src={HeartHand}
-                                  alt="menu"
-                                  className="bg-F8F8F8"
-                                />
-                              </div>
-                              <div className="flex flex-col gap-[1px] ml-4">
-                                <p className="text-[#344054] text-sm">
-                                  {donor?.fullName}
-                                </p>
-                              </div>
-                            </div>
-                          );
-                        }
-                      )}
-                  </div>
-                  {campaign?.totalNoOfCampaignVolunteers > 0 && (
-                    <Link
-                      className="cursor-pointer p-4 bg-[#F8F8F8] text-[#344054] w-fit mt-8 rounded-lg"
-                      href={`/explore/donate-or-volunteer/${campaign._id}/all-donations`}>
-                      See all
-                    </Link>
-                  )}*/}
                 </div>
               </div>
             ) : (
@@ -690,7 +647,7 @@ export default function DonateOrVolunteer({
                   </p>
                   <ProgressBar
                     bgColor="#00B964"
-                    percent={(donatedAmount / totalDonationAmount) * 100}
+                    percent={totalDonationAmount > 0 ? (donatedAmount / totalDonationAmount) * 100 : 0}
                   />
                   <p className="mt-3 text-sm opacity-50">
                     {campaign?.totalNoOfCampaignDonors > 0 &&
@@ -777,17 +734,6 @@ export default function DonateOrVolunteer({
                 </div>
 
                 <div className="mt-4 flex flex-col gap-3 w-full">
-                  {/* Apple Pay button container
-                  <div id="apple-pay-button" className="w-full h-12"></div>
-
-                  {/* Regular payment button as fallback */}
-                  {/* <div id="other-payment-options" className="hidden"></div> */} 
-
-                  {/* Or separator */}
-                  {/* <div className="text-center my-2 text-gray-500">OR</div> */}
-
-                  {/* Regular Paystack button */}
-
                   <Button
                     text="Donate"
                     className="w-full !justify-center"
@@ -796,7 +742,7 @@ export default function DonateOrVolunteer({
                     disabled={!areAllInputsFilled(donationInputs)}
                   />
 
-                  {paystackLoaded && applePaySupported&& (
+                  {paystackLoaded && applePaySupported && (
                     <button
                       onClick={initiateApplePay}
                       className="apple-pay-button"
@@ -875,6 +821,41 @@ export default function DonateOrVolunteer({
         </div>
       </div>
       <Footer />
+      <style jsx global>{`
+        .apple-pay-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 48px;
+          padding: 0 16px;
+          border-radius: 6px;
+          background-color: #000;
+          color: #fff;
+          font-size: 16px;
+          font-weight: 500;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+
+        .apple-pay-button:hover {
+          background-color: #1a1a1a;
+        }
+
+        .apple-pay-button:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        .apple-pay-text {
+          margin-right: 8px;
+        }
+
+        .apple-pay-logo {
+          color: #fff;
+        }
+      `}</style>
     </div>
   );
 }
