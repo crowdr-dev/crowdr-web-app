@@ -73,15 +73,16 @@ export default function DonateOrVolunteer({
   };
 
   const generateRandomString = (length = 10) => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
     const randomValues = new Uint32Array(length);
     window.crypto.getRandomValues(randomValues);
-    
+
     for (let i = 0; i < length; i++) {
       result += chars[randomValues[i] % chars.length];
     }
-    
+
     return result;
   };
 
@@ -101,7 +102,9 @@ export default function DonateOrVolunteer({
       const endpoint = "/api/v1/payments/initiate";
       const payload = {
         campaignId: params.id,
-        amount: donationInputs.amount,
+        amount:
+          calculateTransactionFee(parseFloat(donationInputs.amount)) +
+          parseFloat(donationInputs.amount),
         email: donationInputs.email,
         fullName: donationInputs.fullName,
         currency: currency,
@@ -201,7 +204,7 @@ export default function DonateOrVolunteer({
       setLoadingCampaign(false);
     }
   };
-  
+
   interface initTypes {
     amount: string;
     fullName?: "";
@@ -298,9 +301,9 @@ export default function DonateOrVolunteer({
     if (typeof window !== "undefined") {
       // Parse URL parameters
       const urlParams = new URLSearchParams(window.location.search);
-      const reference = urlParams.get('reference');
-      const cancelled = urlParams.get('cancelled');
-      
+      const reference = urlParams.get("reference");
+      const cancelled = urlParams.get("cancelled");
+
       // Handle payment completion
       if (reference) {
         Mixpanel.track("Successful Donation");
@@ -311,13 +314,13 @@ export default function DonateOrVolunteer({
         });
         // Refresh campaign data to show updated donations
         fetchSingleCampaign();
-        
+
         // Clean up URL parameters using history API
         const url = new URL(window.location.href);
-        url.searchParams.delete('reference');
+        url.searchParams.delete("reference");
         window.history.replaceState({}, document.title, url.toString());
       }
-      
+
       // Handle cancelled payment
       if (cancelled) {
         toast({
@@ -325,10 +328,10 @@ export default function DonateOrVolunteer({
           body: "Your donation was not completed",
           type: "info"
         });
-        
+
         // Clean up URL parameters
         const url = new URL(window.location.href);
-        url.searchParams.delete('cancelled');
+        url.searchParams.delete("cancelled");
         window.history.replaceState({}, document.title, url.toString());
       }
     }
@@ -353,16 +356,18 @@ export default function DonateOrVolunteer({
     };
   }, []);
 
-  const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails?.reduce(
-    (accumulator: number, current: { amount: number }) => {
-      return accumulator + current.amount;
-    },
-    0
-  ) || 0;
-  
+  const totalDonationAmount =
+    campaign?.fundraise?.fundingGoalDetails?.reduce(
+      (accumulator: number, current: { amount: number }) => {
+        return accumulator + current.amount;
+      },
+      0
+    ) || 0;
+
   const userDetails = campaign?.user;
   const donatedAmount = campaign?.totalAmountDonated?.[0]?.amount || 0;
-  const currency = campaign?.fundraise?.fundingGoalDetails?.[0]?.currency || 'NGN';
+  const currency =
+    campaign?.fundraise?.fundingGoalDetails?.[0]?.currency || "NGN";
 
   const donate = async () => {
     setLoading(true);
@@ -391,7 +396,6 @@ export default function DonateOrVolunteer({
 
       // Redirect in the same tab
       window.location.href = data.authorization_url;
-      
     } catch (error) {
       Mixpanel.track("Error completing donation");
       setLoading(false);
@@ -428,9 +432,10 @@ export default function DonateOrVolunteer({
     }
   };
 
-  const urlsOnly = campaign?.campaignAdditionalImages?.map(
-    (item: { url: string }) => item.url
-  ) || [];
+  const urlsOnly =
+    campaign?.campaignAdditionalImages?.map(
+      (item: { url: string }) => item.url
+    ) || [];
 
   const areAllInputsFilled = (input: any) => {
     return Object.values(input).every((value) => value !== "");
@@ -477,10 +482,7 @@ export default function DonateOrVolunteer({
             timePosted={campaign?.campaignEndDate}
             volunteer={campaign?.volunteer}
             avatar={campaign?.photo?.url || ""}
-            slideImages={[
-              campaign?.campaignCoverImage?.url,
-              ...urlsOnly
-            ]}
+            slideImages={[campaign?.campaignCoverImage?.url, ...urlsOnly]}
             donateImage={campaign?.campaignCoverImage?.url}
             routeTo={``}
             category={campaign?.category}
@@ -573,7 +575,7 @@ export default function DonateOrVolunteer({
                       }));
                     }}
                     required={true}
-                    error={""} 
+                    error={""}
                   />
                   <Select
                     label={"Gender"}
@@ -647,7 +649,11 @@ export default function DonateOrVolunteer({
                   </p>
                   <ProgressBar
                     bgColor="#00B964"
-                    percent={totalDonationAmount > 0 ? (donatedAmount / totalDonationAmount) * 100 : 0}
+                    percent={
+                      totalDonationAmount > 0
+                        ? (donatedAmount / totalDonationAmount) * 100
+                        : 0
+                    }
                   />
                   <p className="mt-3 text-sm opacity-50">
                     {campaign?.totalNoOfCampaignDonors > 0 &&
@@ -737,14 +743,20 @@ export default function DonateOrVolunteer({
                   <Button
                     text="Donate"
                     className="w-full !justify-center"
-                    onClick={donate}
+                    onClick={() => {
+                      if (paystackLoaded && applePaySupported) {
+                        initiateApplePay();
+                      } else {
+                        donate();
+                      }
+                    }}
                     loading={loading}
                     disabled={!areAllInputsFilled(donationInputs)}
                   />
 
                   {paystackLoaded && applePaySupported && (
                     <button
-                      onClick={initiateApplePay}
+                      onClick={donate}
                       className="apple-pay-button"
                       disabled={!areAllInputsFilled(donationInputs) || loading}>
                       <span className="apple-pay-text">Donate with</span>
