@@ -779,7 +779,7 @@ export default function DonateOrVolunteer({
                   </div>
                 </div>
 
-                <div className="mt-4 flex flex-col gap-3">
+                <div className="mt-4 flex flex-col gap-3 w-full">
                   {/* Apple Pay button container
                   <div id="apple-pay-button" className="w-full h-12"></div>
 
