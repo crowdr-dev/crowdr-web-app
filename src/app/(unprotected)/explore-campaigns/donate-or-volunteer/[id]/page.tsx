@@ -103,8 +103,7 @@ export default function DonateOrVolunteer({
       const payload = {
         campaignId: params.id,
         amount:
-          calculateTransactionFee(parseFloat(donationInputs.amount)) +
-          parseFloat(donationInputs.amount),
+          Math.round(parseFloat(donationInputs.amount) * 100),
         email: donationInputs.email,
         fullName: donationInputs.fullName,
         currency: currency,
@@ -754,9 +753,9 @@ export default function DonateOrVolunteer({
                     disabled={!areAllInputsFilled(donationInputs)}
                   />
 
-                  {paystackLoaded && applePaySupported && (
+                  {/* {paystackLoaded && applePaySupported && ( */}
                     <button
-                      onClick={donate}
+                      onClick={initiateApplePay}
                       className="apple-pay-button"
                       disabled={!areAllInputsFilled(donationInputs) || loading}>
                       <span className="apple-pay-text">Donate with</span>
@@ -766,7 +765,7 @@ export default function DonateOrVolunteer({
                         color="#fff"
                       />
                     </button>
-                  )}
+                  {/* )} */}
                 </div>
 
                 <div className="mt-10">
