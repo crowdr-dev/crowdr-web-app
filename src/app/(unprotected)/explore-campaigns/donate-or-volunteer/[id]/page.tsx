@@ -76,6 +76,20 @@ export default function DonateOrVolunteer({
     }
   };
 
+  const generateRandomString = (length = 10) => {
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    const randomValues = new Uint32Array(length);
+    window.crypto.getRandomValues(randomValues);
+
+    for (let i = 0; i < length; i++) {
+      result += chars[randomValues[i] % chars.length];
+    }
+
+    return result;
+  };
+
   const initiateApplePay = async () => {
     if (!paystackLoaded) {
       toast({
@@ -109,20 +123,22 @@ export default function DonateOrVolunteer({
       });
 
       // Use the response to complete the transaction with Apple Pay
-      const handler = window.PaystackPop.setup({
+      const handler = window.PaystackPop.checkout({
         key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
         email: donationInputs.email,
         amount: parseFloat(donationInputs.amount) * 100,
         currency: "NGN",
-        ref: data.reference,
+        ref: `${data.reference}_${generateRandomString(12)}_${Date.now()}`,
+        container: "paystack-apple-pay", // ID of div to mount payment button elements
+        loadPaystackCheckButton: "paystack-other-channels",
         channels: [
-          "apple_pay",
-          "card",
-          "bank",
-          "ussd",
-          "qr",
-          "mobile_money",
-          "bank_transfer"
+          "apple_pay"
+          // "card",
+          // "bank",
+          // "ussd",
+          // "qr",
+          // "mobile_money",
+          // "bank_transfer"
         ],
         onClose: () => {
           setLoading(false);
@@ -763,12 +779,12 @@ export default function DonateOrVolunteer({
                   </div>
                 </div>
 
-                <div className="mt-4 flex flex-col gap-3">
+                <div className="mt-4 flex flex-col gap-3 w-full">
                   {/* Apple Pay button container
                   <div id="apple-pay-button" className="w-full h-12"></div>
 
                   {/* Regular payment button as fallback */}
-                  {/* <div id="other-payment-options" className="hidden"></div> */} 
+                  {/* <div id="other-payment-options" className="hidden"></div> */}
 
                   {/* Or separator */}
                   {/* <div className="text-center my-2 text-gray-500">OR</div> */}
@@ -783,7 +799,7 @@ export default function DonateOrVolunteer({
                     disabled={!areAllInputsFilled(donationInputs)}
                   />
 
-                  {paystackLoaded && applePaySupported&& (
+                  {paystackLoaded && applePaySupported && (
                     <button
                       onClick={initiateApplePay}
                       className="apple-pay-button"
