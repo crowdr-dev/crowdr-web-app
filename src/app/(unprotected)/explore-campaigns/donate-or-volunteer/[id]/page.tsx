@@ -42,6 +42,7 @@ export default function DonateOrVolunteer({
   const [campaign, setCampaign] = useState<any>();
   const [tab, setTab] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [paystackLoaded, setPaystackLoaded] = useState(false);
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -49,6 +50,84 @@ export default function DonateOrVolunteer({
 
   const closeModal = () => {
     setModalIsOpen(false);
+  };
+
+  const initiateApplePay = async () => {
+    if (!paystackLoaded) {
+      toast({
+        title: "Payment system loading",
+        body: "Please wait while we prepare the payment system",
+        type: "info"
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Initialize transaction on your backend
+      const endpoint = "/api/v1/payments/initiate";
+      const payload = {
+        campaignId: params.id,
+        amount: donationInputs.amount,
+        email: donationInputs.email,
+        fullName: donationInputs.fullName,
+        currency: currency,
+        isAnonymous: checkboxValues.isAnonymous,
+        shouldShareDetails: checkboxValues.shouldShareDetails,
+        isSubscribedToPromo: checkboxValues.isSubscribedToPromo,
+        callback_url: window.location.href,
+        cancel_url: `${window.location.href}?cancelled=true`
+      };
+
+      const { data } = await makeRequest(endpoint, {
+        method: "POST",
+        payload: JSON.stringify(payload)
+      });
+
+      // Use the response to complete the transaction with Apple Pay
+      // @ts-ignore - PaystackPop is added by the script
+      const handler = window.PaystackPop.paymentRequest({
+        key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY, // Your public key
+        email: donationInputs.email,
+        amount: parseFloat(donationInputs.amount) * 100, // Convert to subunit (kobo, cents)
+        currency: currency,
+        ref: data.reference, // Use reference from initialized transaction
+        container: "apple-pay-button", // ID of Apple Pay button container
+        loadPaystackCheckButton: "other-payment-options", // ID for alternative payment button
+        onClose: () => {
+          setLoading(false);
+          toast({
+            title: "Payment Cancelled",
+            body: "You've cancelled the payment",
+            type: "info"
+          });
+        },
+        callback: (response: any) => {
+          setLoading(false);
+          if (response.status === "success") {
+            Mixpanel.track("Successful Donation");
+            toast({
+              title: "Success",
+              body: "Donation successful",
+              type: "success"
+            });
+            // Refresh the campaign data
+            fetchSingleCampaign();
+          } else {
+            toast({
+              title: "Payment Error",
+              body: "There was an issue with your payment",
+              type: "error"
+            });
+          }
+        }
+      });
+    } catch (error) {
+      Mixpanel.track("Error completing donation");
+      setLoading(false);
+      const message = extractErrorMessage(error);
+      toast({ title: "Oops!", body: message, type: "error" });
+    }
   };
 
   const fetchSingleCampaign = async () => {
@@ -83,7 +162,7 @@ export default function DonateOrVolunteer({
     }
   };
   interface initTypes {
-    amount?: string;
+    amount: string;
     fullName?: "";
     email?: string;
   }
@@ -285,6 +364,18 @@ export default function DonateOrVolunteer({
       }
     }
   };
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://js.paystack.co/v2/inline.js";
+    script.async = true;
+    script.onload = () => setPaystackLoaded(true);
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   useEffect(() => {
     if (redirectUrl) {
@@ -561,7 +652,6 @@ export default function DonateOrVolunteer({
                     placeholder="N10.00"
                     name="amount"
                     id="amount"
-
                     type="number"
                     onChange={updateProps}
                     value={donationInputs.amount}
@@ -634,24 +724,48 @@ export default function DonateOrVolunteer({
                   </div>
                 </div>
 
-                <Button
-                  text="Donate"
-                  className="w-full mt-4 !justify-center"
-                  onClick={donate}
-                  loading={loading}
-                  disabled={!areAllInputsFilled(donationInputs)}
-                />
+                <div className="mt-4 flex flex-col gap-3">
+                  {/* Apple Pay button container */}
+                  <div id="apple-pay-button" className="w-full h-12"></div>
+
+                  {/* Regular payment button as fallback */}
+                  <div id="other-payment-options" className="hidden"></div>
+
+                  {/* Or separator */}
+                  {/* <div className="text-center my-2 text-gray-500">OR</div> */}
+
+                  {/* Regular Paystack button */}
+
+                  {paystackLoaded && isApplePaySupported() && (
+                    <button
+                      onClick={initiateApplePay}
+                      className="apple-pay-button"
+                      disabled={!areAllInputsFilled(donationInputs) || loading}>
+                      <span className="apple-pay-text">Donate with</span>
+                      <span className="apple-pay-logo"></span>
+                    </button>
+                  )}
+                  <Button
+                    text="Donate"
+                    className="w-full !justify-center"
+                    onClick={donate}
+                    loading={loading}
+                    disabled={!areAllInputsFilled(donationInputs)}
+                  />
+                </div>
 
                 <div className="mt-10">
-                  {campaign?.totalNoOfCampaignDonors > 0 && <div className="flex flex-row items-start justify-between mb-2">
-                    <p className="text-[#292A2E] text-base">
-                      {campaign?.totalNoOfCampaignDonors > 0 &&
-                        campaign?.totalNoOfCampaignDonors}{" "}
-                      Total Donor(s)
-                    </p>
+                  {campaign?.totalNoOfCampaignDonors > 0 && (
+                    <div className="flex flex-row items-start justify-between mb-2">
+                      <p className="text-[#292A2E] text-base">
+                        {campaign?.totalNoOfCampaignDonors > 0 &&
+                          campaign?.totalNoOfCampaignDonors}{" "}
+                        Total Donor(s)
+                      </p>
 
-                    <Filter query="Top Donors" />
-                  </div>}
+                      <Filter query="Top Donors" />
+                    </div>
+                  )}
                   <div className="flex items-start flex-col gap-5 mb-8">
                     {campaign?.campaignDonors?.slice(0, 5).map(
                       (
@@ -746,3 +860,14 @@ const ageRange = [
     value: "56 and above"
   }
 ];
+
+
+const isApplePaySupported = () => {
+  // Check if we're on a device that might support Apple Pay
+  return (
+    (navigator.userAgent.includes('Safari') || navigator.userAgent.includes('iPhone') || 
+     navigator.userAgent.includes('iPad') || navigator.userAgent.includes('Mac')) &&
+    !navigator.userAgent.includes('Chrome') && // Chrome on iOS also reports as Safari 
+    window.PaymentRequest // Browser supports Payment Request API
+  );
+};
