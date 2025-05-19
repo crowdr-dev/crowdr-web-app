@@ -748,6 +748,7 @@ export default function DonateOrVolunteer({
                       // } else {
                       //   donate();
                       // }
+                      donate();
                     }}
                     loading={loading}
                     disabled={!areAllInputsFilled(donationInputs)}
@@ -763,6 +764,7 @@ export default function DonateOrVolunteer({
                         className="apple-pay-logo"
                         size={30}
                         color="#fff"
+                        fill="#fff"
                       />
                     </button>
                   {/* )} */}
