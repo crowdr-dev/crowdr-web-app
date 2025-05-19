@@ -743,11 +743,11 @@ export default function DonateOrVolunteer({
                     text="Donate"
                     className="w-full !justify-center"
                     onClick={() => {
-                      if (paystackLoaded && applePaySupported) {
-                        initiateApplePay();
-                      } else {
-                        donate();
-                      }
+                      // if (paystackLoaded && applePaySupported) {
+                      //   initiateApplePay();
+                      // } else {
+                      //   donate();
+                      // }
                     }}
                     loading={loading}
                     disabled={!areAllInputsFilled(donationInputs)}
