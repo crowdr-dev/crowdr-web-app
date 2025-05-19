@@ -18,7 +18,7 @@ import Link from "next/link";
 import OldModal from "@/app/common/components/OldModal";
 import WaitlistForm from "@/app/home/home-components/WaitlistForm";
 import { formatAmount } from "@/app/(protected)/(dashboard)/common/utils/currency";
-import { calculateTransactionFee, formatCurrency } from "@/utils/seperateText";
+import { calculateTransactionFee } from "@/utils/seperateText";
 import Footer from "@/app/common/components/Footer";
 import NavBar from "../../components/NavBar";
 import Loading from "@/app/loading";
@@ -26,8 +26,13 @@ import { useModal } from "@/app/common/hooks/useModal";
 import { Mixpanel } from "@/utils/mixpanel";
 import PhoneNumberInput from "@/app/common/components/PhoneNumberInput";
 import NotFound from "@/app/not-found";
-import NumberInput from "@/app/common/components/NumberInput";
+import { FaApplePay } from "react-icons/fa";
 
+declare global {
+  interface Window {
+    PaystackPop: any;
+  }
+}
 export default function DonateOrVolunteer({
   params
 }: {
@@ -43,13 +48,32 @@ export default function DonateOrVolunteer({
   const [tab, setTab] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [paystackLoaded, setPaystackLoaded] = useState(false);
+  const [applePaySupported, setApplePaySupported] = useState(false);
 
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
+  // Improved Apple Pay detection
+  const checkApplePaySupport = () => {
+    // Check if we're in a browser environment
+    if (typeof window === "undefined") return false;
 
-  const closeModal = () => {
-    setModalIsOpen(false);
+    try {
+      // Check for Safari browser
+      const isSafari =
+        /^((?!chrome|android).)*safari/i.test(navigator.userAgent) ||
+        navigator.userAgent.includes("iPhone") ||
+        navigator.userAgent.includes("iPad") ||
+        navigator.userAgent.includes("Mac");
+
+      // Check if Apple Pay might be available (rough detection)
+      const mightSupportApplePay =
+        isSafari &&
+        window.PaymentRequest &&
+        !navigator.userAgent.includes("Chrome");
+
+      return mightSupportApplePay;
+    } catch (error) {
+      console.error("Error checking Apple Pay support:", error);
+      return false;
+    }
   };
 
   const initiateApplePay = async () => {
@@ -85,15 +109,21 @@ export default function DonateOrVolunteer({
       });
 
       // Use the response to complete the transaction with Apple Pay
-      // @ts-ignore - PaystackPop is added by the script
-      const handler = window.PaystackPop.paymentRequest({
-        key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY, // Your public key
+      const handler = window.PaystackPop.setup({
+        key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
         email: donationInputs.email,
-        amount: parseFloat(donationInputs.amount) * 100, // Convert to subunit (kobo, cents)
+        amount: parseFloat(donationInputs.amount) * 100,
         currency: currency,
-        ref: data.reference, // Use reference from initialized transaction
-        container: "apple-pay-button", // ID of Apple Pay button container
-        loadPaystackCheckButton: "other-payment-options", // ID for alternative payment button
+        ref: data.reference,
+        channels: [
+          "apple_pay",
+          "card",
+          "bank",
+          "ussd",
+          "qr",
+          "mobile_money",
+          "bank_transfer"
+        ],
         onClose: () => {
           setLoading(false);
           toast({
@@ -122,6 +152,9 @@ export default function DonateOrVolunteer({
           }
         }
       });
+
+      // Open the payment dialog
+      handler.openIframe();
     } catch (error) {
       Mixpanel.track("Error completing donation");
       setLoading(false);
@@ -369,11 +402,17 @@ export default function DonateOrVolunteer({
     const script = document.createElement("script");
     script.src = "https://js.paystack.co/v2/inline.js";
     script.async = true;
-    script.onload = () => setPaystackLoaded(true);
+    script.onload = () => {
+      setPaystackLoaded(true);
+      const supported = checkApplePaySupport();
+      setApplePaySupported(supported);
+    };
     document.body.appendChild(script);
 
     return () => {
-      document.body.removeChild(script);
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
     };
   }, []);
 
@@ -736,15 +775,6 @@ export default function DonateOrVolunteer({
 
                   {/* Regular Paystack button */}
 
-                  {paystackLoaded && isApplePaySupported() && (
-                    <button
-                      onClick={initiateApplePay}
-                      className="apple-pay-button"
-                      disabled={!areAllInputsFilled(donationInputs) || loading}>
-                      <span className="apple-pay-text">Donate with</span>
-                      <span className="apple-pay-logo"></span>
-                    </button>
-                  )}
                   <Button
                     text="Donate"
                     className="w-full !justify-center"
@@ -752,6 +782,20 @@ export default function DonateOrVolunteer({
                     loading={loading}
                     disabled={!areAllInputsFilled(donationInputs)}
                   />
+
+                  {paystackLoaded && applePaySupported&& (
+                    <button
+                      onClick={initiateApplePay}
+                      className="apple-pay-button"
+                      disabled={!areAllInputsFilled(donationInputs) || loading}>
+                      <span className="apple-pay-text">Donate with</span>
+                      <FaApplePay
+                        className="apple-pay-logo"
+                        size={30}
+                        color="#fff"
+                      />
+                    </button>
+                  )}
                 </div>
 
                 <div className="mt-10">
@@ -818,9 +862,6 @@ export default function DonateOrVolunteer({
         </div>
       </div>
       <Footer />
-      <OldModal isOpen={modalIsOpen} onClose={closeModal}>
-        <WaitlistForm />
-      </OldModal>
     </div>
   );
 }
@@ -860,14 +901,3 @@ const ageRange = [
     value: "56 and above"
   }
 ];
-
-
-const isApplePaySupported = () => {
-  // Check if we're on a device that might support Apple Pay
-  return (
-    (navigator.userAgent.includes('Safari') || navigator.userAgent.includes('iPhone') || 
-     navigator.userAgent.includes('iPad') || navigator.userAgent.includes('Mac')) &&
-    !navigator.userAgent.includes('Chrome') && // Chrome on iOS also reports as Safari 
-    window.PaymentRequest // Browser supports Payment Request API
-  );
-};
