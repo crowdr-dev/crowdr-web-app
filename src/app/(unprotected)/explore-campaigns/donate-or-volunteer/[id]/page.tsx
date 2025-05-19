@@ -113,7 +113,7 @@ export default function DonateOrVolunteer({
         key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
         email: donationInputs.email,
         amount: parseFloat(donationInputs.amount) * 100,
-        currency: currency,
+        currency: "NGN",
         ref: data.reference,
         channels: [
           "apple_pay",
@@ -454,7 +454,7 @@ export default function DonateOrVolunteer({
             </h3>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-12 min-w-full md:grid-cols-2">
+        <div className="grid grid-col-1 gap-12 min-w-full md:grid-cols-2">
           <ExploreCard
             id={campaign._id}
             name={
@@ -764,11 +764,11 @@ export default function DonateOrVolunteer({
                 </div>
 
                 <div className="mt-4 flex flex-col gap-3">
-                  {/* Apple Pay button container */}
+                  {/* Apple Pay button container
                   <div id="apple-pay-button" className="w-full h-12"></div>
 
                   {/* Regular payment button as fallback */}
-                  <div id="other-payment-options" className="hidden"></div>
+                  {/* <div id="other-payment-options" className="hidden"></div> */} 
 
                   {/* Or separator */}
                   {/* <div className="text-center my-2 text-gray-500">OR</div> */}
