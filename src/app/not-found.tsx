@@ -26,7 +26,7 @@ export default function NotFound({
         height={500}
         className="w-64 md:w-[490px]"
       />
-      <div className="text-lg md:text-2xl text-[#000000] font-medium text-center max-w-[450px] mx-auto flex flex-col items-center gap-4">
+      <div className="text-lg md:text-2xl text-[#000000] font-medium text-center max-w-[450px] mx-auto flex flex-col items-center gap-4 px-4">
         <h1 className="text-xl md:text-3xl text-[#000000] font-medium text-center mt-2">
           {errorTitle || "Oops! We checked our pockets, this page isn’t there."}
         </h1>
