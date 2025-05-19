@@ -748,7 +748,7 @@ export default function DonateOrVolunteer({
                       // } else {
                       //   donate();
                       // }
-                      donate();
+                      donate()
                     }}
                     loading={loading}
                     disabled={!areAllInputsFilled(donationInputs)}
