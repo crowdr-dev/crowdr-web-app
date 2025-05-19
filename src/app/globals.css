@@ -204,11 +204,11 @@ input::-webkit-inner-spin-button {
 
 .apple-pay-text {
   margin-right: 8px;
+  color: #fff;
 }
 
 .apple-pay-logo {
   width: 45px;
-  height: 18px;
   background-image: url("data:image/svg+xml;base64,..."); /* Add base64 encoded Apple Pay logo */
   background-size: contain;
   background-repeat: no-repeat;
