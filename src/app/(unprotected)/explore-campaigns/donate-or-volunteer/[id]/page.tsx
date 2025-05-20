@@ -742,14 +742,7 @@ export default function DonateOrVolunteer({
                   <Button
                     text="Donate"
                     className="w-full !justify-center"
-                    onClick={() => {
-                      // if (paystackLoaded && applePaySupported) {
-                      //   initiateApplePay();
-                      // } else {
-                      //   donate();
-                      // }
-                      donate()
-                    }}
+                    onClick={donate}
                     loading={loading}
                     disabled={!areAllInputsFilled(donationInputs)}
                   />
