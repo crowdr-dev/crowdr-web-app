@@ -52,7 +52,6 @@ export default function DonateOrVolunteer({
     if (typeof window === "undefined") return false;
 
     try {
-      // Check for Safari browser
       const isSafari =
         /^((?!chrome|android).)*safari/i.test(navigator.userAgent) ||
         navigator.userAgent.includes("iPhone") ||
