@@ -742,19 +742,12 @@ export default function DonateOrVolunteer({
                   <Button
                     text="Donate"
                     className="w-full !justify-center"
-                    onClick={() => {
-                      // if (paystackLoaded && applePaySupported) {
-                      //   initiateApplePay();
-                      // } else {
-                      //   donate();
-                      // }
-                      donate()
-                    }}
+                    onClick={donate}
                     loading={loading}
                     disabled={!areAllInputsFilled(donationInputs)}
                   />
 
-                  {/* {paystackLoaded && applePaySupported && ( */}
+                  {paystackLoaded && applePaySupported && (
                     <button
                       onClick={donate}
                       className="apple-pay-button"
@@ -764,9 +757,10 @@ export default function DonateOrVolunteer({
                         className="apple-pay-logo"
                         size={30}
                         color="#fff"
+                        fill="#fff"
                       />
                     </button>
-                  {/* )} */}
+                  )}
                 </div>
 
                 <div className="mt-10">
