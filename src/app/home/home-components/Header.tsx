@@ -1,35 +1,39 @@
-import React from 'react'
+import React from "react";
 import Image from "next/image";
 import "../home-styles/header.css";
-import {useRouter} from 'next/navigation'
+import { useRouter } from "next/navigation";
+import { FaApplePay } from "react-icons/fa";
 
 type Props = {
-  openModal?: () => void
-}
+  openModal?: () => void;
+};
 
 export default function Header({ openModal }: Props) {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <section className="cta">
+      
       <div className="content">
         <div className="tag">
-          <Image
-            src="/svg/planet.svg"
-            width={20}
-            height={20}
-            alt="planet"
-          /> For individuals, non-profits & businesses</div>
+          <Image src="/svg/planet.svg" width={20} height={20} alt="planet" />{" "}
+          For individuals, non-profits & businesses
+        </div>
         <h1 className="content-header">
-          Build community
-          through <span>giving.</span>
+          Build community through <span>giving.</span>
         </h1>
         <p className="">
-          Crowdr helps you fundraise and find volunteering opportunities
-          that make a change in our world.
+          Crowdr helps you fundraise and find volunteering opportunities that
+          make a change in our world.
         </p>
         <div className="button-group">
-          <button className="btn-primary" onClick={() => router.push('signup')}>Start a Campaign</button>
-          <button className="btn-outline" onClick={() => router.push('/explore-campaigns')}>Donate to a Campaign</button>
+          <button className="btn-primary" onClick={() => router.push("signup")}>
+            Start a Campaign
+          </button>
+          <button
+            className="btn-outline"
+            onClick={() => router.push("/explore-campaigns")}>
+            Donate to a Campaign
+          </button>
         </div>
       </div>
       <Image
@@ -37,11 +41,11 @@ export default function Header({ openModal }: Props) {
         width={500}
         height={500}
         alt="hero-section"
-        //  -mt-[7rem] md:-mt-[16rem] 
-        className='w-full
+        //  -mt-[7rem] md:-mt-[16rem]
+        className="w-full
          -mt-[3rem] md:-mt-[16rem] 
-         z-0'
+         z-0"
       />
     </section>
-  )
+  );
 }
