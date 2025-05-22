@@ -753,7 +753,7 @@ export default function DonateOrVolunteer({
                       disabled={!areAllInputsFilled(donationInputs) || loading}>
                       <span className="apple-pay-text">Donate with</span>
                       <FaApplePay
-                        className="apple-pay-logo"
+                        className="apple-pay-logo mt-1"
                         size={30}
                         color="#fff"
                         fill="#fff"

@@ -26,16 +26,16 @@ export default function Home() {
       <main className="font-satoshi">
         <div className="bg-[#00CB6E69] text-xl py-4 flex flex-col md:flex-row items-center justify-center border-t border-b border-[#000000] px-3">
           <p className="text-[#000000] text-center font-bold">
-            Now accepting international donations in all major currencies 🎉.{" "}
+            Now accepting international donations in all major currencies 🎉.  {" "}
           </p>
-          <div className="flex flex-row items-center justify-center gap-2">
-            <span className="text-[#000000] text-xl font-bold">Powered by</span>
+          <div className="flex flex-row items-center justify-center">
+            <span className="text-[#000000] text-xl font-bold"> {" "}  Powered by</span>
             <FaApplePay
-              className=""
+              className="mt-1 ml-2"
               size={50}
               color="#000"
               fill="#000"
-            />{" "}
+            />.
           </div>
         </div>
         <Header />
