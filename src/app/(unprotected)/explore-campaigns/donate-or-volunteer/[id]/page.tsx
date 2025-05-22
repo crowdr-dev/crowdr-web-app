@@ -753,13 +753,13 @@ export default function DonateOrVolunteer({
                       disabled={!areAllInputsFilled(donationInputs) || loading}>
                       <span className="apple-pay-text">Donate with</span>
                       <FaApplePay
-                        className="ml mt-1"
-                        size={30}
+                        className="mt-1"
+                        size={50}
                         color="#fff"
                         fill="#fff"
                       />
                     </button>
-                  )}
+                   )}  
                 </div>
 
                 <div className="mt-10">
