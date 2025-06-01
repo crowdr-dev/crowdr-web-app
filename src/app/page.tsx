@@ -28,7 +28,7 @@ export default function Home() {
               className="text-[#079455] text-xl font-normal italic underline cursor-pointer ml-1"
               onClick={() => {
                 window.open(
-                  "https://blog.oncrowdr.com/email/dcebbedf-6c59-4583-a75b-6cd43cc4e58e/?ref=notes-from-team-crowdr-newsletter",
+                  "https://blog.oncrowdr.com/how-to-raise-money-from-international-donations-for-your-fundraiser-in-nigeria/",
                   "_blank"
                 );
               }}>
