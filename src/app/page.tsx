@@ -38,13 +38,10 @@ export default function Home() {
           </div>
         </div>
         <Header />
-        {/* <OurFeaturesAnimation /> */}
         <Todo />
-        {/* <Steps openModal={openModal} /> */}
         <WhyCrowdr />
         <Happening />
         <Partners />
-        {/* <Benefits /> */}
         <Faq />
         <Community />
         <Footer />

@@ -110,7 +110,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         `}
       </Script>
 
-      <Script type="text/javascript" id="tawk">
+      {/* <Script type="text/javascript" id="tawk">
         {`
           var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
         (function(){
@@ -122,9 +122,19 @@ export default function RootLayout({ children }: PropsWithChildren) {
           s0.parentNode.insertBefore(s1,s0);
           })();
         `}
-      </Script>
+        
+      </Script> */}
+      <Script 
+        src="https://static.elfsight.com/platform/platform.js" 
+        strategy="afterInteractive"
+        async 
+      />
       <body className={`${satoshi.variable} ${inter.className}`}>
         <RootApp>{children}</RootApp>
+        <div 
+          className="elfsight-app-89621f74-d856-4133-9f3c-dcaedfbe0522" 
+          data-elfsight-app-lazy
+        ></div>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-N95QRZ5K"
