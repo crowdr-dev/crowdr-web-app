@@ -1,12 +1,8 @@
 "use client";
 import Faq from "./home/home-components/Faq";
 import Header from "./home/home-components/Header";
-import Steps from "./home/home-components/Steps";
-import Benefits from "./home/home-components/Benefits";
 import Community from "./home/home-components/Community";
 import { useEffect, useState } from "react";
-import WaitlistForm from "./home/home-components/WaitlistForm";
-import OldModal from "./common/components/OldModal";
 import Footer from "./common/components/Footer";
 import Navigation from "./common/components/Navigation";
 import Todo from "./home/home-components/Todo";
@@ -14,7 +10,6 @@ import WhyCrowdr from "./home/home-components/WhyCrowdr";
 import Happening from "./home/home-components/Happening";
 import Partners from "./home/home-components/Partners";
 import { Mixpanel } from "@/utils/mixpanel";
-import { FaApplePay } from "react-icons/fa";
 
 export default function Home() {
   useEffect(() => {
