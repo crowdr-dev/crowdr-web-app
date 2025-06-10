@@ -18,13 +18,13 @@ import Link from "next/link";
 import Footer from "@/app/common/components/Footer";
 import NavBar from "../../components/NavBar";
 import Loading from "@/app/loading";
-import { useModal } from "@/app/common/hooks/useModal";
 import { Mixpanel } from "@/utils/mixpanel";
 import PhoneNumberInput from "@/app/common/components/PhoneNumberInput";
 import NotFound from "@/app/not-found";
 import { FaApplePay } from "react-icons/fa";
 import { formatAmount } from "@/app/(protected)/(dashboard)/common/utils/currency";
 import { calculateTransactionFee } from "@/utils/seperateText";
+import { presetAmounts } from "@/utils/constants";
 
 declare global {
   interface Window {
@@ -38,13 +38,24 @@ export default function DonateOrVolunteer({
   params: { id: string };
 }) {
   const toast = useToast();
-  const modal = useModal();
   const [loadingCampaign, setLoadingCampaign] = useState(true);
   const [loading, setLoading] = useState(false);
   const [campaign, setCampaign] = useState<any>();
   const [tab, setTab] = useState("");
   const [paystackLoaded, setPaystackLoaded] = useState(false);
   const [applePaySupported, setApplePaySupported] = useState(false);
+  const [selectedAmount, setSelectedAmount] = useState<string>("");
+
+
+
+  // Handle amount selection
+  const onAmountSelect = (amount: string) => {
+    setSelectedAmount(amount);
+    setDonationInputs((prevState) => ({
+      ...prevState,
+      amount: amount
+    }));
+  };
 
   // Improved Apple Pay detection
   const checkApplePaySupport = () => {
@@ -68,108 +79,6 @@ export default function DonateOrVolunteer({
     } catch (error) {
       console.error("Error checking Apple Pay support:", error);
       return false;
-    }
-  };
-
-  const generateRandomString = (length = 10) => {
-    const chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
-    const randomValues = new Uint32Array(length);
-    window.crypto.getRandomValues(randomValues);
-
-    for (let i = 0; i < length; i++) {
-      result += chars[randomValues[i] % chars.length];
-    }
-
-    return result;
-  };
-
-  const initiateApplePay = async () => {
-    if (!paystackLoaded) {
-      toast({
-        title: "Payment system loading",
-        body: "Please wait while we prepare the payment system",
-        type: "info"
-      });
-      return;
-    }
-
-    setLoading(true);
-    try {
-      // Initialize transaction on your backend
-      const endpoint = "/api/v1/payments/initiate";
-      const payload = {
-        campaignId: params.id,
-        amount:
-          Math.round(parseFloat(donationInputs.amount) * 100),
-        email: donationInputs.email,
-        fullName: donationInputs.fullName,
-        currency: currency,
-        isAnonymous: checkboxValues.isAnonymous,
-        shouldShareDetails: checkboxValues.shouldShareDetails,
-        isSubscribedToPromo: checkboxValues.isSubscribedToPromo,
-        callback_url: window.location.href,
-        cancel_url: `${window.location.href}?cancelled=true`
-      };
-
-      const { data } = await makeRequest(endpoint, {
-        method: "POST",
-        payload: JSON.stringify(payload)
-      });
-
-      // Use the response to complete the transaction with Apple Pay
-      const handler = window.PaystackPop.setup({
-        key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
-        email: donationInputs.email,
-        amount: parseFloat(donationInputs.amount) * 100,
-        currency: "NGN",
-        ref: `${data.reference}_${generateRandomString(12)}_${Date.now()}`,
-        channels: [
-          "apple_pay",
-          "card",
-          "bank",
-          "ussd",
-          "qr",
-          "mobile_money",
-          "bank_transfer"
-        ],
-        onClose: () => {
-          setLoading(false);
-          toast({
-            title: "Payment Cancelled",
-            body: "You've cancelled the payment",
-            type: "info"
-          });
-        },
-        callback: (response: any) => {
-          setLoading(false);
-          if (response.status === "success") {
-            Mixpanel.track("Successful Donation");
-            toast({
-              title: "Success",
-              body: "Donation successful",
-              type: "success"
-            });
-            // Refresh the campaign data
-            fetchSingleCampaign();
-          } else {
-            toast({
-              title: "Payment Error",
-              body: "There was an issue with your payment",
-              type: "error"
-            });
-          }
-        }
-      });
-
-      // Open the payment dialog
-      handler.openIframe();
-    } catch (error) {
-      Mixpanel.track("Error completing donation");
-      setLoading(false);
-      const message = extractErrorMessage(error);
-      toast({ title: "Oops!", body: message, type: "error" });
     }
   };
 
@@ -220,6 +129,12 @@ export default function DonateOrVolunteer({
   const updateProps = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     const inputName = event.target.name;
+
+    // Update selected amount when amount input changes
+    if (inputName === "amount") {
+      setSelectedAmount(newValue);
+    }
+
     setDonationInputs((prevState: initTypes) => {
       return {
         ...prevState,
@@ -276,13 +191,7 @@ export default function DonateOrVolunteer({
     }));
   };
 
-  // Effect to load campaign data and set tab
   useEffect(() => {
-    Mixpanel.track(
-      campaign?.campaignType === "fundraiseAndVolunteer"
-        ? "Donation campaign viewed"
-        : "Volunteer campaign viewed"
-    );
     fetchSingleCampaign();
     setTab(
       campaign?.campaignType === "fundraiseAndVolunteer"
@@ -290,6 +199,11 @@ export default function DonateOrVolunteer({
         : campaign?.campaignType === "fundraise"
         ? "donate"
         : "volunteer"
+    );
+    Mixpanel.track(
+      campaign?.campaignType === "fundraiseAndVolunteer"
+        ? "Donation campaign viewed"
+        : "Volunteer campaign viewed"
     );
   }, [params.id, campaign?.campaignType]);
 
@@ -659,10 +573,31 @@ export default function DonateOrVolunteer({
                     Donation(s)
                   </p>
                 </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 my-4 ">
+                  {presetAmounts.map((amount) => (
+                    <button
+                      key={amount.value}
+                      type="button"
+                      onClick={() => onAmountSelect(amount.value)}
+                      className={`
+              px-3 py-3 md:py-2 text-sm rounded-lg border transition-colors 
+              ${
+                selectedAmount === amount.value
+                  ? "border-[#00B964] bg-[#00B964]/5 text-[#00B964]"
+                  : "border-[#D0D5DD] bg-white text-[#344054] hover:border-[#00B964]/50"
+              }
+            `}>
+                      {amount.display}
+                    </button>
+                  ))}
+                </div>
                 <div className="mt-4">
                   <Input
+                    isNumberInput
                     label={"Donation Amount"}
-                    placeholder="N10.00"
+                    prefix="₦"
+                    placeholder="₦1000.00"
                     name="amount"
                     id="amount"
                     type="number"
@@ -759,7 +694,7 @@ export default function DonateOrVolunteer({
                         fill="#fff"
                       />
                     </button>
-                   )}  
+                  )}
                 </div>
 
                 <div className="mt-10">
