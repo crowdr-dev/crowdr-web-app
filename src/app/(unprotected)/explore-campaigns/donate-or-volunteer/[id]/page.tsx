@@ -24,6 +24,7 @@ import NotFound from "@/app/not-found";
 import { FaApplePay } from "react-icons/fa";
 import { formatAmount } from "@/app/(protected)/(dashboard)/common/utils/currency";
 import { calculateTransactionFee } from "@/utils/seperateText";
+import { presetAmounts } from "@/utils/constants";
 
 declare global {
   interface Window {
@@ -45,16 +46,7 @@ export default function DonateOrVolunteer({
   const [applePaySupported, setApplePaySupported] = useState(false);
   const [selectedAmount, setSelectedAmount] = useState<string>("");
 
-  const presetAmounts = [
-    { value: "1000", display: "₦ 1,000" },
-    { value: "5000", display: "₦ 5,000" },
-    { value: "10000", display: "₦ 10,000" },
-    { value: "20000", display: "₦ 20,000" },
-    { value: "50000", display: "₦ 50,000" },
-    { value: "100000", display: "₦ 100,000" },
-    { value: "200000", display: "₦ 200,000" },
-    { value: "500000", display: "₦ 500,000" }
-  ];
+
 
   // Handle amount selection
   const onAmountSelect = (amount: string) => {
