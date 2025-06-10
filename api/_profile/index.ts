@@ -1,7 +1,7 @@
 import api from ".."
 import { IDeleteMediaPath } from "./models/DeleteMedia"
 import { IGetProfilePath, IGetProfileResponse } from "./models/GetProfile"
-import { IPatchUpdateProfileBody } from "./models/PatchUpdateProfile"
+import { IPatchUpdateProfileBody, IPatchUpdateProfileResponse } from "./models/PatchUpdateProfile"
 
 const getProfile = async ({ userId }: IGetProfilePath) => {
   const url = `/api/v1/profile/${userId}`
@@ -17,8 +17,17 @@ const getProfile = async ({ userId }: IGetProfilePath) => {
 const updateProfile = async (body: IPatchUpdateProfileBody) => {
   const url = `/api/v1/profile`
 
+  const formData = new FormData()
+  formData.append("location", body.location)
+  formData.append("bio", body.bio)
+  formData.append("twitter", body.twitter)
+  formData.append("instagram", body.instagram)
+  for (let image of body.engagements) {
+    formData.append("engagements", image)
+  }
+
   try {
-    const { data } = await api.patch(url, body)
+    const { data } = await api.patchForm<IPatchUpdateProfileResponse>(url, formData)
     return data
   } catch (error) {
     throw error

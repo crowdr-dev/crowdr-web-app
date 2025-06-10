@@ -12,48 +12,61 @@ export interface IGetProfileResponse {
 
 export interface IGetProfileResponseData {
   _id:             string;
-  user:            User;
+  user:            Individual | NonProfit;
   location:        string | null;
   bio:             string | null;
   instagram:       string | null;
   twitter:         string | null;
-  image:           BackgroundImage;
-  backgroundImage: BackgroundImage;
-  engagements:     BackgroundImage[];
-  createdAt:       Date;
-  updatedAt:       Date;
+  image:           Image | null;
+  backgroundImage: Image | null;
+  engagements:     Image[];
+  createdAt:       string;
+  updatedAt:       string;
   __v:             number;
   members:         Member[];
   id:              string;
 }
 
-export interface BackgroundImage {
+export interface Image {
   _id:       string;
   url:       string;
   public_id: string;
   tags:      string[];
   __v:       number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   id:        string;
 }
 
 export interface Member {
   fullname: string;
   position: string;
-  image?:   BackgroundImage;
+  image?:   Image;
 }
 
-export interface User {
+export interface Individual {
   _id:             string;
-  userType:        string;
+  userType:        'individual';
   email:           string;
   interests:       string[];
   referrer:        string;
   isAdmin:         boolean;
   isEmailVerified: boolean;
   isDeleted:       boolean;
+  tipsEmailSent:   boolean;
   fullName:        string;
   gender:          string;
-  tipsEmailSent:   boolean;
+}
+export interface NonProfit {
+  _id:              string;
+  userType:         'non-profit';
+  email:            string;
+  interests:        string[];
+  referrer:         string;
+  isAdmin:          boolean;
+  isEmailVerified:  boolean;
+  isDeleted:        boolean;
+  tipsEmailSent:    boolean;
+  organizationName: string;
+  organizationId:   string;
 }

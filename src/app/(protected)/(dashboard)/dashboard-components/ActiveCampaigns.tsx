@@ -4,7 +4,10 @@ import Link from "next/link"
 import { formatCurrency } from "@/utils/seperateText"
 import { RFC } from "@/app/common/types"
 import { formatAmount } from "../common/utils/currency"
-import { Campaign } from "../../../../../api/_campaigns/models/GetCampaigns"
+import {
+  Campaign,
+  CampaignType,
+} from "../../../../../api/_campaigns/models/GetCampaigns"
 
 const ActiveCampaign: RFC<Props> = ({ campaign }) => {
   const [fundingGoalDetail] = campaign.fundraise?.fundingGoalDetails ?? []
@@ -52,7 +55,7 @@ const ActiveCampaign: RFC<Props> = ({ campaign }) => {
                 alt={campaign.user.organizationName}
                 width={24}
                 height={24}
-                className="rounded-full"
+                className="rounded-full h-6 w-6"
               />
             )}
             <span className="text-xs text-gray-600">
@@ -62,23 +65,33 @@ const ActiveCampaign: RFC<Props> = ({ campaign }) => {
         )}
 
         <Link href={`/campaigns/${campaign._id}`}>
-          <h3 className="font-medium text-base mb-2 hover:text-green-600 transition-colors">
+          <h3 className="font-medium text-base truncate mb-2 hover:text-green-600 transition-colors">
             {campaign.title}
           </h3>
         </Link>
 
-        <div className="mb-4">
-          <div className="flex justify-between text-xs text-gray-600 mb-1">
-            <span>Goal {fundingGoal}</span>
-            <span>{percentage}%</span>
+        {campaign.campaignType !== CampaignType.Volunteer && (
+          <div className="mb-4">
+            <div className="flex justify-between text-xs text-gray-600 mb-1">
+              <span>Goal {fundingGoal}</span>
+              <span>{percentage}%</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-green-500 h-2 rounded-full"
+                style={{ width: `${percentage}%` }}
+              ></div>
+            </div>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-green-500 h-2 rounded-full"
-              style={{ width: `${percentage}%` }}
-            ></div>
+        )}
+
+        {campaign.campaignType === CampaignType.Volunteer && (
+          <div className="mb-4">
+            <div className="flex justify-between text-xs text-gray-600 pt-2 mb-1">
+              Volunteers: {campaign.totalNoOfCampaignVolunteers}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

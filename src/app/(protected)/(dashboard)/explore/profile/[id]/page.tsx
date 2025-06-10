@@ -27,11 +27,11 @@ const OrganizationProfilePage: React.FC = () => {
     null
   )
 
-  const profleQuery = useQuery({
+  const profileQuery = useQuery({
     queryKey: [query.keys.GET_PROFILE, userId],
     queryFn: () => _profile.getProfile({ userId }),
   })
-  const profile = profleQuery.data
+  const profile = profileQuery.data
 
   const campaignStatsQuery = useCampaignSummaryQuery({
     params: { userId },
@@ -62,14 +62,14 @@ const OrganizationProfilePage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto py-8">
+    <div className="max-w-[1140px] p-4">
       {/* Two-column layout for the entire page */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Left column (2/3) */}
         <div className="lg:col-span-2">
           {/* Main card with cover photo and organization info */}
-          {profleQuery.data ? (
-            <ProfileCard profile={profleQuery.data} />
+          {profileQuery.data ? (
+            <ProfileCard profile={profileQuery.data} />
           ) : (
             <ProfileCard.Skeleton />
           )}
@@ -104,66 +104,79 @@ const OrganizationProfilePage: React.FC = () => {
               {activeTab === "Campaigns" && (
                 <>
                   {/* Active campaigns */}
-                  {activeCampaignsQuery.data && (
-                    <div className="mb-10">
-                      <h2 className="text-lg font-semibold mb-2">
-                        Active Campaigns
-                      </h2>
-                      <p className="text-gray-600 mb-4">
-                        View all present and active campaigns of{" "}
-                        {profile.user.fullName} and feel free to donate.
-                      </p>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {activeCampaignsQuery.data.campaigns.map((campaign) => (
-                          <ActiveCampaign
-                            key={campaign._id}
-                            campaign={campaign}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  <div className="mb-10">
+                    <h2 className="text-lg font-semibold mb-2">
+                      Active Campaigns
+                    </h2>
+
+                    {activeCampaignsQuery.data ? (
+                      activeCampaignsQuery.data.pagination.total !== 0 ? (
+                        <>
+                          <p className="text-gray-600 mb-4">
+                            View all present and active campaigns of{" "}
+                            {profile.user.userType === "individual"
+                              ? profile.user.fullName
+                              : profile.user.organizationName}{" "}
+                            and feel free to donate.
+                          </p>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {activeCampaignsQuery.data.campaigns.map(
+                              (campaign) => (
+                                <ActiveCampaign
+                                  key={campaign._id}
+                                  campaign={campaign}
+                                />
+                              )
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <p className="text-gray-600 italic">
+                          No active campaigns
+                        </p>
+                      )
+                    ) : (
+                      <p className="text-gray-600 italic">Loading</p>
+                    )}
+                  </div>
 
                   {/* Previous campaigns */}
-                  {previousCampaignsQuery.data && (
-                    <div className="mb-10">
-                      <h2 className="text-lg font-semibold mb-2">
-                        Previous Campaigns
-                      </h2>
-                      <p className="text-gray-600 mb-4">
-                        These campaigns were successfully completed thanks to
-                        people like you.
-                      </p>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {previousCampaignsQuery.data.campaigns.map(
-                          (campaign) => (
-                            <ActiveCampaign
-                              key={campaign._id}
-                              campaign={campaign}
-                            />
-                          )
-                        )}
-                      </div>
-                    </div>
-                  )}
+                  <div className="mb-10">
+                    <h2 className="text-lg font-semibold mb-2">
+                      Previous Campaigns
+                    </h2>
 
-                  {/* loading campaigns */}
-                  {!activeCampaignsQuery.data &&
-                    !previousCampaignsQuery.data && (
+                    {previousCampaignsQuery.data ? (
+                      previousCampaignsQuery.data.pagination.total !== 0 ? (
+                        <>
+                          <p className="text-gray-600 mb-4">
+                            These campaigns were successfully completed thanks
+                            to people like you.
+                          </p>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {previousCampaignsQuery.data.campaigns.map(
+                              (campaign) => (
+                                <ActiveCampaign
+                                  key={campaign._id}
+                                  campaign={campaign}
+                                />
+                              )
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <p className="text-gray-600 italic">
+                          No previous campaigns
+                        </p>
+                      )
+                    ) : (
                       <p className="text-gray-600 italic">Loading...</p>
                     )}
-
-                  {/* no campaigns */}
-                  {activeCampaignsQuery.data &&
-                    previousCampaignsQuery.data &&
-                    activeCampaignsQuery.data.pagination.total === 0 &&
-                    previousCampaignsQuery.data.pagination.total === 0 && (
-                      <p className="text-gray-600 italic">
-                        No campaigns yet...
-                      </p>
-                    )}
+                  </div>
                 </>
               )}
 
@@ -173,17 +186,21 @@ const OrganizationProfilePage: React.FC = () => {
                     Outreaches/Campaign Media
                   </h2>
                   <p className="text-gray-600 mb-4">
-                    Here are images to show that we are using every penny
+                    Here are images to show every penny is being used
                     effectively
                   </p>
 
                   <div className="grid grid-cols-3 gap-2">
-                    {[1, 2, 3, 4, 5, 6].map((item) => (
+                    {profile.engagements.map((engagement) => (
                       <div
-                        key={item}
+                        key={engagement._id}
                         className="bg-gray-200 rounded aspect-square h-auto"
                       >
-                        {/* Placeholder for media images */}
+                        <img
+                          src={engagement.url}
+                          alt=""
+                          className="w-full h-full rounded"
+                        />
                       </div>
                     ))}
                   </div>

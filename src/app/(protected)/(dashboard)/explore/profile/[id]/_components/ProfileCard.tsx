@@ -1,10 +1,21 @@
-import { ExternalLink, Instagram, Mail, Twitter } from "lucide-react"
+"use client"
+import { Edit, ExternalLink, Instagram, Mail, Twitter } from "lucide-react"
 import Image from "next/image"
 import { IGetProfileResponseData } from "../../../../../../../../api/_profile/models/GetProfile"
 import { RFC } from "@/app/common/types"
 import toast from "react-hot-toast"
+import { useUser } from "@/app/(protected)/(dashboard)/common/hooks/useUser"
+import { RiEditLine } from "react-icons/ri"
+import Link from "next/link"
 
 const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
+  const user = useUser()
+  const isOwnProfile = user?._id === profile.user._id
+  const profileName =
+    profile.user.userType === "individual"
+      ? profile.user.fullName
+      : profile.user.organizationName
+
   const socials = [
     profile.user.email && {
       type: "email",
@@ -47,8 +58,11 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
       {/* Cover photo with logo */}
       <div className="relative h-64 w-full bg-pink-100">
         <img
-          src={profile.image.url}
-          alt={profile.user.fullName}
+          src={
+            profile.image?.url ??
+            "https://reactplay.io/static/media/placeholder_cover.ea7b18e0704561775829.jpg"
+          }
+          alt={profileName}
           className="h-full w-full object-cover"
         />
         {/* <div className="absolute inset-0 flex items-center justify-center">
@@ -66,9 +80,12 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
         <div className="flex flex-col md:flex-row md:items-center justify-between">
           <div className="flex items-start mb-4 md:mb-0">
             <div className="h-16 w-16 rounded-full bg-pink-100 mr-4 flex-shrink-0">
-              <Image
-                src={profile.image.url}
-                alt={profile.user.fullName}
+              <img
+                src={
+                  profile.image?.url ??
+                  "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg"
+                }
+                alt={profileName}
                 width={64}
                 height={64}
                 className="w-full h-full rounded-full object-cover"
@@ -76,9 +93,7 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
             </div>
             <div>
               <div className="flex items-center mb-1">
-                <h1 className="text-xl font-bold mr-2">
-                  {profile.user.fullName}
-                </h1>
+                <h1 className="text-xl font-bold mr-2">{profileName}</h1>
                 {/* TODO: uncomment when country feature is added */}
                 {/* <span className="text-sm bg-gray-100 text-gray-800 px-1 py-0.5 rounded">
                         🇺🇸
@@ -97,16 +112,27 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
             </div>
           </div>
 
-          <div className="flex space-x-2">
-            {socials.map((social, index) => (
-              <a
-                key={index}
-                href={social.url}
-                className="h-10 w-10 flex items-center justify-center rounded-full border border-gray-200"
+          <div className="flex items-center gap-[14px]">
+            {isOwnProfile && (
+              <Link
+                href={`/explore/profile/${profile.user._id}/edit`}
+                className="flex items-center gap-2 text-[#00B964] bg-[#00b96314] hover:bg-[#00b9631f] rounded-full transition-colors h-10 px-[14px]"
               >
-                <social.icon size={20} />
-              </a>
-            ))}
+                <RiEditLine size={24} fill="#00B964" /> Edit Profile
+              </Link>
+            )}
+
+            <div className="flex space-x-2">
+              {socials.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.url}
+                  className="h-10 w-10 flex items-center justify-center rounded-full border border-gray-200"
+                >
+                  <social.icon size={20} />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 

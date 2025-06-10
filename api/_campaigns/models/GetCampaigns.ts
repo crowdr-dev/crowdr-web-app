@@ -61,7 +61,7 @@ export interface Campaign {
   category:                    string;
   title:                       string;
   story:                       string;
-  campaignType:                string;
+  campaignType:                CampaignType;
   campaignStatus:              string;
   campaignCoverImage:          Image;
   campaignAdditionalImages:    Image[];

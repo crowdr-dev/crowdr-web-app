@@ -109,7 +109,7 @@ const CampaignProgress: RFC<Props> = ({ stats }) => {
         <div className="flex flex-col justify-center pl-4">
           <div className="flex items-center space-x-2 mb-3">
             <div className="text-[#46AF7B] text-2xl font-bold">
-              {stats.campaignCountByStatus.active}
+              {stats.campaignCountByStatus.active ?? 0}
             </div>
             <div className="text-gray-600">|</div>
             <div className="text-gray-600">
