@@ -574,14 +574,14 @@ export default function DonateOrVolunteer({
                   </p>
                 </div>
 
-                <div className="grid grid-cols-4 gap-2 my-4 ">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 my-4 ">
                   {presetAmounts.map((amount) => (
                     <button
                       key={amount.value}
                       type="button"
                       onClick={() => onAmountSelect(amount.value)}
                       className={`
-              px-3 py-2 text-sm rounded-lg border transition-colors 
+              px-3 py-3 md:py-2 text-sm rounded-lg border transition-colors 
               ${
                 selectedAmount === amount.value
                   ? "border-[#00B964] bg-[#00B964]/5 text-[#00B964]"
