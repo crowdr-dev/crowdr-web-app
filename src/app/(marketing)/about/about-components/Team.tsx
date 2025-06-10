@@ -32,7 +32,7 @@ const fullTeamMembers = [
   },
   {
     name: 'Daniel Arikawe',
-    position: 'CTO',
+    position: 'Engineering Lead',
     photo: Daniel,
     bio: 'Senior software engineer with 4+ years of experience',
     linkedIn:"https://www.linkedin.com/in/daniel-arikawe-498a1a178/"

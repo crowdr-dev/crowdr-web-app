@@ -8,7 +8,6 @@ import {
   UseFormRegisterReturn,
   RegisterOptions,
 } from "react-hook-form"
-import { regex } from "regex"
 
 const NumberInput: RFC<NumberInputProps> = ({
   config,
