@@ -27,10 +27,11 @@ const SelectInput: RFC<SelectInputProps> = ({
   let control
   if (!controlled && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
+    const formContext = useFormContext()
     const {
       control: control_,
       formState: { errors },
-    } = useFormContext()
+    } = formContext
     control = control_
     error = errors[name] as FieldError
   }
