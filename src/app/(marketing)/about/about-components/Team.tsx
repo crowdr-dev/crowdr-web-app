@@ -31,11 +31,11 @@ const fullTeamMembers = [
     linkedIn: "https://www.linkedin.com/in/tritimaachigbu"
   },
   {
-    name: 'Jerry Chibuokem',
-    position: 'Full-Stack Dev, CTO',
-    photo: Jerry,
-    bio: 'Ex-Andela, Ex-Coursera. Software engineer with 4+ years of experience.',
-    linkedIn:"https://www.linkedin.com/in/jerry-chibuokem"
+    name: 'Daniel Arikawe',
+    position: 'Engineering Lead',
+    photo: Daniel,
+    bio: 'Senior software engineer with 4+ years of experience',
+    linkedIn:"https://www.linkedin.com/in/daniel-arikawe-498a1a178/"
   },
   {
     name: 'Rokiat Sulaimon',
@@ -43,24 +43,24 @@ const fullTeamMembers = [
     photo: Rokiat,
     bio: 'Project manager with 2+ years of experience.'
   },
-  {
-    name: 'Regina Richards',
-    position: 'Project Manager',
-    photo: Regina,
-    bio: 'An experienced project manager with 3 years experience.'
-  },
+  // {
+  //   name: 'Regina Richards',
+  //   position: 'Project Manager',
+  //   photo: Regina,
+  //   bio: 'An experienced project manager with 3 years experience.'
+  // },
   {
     name: 'Ayomide Yusuf',
     position: 'Product Designer',
     photo: Mide,
     bio: 'Product designer with 3+ years of experience.'
   },
-  {
-    name: 'Daniel Arikawe',
-    position: 'Frontend Developer',
-    photo: Daniel,
-    bio: 'Senior frontend engineer with 4+ years of experience.'
-  },
+  // {
+  //   name: 'Daniel Arikawe',
+  //   position: 'Frontend Developer',
+  //   photo: Daniel,
+  //   bio: 'Senior frontend engineer with 4+ years of experience.'
+  // },
  
   {
     name: 'Idris Abdul-Lateef',

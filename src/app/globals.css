@@ -144,3 +144,73 @@ input::-webkit-inner-spin-button {
   border-color: none;
   --tw-ring-color: none;
 }
+
+/* Apple Pay button styles */
+#apple-pay-button {
+  display: none; /* Hidden by default */
+  height: 48px;
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+/* Only show Apple Pay button on supported devices/browsers */
+@supports (-webkit-appearance: -apple-pay-button) {
+  #apple-pay-button {
+    display: block;
+    -webkit-appearance: -apple-pay-button;
+    -apple-pay-button-type: donate; /* Use 'donate' for donations */
+    -apple-pay-button-style: black; /* Button style: black or white */
+  }
+
+  /* Hide the default button text */
+  #apple-pay-button > * {
+    display: none;
+  }
+}
+
+/* Fallback for browsers that don't support Apple Pay */
+@supports not (-webkit-appearance: -apple-pay-button) {
+  #apple-pay-button {
+    display: none;
+  }
+}
+
+.apple-pay-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 6px;
+  background-color: #000;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.apple-pay-button:hover {
+  background-color: #1a1a1a;
+}
+
+.apple-pay-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.apple-pay-text {
+  margin-right: 8px;
+  color: #fff;
+}
+
+.apple-pay-logo {
+  width: 45px;
+  background-image: url("data:image/svg+xml;base64,..."); /* Add base64 encoded Apple Pay logo */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
