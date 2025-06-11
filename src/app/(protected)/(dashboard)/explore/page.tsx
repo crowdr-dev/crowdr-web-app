@@ -124,7 +124,7 @@ const Explore = () => {
     loadCampaigns(1)
   }, 3000)
 
-  if (isLoading) return <Loading />
+  if (isLoading) return <Loading size="contain" />
 
   return (
     <div className="relative">
@@ -226,6 +226,7 @@ const Explore = () => {
                     avatar={campaign?.photo?.url || ""}
                     key={index}
                     campaignType={campaign.campaignType}
+                    user={campaign.user}
                   />
                 )
               })}

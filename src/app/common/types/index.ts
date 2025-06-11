@@ -26,3 +26,8 @@ export interface IPagination {
 export interface Route {
   params: { [key: string]: string }
 }
+
+export enum UserType {
+  Individual = "individual",
+  NonProfit = "non-profit"
+}

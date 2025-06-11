@@ -55,7 +55,7 @@ const Step3: RFC<Props> = ({ index, onStep, onDone }) => {
                 },
               }}
               error={errors.campaignImages}
-              maxFileSizeInMb={2}
+              maxFileSizeInMb={3}
               multiple
               showFileList
             />
