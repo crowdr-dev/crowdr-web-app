@@ -37,7 +37,7 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
     .filter((social) => social !== null && social !== "")
     .map((social) => ({
       ...social,
-      ...(social.type !== "email" && {
+      ...(social?.type !== "email" && {
         target: "_blank",
         rel: "noopener noreferrer",
       }),
