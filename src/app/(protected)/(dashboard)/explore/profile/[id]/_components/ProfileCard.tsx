@@ -17,7 +17,7 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
       ? profile.user.fullName
       : profile.user.organizationName
 
-  const socials = [
+  const socials = ([
     profile.user.email && {
       type: "email",
       url: `mailto:${profile.user.email}`,
@@ -33,7 +33,7 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
       url: `https://twitter.com/${profile.twitter}`,
       icon: Twitter,
     },
-  ]
+  ] as any[])
     .filter((social) => social !== null && social !== "")
     .map((social) => ({
       ...social,
