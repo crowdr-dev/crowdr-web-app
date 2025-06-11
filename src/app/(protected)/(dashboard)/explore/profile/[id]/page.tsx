@@ -18,7 +18,11 @@ import toast from "react-hot-toast"
 import ProfileCard from "./_components/ProfileCard"
 import useCampaignSummaryQuery from "../../../../../../../api/query/useCampaignSummaryQuery"
 import useCampaignsQuery from "../../../../../../../api/query/useCampaignsQuery"
-import { RunningStatus } from "../../../../../../../api/_campaigns/models/GetCampaigns"
+import {
+  Campaign,
+  IGetCampaignsResponseData,
+  RunningStatus,
+} from "../../../../../../../api/_campaigns/models/GetCampaigns"
 
 const OrganizationProfilePage: React.FC = () => {
   const { id: userId } = useParams() as { id: string }
@@ -50,16 +54,19 @@ const OrganizationProfilePage: React.FC = () => {
   })
 
   useEffect(() => {
-    const ongoingCampaign = campaignsData.find((c) => c.status === "ongoing")
+    const [ongoingCampaign] = activeCampaignsQuery.data?.campaigns ?? []
     if (ongoingCampaign) {
       setSelectedCampaign(ongoingCampaign)
     }
-  }, [])
+  }, [activeCampaignsQuery.data])
 
   const handleDonate = () => {
     console.log("Donation process initiated")
     // Implement donation logic here
   }
+
+  const fundingGoal = selectedCampaign?.fundraise
+  const amountDonated = selectedCampaign?.totalAmountDonated
 
   return (
     <div className="max-w-[1140px] p-4">
@@ -220,32 +227,29 @@ const OrganizationProfilePage: React.FC = () => {
         </div>
 
         {/* Right column (1/3) - Ongoing Campaign */}
-        <div className="lg:col-span-1 h-full">
-          {/* {selectedCampaign && (
-            <OngoingCampaign
-              campaign={{
-                id: selectedCampaign.id,
-                title: selectedCampaign.title,
-                organizationName: organizationData.name,
-                description: selectedCampaign.description,
-                logo: '/images/mirabel-centre-logo.png',
-                goal: {
-                  amount: selectedCampaign.goal.amount,
-                  raised: selectedCampaign.goal.raised,
-                  currency: selectedCampaign.goal.currency
-                },
-                donationCount: selectedCampaign.donationCount
-              }}
-              onDonate={handleDonate}
-            />
-          )} */}
-          {/* Donors list */}
+        <div className="lg:col-span-1 border border-[#0000001A] rounded-[20px] h-full px-[22px] py-6">
+          <p className="font-semibold text-xl text-[#00B964]">
+            Ongoing Campaign
+          </p>
           {selectedCampaign && (
+            <OngoingCampaign
+              campaign={selectedCampaign}
+              // onDonate={handleDonate}
+            />
+          )}
+
+          {/* Donors list */}
+          {/* {selectedCampaign && (
             <RecentDonors
               donors={donorsData}
               totalDonors={32}
-              campaignId={selectedCampaign.id}
+              campaignId={selectedCampaign._id}
             />
+          )} */}
+
+          {/* No active campaign */}
+          {!selectedCampaign && (
+            <p className="text-xs text-[#667085]">No active campaign</p>
           )}
         </div>
       </div>
@@ -280,21 +284,21 @@ interface OrganizationProfile {
   }
 }
 
-interface Campaign {
-  id: string
-  title: string
-  image: string
-  category: string
-  description: string
-  goal: {
-    amount: number
-    raised: number
-    currency: string
-  }
-  donationCount: number
-  percentComplete: number
-  status: "active" | "completed" | "ongoing"
-}
+// interface Campaign {
+//   id: string
+//   title: string
+//   image: string
+//   category: string
+//   description: string
+//   goal: {
+//     amount: number
+//     raised: number
+//     currency: string
+//   }
+//   donationCount: number
+//   percentComplete: number
+//   status: "active" | "completed" | "ongoing"
+// }
 
 interface Donor {
   id: string
@@ -305,56 +309,56 @@ interface Donor {
   isAnonymous: boolean
 }
 
-const campaignsData: Campaign[] = [
-  {
-    id: "mirabel-centre",
-    title: "Support Mirabel Centre",
-    image: "/images/mirabel-centre.jpg",
-    category: "Education",
-    description:
-      "Every survivor of sexual and gender-based violence (SGBV) deserves a chance to heal, rebuild and thrive. That's why Mirabel Centre has been a beacon of hope in Lagos since 2013. As the leading Sexual Assault Referral Centre (SARC), they provide free, compassionate support to survivors through medical care, counseling, medications, skills training, and so much more.",
-    goal: {
-      amount: 5200,
-      raised: 3640,
-      currency: "£",
-    },
-    donationCount: 32,
-    percentComplete: 70,
-    status: "ongoing",
-  },
-  {
-    id: "nicholas-college",
-    title: "Help Nicholas go back to college",
-    image: "/images/nicholas.jpg",
-    category: "Education",
-    description:
-      "Nicholas is a brilliant student who needs support to continue his education.",
-    goal: {
-      amount: 10000,
-      raised: 10000,
-      currency: "NGN",
-    },
-    donationCount: 145,
-    percentComplete: 100,
-    status: "completed",
-  },
-  {
-    id: "nicholas-college-2",
-    title: "Help Nicholas go back to college",
-    image: "/images/nicholas.jpg",
-    category: "Education",
-    description:
-      "Nicholas is continuing his masters degree and needs additional support.",
-    goal: {
-      amount: 15000,
-      raised: 15000,
-      currency: "NGN",
-    },
-    donationCount: 210,
-    percentComplete: 100,
-    status: "completed",
-  },
-]
+// const campaignsData: Campaign[] = [
+//   {
+//     id: "mirabel-centre",
+//     title: "Support Mirabel Centre",
+//     image: "/images/mirabel-centre.jpg",
+//     category: "Education",
+//     description:
+//       "Every survivor of sexual and gender-based violence (SGBV) deserves a chance to heal, rebuild and thrive. That's why Mirabel Centre has been a beacon of hope in Lagos since 2013. As the leading Sexual Assault Referral Centre (SARC), they provide free, compassionate support to survivors through medical care, counseling, medications, skills training, and so much more.",
+//     goal: {
+//       amount: 5200,
+//       raised: 3640,
+//       currency: "£",
+//     },
+//     donationCount: 32,
+//     percentComplete: 70,
+//     status: "ongoing",
+//   },
+//   {
+//     id: "nicholas-college",
+//     title: "Help Nicholas go back to college",
+//     image: "/images/nicholas.jpg",
+//     category: "Education",
+//     description:
+//       "Nicholas is a brilliant student who needs support to continue his education.",
+//     goal: {
+//       amount: 10000,
+//       raised: 10000,
+//       currency: "NGN",
+//     },
+//     donationCount: 145,
+//     percentComplete: 100,
+//     status: "completed",
+//   },
+//   {
+//     id: "nicholas-college-2",
+//     title: "Help Nicholas go back to college",
+//     image: "/images/nicholas.jpg",
+//     category: "Education",
+//     description:
+//       "Nicholas is continuing his masters degree and needs additional support.",
+//     goal: {
+//       amount: 15000,
+//       raised: 15000,
+//       currency: "NGN",
+//     },
+//     donationCount: 210,
+//     percentComplete: 100,
+//     status: "completed",
+//   },
+// ]
 
 const donorsData: Donor[] = [
   {

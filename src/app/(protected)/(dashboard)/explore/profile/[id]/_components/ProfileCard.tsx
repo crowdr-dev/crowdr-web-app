@@ -7,6 +7,7 @@ import toast from "react-hot-toast"
 import { useUser } from "@/app/(protected)/(dashboard)/common/hooks/useUser"
 import { RiEditLine } from "react-icons/ri"
 import Link from "next/link"
+import Text from "@/app/(protected)/(dashboard)/dashboard-components/Text"
 
 const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
   const user = useUser()
@@ -104,10 +105,10 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
               </p>
               <button
                 onClick={handleCopyLink}
-                className="text-green-600 flex items-center text-sm hover:underline"
+                className="text-[#00B964] flex items-center text-sm hover:underline"
               >
-                <span>Copy Profile Link</span>
-                <ExternalLink size={14} className="ml-1" />
+                Copy Profile Link
+                <ExternalLink size={14} color="#00B964" className="ml-1" />
               </button>
             </div>
           </div>
@@ -140,7 +141,9 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
         {profile.bio && (
           <div className="mt-8">
             <h2 className="text-lg font-semibold mb-2">Bio</h2>
-            <p className="text-gray-700">{profile.bio}</p>
+            <Text characterLimit={300} toggle className="text-gray-700">
+              {profile.bio}
+            </Text>
           </div>
         )}
       </div>

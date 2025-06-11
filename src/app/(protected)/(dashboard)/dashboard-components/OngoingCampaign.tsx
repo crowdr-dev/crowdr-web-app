@@ -12,35 +12,39 @@ import { useToast } from "@/app/common/hooks/useToast";
 import { useModal } from "@/app/common/hooks/useModal";
 import { Mixpanel } from "@/utils/mixpanel";
 import { formatAmount } from '../common/utils/currency';
+import { Campaign } from '../../../../../api/_campaigns/models/GetCampaigns';
+// import { Campaign } from '@/app/api/campaigns/getCampaigns';
 
-interface OngoingCampaignProps {
-  campaign: {
-    _id: string;
-    title: string;
-    story: string;
-    user: {
-      userType: string;
-      fullName?: string;
-      organizationName?: string;
-    };
-    photo?: {
-      url: string;
-    };
-    fundraise?: {
-      fundingGoalDetails: {
-        amount: number;
-        currency: string;
-      }[];
-    };
-    totalAmountDonated?: { 
-      amount: number 
-    }[];
-    totalNoOfCampaignDonors: number;
-    campaignType: 'fundraise' | 'volunteer' | 'fundraiseAndVolunteer';
-  };
-}
+// interface OngoingCampaignProps {
+//   campaign: {
+//     _id: string;
+//     title: string;
+//     story: string;
+//     user: {
+//       userType: string;
+//       fullName?: string;
+//       organizationName?: string;
+//     };
+//     photo?: {
+//       url: string;
+//     };
+//     fundraise?: {
+//       fundingGoalDetails: {
+//         amount: number;
+//         currency: string;
+//       }[];
+//     };
+//     totalAmountDonated?: { 
+//       amount: number 
+//     }[];
+//     totalNoOfCampaignDonors: number;
+//     campaignType: 'fundraise' | 'volunteer' | 'fundraiseAndVolunteer';
+//   };
+// }
 
 // Form validation helpers
+
+
 const validateEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -50,7 +54,7 @@ const validateAmount = (amount: string): boolean => {
   return parseFloat(amount) > 0;
 };
 
-const OngoingCampaign: React.FC<OngoingCampaignProps> = ({ campaign }) => {
+const OngoingCampaign: React.FC<Props> = ({ campaign }) => {
   const modal = useModal();
   const toast = useToast();
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -293,12 +297,15 @@ const OngoingCampaign: React.FC<OngoingCampaignProps> = ({ campaign }) => {
   const hasDonationOption = campaign.campaignType === "fundraise" || campaign.campaignType === "fundraiseAndVolunteer";
 
   return (
-    <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
-      <div className="flex justify-between items-start">
-        <div className="text-green-600 font-medium text-sm mb-3">Ongoing Campaign</div>
-      </div>
+    <div className="bg-white rounded-2xl selectedCampaign border border-gray-100 shadow-sm">
       
-      <div className="flex gap-3 mb-4">
+      {/* <div className="flex justify-between items-start">
+        <div className="text-green-600 font-medium text-sm mb-3">Ongoing Campaign</div>
+      </div> 
+      // p-4
+      */}
+      {/*  */}
+      <div className="flex gap-3 mb-4 pt-4">
         <div className="w-10 h-10 rounded-md overflow-hidden flex-shrink-0">
           <Image 
             src={campaign.photo?.url || "/placeholder-logo.png"} 
@@ -349,7 +356,7 @@ const OngoingCampaign: React.FC<OngoingCampaignProps> = ({ campaign }) => {
             <span className="text-sm">
               <span className="text-black">Goal</span>{" "}
               {formatAmount(donatedAmount, currency?.toLowerCase())} /{" "}
-              {formatAmount(totalDonationAmount, currency?.toLowerCase())}
+              {/* {formatAmount(totalDonationAmount, currency?.toLowerCase())} */}
             </span>
             <span className="text-sm font-medium">{percentComplete}%</span>
           </div>
@@ -361,7 +368,7 @@ const OngoingCampaign: React.FC<OngoingCampaignProps> = ({ campaign }) => {
           />
           
           <p className="text-xs text-gray-500 mt-2">
-            {campaign.totalNoOfCampaignDonors} donation(s)
+            {campaign.campaignDonors.length} donation(s)
           </p>
         </div>
       )}
@@ -512,3 +519,7 @@ const OngoingCampaign: React.FC<OngoingCampaignProps> = ({ campaign }) => {
 };
 
 export default OngoingCampaign;
+
+interface Props {
+  campaign: Campaign
+}
