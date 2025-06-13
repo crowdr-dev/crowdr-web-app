@@ -8,14 +8,14 @@ export type IUser = {
   token: string;
   userType: "individual" | "non-profit";
   organizationId: string | null;
-  fullName: string
-  gender: string
-  email: string
-  interests: string[]
-  isEmailVerified: boolean
-  organizationName: string
-  phoneNumber?: string
-  isAdmin?: boolean
+  fullName: string;
+  gender: string;
+  email: string;
+  interests: string[];
+  isEmailVerified: boolean;
+  organizationName: string;
+  phoneNumber?: string;
+  isAdmin?: boolean;
 };
 
 // for getting user in server components, also a server action that can be called from client components
@@ -27,15 +27,15 @@ export const getUser = async () => {
     return null;
   }
 
-  const endpoint = `/api/v1/users/current-user`;
+  const endpoint = `/users/current-user`;
   const headers = {
-    "x-auth-token": token,
+    "x-auth-token": token
   };
 
   const { data: user } = await makeRequest<IUser>(endpoint, {
     headers,
     cache: "force-cache",
-    tags: [userTag], // for cache revalidation
+    tags: [userTag] // for cache revalidation
   });
   return user;
 };

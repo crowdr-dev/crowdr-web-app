@@ -22,7 +22,7 @@ const PasswordForm = () => {
       const { currentPassword, newPassword } =
         formFields
 
-      const endpoint = "/api/v1/settings/change-password"
+      const endpoint = "/settings/change-password"
       const headers = {
         "x-auth-token": user.token,
       }

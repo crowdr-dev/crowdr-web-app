@@ -19,7 +19,7 @@ const FormPages = () => {
 
   const submit = async (formFields: FormFields) => {
     Mixpanel.track("Login clicked")
-    const endpoint = "/api/v1/users/signin"
+    const endpoint = "/users/signin"
     let payload = JSON.stringify(_.pick(formFields, ["email", "password"]))
 
     try {

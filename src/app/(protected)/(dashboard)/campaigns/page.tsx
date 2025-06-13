@@ -199,7 +199,7 @@ const fetchStats: QF<
       query.set("endDate", dateRange[1])
     }
 
-    const endpoint = `/api/v1/my-campaigns/summary?${query}`
+    const endpoint = `/my-campaigns/summary?${query}`
     const headers = {
       "Content-Type": "multipart/form-data",
       "x-auth-token": token,
@@ -227,7 +227,7 @@ const fetchCampaigns: QF<
 
   if (token) {
     const query = new URLSearchParams({ page: `${page}`, perPage: "4" })
-    const endpoint = `/api/v1/my-campaigns?${query}`
+    const endpoint = `/my-campaigns?${query}`
     const headers = {
       "x-auth-token": token,
     }

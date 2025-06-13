@@ -1,25 +1,28 @@
-"use client";
-import React, { useMemo, useState } from "react";
-import Image from "next/image";
-import { RFC } from "@/app/common/types";
-import { Button, WhiteButton } from "../../../common/components/Button";
-import ProgressBar from "./ProgressBar";
-import moment from "moment";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
+"use client"
+import React, { useMemo, useState } from "react"
+import Image from "next/image"
+import { RFC } from "@/app/common/types"
+import { Button, WhiteButton } from "../../../common/components/Button"
+import ProgressBar from "./ProgressBar"
+import moment from "moment"
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
+import Slider from "react-slick"
 
-import Menu from "../../../../../public/svg/menu.svg";
-import ArrowRight from "../../../../../public/svg/new-arrow.svg";
-import OldModal from "@/app/common/components/OldModal";
-import { formatAmount } from "../common/utils/currency";
-import { camelCaseToSeparated } from "@/utils/seperateText";
-import { getInitials } from "./Header";
-import useClipboard from "@/app/common/hooks/useClipboard";
-import { IoMdClose } from "react-icons/io";
-import { IoShareSocial } from "react-icons/io5";
-import ShareCampaign from "@/app/common/components/share-campaign";
-import { Mixpanel } from "@/utils/mixpanel";
+import Menu from "../../../../../public/svg/menu.svg"
+import ArrowRight from "../../../../../public/svg/new-arrow.svg"
+import OldModal from "@/app/common/components/OldModal"
+import { formatAmount } from "../common/utils/currency"
+import { camelCaseToSeparated } from "@/utils/seperateText"
+import { getInitials } from "./Header"
+import useClipboard from "@/app/common/hooks/useClipboard"
+import { IoMdClose } from "react-icons/io"
+import { IoShareSocial } from "react-icons/io5"
+import ShareCampaign from "@/app/common/components/share-campaign"
+import { Mixpanel } from "@/utils/mixpanel"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { Campaign } from "@/app/api/campaigns/getCampaigns"
 
 const ExploreCard: RFC<ExploreCardProps> = (props) => {
   const {
@@ -38,98 +41,99 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
     campaignType,
     category,
     volunteer,
-    currency
-  } = props;
+    currency,
+    user
+  } = props
 
-  const { copied, copy } = useClipboard();
+  const router = useRouter()
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { copied, copy } = useClipboard()
 
-  const [shareModal, setShareModal] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false)
 
-  const [hover, setHover] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [shareModal, setShareModal] = useState(false)
 
-  let allSkills = volunteer?.skillsNeeded ? [...volunteer.skillsNeeded] : [];
+  const [hover, setHover] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  let allSkills = volunteer?.skillsNeeded ? [...volunteer.skillsNeeded] : []
 
   if (volunteer?.otherSkillsNeeded) {
-    allSkills.push(volunteer.otherSkillsNeeded);
+    allSkills.push(volunteer.otherSkillsNeeded)
   }
 
-  const aggregatedSkills = allSkills.join(", ");
+  const aggregatedSkills = allSkills.join(", ")
 
   interface Add {
-    skillNeeded: string;
-    ageRange: string;
-    genderPreference: string;
-    volunteerCommitment: string;
+    skillNeeded: string
+    ageRange: string
+    genderPreference: string
+    volunteerCommitment: string
   }
 
   const additionalDetails: Add = {
     skillNeeded: aggregatedSkills ?? "",
     ageRange: volunteer?.ageRange ?? "",
     genderPreference: volunteer?.genderPreference ?? "",
-    volunteerCommitment: volunteer?.requiredCommitment ?? ""
-  };
+    volunteerCommitment: volunteer?.requiredCommitment ?? "",
+  }
 
   const openModal = () => {
-    setModalIsOpen(true);
-  };
+    setModalIsOpen(true)
+  }
 
   const closeModal = () => {
-    setModalIsOpen(false);
-  };
+    setModalIsOpen(false)
+  }
 
   const closeShareModal = () => {
-    setShareModal(false);
-  };
+    setShareModal(false)
+  }
 
-  const wordsArray = subheader?.split(" ");
+  const wordsArray = subheader?.split(" ")
 
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(true)
 
   const displayText = isCollapsed
     ? wordsArray?.slice(0, 30).join(" ")
-    : subheader;
+    : subheader
 
   const formattedText = useMemo(() => {
-    if (!subheader) return { shortText: "", fullText: "" };
+    if (!subheader) return { shortText: "", fullText: "" }
 
     // Use a simpler approach to split sentences while preserving punctuation
-    const pattern = /([^.!?]+[.!?]+)(?:\s+|$)/g;
-    const matches = subheader.match(pattern) || [];
-    const sentences = matches.map((s) => s.trim());
+    const pattern = /([^.!?]+[.!?]+)(?:\s+|$)/g
+    const matches = subheader.match(pattern) || []
+    const sentences = matches.map((s) => s.trim())
 
     // Take first 3 sentences for short text
-    const shortSentences = sentences.slice(0, 3).join(" ");
+    const shortSentences = sentences.slice(0, 3).join(" ")
 
     // Format full text with line breaks every 3 sentences
-    let fullText = "";
+    let fullText = ""
     sentences.forEach((sentence, index) => {
       if (index % 3 === 0 && index !== 0) {
-        fullText += "\n\n";
+        fullText += "\n\n"
       } else if (index !== 0) {
-        fullText += " ";
+        fullText += " "
       }
-      fullText += sentence;
-    });
+      fullText += sentence
+    })
 
     return {
       shortText:
         shortSentences.length > 150
           ? shortSentences.slice(0, 150) + "..."
           : shortSentences,
-      fullText: fullText.trim()
-    };
-  }, [subheader]);
-
+      fullText: fullText.trim(),
+    }
+  }, [subheader])
 
   const toggleReadMore = () => {
-    setIsCollapsed(!isCollapsed);
-  };
+    setIsCollapsed(!isCollapsed)
+  }
 
-  
-  const progress = totalAmount ? currentAmount / totalAmount : 0;
+  const progress = totalAmount ? currentAmount / totalAmount : 0
 
   const settings = (images: string[]) => {
     return {
@@ -160,14 +164,20 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
           onMouseEnter={() => setHover(true)}
         />
       ),
-      afterChange: (current: number) => setCurrentSlide(current)
-    };
-  };
+      afterChange: (current: number) => setCurrentSlide(current),
+    }
+  }
 
   return (
     <div className="p-6 rounded-xl border-[#393e4614] border mt-8 h-fit bg-white">
       <div className="flex items-center justify-between ">
-        <div className="flex items-center">
+        <Link
+          href={`/explore/profile/${user?._id}`}
+          className="group flex items-center"
+          // onClick={() => {
+          //   router.push(`/explore/profile/${id}`)
+          // }}
+        >
           {avatar ? (
             <Image
               src={avatar}
@@ -183,12 +193,12 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
           )}
 
           <div className="pl-3">
-            <h3 className="text-sm font-normal text-[#344054]">{name}</h3>
+            <h3 className="group-hover:underline text-sm font-normal text-[#344054]">{name}</h3>
             <h4 className="text-xs font-normal text-[#667085]">
               {tier?.toLowerCase() === "non-profit" ? "Organization" : tier}
             </h4>
           </div>
-        </div>
+        </Link>
         {/* <Image src={Menu} alt='menu' /> */}
       </div>
 
@@ -207,8 +217,9 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
                         <div
                           className="relative p-12"
                           style={{
-                            background: "rgba(76, 76, 76, 0)"
-                          }}>
+                            background: "rgba(76, 76, 76, 0)",
+                          }}
+                        >
                           <IoMdClose
                             size={30}
                             className="absolute top-0 right-0 my-4 mx-4 bg-white p-1 rounded-full z-10 cursor-pointer"
@@ -224,7 +235,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
                               objectFit: "unset",
                               height: "60vh",
                               minWidth: "400px",
-                              width: "100%"
+                              width: "100%",
                             }}
                           />
                         </div>
@@ -239,16 +250,16 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
                         style={{
                           width: "100%",
                           maxWidth: "100%",
-                          objectFit: "cover"
+                          objectFit: "cover",
                         }}
                         onMouseEnter={() => setHover(true)}
                         onMouseLeave={() => setHover(false)}
                         onClick={() => {
-                          openModal();
+                          openModal()
                         }}
                       />
                     </div>
-                  );
+                  )
                 })}
               </Slider>
             ) : (
@@ -257,8 +268,9 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
                   <div
                     className="relative p-12"
                     style={{
-                      background: "rgba(76, 76, 76, 0)"
-                    }}>
+                      background: "rgba(76, 76, 76, 0)",
+                    }}
+                  >
                     <IoMdClose
                       size={30}
                       className="absolute top-0 right-0 my-4 mx-4 bg-white p-1 rounded-full z-10 cursor-pointer"
@@ -274,7 +286,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
                         objectFit: "unset",
                         height: "60vh",
                         minWidth: "400px",
-                        width: "100%"
+                        width: "100%",
                       }}
                     />
                   </div>
@@ -287,10 +299,10 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
                   height={400}
                   style={{
                     width: "100%",
-                    objectFit: "cover"
+                    objectFit: "cover",
                   }}
                   onClick={() => {
-                    openModal();
+                    openModal()
                   }}
                 />
               </>
@@ -304,7 +316,8 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             {formattedText.shortText !== formattedText.fullText && (
               <span
                 onClick={toggleReadMore}
-                className="text-[#00B964] cursor-pointer pl-1 inline-block mt-2">
+                className="text-[#00B964] cursor-pointer pl-1 inline-block mt-2"
+              >
                 {isCollapsed ? "See more" : "See less"}
               </span>
             )}
@@ -314,7 +327,8 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
               {Object.entries(additionalDetails).map(([key, value], index) => (
                 <div
                   key={index}
-                  className="flex flex-row items-center justify-start gap-2 mb-2">
+                  className="flex flex-row items-center justify-start gap-2 mb-2"
+                >
                   <h4 className="text-sm">{camelCaseToSeparated(key)}:</h4>
                   <h4 className="text-[#667085] text-sm capitalize">{value}</h4>
                 </div>
@@ -346,8 +360,9 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
         <div
           className="relative p-12"
           style={{
-            background: "rgba(76, 76, 76, 0)"
-          }}>
+            background: "rgba(76, 76, 76, 0)",
+          }}
+        >
           <ShareCampaign
             onClose={closeShareModal}
             campaignId={id}
@@ -378,8 +393,8 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             outlineColor="#D0D5DD"
             className="w-full !justify-center"
             onClick={() => {
-              setShareModal(true);
-              Mixpanel.track("Clicked Share Campaign");
+              setShareModal(true)
+              Mixpanel.track("Clicked Share Campaign")
             }}
           />
         </div>
@@ -392,48 +407,50 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
             outlineColor="#D0D5DD"
             className="w-full !justify-center"
             onClick={() => {
-              setShareModal(true);
-              Mixpanel.track("Clicked Share Campaign");
+              setShareModal(true)
+              Mixpanel.track("Clicked Share Campaign")
             }}
           />
           <a
             className="text-[#00B964] text-[13px] underline mt-4 text-center cursor-pointer"
-            href="mailto:support@oncrowdr.com">
+            href="mailto:support@oncrowdr.com"
+          >
             Report Organiser
           </a>
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ExploreCard;
+export default ExploreCard
 
 type VolunteerDetails = {
-  skillsNeeded: string[];
-  otherSkillsNeeded?: string;
-  ageRange: string;
-  genderPreference: string;
-  commitementStartDate: string;
-  commitementEndDate: string;
-  requiredCommitment: string;
-  additonalNotes: string;
-};
+  skillsNeeded: string[]
+  otherSkillsNeeded?: string
+  ageRange: string
+  genderPreference: string
+  commitementStartDate: string
+  commitementEndDate: string
+  requiredCommitment: string
+  additonalNotes: string
+}
 type ExploreCardProps = {
-  id: string;
-  name: string;
-  tier: string;
-  header?: string;
-  subheader?: string;
-  totalAmount?: number;
-  currentAmount: number;
-  donateImage: any;
-  slideImages?: string[];
-  routeTo?: string;
-  avatar: any;
-  timePosted?: string;
-  campaignType?: string;
-  category?: string;
-  volunteer?: VolunteerDetails;
-  currency?: string;
-};
+  id: string
+  name: string
+  tier: string
+  header?: string
+  subheader?: string
+  totalAmount?: number
+  currentAmount: number
+  donateImage: any
+  slideImages?: string[]
+  routeTo?: string
+  avatar: any
+  timePosted?: string
+  campaignType?: string
+  category?: string
+  volunteer?: VolunteerDetails
+  currency?: string
+  user?: Campaign['user']
+}

@@ -1,5 +1,10 @@
 import Select, { SingleValue } from "react-select"
-import { RegisterOptions, useFormContext, FieldError, Controller } from "react-hook-form"
+import {
+  RegisterOptions,
+  useFormContext,
+  FieldError,
+  Controller,
+} from "react-hook-form"
 import { RFC } from "@/app/common/types"
 
 const SelectInput: RFC<SelectInputProps> = ({
@@ -16,12 +21,17 @@ const SelectInput: RFC<SelectInputProps> = ({
   controlled,
   isClearable,
   isSearchable,
+  disabled,
   styles,
 }) => {
   let control
   if (!controlled && name) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { control: control_, formState: {errors}} = useFormContext()
+    const formContext = useFormContext()
+    const {
+      control: control_,
+      formState: { errors },
+    } = formContext
     control = control_
     error = errors[name] as FieldError
   }
@@ -58,12 +68,13 @@ const SelectInput: RFC<SelectInputProps> = ({
       )}
       {!controlled ? (
         <Controller
-          name={name || ''}
+          name={name || ""}
           control={control}
           rules={rules}
           render={({ field: { onChange, value } }) => (
             <Select
               {...props}
+              isDisabled={disabled}
               value={options.find((g) => g.value === value)}
               onChange={(g) => onChange(g?.value)}
             />
@@ -72,6 +83,7 @@ const SelectInput: RFC<SelectInputProps> = ({
       ) : (
         <Select
           {...props}
+          isDisabled={disabled}
           value={options.find((g) => g.value === value)}
           onChange={(g) => {
             if (onChange) {
@@ -106,6 +118,7 @@ type SelectInputProps = {
   controlled?: boolean
   isClearable?: boolean
   isSearchable?: boolean
+  disabled?: boolean
   styles?: {
     wrapper?: string
   }

@@ -6,7 +6,7 @@ import { regex } from "regex"
 const Text: RFC<TextProps> = ({
   children,
   className,
-  characterLimit,
+  characterLimit = Infinity,
   expandText = "See more",
   collaspseText = "See less",
   expandTextClassName = "text-primary",
@@ -14,9 +14,10 @@ const Text: RFC<TextProps> = ({
   toggle,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(true)
+  const isBeyondLimit = children.length > characterLimit
 
   const text = useMemo(() => {
-    if (characterLimit && children.length > characterLimit && isCollapsed) {
+    if (characterLimit && isBeyondLimit && isCollapsed) {
       const shortenedText = shortenText(children, characterLimit)
       return (
         <>
@@ -41,7 +42,7 @@ const Text: RFC<TextProps> = ({
   return (
     <p {...props}>
       {text}{" "}
-      {toggle && !isCollapsed && (
+      {isBeyondLimit && toggle && !isCollapsed && (
         <span className={`${collaspseTextClassName} cursor-pointer`}>
           {collaspseText}
         </span>

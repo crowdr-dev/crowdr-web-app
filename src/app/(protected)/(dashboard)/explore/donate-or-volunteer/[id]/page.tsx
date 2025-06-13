@@ -237,7 +237,7 @@ export default function DonateOrVolunteer({
       "x-auth-token": user.token
     };
 
-    const endpoint = "/api/v1/payments/initiate";
+    const endpoint = "/payments/initiate";
 
     const payload = {
       campaignId: params.id,
@@ -283,7 +283,7 @@ export default function DonateOrVolunteer({
       "x-auth-token": user.token
     };
 
-    const endpoint = `/api/v1/campaigns/${params.id}/volunteer`;
+    const endpoint = `/campaigns/${params.id}/volunteer`;
 
     const payload = {
       userId: campaign.userId,

@@ -283,7 +283,7 @@ export default function DonateOrVolunteer({
 
   const donate = async () => {
     setLoading(true);
-    const endpoint = "/api/v1/payments/initiate";
+    const endpoint = "/payments/initiate";
 
     const payload = {
       campaignId: params.id,
@@ -318,7 +318,7 @@ export default function DonateOrVolunteer({
 
   const volunteer = async () => {
     setLoading(true);
-    const endpoint = `/api/v1/campaigns/${params.id}/volunteer`;
+    const endpoint = `/campaigns/${params.id}/volunteer`;
 
     const payload = {
       phoneNumber: volunteerInputs.phoneNumber,

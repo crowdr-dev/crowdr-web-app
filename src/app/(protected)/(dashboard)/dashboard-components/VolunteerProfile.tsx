@@ -18,7 +18,7 @@ const VolunteerProfile: RFC<Props> = ({ volunteer }) => {
 
   const updateApproval = async (body: IPatchVolunteerBody) => {
     if (user && volunteer) {
-      const endpoint = `/api/v1/my-campaigns/${volunteer.campaignId}/volunteer/${volunteer._id}`
+      const endpoint = `/my-campaigns/${volunteer.campaignId}/volunteer/${volunteer._id}`
       const headers = {
         "x-auth-token": user.token,
       }

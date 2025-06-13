@@ -14,11 +14,11 @@ import { RiDeleteBinLine } from "react-icons/ri"
 import DropdownTrigger from "@/app/common/components/DropdownTrigger"
 import { useRouter } from "next/navigation"
 import { useMutation } from "react-query"
-import _my_campaign from "../../../../../api/_my_campaign"
+import _my_campaign from "../../../../../api/_my_campaigns"
 import { CgSpinner } from "react-icons/cg"
 import toast from "react-hot-toast"
 import { isAxiosError } from "axios"
-import { IPatchEndCampaignError } from "../../../../../api/_my_campaign/models/PatchEndCampaign"
+import { IPatchEndCampaignError } from "../../../../../api/_my_campaigns/models/PatchEndCampaign"
 import SidebarModal from "./SidebarModal"
 import CompletionCard from "./CompletionCard"
 import ModalTrigger, {
@@ -250,7 +250,7 @@ const endCampaign: QF<Nullable<any>, [Nullable<string>, number]> = async ({
   const [_, token, id] = queryKey
 
   if (token) {
-    const endpoint = `/api/v1/my-campaigns/end/${id}`
+    const endpoint = `/my-campaigns/end/${id}`
     const headers = {
       "x-auth-token": token,
     }

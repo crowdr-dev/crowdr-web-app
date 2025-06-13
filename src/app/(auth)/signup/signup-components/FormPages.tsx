@@ -22,7 +22,7 @@ const FormPages = () => {
   const router = useRouter();
 
   const submit = async (formFields: FormFields) => {
-    const endpoint = "/api/v1/users/signup";
+    const endpoint = "/users/signup";
     let payload = JSON.stringify(
       _.pick(formFields, [
         "userType",
