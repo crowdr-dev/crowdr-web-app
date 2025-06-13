@@ -456,7 +456,7 @@ const fetchCampaign: QF<
       "x-auth-token": token,
     }
 
-    const endpoint = `/api/v1/my-campaigns/${campaignId}`
+    const endpoint = `/my-campaigns/${campaignId}`
 
     try {
       const { data } = await makeRequest<IFundraiseVolunteerCampaign>(
@@ -487,7 +487,7 @@ const fetchDonors: QF<
       page: `${donorsPage}`,
       perPage: ITEMS_PER_PAGE,
     })
-    const endpoint = `/api/v1/campaigns/${campaignId}/donations?${query}`
+    const endpoint = `/campaigns/${campaignId}/donations?${query}`
 
     const headers = {
       "Content-Type": "multipart/form-data",
@@ -522,7 +522,7 @@ const fetchVolunteers: QF<
       page: `${volunteersPage}`,
       perPage: ITEMS_PER_PAGE,
     })
-    const endpoint = `/api/v1/campaigns/${campaignId}/volunteers?${query}`
+    const endpoint = `/campaigns/${campaignId}/volunteers?${query}`
 
     const headers = {
       "Content-Type": "multipart/form-data",

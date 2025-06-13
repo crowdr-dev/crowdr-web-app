@@ -80,7 +80,7 @@ const CampaignForm: RFC<CampaignFormProps> = ({ submit, campaignId }) => {
     if (user && campaignId) {
       const fetchCampaignData = async () => {
         try {
-          const endpoint = `/api/v1/my-campaigns/${campaignId}`
+          const endpoint = `/my-campaigns/${campaignId}`
           const headers = {
             "Content-Type": "multipart/form-data",
             "x-auth-token": user.token,

@@ -38,7 +38,7 @@ const ProfileForm = () => {
       const { userType } = user
       const { fullName, organizationName, phoneNumber } = formFields
 
-      const endpoint = "/api/v1/settings/edit-profile"
+      const endpoint = "/settings/edit-profile"
       const headers = {
         "x-auth-token": user.token,
       }

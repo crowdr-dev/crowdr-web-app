@@ -48,7 +48,7 @@ const PaymentPage = () => {
 
   const submit = async (formFields: FormFields) => {
     if (user) {
-      const endpoint = `/api/v1/settings/bank-details/${
+      const endpoint = `/settings/bank-details/${
         accountToEdit ? accountToEdit._id : ""
       }`
       const headers = {
@@ -291,7 +291,7 @@ const fetchBankDetails: QF<
   const [_, token] = queryKey
 
   if (token) {
-    const endpoint = `/api/v1/settings/bank-details`
+    const endpoint = `/settings/bank-details`
     const headers = {
       "x-auth-token": token,
     }
@@ -322,7 +322,7 @@ const fetchWithdrawals: QF<
       perPage: ITEMS_PER_PAGE,
     })
 
-    const endpoint = `/api/v1/withdrawals?${query}`
+    const endpoint = `/withdrawals?${query}`
     const headers = {
       "x-auth-token": token,
     }

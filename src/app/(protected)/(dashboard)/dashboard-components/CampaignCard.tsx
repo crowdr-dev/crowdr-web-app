@@ -250,7 +250,7 @@ const endCampaign: QF<Nullable<any>, [Nullable<string>, number]> = async ({
   const [_, token, id] = queryKey
 
   if (token) {
-    const endpoint = `/api/v1/my-campaigns/end/${id}`
+    const endpoint = `/my-campaigns/end/${id}`
     const headers = {
       "x-auth-token": token,
     }

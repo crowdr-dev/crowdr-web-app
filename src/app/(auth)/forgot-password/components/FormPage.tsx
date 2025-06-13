@@ -11,7 +11,7 @@ const FormPages = () => {
 
   const toast = useToast()
   const submit = async (formFields: FormFields) => {
-    const endpoint = "/api/v1/users/forgot-password"
+    const endpoint = "/users/forgot-password"
     let payload = JSON.stringify(_.pick(formFields, ["email"]))
 
     try {

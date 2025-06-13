@@ -564,7 +564,7 @@ const fetchStats: QF<Stats, [Token]> = async ({ queryKey }) => {
       kycStatus: "pending",
       withdrawalStatus: "in-review",
     })
-    const endpoint = `/api/v1/admin/dashboard?${query}`
+    const endpoint = `/admin/dashboard?${query}`
 
     const headers = {
       "x-auth-token": token,

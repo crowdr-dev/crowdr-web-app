@@ -15,7 +15,7 @@ const FormPages = () => {
 
   const toast = useToast()
   const submit = async (formFields: FormFields) => {
-    const endpoint = "/api/v1/users/reset-password"
+    const endpoint = "/users/reset-password"
     let payload = JSON.stringify(_.pick(formFields, ["password"]))
 
     const headers = { "x-auth-token": token! }

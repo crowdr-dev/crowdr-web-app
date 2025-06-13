@@ -113,7 +113,7 @@ export const getCampaigns = async ({
       headers["x-auth-token"] = user.token;
     }
 
-    const endpoint = `/api/v1/campaigns?page=${page}&perPage=10&title=${title}`;
+    const endpoint = `/campaigns?page=${page}&perPage=10&title=${title}`;
 
     const { data: campaigns } = await makeRequest(endpoint, {
       headers,
@@ -148,7 +148,7 @@ export const getSingleCampaign = async (id: string, noAuth?: boolean) => {
       headers["x-auth-token"] = user.token;
     }
 
-    const endpoint = `/api/v1/campaigns/${id}`;
+    const endpoint = `/campaigns/${id}`;
 
     const { data: campaign } = await makeRequest<{ data: Campaign }>(endpoint, {
       headers,

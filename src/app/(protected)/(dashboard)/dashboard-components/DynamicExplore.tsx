@@ -103,7 +103,7 @@ const fetchCampaigns: QF<Data, [Token, Page]> = async ({ queryKey }) => {
   const [_, token, page] = queryKey
 
   if (token) {
-    const endpoint = `/api/v1/campaigns?page=${page}&perPage=10`
+    const endpoint = `/campaigns?page=${page}&perPage=10`
     const headers = {
       "x-auth-token": token,
     }
