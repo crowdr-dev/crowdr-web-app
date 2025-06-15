@@ -58,7 +58,7 @@ const AccountForm: RFC<AccountFormProps> = ({
     setVerifiedAccount(null)
 
     try {
-      const endpoint = `/api/v1/payments/banks/resolve/account_number/${accountNumber}/bank_code/${bankCode}`
+      const endpoint = `/payments/banks/resolve/account_number/${accountNumber}/bank_code/${bankCode}`
       const { data } = await makeRequest<{ account_name: string }>(endpoint, {
         method: "GET",
       })

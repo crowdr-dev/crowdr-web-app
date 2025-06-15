@@ -15,7 +15,7 @@ export default function ResendConfirmationEmail() {
     try {
       setSubmitting(true);
       const user = (await getUser())!;
-      const endpoint = `/api/v1/users/resend-verification-link`;
+      const endpoint = `/users/resend-verification-link`;
 
       const headers = {
         // certain that token should be defined here, cause their is middleware protecting this route

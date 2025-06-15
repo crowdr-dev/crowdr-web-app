@@ -127,8 +127,8 @@ const CreateEditCampaign = (props: Route) => {
         "x-auth-token": user?.token!,
       }
       const endpoint = isEdit
-        ? `/api/v1/campaigns/${params.id}`
-        : "/api/v1/campaigns"
+        ? `/campaigns/${params.id}`
+        : "/campaigns"
 
       const { success, message, data } = await makeRequest<ICampaign>(
         endpoint,

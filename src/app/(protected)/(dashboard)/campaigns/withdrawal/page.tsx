@@ -53,7 +53,7 @@ const Withdrawal = () => {
 
   const withdraw = async (campaignId: string) => {
     if (user) {
-      const endpoint = `/api/v1/withdrawals/request`
+      const endpoint = `/withdrawals/request`
       const headers = {
         "x-auth-token": user.token,
       }
@@ -293,7 +293,7 @@ const fetchStats: QF<Nullable<ICampaignStats>, [Nullable<string>]> = async ({
   const [_, token] = queryKey
 
   if (token) {
-    const endpoint = `/api/v1/my-campaigns/summary`
+    const endpoint = `/my-campaigns/summary`
     const headers = {
       "x-auth-token": token,
     }
@@ -320,7 +320,7 @@ const fetchCampaigns: QF<Data, [Token, Page]> = async ({ queryKey }) => {
 
   if (token) {
     const query = new URLSearchParams({ page: `${page}`, perPage: "6" })
-    const endpoint = `/api/v1/my-campaigns?${query}`
+    const endpoint = `/my-campaigns?${query}`
     const headers = {
       "x-auth-token": token,
     }

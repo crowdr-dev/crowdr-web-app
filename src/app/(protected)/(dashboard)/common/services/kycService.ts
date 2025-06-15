@@ -1,24 +1,24 @@
-import makeRequest from "@/utils/makeRequest"
-import { extractErrorMessage } from "@/utils/extractErrorMessage"
-import { Kyc } from "@/app/(protected)/(dashboard)/settings/verification/VerificationForm"
+import makeRequest from "@/utils/makeRequest";
+import { extractErrorMessage } from "@/utils/extractErrorMessage";
+import { Kyc } from "@/app/(protected)/(dashboard)/settings/verification/VerificationForm";
 
-const getKyc = async ({userToken}: {userToken: string}) => {
-  const endpoint = `/api/v1/settings/KYC`
+const getKyc = async ({ userToken }: { userToken: string }) => {
+  const endpoint = `/settings/KYC`;
   const headers = {
-    "x-auth-token": userToken,
-  }
+    "x-auth-token": userToken
+  };
 
   try {
-    const {data} = await makeRequest<Kyc>(endpoint, {
+    const { data } = await makeRequest<Kyc>(endpoint, {
       headers,
-      method: "GET",
-    })
+      method: "GET"
+    });
 
-    return data
+    return data;
   } catch (error) {
-    const message = extractErrorMessage(error)
-    throw new Error(message)
+    const message = extractErrorMessage(error);
+    throw new Error(message);
   }
-}
+};
 
-export default { getKyc }
+export default { getKyc };

@@ -55,7 +55,7 @@ const VerificationForm = () => {
         selfieImg,
       } = formFields
 
-      const endpoint = "/api/v1/settings/KYC"
+      const endpoint = "/settings/KYC"
       const headers = {
         "Content-Type": "multipart/form-data",
         "x-auth-token": user.token,
@@ -209,7 +209,7 @@ const fetchKyc: QF<Kyc | undefined, [string | undefined]> = async ({
   const [_, token] = queryKey
 
   if (token) {
-    const endpoint = `/api/v1/settings/KYC`
+    const endpoint = `/settings/KYC`
     const headers = {
       "x-auth-token": token,
     }

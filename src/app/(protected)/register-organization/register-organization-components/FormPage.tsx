@@ -20,7 +20,7 @@ const FormPage = () => {
   const toast = useToast()
 
   const submit = async (formFields: FormFields) => {
-    const endpoint = "/api/v1/organizations/register"
+    const endpoint = "/organizations/register"
     const payload = { ...formFields, image: formFields.image[0] }
 
     try {

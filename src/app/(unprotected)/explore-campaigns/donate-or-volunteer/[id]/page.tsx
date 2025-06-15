@@ -47,8 +47,6 @@ export default function DonateOrVolunteer(
   const [applePaySupported, setApplePaySupported] = useState(false);
   const [selectedAmount, setSelectedAmount] = useState<string>("");
 
-
-
   // Handle amount selection
   const onAmountSelect = (amount: string) => {
     setSelectedAmount(amount);
@@ -284,7 +282,7 @@ export default function DonateOrVolunteer(
 
   const donate = async () => {
     setLoading(true);
-    const endpoint = "/api/v1/payments/initiate";
+    const endpoint = "/payments/initiate";
 
     const payload = {
       campaignId: params.id,
@@ -319,7 +317,7 @@ export default function DonateOrVolunteer(
 
   const volunteer = async () => {
     setLoading(true);
-    const endpoint = `/api/v1/campaigns/${params.id}/volunteer`;
+    const endpoint = `/campaigns/${params.id}/volunteer`;
 
     const payload = {
       phoneNumber: volunteerInputs.phoneNumber,
@@ -680,13 +678,15 @@ export default function DonateOrVolunteer(
                     onClick={donate}
                     loading={loading}
                     disabled={!areAllInputsFilled(donationInputs)}
+                    // disabled
                   />
 
                   {paystackLoaded && applePaySupported && (
                     <button
                       onClick={donate}
                       className="apple-pay-button"
-                      disabled={!areAllInputsFilled(donationInputs) || loading}>
+                      disabled={!areAllInputsFilled(donationInputs) || loading}
+                      >
                       <span className="apple-pay-text">Donate with</span>
                       <FaApplePay
                         className="mt-1"
@@ -696,6 +696,11 @@ export default function DonateOrVolunteer(
                       />
                     </button>
                   )}
+
+                  {/* <span className=" text-center text-[#A75003] font-semibold underline">
+                    Donations are temporarily disabled, please check back in a
+                    couple of hours{" "}
+                  </span> */}
                 </div>
 
                 <div className="mt-10">

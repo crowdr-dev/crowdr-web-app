@@ -14,7 +14,7 @@ export default async function VerifyEmail(
   const { token } = searchParams;
 
   if (token) {
-    const endpoint = `/api/v1/users/verify-email`;
+    const endpoint = `/users/verify-email`;
     const headers = { "X-Auth-Token": token };
 
 

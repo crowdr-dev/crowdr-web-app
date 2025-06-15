@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import "./common/styles/button.css";
 import RootApp from "./app";
+import { isProd } from "@/config";
 
 const satoshi = localFont({
   src: [
@@ -73,7 +74,8 @@ export const metadata: Metadata = {
     creator: "@oncrowdr",
     images:
       "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
-    description: "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today."
+    description:
+      "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today."
   },
 
   appleWebApp: {
@@ -92,6 +94,12 @@ const inter = Public_Sans({ subsets: ["latin"] });
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
+      <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
+        />
+      </head>
       {/* Google Tag Manager */}
       <Script id="google-tag-manager" strategy="afterInteractive">
         {`
@@ -117,39 +125,26 @@ export default function RootLayout({ children }: PropsWithChildren) {
         `}
       </Script>
 
-      {/* <Script type="text/javascript" id="tawk">
-        {`
-          var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-          var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-          s1.async=true;
-          s1.src='https://embed.tawk.to/666c7875981b6c56477d5500/1i0brd3db';
-          s1.charset='UTF-8';
-          s1.setAttribute('crossorigin','*');
-          s0.parentNode.insertBefore(s1,s0);
-          })();
-        `}
-        
-      </Script> */}
-      <Script 
-        src="https://static.elfsight.com/platform/platform.js" 
-        strategy="afterInteractive"
-        async 
-      />
+      {isProd && (
+        <Script
+          src="https://static.elfsight.com/platform/platform.js"
+          strategy="afterInteractive"
+          async
+        />
+      )}
       <body className={`${satoshi.variable} ${inter.className}`}>
         <RootApp>{children}</RootApp>
-        <div 
-          className="elfsight-app-89621f74-d856-4133-9f3c-dcaedfbe0522" 
-          data-elfsight-app-lazy
-        ></div>
+        {isProd && (
+          <div
+            className="elfsight-app-89621f74-d856-4133-9f3c-dcaedfbe0522"
+            data-elfsight-app-lazy></div>
+        )}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-N95QRZ5K"
             height="0"
             width="0"
-            style={
-              { display: "none", visibility: "hidden" }
-            }></iframe>
+            style={{ display: "none", visibility: "hidden" }}></iframe>
         </noscript>
       </body>
     </html>

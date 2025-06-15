@@ -253,7 +253,7 @@ const fetchStats: QF<
       query.set("endDate", dateRange[1])
     }
 
-    const endpoint = `/api/v1/my-donations/summary?${query}`
+    const endpoint = `/my-donations/summary?${query}`
     const headers = {
       "Content-Type": "multipart/form-data",
       "x-auth-token": token,
@@ -283,7 +283,7 @@ const fetchDonations: QF<Nullable<IDonations>, [Nullable<string>, number]> = asy
       page: `${donationsPage}`,
       perPage: ITEMS_PER_PAGE,
     })
-    const endpoint = `/api/v1/my-donations?${query}`
+    const endpoint = `/my-donations?${query}`
 
     const headers = {
       "Content-Type": "multipart/form-data",
@@ -319,7 +319,7 @@ const fetchVolunteering: QF<
       perPage: ITEMS_PER_PAGE,
     })
 
-    const endpoint = `/api/v1/my-volunteerings?${query}`
+    const endpoint = `/my-volunteerings?${query}`
     const headers = {
       "x-auth-token": token,
     }

@@ -49,6 +49,10 @@ const PhoneNumberInput: RFC<PhoneInputProps> = props => {
         international
         defaultCountry="NG" // Nigeria as default country
         value={value}
+        countryCallingCodeEditable={false}
+        countrySelectProps={{
+          disabled: true, // Disable the country selector dropdown
+        }}
         onChange={handlePhoneChange}
         placeholder={placeholder || "Enter phone number"}
         name={name}

@@ -168,7 +168,7 @@ const OngoingCampaign: React.FC<Props> = ({ campaign }) => {
     setLoading(true);
 
     try {
-      const endpoint = "/api/v1/payments/initiate";
+      const endpoint = "/payments/initiate";
 
       // Get user if they're logged in, but don't require login
       const user = await getUser().catch(() => null);

@@ -56,7 +56,7 @@ const OrganizationForm = () => {
         publicUrl,
       } = formFields
 
-      const endpoint = `/api/v1/organizations/${
+      const endpoint = `/organizations/${
         orgDetails ? user.organizationId : "register"
       }`
       const headers = {
@@ -173,7 +173,7 @@ const fetchOrgDetails: QF<Data, [Token, ID]> = async ({ queryKey }) => {
   const [_, token, id] = queryKey
 
   if (token) {
-    const endpoint = `/api/v1/organizations/${id}`
+    const endpoint = `/organizations/${id}`
     const headers = {
       "x-auth-token": token,
     }
