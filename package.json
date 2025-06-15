@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
+    "@next/third-parties": "^15.3.3",
     "@novu/headless": "^0.20.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.51.1",
     "@opentelemetry/instrumentation-fetch": "^0.51.1",

@@ -1,35 +1,38 @@
-import { PropsWithChildren, useEffect } from "react";
-import type { Metadata } from "next";
-import Script from "next/script";
-import { Public_Sans } from "next/font/google";
-import localFont from "next/font/local";
-import "./globals.css";
-import "./common/styles/button.css";
-import RootApp from "./app";
-import { isProd } from "@/config";
+import { PropsWithChildren, useEffect } from "react"
+import type { Metadata } from "next"
+import Script from "next/script"
+import { Public_Sans } from "next/font/google"
+import localFont from "next/font/local"
+import "./globals.css"
+import "./common/styles/button.css"
+import RootApp from "./app"
+import { isProd } from "@/config"
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google"
 
 const satoshi = localFont({
   src: [
     {
       path: "../../public/fonts/Satoshi-Regular.otf",
-      weight: "400"
+      weight: "400",
     },
     {
       path: "../../public/fonts/Satoshi-Medium.otf",
-      weight: "500"
+      weight: "500",
     },
     {
       path: "../../public/fonts/Satoshi-Bold.otf",
-      weight: "700"
-    }
+      weight: "700",
+    },
   ],
-  variable: "--font-satoshi"
-});
+  variable: "--font-satoshi",
+})
+
+const inter = Public_Sans({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: {
     template: "%s | Crowdr",
-    default: "Crowdr - Crowdfund in Nigeria"
+    default: "Crowdr - Crowdfund in Nigeria",
   },
 
   applicationName: "Crowdr",
@@ -47,10 +50,11 @@ export const metadata: Metadata = {
     "Nigeria",
     "Africa",
     "Crowdfunding in Nigeria",
-    "Crowdfunding in Africa"
+    "Crowdfunding in Africa",
   ],
 
-  description: "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today.",
+  description:
+    "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today.",
 
   openGraph: {
     type: "website",
@@ -63,9 +67,9 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
-        alt: "Crowdr logo"
-      }
-    ]
+        alt: "Crowdr logo",
+      },
+    ],
   },
 
   twitter: {
@@ -75,21 +79,19 @@ export const metadata: Metadata = {
     images:
       "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
     description:
-      "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today."
+      "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today.",
   },
 
   appleWebApp: {
     statusBarStyle: "default",
     capable: true,
-    title: "Crowdr - Crowdfund in Nigeria"
+    title: "Crowdr - Crowdfund in Nigeria",
   },
 
   verification: {
-    google: "9Yb3G9DGqrNGVcr7mLbrpoIRZD6Kj4YHixwQileL0EI"
-  }
-};
-
-const inter = Public_Sans({ subsets: ["latin"] });
+    google: "9Yb3G9DGqrNGVcr7mLbrpoIRZD6Kj4YHixwQileL0EI",
+  },
+}
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
@@ -101,7 +103,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
         />
       </head>
       {/* Google Tag Manager */}
-      <Script id="google-tag-manager" strategy="afterInteractive">
+      <GoogleTagManager gtmId="GTM-N95QRZ5K" />
+      <GoogleAnalytics gaId="G-JL3VDJ3QRX" />
+      {/* <Script id="google-tag-manager" strategy="afterInteractive">
         {`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -109,8 +113,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
           })(window,document,'script','dataLayer','GTM-N95QRZ5K');
         `}
-      </Script>
-      <Script
+      </Script> */}
+      {/* <Script
         strategy="afterInteractive"
         src="https://www.googletagmanager.com/gtag/js?id=G-JL3VDJ3QRX"
         async
@@ -123,7 +127,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           gtag('config', 'G-JL3VDJ3QRX');
         `}
-      </Script>
+      </Script> */}
 
       {isProd && (
         <Script
@@ -137,16 +141,18 @@ export default function RootLayout({ children }: PropsWithChildren) {
         {isProd && (
           <div
             className="elfsight-app-89621f74-d856-4133-9f3c-dcaedfbe0522"
-            data-elfsight-app-lazy></div>
+            data-elfsight-app-lazy
+          ></div>
         )}
-        <noscript>
+        {/* <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-N95QRZ5K"
             height="0"
             width="0"
-            style={{ display: "none", visibility: "hidden" }}></iframe>
-        </noscript>
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript> */}
       </body>
     </html>
-  );
+  )
 }
