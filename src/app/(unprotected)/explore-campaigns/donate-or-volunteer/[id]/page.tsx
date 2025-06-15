@@ -46,8 +46,6 @@ export default function DonateOrVolunteer({
   const [applePaySupported, setApplePaySupported] = useState(false);
   const [selectedAmount, setSelectedAmount] = useState<string>("");
 
-
-
   // Handle amount selection
   const onAmountSelect = (amount: string) => {
     setSelectedAmount(amount);
@@ -678,14 +676,16 @@ export default function DonateOrVolunteer({
                     className="w-full !justify-center"
                     onClick={donate}
                     loading={loading}
-                    disabled={!areAllInputsFilled(donationInputs)}
+                    // disabled={!areAllInputsFilled(donationInputs)}
+                    disabled
                   />
 
                   {paystackLoaded && applePaySupported && (
                     <button
                       onClick={donate}
                       className="apple-pay-button"
-                      disabled={!areAllInputsFilled(donationInputs) || loading}>
+                      // disabled={!areAllInputsFilled(donationInputs) || loading}
+                      disabled>
                       <span className="apple-pay-text">Donate with</span>
                       <FaApplePay
                         className="mt-1"
@@ -695,6 +695,11 @@ export default function DonateOrVolunteer({
                       />
                     </button>
                   )}
+
+                  <p className=" text-center text-[#A75003] font-semibold underline">
+                    Donations are temporarily disabled, please check back in a
+                    couple of hours.{" "}
+                  </p>
                 </div>
 
                 <div className="mt-10">

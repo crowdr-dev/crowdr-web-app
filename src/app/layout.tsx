@@ -47,7 +47,8 @@ export const metadata: Metadata = {
     "Crowdfunding in Nigeria",
     "Crowdfunding in Africa"
   ],
-  description: "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today.",
+  description:
+    "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today.",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -69,7 +70,8 @@ export const metadata: Metadata = {
     creator: "@oncrowdr",
     images:
       "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
-    description: "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today."
+    description:
+      "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today."
   },
   appleWebApp: {
     statusBarStyle: "default",
@@ -117,27 +119,26 @@ export default function RootLayout({ children }: PropsWithChildren) {
         `}
       </Script>
 
-     {isProd && <Script 
-        src="https://static.elfsight.com/platform/platform.js" 
-        strategy="afterInteractive"
-        async 
-      />}
+      {isProd && (
+        <Script
+          src="https://static.elfsight.com/platform/platform.js"
+          strategy="afterInteractive"
+          async
+        />
+      )}
       <body className={`${satoshi.variable} ${inter.className}`}>
         <RootApp>{children}</RootApp>
         {isProd && (
           <div
             className="elfsight-app-89621f74-d856-4133-9f3c-dcaedfbe0522"
-            data-elfsight-app-lazy
-          ></div>
+            data-elfsight-app-lazy></div>
         )}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-N95QRZ5K"
             height="0"
             width="0"
-            style={
-              { display: "none", visibility: "hidden" }
-            }></iframe>
+            style={{ display: "none", visibility: "hidden" }}></iframe>
         </noscript>
       </body>
     </html>
