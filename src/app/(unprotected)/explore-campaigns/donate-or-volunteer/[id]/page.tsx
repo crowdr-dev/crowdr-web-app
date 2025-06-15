@@ -676,16 +676,16 @@ export default function DonateOrVolunteer({
                     className="w-full !justify-center"
                     onClick={donate}
                     loading={loading}
-                    // disabled={!areAllInputsFilled(donationInputs)}
-                    disabled
+                    disabled={!areAllInputsFilled(donationInputs)}
+                    // disabled
                   />
 
                   {paystackLoaded && applePaySupported && (
                     <button
                       onClick={donate}
                       className="apple-pay-button"
-                      // disabled={!areAllInputsFilled(donationInputs) || loading}
-                      disabled>
+                      disabled={!areAllInputsFilled(donationInputs) || loading}
+                      >
                       <span className="apple-pay-text">Donate with</span>
                       <FaApplePay
                         className="mt-1"
@@ -696,10 +696,10 @@ export default function DonateOrVolunteer({
                     </button>
                   )}
 
-                  <p className=" text-center text-[#A75003] font-semibold underline">
+                  {/* <span className=" text-center text-[#A75003] font-semibold underline">
                     Donations are temporarily disabled, please check back in a
-                    couple of hours.{" "}
-                  </p>
+                    couple of hours{" "}
+                  </span> */}
                 </div>
 
                 <div className="mt-10">
