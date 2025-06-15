@@ -88,11 +88,11 @@ export default CompletionCard
 
 type CompletionCardProps = {
   title: string
-  text: string | ReactElement
+  text: string | ReactElement<any>
   primaryButton: Button
   secondaryButton?: Button
   clearModal: () => void
-  icon?: ReactElement
+  icon?: ReactElement<any>
   altLayout?: boolean
 }
 

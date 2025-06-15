@@ -12,7 +12,7 @@ import "flatpickr/dist/flatpickr.min.css"
 const DateRange: RFC<DateRangeProps> = ({ onChange }) => {
   const [selectedRange, setSelectedRange] = useState<IRangeLabel>()
   const [range, setRange] = useState<Date[]>()
-  const flatpickrInstance = useRef<Flatpickr>()
+  const flatpickrInstance = useRef<Flatpickr>(undefined)
   const customButtonRef = useRef(null)
   const buttonClasses =
     "px-4 py-[10px] text-sm font-medium text-[#1D2939] border border-[#D0D5DD]"

@@ -4,8 +4,10 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: "Login",
+
   description:
     "Sign in to your Crowdr account to find volunteers, track donations, update your campaign, and connect with supporters.",
+
   openGraph: {
     type: "website",
     locale: "en_US",

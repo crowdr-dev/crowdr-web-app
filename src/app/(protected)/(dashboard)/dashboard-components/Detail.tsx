@@ -58,5 +58,5 @@ type DetailProps = {
   date: string
   status?: string
   label?: string
-  button?: ReactElement
+  button?: ReactElement<any>
 }

@@ -1,4 +1,5 @@
-"use client"
+"use client";
+import { use } from "react";
 import { useRouter } from "next/navigation"
 import { atom, useSetAtom } from "jotai"
 import objectToFormData from "@/utils/objectToFormData"
@@ -18,7 +19,8 @@ import { Route } from "@/app/common/types"
 import { ICampaign } from "@/app/common/types/Campaign"
 import { regex } from "regex"
 
-const CreateEditCampaign = ({ params }: Route) => {
+const CreateEditCampaign = (props: Route) => {
+  const params = use(props.params);
   const setShareCampaignModal = useSetAtom(shareCampaignModalAtom)
   const router = useRouter()
   const user = useUser()

@@ -40,7 +40,6 @@ const Header = () => {
           className="w-[52px] md:w-[52px]"
         />
       </div>
-
       <div className="flex items-center">
         <div className="flex mr-6">
           {/* <GrayButton
@@ -82,12 +81,11 @@ const Header = () => {
           />
         </DrawerTrigger>
       </div>
-
       <Drawer id="sidebar_drawer" ariaLabel="Sidebar">
         <Sidebar drawer />
       </Drawer>
     </header>
-  )
+  );
 }
 
 export default Header

@@ -20,7 +20,7 @@ export type IUser = {
 
 // for getting user in server components, also a server action that can be called from client components
 export const getUser = async () => {
-  const cookie = cookies();
+  const cookie = await cookies();
   const token = cookie.get("token")?.value;
 
   if (!token) {

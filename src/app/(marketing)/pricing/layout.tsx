@@ -3,8 +3,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Crowdr Pricing | Transparent & Affordable Crowdfunding Fees",
+
   description:
     "See Crowdr’s pricing plans for crowdfunding campaigns. No hidden fees—just simple, transparent pricing to help you raise funds effectively.",
+
   openGraph: {
     type: "website",
     locale: "en_US",

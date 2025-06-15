@@ -65,12 +65,10 @@ const Donations = () => {
         </h1>
         <p className="text-[15px] text-[#667085]">Manage your donations</p>
       </hgroup>
-
       {/* action buttons */}
       <div className="flex justify-between items-center mb-5 md:mb-10 py-[1px]">
         <DateRange onChange={setDateRange} />
       </div>
-
       {/* stats */}
       <div className="grid md:grid-cols-[repeat(3,_minmax(0,_350px))] 2xl:grid-cols-3 gap-4 md:gap-5 mb-[23px] md:mb-[43px]">
         {stats ? (
@@ -103,7 +101,6 @@ const Donations = () => {
           ))
         )}
       </div>
-
       {/* donations x volunteering */}
       <Tabs>
         <Tabs.Item heading="Donations">
@@ -225,7 +222,7 @@ const Donations = () => {
         </Tabs.Item>
       </Tabs>
     </div>
-  )
+  );
 }
 
 export default Donations

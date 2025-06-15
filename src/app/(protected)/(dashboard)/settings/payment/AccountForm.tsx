@@ -195,7 +195,6 @@ const AccountForm: RFC<AccountFormProps> = ({
           )}
         />
       </div>
-
       <div className="flex flex-col md:flex-row md:justify-end gap-3">
         <Button
           onClick={onCloseForm}
@@ -214,7 +213,7 @@ const AccountForm: RFC<AccountFormProps> = ({
         />
       </div>
     </form>
-  )
+  );
 }
 
 export default AccountForm

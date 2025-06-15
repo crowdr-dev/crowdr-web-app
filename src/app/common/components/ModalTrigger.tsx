@@ -14,7 +14,7 @@ const ModalTrigger: RFC<ModalTriggerProps> = ({
   override,
 }) => {
   const modalStore = useAtomValue(modalStoreAtom)
-  const modal = useRef<Modal>()
+  const modal = useRef<Modal>(undefined)
 
   useEffect(() => {
     if (id) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import Image from "next/image";
 import { getUser } from "@/app/api/user/getUser";
 import ProgressBar from "../../../dashboard-components/ProgressBar";
@@ -61,15 +61,16 @@ const ageRange = [
   }
 ];
 
-export default function DonateOrVolunteer({
-  params
-}: {
-  params: { id: string };
-}) {
+export default function DonateOrVolunteer(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = use(props.params);
   const modal = useModal();
   const toast = useToast();
 
-  const iframeRef = useRef<any>();
+  const iframeRef = useRef<any>(undefined);
   const [redirectUrl, setRedirectUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [campaign, setCampaign] = useState<any>();

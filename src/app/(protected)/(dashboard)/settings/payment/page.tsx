@@ -140,7 +140,7 @@ const PaymentPage = () => {
             //     Edit details
             //   </div>
             // </div>
-            <div className="flex flex-col md:flex-row text-sm md:text-base font-medium whitespace-pre mb-10 md:mb-8">
+            (<div className="flex flex-col md:flex-row text-sm md:text-base font-medium whitespace-pre mb-10 md:mb-8">
               <p>
                 You have {bankDetails.length} connected bank account
                 {bankDetails.length > 1 && "s"}.{" "}
@@ -151,7 +151,7 @@ const PaymentPage = () => {
               >
                 Add more
               </p>
-            </div>
+            </div>)
           ) : (
             <div className="flex flex-col md:flex-row text-sm md:text-base font-medium whitespace-pre mb-10 md:mb-8">
               <p>You have no connected bank account yet. </p>
@@ -276,7 +276,7 @@ const PaymentPage = () => {
         </>
       )}
     </div>
-  )
+  );
 }
 
 export default PaymentPage

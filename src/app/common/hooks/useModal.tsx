@@ -19,8 +19,8 @@ const ModalContext = createContext({
 
 const ModalProvider: RFC<ModalProviderProps> = ({ children }) => {
   const [modalContent, setModalContent] = useState<React.ReactNode>()
-  const modalOptions = useRef<ModalOptions>()
-  const modal = useRef<Modal>()
+  const modalOptions = useRef<ModalOptions>(undefined)
+  const modal = useRef<Modal>(undefined)
   const modalRef = useRef(null)
 
   useEffect(() => {

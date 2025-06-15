@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import Image from "next/image";
 import ProgressBar from "../../../../(protected)/(dashboard)/dashboard-components/ProgressBar";
 import ExploreCard from "../../../../(protected)/(dashboard)/dashboard-components/ExploreCard";
@@ -32,11 +32,12 @@ declare global {
   }
 }
 
-export default function DonateOrVolunteer({
-  params
-}: {
-  params: { id: string };
-}) {
+export default function DonateOrVolunteer(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = use(props.params);
   const toast = useToast();
   const [loadingCampaign, setLoadingCampaign] = useState(true);
   const [loading, setLoading] = useState(false);

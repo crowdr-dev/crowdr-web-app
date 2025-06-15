@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type JSX } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/common/components/Button";
 import { IconType } from "react-icons/lib";

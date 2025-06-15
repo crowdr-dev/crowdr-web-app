@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, use } from "react";
 import { usePathname, useSearchParams } from "next/navigation"
 import { useQuery } from "react-query"
 import { useUser } from "../../common/hooks/useUser"
@@ -43,7 +43,8 @@ import VolunteerProfile from "../../dashboard-components/VolunteerProfile"
 import ModalTrigger from "@/app/common/components/ModalTrigger"
 import { regex } from "regex"
 
-const Campaign = ({ params }: Route) => {
+const Campaign = (props: Route) => {
+  const params = use(props.params);
   const [donorsPage, setDonorsPage] = useState(1)
   const [volunteersPage, setVolunteersPage] = useState(1)
   const [volunteerProfile, setVolunteerProfile] = useState<IVolunteerProfile>()
@@ -270,7 +271,7 @@ const Campaign = ({ params }: Route) => {
           <Tabs activeTab={selectedView}>
             {isFundraiseCampaign && (
               // TODO: CONFIGURE TABS TO REPLACE NAVIGATION HISTORY INSTEAD OF PUSHING
-              <Tabs.Item heading="Donors" href={`${pathname}?view=Donors`}>
+              (<Tabs.Item heading="Donors" href={`${pathname}?view=Donors`}>
                 {donors && (
                   <>
                     <Table className="hidden md:block mb-9">
@@ -298,7 +299,6 @@ const Campaign = ({ params }: Route) => {
                     </div>
                   </>
                 )}
-
                 {donors && donors.donors.length !== 0 && (
                   <Pagination
                     currentPage={donors.pagination.currentPage}
@@ -308,13 +308,12 @@ const Campaign = ({ params }: Route) => {
                     className="px-[18px] py-4"
                   />
                 )}
-
                 {donors && donors.donors.length === 0 && (
                   <p className="flex justify-center items-center text-center font-semibold text-[18px] md:text-[30px]">
                     No donors available at this moment.
                   </p>
                 )}
-              </Tabs.Item>
+              </Tabs.Item>)
             )}
 
             {isVolunteerCampaign && (
@@ -414,12 +413,11 @@ const Campaign = ({ params }: Route) => {
           </Tabs>
         )}
       </div>
-
       <SidebarModal id="volunteer" position="right">
         <VolunteerProfile volunteer={volunteerProfile} />
       </SidebarModal>
     </>
-  )
+  );
 }
 
 export default Campaign

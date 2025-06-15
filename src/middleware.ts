@@ -1,26 +1,24 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server"
 
 export async function middleware(request: NextRequest) {
-  
   if (!request.cookies.has("token")) {
-    let url = request.nextUrl.clone();
-    if (url.pathname.includes('/explore')) {
-      url.pathname = url.pathname.replace('/explore', '/explore-campaigns');
+    let url = request.nextUrl.clone()
+    if (url.pathname.includes("/explore")) {
+      url.pathname = url.pathname.replace("/explore", "/explore-campaigns")
     } else {
-      url.pathname = '/login';
+      url.pathname = "/login"
     }
-    return  NextResponse.redirect(url);
+    return NextResponse.redirect(url)
   }
-  const requestHeaders = new Headers(request.headers);
+  const requestHeaders = new Headers(request.headers)
 
   // Store current request pathname in a custom header
-  requestHeaders.set("x-pathname", request.nextUrl.pathname);
+  requestHeaders.set("x-pathname", request.nextUrl.pathname)
   return NextResponse.next({
     request: {
-      headers: requestHeaders
-    }
-  });
+      headers: requestHeaders,
+    },
+  })
 }
 
 // "Matching Paths"
@@ -38,6 +36,6 @@ export const config = {
     "/inbox",
     "/manage-webpage",
     "/settings/(.*)",
-    "/admin/(.*)"
-  ]
-};
+    "/admin/(.*)",
+  ],
+}

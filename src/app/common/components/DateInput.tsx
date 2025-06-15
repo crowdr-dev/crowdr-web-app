@@ -55,7 +55,7 @@ const DateInput: RFC<DateInputProps> = ({
     var dateRange = value as any
   }
   const inputRef = useRef<HTMLInputElement>(null)
-  const flatpickrInstance = useRef<Flatpickr>()
+  const flatpickrInstance = useRef<Flatpickr>(undefined)
 
   useEffect(() => {
     if (inputRef.current) {

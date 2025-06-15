@@ -4,8 +4,10 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: "About Crowdr",
+
   description:
     "From fundraising to volunteer matching, Crowdr is the best way to crowdfund for individuals and NGOs in Nigeria.",
+
   openGraph: {
     type: "website",
     locale: "en_US",

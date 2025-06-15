@@ -5,11 +5,12 @@ import { revalidate } from "@/app/api/revalidate";
 import { extractErrorMessage } from "@/utils/extractErrorMessage";
 
 
-export default async function VerifyEmail({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string };
-}) {
+export default async function VerifyEmail(
+  props: {
+    searchParams: Promise<{ [key: string]: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const { token } = searchParams;
 
   if (token) {

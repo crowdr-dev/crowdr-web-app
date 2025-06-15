@@ -163,7 +163,6 @@ ProfileCard.Skeleton = () => {
     <div className="rounded-xl overflow-hidden border border-gray-100 mb-8">
       {/* Cover photo with logo */}
       <div className="relative h-64 w-full bg-gray-200"></div>
-
       {/* Profile section */}
       <div className="p-6">
         <div className="flexspace-x-4 flex gap-x-4">
@@ -191,5 +190,5 @@ ProfileCard.Skeleton = () => {
         </div>
       </div>
     </div>
-  )
+  );
 }

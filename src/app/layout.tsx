@@ -30,7 +30,9 @@ export const metadata: Metadata = {
     template: "%s | Crowdr",
     default: "Crowdr - Crowdfund in Nigeria"
   },
+
   applicationName: "Crowdr",
+
   keywords: [
     "crowdfunding",
     "donate",
@@ -46,7 +48,9 @@ export const metadata: Metadata = {
     "Crowdfunding in Nigeria",
     "Crowdfunding in Africa"
   ],
+
   description: "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today.",
+
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -62,6 +66,7 @@ export const metadata: Metadata = {
       }
     ]
   },
+
   twitter: {
     card: "summary_large_image",
     site: "@oncrowdr",
@@ -70,11 +75,13 @@ export const metadata: Metadata = {
       "https://res.cloudinary.com/dqx8jfcj0/image/upload/v1713100843/crowdr_wordmark_png-GREEN_weutm8.png",
     description: "Crowdr is the Gofundme alternative makes fundraising easy for individuals, NGOs, and businesses in Nigeria. Start your crowdfunding campaign today."
   },
+
   appleWebApp: {
     statusBarStyle: "default",
     capable: true,
     title: "Crowdr - Crowdfund in Nigeria"
   },
+
   verification: {
     google: "9Yb3G9DGqrNGVcr7mLbrpoIRZD6Kj4YHixwQileL0EI"
   }

@@ -1,10 +1,11 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react';
 import Tabs from '../../../../dashboard-components/Tabs'
 import Table from '../../../../dashboard-components/Table'
 import { getSingleCampaign } from '@/app/api/campaigns/getCampaigns'
 
-export default function AllDonations ({ params }: { params: { id: string } }) {
+export default function AllDonations(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const [campaign, setCampaign] = useState<any>()
 
   const fetchSingleCampaign = async () => {

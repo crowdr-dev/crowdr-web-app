@@ -64,6 +64,6 @@ type Table = RFC<TableProps> & {
 }
 
 type TableProps = {
-  children?: React.ReactElement | React.ReactElement[]
+  children?: React.ReactElement<any> | React.ReactElement<any>[]
   className?: string
 }

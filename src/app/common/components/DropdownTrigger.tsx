@@ -16,7 +16,7 @@ const DropdownTrigger: RFC<DropdownTriggerProps> = ({
   className,
 }) => {
   const dropdownStore = useAtomValue(dropdownStoreAtom)
-  const dropdown = useRef<Dropdown>()
+  const dropdown = useRef<Dropdown>(undefined)
 
   useEffect(() => {
     if (triggerId) {

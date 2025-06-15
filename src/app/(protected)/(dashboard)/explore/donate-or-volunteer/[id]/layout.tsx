@@ -3,10 +3,8 @@ import type { Metadata } from 'next'
 import { ResolvingMetadata } from 'next'
 import { getSingleCampaign } from '@/app/api/campaigns/getCampaigns'
 
-export async function generateMetadata (
-  { params, searchParams }: any,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(props: any, parent: ResolvingMetadata): Promise<Metadata> {
+  const params = await props.params;
   // read route params
   const id = params.id
 

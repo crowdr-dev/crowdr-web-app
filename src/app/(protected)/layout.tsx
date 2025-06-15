@@ -10,7 +10,7 @@ const explore = "/explore"
 const adminDashboard = `${adminPath}/dashboard`
 
 export default async function ProtectedLayout({ children }: PropsWithChildren) {
-  const headersList = headers()
+  const headersList = await headers()
   const user = (await getUser())!
   const currentPath = headersList.get("x-pathname")
 

@@ -14,7 +14,7 @@ const DrawerTrigger: RFC<DrawerTriggerProps> = ({
   override,
 }) => {
   const drawerStore = useAtomValue(drawerStoreAtom)
-  const drawer = useRef<Drawer>()
+  const drawer = useRef<Drawer>(undefined)
 
   useEffect(() => {
     if (id) {

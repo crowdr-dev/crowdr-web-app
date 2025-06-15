@@ -406,7 +406,7 @@ const Step2: RFC<Props> = ({ index, onStep, onDone }) => {
         )}
       </div>
     </div>
-  )
+  );
 }
 
 export default Step2
