@@ -55,7 +55,7 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
   }
 
   return (
-    <div className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm mb-8">
+    <div className="bg-white rounded-xl overflow-hidden border border-[#0000001A] mb-8">
       {/* Cover photo with logo */}
       <div className="relative h-64 w-full bg-pink-100">
         <img

@@ -5,7 +5,7 @@ import { RFC } from "../../../common/types"
 
 const CampaignProgress: RFC<Props> = ({ stats }) => {
   return (
-    <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+    <div className="bg-white rounded-xl p-6 border border-[#0000001A]">
       <h2 className="text-xl font-semibold text-gray-800 mb-6">
         Campaign Progress
       </h2>

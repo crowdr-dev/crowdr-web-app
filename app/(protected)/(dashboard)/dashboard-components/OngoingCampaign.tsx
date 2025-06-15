@@ -84,6 +84,7 @@ const OngoingCampaign: React.FC<Props> = ({ campaign }) => {
   const totalDonationAmount = campaign?.fundraise?.fundingGoalDetails[0]?.amount || 0;
   const donatedAmount = campaign?.totalAmountDonated?.[0]?.amount || 0;
   const currency = campaign?.fundraise?.fundingGoalDetails[0]?.currency || "$";
+  const [currencySymbol] = formatAmount(donatedAmount, currency?.toLowerCase())
   const percentComplete = Math.round((donatedAmount / totalDonationAmount) * 100) || 0;
   
   // Get current user if they're logged in, but don't require it
@@ -297,7 +298,7 @@ const OngoingCampaign: React.FC<Props> = ({ campaign }) => {
   const hasDonationOption = campaign.campaignType === "fundraise" || campaign.campaignType === "fundraiseAndVolunteer";
 
   return (
-    <div className="bg-white rounded-2xl selectedCampaign border border-gray-100 shadow-sm">
+    <div className="bg-white rounded-2xl selectedCampaign">
       
       {/* <div className="flex justify-between items-start">
         <div className="text-green-600 font-medium text-sm mb-3">Ongoing Campaign</div>
@@ -356,9 +357,9 @@ const OngoingCampaign: React.FC<Props> = ({ campaign }) => {
             <span className="text-sm">
               <span className="text-black">Goal</span>{" "}
               {formatAmount(donatedAmount, currency?.toLowerCase())} /{" "}
-              {/* {formatAmount(totalDonationAmount, currency?.toLowerCase())} */}
+              {formatAmount(totalDonationAmount, currency?.toLowerCase())}
             </span>
-            <span className="text-sm font-medium">{percentComplete}%</span>
+            {/* <span className="text-sm font-medium">{percentComplete}%</span> */}
           </div>
           
           <ProgressBar
@@ -381,7 +382,7 @@ const OngoingCampaign: React.FC<Props> = ({ campaign }) => {
             <label className="text-sm text-[#344054] mb-1">Donation amount</label>
             <input 
               type="number" 
-              placeholder={`${currency}10.00`}
+              placeholder={`${currencySymbol}10.00`}
               className={`border ${validationErrors.amount ? 'border-red-500' : 'border-gray-200'} rounded-lg p-2 text-sm`}
               name="amount"
               value={donationInputs.amount}
