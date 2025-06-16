@@ -38,7 +38,7 @@ export default function NotFound({
           <p className="text-base text-[#252525] font-normal">
             This error might be due to your internet provider or VPN. Try
             hitting refresh. Still not working? No stress — shoot us a message
-            at
+            at{" "}
             <a className="text-[#00B964]" href="mailto:support@oncrowdr.com">
               support@oncrowdr.com
             </a>{" "}
