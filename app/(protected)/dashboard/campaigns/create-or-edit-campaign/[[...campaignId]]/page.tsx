@@ -1,6 +1,6 @@
-"use client";
-import { use } from "react";
-import { useRouter } from "next/navigation"
+"use client"
+import { use } from "react"
+import { useParams, useRouter } from "next/navigation"
 import { atom, useSetAtom } from "jotai"
 import objectToFormData from "../../../../../../utils/objectToFormData"
 import makeRequest from "../../../../../../utils/makeRequest"
@@ -15,20 +15,19 @@ import { Mixpanel } from "../../../../../../utils/mixpanel"
 import kycService from "../../../common/services/kycService"
 import { shareCampaignModalAtom } from "../../../utils/atoms"
 
-import { Route } from "../../../../../common/types"
 import { ICampaign } from "../../../../../common/types/Campaign"
 import CreateEditCampaign from "./_components/CreateEditCampaign"
 import CampaignProvider from "./_components/useCampaignForm"
 import { regex } from "regex"
 
-const CreateOrEditCampaign = (props: Route) => {
-  const params = use(props.params);
+const CreateOrEditCampaign = () => {
+  const { campaignId } = useParams() as { campaignId: string }
   const setShareCampaignModal = useSetAtom(shareCampaignModalAtom)
   const router = useRouter()
   const user = useUser()
   const modal = useModal()
   const toast = useToast()
-  const isEdit = Boolean(params.id)
+  const isEdit = Boolean(campaignId)
 
   const submit = async (formFields: FormFields) => {
     Mixpanel.track("Create campaign clicked")
@@ -128,9 +127,7 @@ const CreateOrEditCampaign = (props: Route) => {
         "Content-Type": "multipart/form-data",
         "x-auth-token": user?.token!,
       }
-      const endpoint = isEdit
-        ? `/campaigns/${params.id}`
-        : "/campaigns"
+      const endpoint = isEdit ? `/campaigns/${campaignId}` : "/campaigns"
 
       const { success, message, data } = await makeRequest<ICampaign>(
         endpoint,
@@ -220,7 +217,7 @@ const CreateOrEditCampaign = (props: Route) => {
   }
 
   return (
-    <CampaignProvider campaignId={params.campaignId}>
+    <CampaignProvider campaignId={campaignId}>
       <CreateEditCampaign />
     </CampaignProvider>
   )
@@ -236,7 +233,7 @@ const CreateOrEditCampaign = (props: Route) => {
   //       </div>
   //     </nav>
   //     <CampaignFormContext>
-  //       <CampaignForm submit={submit} campaignId={params.id} />
+  //       <CampaignForm submit={submit} campaignId={campaignId} />
   //     </CampaignFormContext>
   //   </div>
   // )

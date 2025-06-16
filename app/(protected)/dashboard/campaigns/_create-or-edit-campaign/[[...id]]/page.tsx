@@ -1,6 +1,6 @@
 "use client";
 import { use } from "react";
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { atom, useSetAtom } from "jotai"
 import objectToFormData from "../../../../../../utils/objectToFormData"
 import makeRequest from "../../../../../../utils/makeRequest"
@@ -15,18 +15,17 @@ import { Mixpanel } from "../../../../../../utils/mixpanel"
 import kycService from "../../../common/services/kycService"
 import { shareCampaignModalAtom } from "../../../utils/atoms"
 
-import { Route } from "../../../../../common/types"
 import { ICampaign } from "../../../../../common/types/Campaign"
 import { regex } from "regex"
 
-const CreateEditCampaign = (props: Route) => {
-  const params = use(props.params);
+const CreateEditCampaign = () => {
+  const { campaignId } = useParams() as { campaignId: string }
   const setShareCampaignModal = useSetAtom(shareCampaignModalAtom)
   const router = useRouter()
   const user = useUser()
   const modal = useModal()
   const toast = useToast()
-  const isEdit = Boolean(params.id)
+  const isEdit = Boolean(campaignId)
 
   const submit = async (formFields: FormFields) => {
     Mixpanel.track("Create campaign clicked")
@@ -127,7 +126,7 @@ const CreateEditCampaign = (props: Route) => {
         "x-auth-token": user?.token!,
       }
       const endpoint = isEdit
-        ? `/campaigns/${params.id}`
+        ? `/campaigns/${campaignId}`
         : "/campaigns"
 
       const { success, message, data } = await makeRequest<ICampaign>(
@@ -228,7 +227,7 @@ const CreateEditCampaign = (props: Route) => {
         </div>
       </nav>
       <CampaignFormContext>
-        <CampaignForm submit={submit} campaignId={params.id} />
+        <CampaignForm submit={submit} campaignId={campaignId} />
       </CampaignFormContext>
     </div>
   )

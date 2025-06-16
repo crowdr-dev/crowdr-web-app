@@ -240,7 +240,7 @@ const AccountDetails = () => {
                       value={genderOptions.find((g) => g.value === value)}
                       isSearchable={false}
                       isClearable={false}
-                      onChange={(g) => onChange(g!.value)}
+                      onChange={(g: any) => onChange(g!.value)}
                       placeholder="Select your gender"
                     />
                   )}
@@ -274,7 +274,7 @@ const AccountDetails = () => {
                       defaultValue={referrerOptions[0]}
                       isClearable={false}
                       value={referrerOptions.find((g) => g.value === value)}
-                      onChange={(g) => onChange(g!.value)}
+                      onChange={(g: any) => onChange(g!.value)}
                     />
                   )}
                 />

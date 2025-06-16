@@ -43,7 +43,7 @@ import VolunteerProfile from "../../dashboard-components/VolunteerProfile"
 import ModalTrigger from "../../../../common/components/ModalTrigger"
 import { regex } from "regex"
 
-const Campaign = (props: Route) => {
+const Campaign = () => {
   const { campaignId } = useParams() as { campaignId: string }
   const [donorsPage, setDonorsPage] = useState(1)
   const [volunteersPage, setVolunteersPage] = useState(1)

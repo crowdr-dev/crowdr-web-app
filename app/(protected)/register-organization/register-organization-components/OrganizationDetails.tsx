@@ -223,7 +223,7 @@ const OrganisationDetails = () => {
                     isSearchable={true}
                     isClearable={false}
                     value={stateOptions.find((g) => g.value === value)}
-                    onChange={(g) => onChange(g!.value)}
+                    onChange={(g: any) => onChange(g!.value)}
                   />
                 )}
               />

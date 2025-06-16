@@ -76,7 +76,7 @@ const SelectInput: RFC<SelectInputProps> = ({
               {...props}
               isDisabled={disabled}
               value={options.find((g) => g.value === value)}
-              onChange={(g) => onChange(g?.value)}
+              onChange={(g: any) => onChange(g?.value)}
             />
           )}
         />
@@ -85,7 +85,7 @@ const SelectInput: RFC<SelectInputProps> = ({
           {...props}
           isDisabled={disabled}
           value={options.find((g) => g.value === value)}
-          onChange={(g) => {
+          onChange={(g: any) => {
             if (onChange) {
               onChange(g)
             }

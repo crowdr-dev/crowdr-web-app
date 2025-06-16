@@ -8,7 +8,7 @@ const useToast = () => {
 export { useToast }
 
 const toast: Toast = (status, options) =>
-  _toast.custom((t) => <Toast  t={t} {...status} />, options)
+  _toast.custom((t: any) => <Toast  t={t} {...status} />, options)
 
 export interface Toast {
   (status: Status, options?: ToastOptions): void

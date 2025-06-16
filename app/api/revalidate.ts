@@ -1,6 +1,6 @@
-"use server";
-import { revalidateTag } from "next/cache";
+"use server"
+import { revalidateTag } from "next/cache"
 
-export const revalidate = (tag : string) => {
-       revalidateTag(tag)
+export const revalidate = async (tag: string) => {
+  revalidateTag(tag)
 }
