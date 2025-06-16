@@ -75,7 +75,7 @@ const CreateEditCampaign = ({ params }: Route) => {
       }
     }
 
-    if (isFundraiseRelated || isIndividual) {
+    if (isFundraiseRelated) {
       // TODO: MAKE objectToFormData handle converting nested objects to JSON
       payload.fundraise = JSON.stringify({
         fundingGoalDetails: [
