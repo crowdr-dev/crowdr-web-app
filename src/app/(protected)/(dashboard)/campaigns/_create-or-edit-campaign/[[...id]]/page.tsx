@@ -55,8 +55,7 @@ const CreateEditCampaign = ({ params }: Route) => {
       title,
       category,
       story,
-      campaignType: isVolunteerRelated ? 'volunteer' : campaignType,
-      //isIndividual ? "fundraise" : campaignType,
+      campaignType: isIndividual ? "fundraise" : campaignType,
       // campaignStartDate: campaignDuration[0],
       // campaignEndDate: campaignDuration[1],
       campaignStartDate: new Date(

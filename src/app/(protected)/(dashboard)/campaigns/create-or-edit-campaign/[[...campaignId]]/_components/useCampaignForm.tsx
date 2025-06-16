@@ -144,8 +144,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
       title,
       category,
       story,
-      campaignType: campaignType,
-        // isIndividual ? CampaignType.Fundraise : campaignType,
+      campaignType: isIndividual ? CampaignType.Fundraise : campaignType,
       campaignStartDate: campaignDuration[0].toISOString(),
       campaignEndDate: campaignDuration[1].toISOString(),
       // campaignStartDate: new Date(
