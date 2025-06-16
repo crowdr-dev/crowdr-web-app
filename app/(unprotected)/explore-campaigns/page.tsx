@@ -1,7 +1,7 @@
 "use client";
 
 import { Campaign, getCampaigns } from "../../api/campaigns/getCampaigns";
-import ExploreCard from "../../(protected)/(dashboard)/dashboard-components/ExploreCard";
+import ExploreCard from "../../(protected)/dashboard/dashboard-components/ExploreCard";
 import { useState, useEffect, useCallback } from "react";
 import Navigation from "../../common/components/Navigation";
 import Footer from "../../common/components/Footer";

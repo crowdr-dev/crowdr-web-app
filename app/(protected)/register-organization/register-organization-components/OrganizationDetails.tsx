@@ -11,7 +11,7 @@ import { Controller, useFormContext } from "react-hook-form"
 import { OrganizationFormContext } from "../utils/useOrganizatonForm"
 import imageCompression from "browser-image-compression"
 import Select from "react-select"
-import { stateOptions } from "../../(dashboard)/common/utils/form"
+import { stateOptions } from "../../dashboard/common/utils/form"
 
 import UploadIcon from "@/public/svg/upload-cloud.svg"
 import { CgSpinner } from "react-icons/cg"

@@ -135,7 +135,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
           const isValidRoute = isRoute && page.route
           const NavItem: any = isValidRoute ? Link : "span"
           const linkProps: any = {
-            ...(isValidRoute ? { href: page.route } : {}),
+            ...(isValidRoute ? { href: `/dashboard/${page.route}` } : {}),
             className: pageLinkStyle,
           }
 

@@ -21,17 +21,17 @@ const CreateCampaignDropdown = (): JSX.Element => {
     {
       id: "fundraising",
       label: "Fundraising Campaign",
-      url: "/campaigns/create-or-edit-campaign?type=fundraise"
+      url: "/dashboard/campaigns/create-or-edit-campaign?type=fundraise"
     },
     {
       id: "volunteer",
       label: "Volunteer Campaign",
-      url: "/campaigns/create-or-edit-campaign?type=volunteer"
+      url: "/dashboard/campaigns/create-or-edit-campaign?type=volunteer"
     },
     {
       id: "both",
       label: "Both Campaigns",
-      url: "/campaigns/create-or-edit-campaign?type=fundraiseAndVolunteer"
+      url: "/dashboard/campaigns/create-or-edit-campaign?type=fundraiseAndVolunteer"
     }
   ];
 

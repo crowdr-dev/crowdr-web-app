@@ -202,9 +202,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
         "Content-Type": "multipart/form-data",
         "x-auth-token": user?.token!,
       }
-      const endpoint = isEdit
-        ? `/campaigns/${campaignId}`
-        : "/campaigns"
+      const endpoint = isEdit ? `/campaigns/${campaignId}` : "/campaigns"
 
       const { success, message, data } = await makeRequest<ICampaign>(
         endpoint,
@@ -241,7 +239,7 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
               primaryButton={{
                 label: "Upload KYC",
                 onClick: () => {
-                  router.push("/settings/verification")
+                  router.push("/dashboard/settings/verification")
                   modal.hide()
                 },
               }}

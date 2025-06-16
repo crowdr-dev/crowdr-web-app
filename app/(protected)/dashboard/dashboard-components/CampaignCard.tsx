@@ -82,8 +82,8 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign, onDelete }) => {
   }
 
   const cardProps = {
-    onClick: () => router.push(`campaigns/${_id}`),
-    onHover: () => router.prefetch(`campaigns/${_id}`),
+    onClick: () => router.push(`/dashboard/campaigns/${_id}`),
+    onHover: () => router.prefetch(`/dashboard/campaigns/${_id}`),
   }
 
   const dontPropagate = {
@@ -151,7 +151,7 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign, onDelete }) => {
           </div>
           <GrayButton
             {...dontPropagate}
-            href={`/campaigns/create-or-edit-campaign/${_id}`}
+            href={`/dashboard/campaigns/create-or-edit-campaign/${_id}`}
             text="Update campaign"
             textColor="#667085"
             outlineColor="transparent"
@@ -165,7 +165,7 @@ const CampaignCard: RFC<CampaignCardProps> = ({ campaign, onDelete }) => {
         id={`campaignCardOptions-${_id}`}
         className="hidden w-36 text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
-        <Link href={`campaigns/${_id}`}>
+        <Link href={`/dashboard/campaigns/${_id}`}>
           <button className="relative inline-flex items-center gap-2 w-full px-2 py-2 text-sm font-medium border-gray-200 rounded-t-lg hover:bg-gray-100 text-[#61656B]">
             <LuEye size={16} />
             View

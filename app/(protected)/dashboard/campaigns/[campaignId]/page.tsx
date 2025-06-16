@@ -1,6 +1,6 @@
 "use client"
-import { useState, use } from "react";
-import { usePathname, useSearchParams } from "next/navigation"
+import { useState, use } from "react"
+import { useParams, usePathname, useSearchParams } from "next/navigation"
 import { useQuery } from "react-query"
 import { useUser } from "../../common/hooks/useUser"
 import moment from "moment"
@@ -44,7 +44,7 @@ import ModalTrigger from "../../../../common/components/ModalTrigger"
 import { regex } from "regex"
 
 const Campaign = (props: Route) => {
-  const params = use(props.params);
+  const { campaignId } = useParams() as { campaignId: string }
   const [donorsPage, setDonorsPage] = useState(1)
   const [volunteersPage, setVolunteersPage] = useState(1)
   const [volunteerProfile, setVolunteerProfile] = useState<IVolunteerProfile>()
@@ -57,7 +57,7 @@ const Campaign = (props: Route) => {
   const [shareModal, setShareModal] = useState(false)
 
   const { data: campaign } = useQuery(
-    [keys.campaignPage.details, user?.token, params.id],
+    [keys.campaignPage.details, user?.token, campaignId],
     fetchCampaign,
     {
       enabled: Boolean(user?.token),
@@ -69,7 +69,7 @@ const Campaign = (props: Route) => {
   const isVolunteerCampaign = /volunteer/i.test(campaign?.campaignType || "")
 
   const { data: donors } = useQuery(
-    [keys.campaignPage.donors, user?.token, params.id, donorsPage],
+    [keys.campaignPage.donors, user?.token, campaignId, donorsPage],
     fetchDonors,
     {
       enabled: isFundraiseCampaign,
@@ -78,7 +78,7 @@ const Campaign = (props: Route) => {
   )
 
   const { data: volunteers } = useQuery(
-    [keys.campaignPage.volunteers, user?.token, params.id, volunteersPage],
+    [keys.campaignPage.volunteers, user?.token, campaignId, volunteersPage],
     fetchVolunteers,
     {
       enabled: isVolunteerCampaign,
@@ -206,7 +206,7 @@ const Campaign = (props: Route) => {
                   </div>
 
                   <GrayButton
-                    href={`/campaigns/create-or-edit-campaign/${campaign._id}`}
+                    href={`/dashboard/campaigns/create-or-edit-campaign/${campaign._id}`}
                     text="Update campaign"
                     textColor="#667085"
                     outlineColor="transparent"
@@ -261,7 +261,10 @@ const Campaign = (props: Route) => {
               }}
             />
             {!isVolunteerCampaign && (
-              <Button text="Withdraw Donations" href="/campaigns/withdrawal" />
+              <Button
+                text="Withdraw Donations"
+                href="/dashboard/campaigns/withdrawal"
+              />
             )}
           </div>
         </div>
@@ -271,7 +274,7 @@ const Campaign = (props: Route) => {
           <Tabs activeTab={selectedView}>
             {isFundraiseCampaign && (
               // TODO: CONFIGURE TABS TO REPLACE NAVIGATION HISTORY INSTEAD OF PUSHING
-              (<Tabs.Item heading="Donors" href={`${pathname}?view=Donors`}>
+              <Tabs.Item heading="Donors" href={`${pathname}?view=Donors`}>
                 {donors && (
                   <>
                     <Table className="hidden md:block mb-9">
@@ -313,7 +316,7 @@ const Campaign = (props: Route) => {
                     No donors available at this moment.
                   </p>
                 )}
-              </Tabs.Item>)
+              </Tabs.Item>
             )}
 
             {isVolunteerCampaign && (
@@ -417,7 +420,7 @@ const Campaign = (props: Route) => {
         <VolunteerProfile volunteer={volunteerProfile} />
       </SidebarModal>
     </>
-  );
+  )
 }
 
 export default Campaign

@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import { useQuery } from "react-query"
-import { useUser } from "../../../(dashboard)/common/hooks/useUser"
+import { useUser } from "../../../dashboard/common/hooks/useUser"
 import { useDebounceCallback } from "usehooks-ts"
 import Image from "next/image"
 import StatCard from "../../admin-dashboard-components/StatCard"

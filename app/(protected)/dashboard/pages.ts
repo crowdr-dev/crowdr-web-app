@@ -17,10 +17,10 @@ export class Page {
 }
 
 export const pageGroups = [
-  [new Page({ route: "/campaigns" }, "My Campaigns", megaphone)],
+  [new Page({ route: "campaigns" }, "My Campaigns", megaphone)],
   [
-    new Page({ route: "/explore" }, "Discover/Explore", heart),
-    new Page({ route: "/donations" }, "My Donations", dollar),
+    new Page({ route: "explore" }, "Discover/Explore", heart),
+    new Page({ route: "donations" }, "My Donations", dollar),
     new Page({ route: "" }, "Manage Website Page", globe, "COMING SOON")
   ],
   [
@@ -30,7 +30,7 @@ export const pageGroups = [
       "Notifications",
       bell
     ),
-    new Page({ route: "/settings/profile" }, "Settings", settings)
+    new Page({ route: "settings/profile" }, "Settings", settings)
   ],
   [new Page({ modalId: "logout-modal", noHighlight: true }, "Log out", logout)]
 ];

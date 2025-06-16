@@ -1,6 +1,6 @@
 "use client"
-import UserProvider from "../(dashboard)/common/hooks/useUser"
-import SidebarModal from "../(dashboard)/dashboard-components/SidebarModal"
+import UserProvider from "../dashboard/common/hooks/useUser"
+import SidebarModal from "../dashboard/dashboard-components/SidebarModal"
 import KycPopup from "./admin-dashboard-components/KycPopup"
 import WithdrawalPopup from "./admin-dashboard-components/WithdrawalPopup"
 import RejectionForm from "./admin-dashboard-components/RejectionForm"

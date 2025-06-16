@@ -7,7 +7,7 @@ import { atom, useAtom, useAtomValue } from "jotai"
 import TextInput from "../../../common/components/TextInput"
 import { pages as _pages } from "../pages"
 import userService from "../common/services/user"
-import { useUser } from "../../(dashboard)/common/hooks/useUser"
+import { useUser } from "../../dashboard/common/hooks/useUser"
 
 import CrowdrLogo from "@/public/images/brand/crowdr-logo.svg"
 import CrowdrLogoType from "@/public/svg/crowdr-logo.svg"
@@ -45,7 +45,7 @@ const Sidebar = () => {
     <nav className="flex flex-col justify-between overflow-x-hidden overflow-y-auto max-w-[280px] shrink-0 h-full bg-white py-8">
       <div className="flex flex-col gap-y-6">
         {/* logo */}
-        <Link href="/explore" className="flex items-center px-6">
+        <Link href="/dashboard/explore" className="flex items-center px-6">
           <Image src={CrowdrLogo} alt="crowdr logo" className="w-[50px]" />
           <Image
             src={CrowdrLogoType}

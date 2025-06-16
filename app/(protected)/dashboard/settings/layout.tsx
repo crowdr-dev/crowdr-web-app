@@ -25,7 +25,11 @@ const SettingsLayout: RFC = ({ children }) => {
       {settingsPages && (
         <Tabs styles={{ header: "-mx-5 md:mx-0" }}>
           {settingsPages.map((page, index) => (
-            <Tabs.Item key={index} heading={page.title} href={page.route}>
+            <Tabs.Item
+              key={index}
+              heading={page.title}
+              href={`/dashboard/settings/${page.route}`}
+            >
               {children}
             </Tabs.Item>
           ))}
@@ -37,25 +41,25 @@ const SettingsLayout: RFC = ({ children }) => {
 
 export default SettingsLayout
 
-let pages = [
+const pages = [
   {
-    route: "/settings/profile",
+    route: "profile",
     title: "Profile",
   },
   {
-    route: "/settings/organization",
+    route: "organization",
     title: "Organization",
   },
   {
-    route: "/settings/password",
+    route: "password",
     title: "Password",
   },
   {
-    route: "/settings/payment",
+    route: "payment",
     title: "Payment and Payouts",
   },
   {
-    route: "/settings/verification",
+    route: "verification",
     title: "Verification",
   },
 ]
