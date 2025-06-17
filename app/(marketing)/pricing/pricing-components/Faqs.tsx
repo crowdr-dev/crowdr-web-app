@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from '../pricing-styles/Team.module.css'
-import "../../../home/home-styles/faq.css";
+import "../../../_components/home/home-styles/faq.css";
 import Collapsible from "react-collapsible";
 
 

@@ -9,7 +9,7 @@ import Team from "./about-components/Team";
 import Navigation from "../../common/components/Navigation";
 import Footer from "../../common/components/Footer";
 import OldModal from "../../common/components/OldModal";
-import WaitlistForm from "../../home/home-components/WaitlistForm";
+import WaitlistForm from "../../_components/home/home-components/WaitlistForm";
 import Values from "./about-components/Values";
 import { Mixpanel } from "../../../utils/mixpanel";
 

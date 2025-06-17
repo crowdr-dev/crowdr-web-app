@@ -58,7 +58,7 @@ export async function generateMetadata(props: any, parent: ResolvingMetadata): P
       openGraph: {
         type: 'website',
         locale: 'en_US',
-        url: `https://www.oncrowdr.com/explore-campaigns/donate-or-volunteer/${id}`,
+        url: `https://www.oncrowdr.com/explore/c/${id}`,
         siteName: 'Crowdr',
         title: campaignTitle,
         description: story,

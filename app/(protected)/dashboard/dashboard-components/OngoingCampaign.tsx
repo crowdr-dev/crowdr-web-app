@@ -341,7 +341,7 @@ const OngoingCampaign: React.FC<Props> = ({ campaign }) => {
               Donate
             </button>
             <button 
-              onClick={() => window.location.href = `/explore/donate-or-volunteer/${campaign._id}`}
+              onClick={() => window.location.href = `/explore/c/${campaign._id}`}
               className="py-2 px-4 text-sm font-medium text-gray-500"
             >
               Volunteer
@@ -510,7 +510,7 @@ const OngoingCampaign: React.FC<Props> = ({ campaign }) => {
         <div className="mt-4">
           <Button
             text="Volunteer"
-            onClick={() => window.location.href = `/explore/donate-or-volunteer/${campaign._id}`}
+            onClick={() => window.location.href = `/explore/c/${campaign._id}`}
             className="w-full !justify-center"
           />
         </div>

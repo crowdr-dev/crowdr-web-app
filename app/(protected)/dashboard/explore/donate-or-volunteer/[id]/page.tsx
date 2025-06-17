@@ -617,7 +617,7 @@ export default function DonateOrVolunteer(
                 {campaign?.totalNoOfCampaignVolunteers > 0 && (
                   <Link
                     className='cursor-pointer p-4 bg-[#F8F8F8] text-[#344054] w-fit mt-8 rounded-lg'
-                    href={`/explore/donate-or-volunteer/${campaign._id}/all-donations`}
+                    href={`/explore/c/${campaign._id}/all-donations`}
                   >
                     See all
                   </Link>
@@ -801,7 +801,7 @@ export default function DonateOrVolunteer(
                 {campaign?.totalNoOfCampaignDonors > 0 && (
                   <Link
                     className="cursor-pointer p-4 bg-[#F8F8F8] text-[#344054] w-fit mt-8 rounded-lg"
-                    href={`/explore/donate-or-volunteer/${campaign._id}/all-donations`}>
+                    href={`/explore/c/${campaign._id}/all-donations`}>
                     See all
                   </Link>
                 )}

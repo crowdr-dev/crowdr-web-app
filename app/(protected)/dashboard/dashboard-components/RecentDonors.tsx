@@ -68,7 +68,7 @@ const RecentDonors: React.FC<RecentDonorsProps> = ({
       {totalDonors > donors.length && (
         <Link
           className="cursor-pointer p-4 bg-[#F8F8F8] text-[#344054] inline-block rounded-lg hover:bg-[#EAEAEA] transition-colors"
-          href={`/explore/donate-or-volunteer/${campaignId}/all-donations`}
+          href={`/explore/c/${campaignId}/all-donations`}
         >
           See all
         </Link>

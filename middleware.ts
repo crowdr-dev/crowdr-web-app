@@ -22,19 +22,19 @@ export async function middleware(request: NextRequest) {
 // "Matching Paths"
 export const config = {
   matcher: [
-    "/confirmation",
-    "/dashboard",
-    "/register-organization",
-    "/explore",
-    "/explore/(.*)",
-    "/campaigns",
-    "/campaigns/(.*)", // <-- Add this line to match all /campaigns/* routes
-    "/donations",
-    "/donations/(.*)",
-    "/inbox",
-    "/manage-webpage",
-    "/settings/(.*)",
+    "/dashboard/(.*)",
     "/admin/(.*)",
+    "/register-organization",
+    "/confirmation",
+    // "/explore",
+    // "/explore/(.*)",
+    // "/campaigns",
+    // "/campaigns/(.*)", // <-- Add this line to match all /campaigns/* routes
+    // "/donations",
+    // "/donations/(.*)",
+    // "/inbox",
+    // "/manage-webpage",
+    // "/settings/(.*)",
   ],
 }
 

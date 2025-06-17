@@ -16,7 +16,7 @@ type ShareCampaignProps = {
 const ShareCampaign = (props: ShareCampaignProps) => {
   const { campaignId, title, onClose, story } = props;
 
-  const shareUrl = `https://www.oncrowdr.com/explore-campaigns/donate-or-volunteer/${campaignId}`;
+  const shareUrl = `https://www.oncrowdr.com/explore/c/${campaignId}`;
 
   const { copied, copy } = useClipboard();
 
