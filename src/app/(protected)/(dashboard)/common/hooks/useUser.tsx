@@ -36,4 +36,4 @@ type UserProviderProps = {
   children: React.ReactNode
 }
 
-axios.defaults.baseURL = `${API_BASE_URL}/api/v1`
+axios.defaults.baseURL = `${API_BASE_URL}`
