@@ -34,7 +34,7 @@ declare global {
 
 export default function DonateOrVolunteer(
   props: {
-    params: Promise<{ id: string }>;
+    params: Promise<{ campaignId: string }>;
   }
 ) {
   const params = use(props.params);
@@ -84,7 +84,7 @@ export default function DonateOrVolunteer(
   const fetchSingleCampaign = async () => {
     setLoadingCampaign(true);
     try {
-      const singleCampaign = await getSingleCampaign(params.id, true);
+      const singleCampaign = await getSingleCampaign(params.campaignId, true);
 
       if (!singleCampaign) {
         toast({
@@ -104,7 +104,7 @@ export default function DonateOrVolunteer(
           "There was a problem loading this campaign. Please try again later.",
         type: "error"
       });
-      Mixpanel.track("Error loading campaign", { campaignId: params.id });
+      Mixpanel.track("Error loading campaign", { campaignId: params.campaignId });
       console.error("Error fetching campaign:", error);
     } finally {
       setLoadingCampaign(false);
@@ -204,7 +204,7 @@ export default function DonateOrVolunteer(
         ? "Donation campaign viewed"
         : "Volunteer campaign viewed"
     );
-  }, [params.id, campaign?.campaignType]);
+  }, [params.campaignId, campaign?.campaignType]);
 
   // Effect to check for payment completion in URL parameters
   useEffect(() => {
@@ -285,7 +285,7 @@ export default function DonateOrVolunteer(
     const endpoint = "/payments/initiate";
 
     const payload = {
-      campaignId: params.id,
+      campaignId: params.campaignId,
       amount: donationInputs.amount,
       email: donationInputs.email,
       fullName: donationInputs.fullName,
@@ -317,7 +317,7 @@ export default function DonateOrVolunteer(
 
   const volunteer = async () => {
     setLoading(true);
-    const endpoint = `/campaigns/${params.id}/volunteer`;
+    const endpoint = `/campaigns/${params.campaignId}/volunteer`;
 
     const payload = {
       phoneNumber: volunteerInputs.phoneNumber,

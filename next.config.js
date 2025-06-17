@@ -10,18 +10,18 @@ const nextConfig = {
 
   async redirects() {
     return [
-      // Redirect all /explore-campaigns/donate-or-volunteer/* to /explore/campaigns/*
+      // Redirect all /explore-campaigns/donate-or-volunteer/* to /explore/c/*
       {
         source: "/explore-campaigns/donate-or-volunteer/:path*",
-        destination: "/explore/campaign/:path*",
+        destination: "/explore/c/:path*",
         permanent: true,
       },
       // Redirect all /explore-campaigns/* to /explore/*
-      // {
-      //   source: "/explore-campaigns/:path*",
-      //   destination: "/explore/:path*",
-      //   permanent: true,
-      // },
+      {
+        source: "/explore-campaigns/:path*",
+        destination: "/explore/:path*",
+        permanent: true,
+      },
       // Redirect all /campaigns/* to /dashboard/campaigns/*
       {
         source: "/campaigns/:path*",

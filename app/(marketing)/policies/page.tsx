@@ -4,7 +4,7 @@ import Navigation from "../../common/components/Navigation";
 import Footer from "../../common/components/Footer";
 import OurPolicies from "./policies-components/OurPolicies";
 import OldModal from "../../common/components/OldModal";
-import WaitlistForm from "../../home/home-components/WaitlistForm";
+import WaitlistForm from "../../_components/home/home-components/WaitlistForm";
 import { Mixpanel } from "../../../utils/mixpanel";
 
 export default function Policies() {

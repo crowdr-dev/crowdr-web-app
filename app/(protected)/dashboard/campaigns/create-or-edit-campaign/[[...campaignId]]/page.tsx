@@ -112,7 +112,7 @@ const CreateOrEditCampaign = () => {
       //     await navigator.share({
       //       title: campaign.title,
       //       text: campaign.story,
-      //       url: `https://oncrowdr.com/explore-campaigns/donate-or-volunteer/${campaign._id}`,
+      //       url: `https://oncrowdr.com/explore/c/${campaign._id}`,
       //     })
       //   } catch (error) {
       //     console.error("Error sharing:", error)

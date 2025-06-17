@@ -7,7 +7,7 @@ import "./globals.css"
 import "./common/styles/button.css"
 import RootApp from "./app"
 import { isProd } from "../config"
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google"
+import GoogleAnalyticsComponents from "./_components/home/GoogleAnalyticsComponents"
 
 const satoshi = localFont({
   src: [
@@ -102,9 +102,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </head>
-      {/* Google Tag Manager */}
-      <GoogleTagManager gtmId="GTM-N95QRZ5K" />
-      <GoogleAnalytics gaId="G-JL3VDJ3QRX" />
+      <GoogleAnalyticsComponents />
       {/* <Script id="google-tag-manager" strategy="afterInteractive">
         {`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

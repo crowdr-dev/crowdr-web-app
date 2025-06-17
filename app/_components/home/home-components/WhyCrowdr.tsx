@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import useWindowSize from "../../common/hooks/useWindowSize";
+import useWindowSize from "../../../common/hooks/useWindowSize";
 import { useRouter } from "next/navigation";
-import { Mixpanel } from "../../../utils/mixpanel";
+import { Mixpanel } from "../../../../utils/mixpanel";
 
 const WhyCrowdr = () => {
   const router = useRouter();
