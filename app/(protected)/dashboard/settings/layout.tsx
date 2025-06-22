@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
-import { useUser } from "../common/hooks/useUser"
-import Tabs from "../dashboard-components/Tabs"
+import { useUser } from "../_common/hooks/useUser"
+import Tabs from "../_components/Tabs"
 import { RFC } from "../../../common/types"
 
 const SettingsLayout: RFC = ({ children }) => {

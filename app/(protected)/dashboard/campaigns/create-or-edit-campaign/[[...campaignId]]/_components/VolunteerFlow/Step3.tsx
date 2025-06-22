@@ -1,7 +1,7 @@
 import InputTitle from "../../../../../../../common/components/InputTitle"
 import { useFormContext } from "react-hook-form"
 import { CampaignFormContext } from "../useCampaignForm"
-import { Option } from "../../../../../common/utils/form"
+import { Option } from "../../../../../_common/utils/form"
 import { campaignCategories } from "../../../../../../../../utils/campaignCategory"
 import { WhiteButton, Button } from "../../../../../../../common/components/Button"
 import { RFC } from "../../../../../../../common/types"

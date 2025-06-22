@@ -3,29 +3,29 @@ import React, { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Mail, Instagram, Twitter, Copy, ExternalLink } from "lucide-react"
-import { Button } from "../../../../../common/components/Button"
-import CampaignProgress from "../../../dashboard-components/CampaignProgress"
-import OngoingCampaign from "../../../dashboard-components/OngoingCampaign"
-import RecentDonors from "../../../dashboard-components/RecentDonors"
-import ActiveCampaign from "../../../dashboard-components/ActiveCampaigns"
+import { Button } from "../../../common/components/Button"
+import CampaignProgress from "../../../(protected)/dashboard/_components/CampaignProgress"
+import OngoingCampaign from "../../../(protected)/dashboard/_components/OngoingCampaign"
+import RecentDonors from "../../../(protected)/dashboard/_components/RecentDonors"
+import ActiveCampaign from "../../../(protected)/dashboard/_components/ActiveCampaigns"
 import { useParams } from "next/navigation"
 import { useQuery } from "react-query"
-import queryKeys from "../../../../../../utils/queryKeys"
-import query from "../../../../../../api/query"
-import _profile from "../../../../../../api/_profile"
-import { useUser } from "../../../common/hooks/useUser"
+import queryKeys from "../../../../utils/queryKeys"
+import query from "../../../../api/query"
+import _profile from "../../../../api/_profile"
+import { useUser } from "../../../(protected)/dashboard/_common/hooks/useUser"
 import toast from "react-hot-toast"
 import ProfileCard from "./_components/ProfileCard"
-import useCampaignSummaryQuery from "../../../../../../api/query/useCampaignSummaryQuery"
-import useCampaignsQuery from "../../../../../../api/query/useCampaignsQuery"
+import useCampaignSummaryQuery from "../../../../api/query/useCampaignSummaryQuery"
+import useCampaignsQuery from "../../../../api/query/useCampaignsQuery"
 import {
   Campaign,
   IGetCampaignsResponseData,
   RunningStatus,
-} from "../../../../../../api/_campaigns/models/GetCampaigns"
+} from "../../../../api/_campaigns/models/GetCampaigns"
 
 const OrganizationProfilePage: React.FC = () => {
-  const { id: userId } = useParams() as { id: string }
+  const { userId } = useParams() as { userId: string }
   const [activeTab, setActiveTab] = useState<string>("Campaigns")
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(
     null
@@ -69,7 +69,7 @@ const OrganizationProfilePage: React.FC = () => {
   const amountDonated = selectedCampaign?.totalAmountDonated
 
   return (
-    <div className="max-w-[1140px] p-4">
+    <div className="max-w-[1140px] p-4 mx-auto py-10">
       {/* Two-column layout for the entire page */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Left column (2/3) */}

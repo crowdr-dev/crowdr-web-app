@@ -11,7 +11,7 @@ import { calculateTransactionFee } from "../../../../utils/seperateText";
 import { useToast } from "../../../common/hooks/useToast";
 import { useModal } from "../../../common/hooks/useModal";
 import { Mixpanel } from "../../../../utils/mixpanel";
-import { formatAmount } from '../common/utils/currency';
+import { formatAmount } from '../_common/utils/currency';
 import { Campaign } from '../../../../api/_campaigns/models/GetCampaigns';
 // import { Campaign } from '@/app/api/campaigns/getCampaigns';
 

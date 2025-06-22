@@ -1,6 +1,6 @@
 import { useQuery } from "react-query"
 import { useFormContext } from "react-hook-form"
-import { useUser } from "../../common/hooks/useUser"
+import { useUser } from "../../_common/hooks/useUser"
 import { useToast } from "../../../../common/hooks/useToast"
 import NumberInput from "../../../../common/components/NumberInput"
 import SelectInput from "../../../../common/components/SelectInput"
@@ -10,11 +10,11 @@ import { Button } from "../../../../common/components/Button"
 import { extractErrorMessage } from "../../../../../utils/extractErrorMessage"
 import objectToFormData from "../../../../../utils/objectToFormData"
 import makeRequest from "../../../../../utils/makeRequest"
-import { keys } from "../../utils/queryKeys"
+import { keys } from "../../_utils/queryKeys"
 import OrganizationFormContext, {
   FormFields,
 } from "../utils/useOrganizationForm"
-import { Option, stateOptions } from "../../common/utils/form"
+import { Option, stateOptions } from "../../_common/utils/form"
 
 import { Nullable, QF } from "../../../../common/types"
 

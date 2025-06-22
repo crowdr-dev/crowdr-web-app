@@ -2,6 +2,7 @@ import React from "react"
 import Image from "next/image"
 import { IGetCampaignSummaryResponseData } from "../../../../api/_my_campaigns/models/GetCampaignSummary"
 import { RFC } from "../../../common/types"
+import { formatCurrency } from "@/utils/seperateText"
 
 const CampaignProgress: RFC<Props> = ({ stats }) => {
   return (
@@ -44,7 +45,11 @@ const CampaignProgress: RFC<Props> = ({ stats }) => {
             </svg>
           </div>
           <div className="text-[#46AF7B] text-2xl font-bold mb-1">
-            ₦{stats.totalAmountDonated[0].totalAmount}
+            {/* ₦{stats.totalAmountDonated[0].totalAmount} */}
+            {formatCurrency(stats.totalAmountDonated[0].totalAmount, {
+              maximumFractionDigits: 0,
+              minimumFractionDigits: 0,
+            })}
           </div>
           <div className="text-gray-600 text-sm text-center">
             Total money raised

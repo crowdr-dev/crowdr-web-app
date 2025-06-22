@@ -12,7 +12,7 @@ import Slider from "react-slick"
 import Menu from "@/public/svg/menu.svg"
 import ArrowRight from "@/public/svg/new-arrow.svg"
 import OldModal from "../../../common/components/OldModal"
-import { formatAmount } from "../common/utils/currency"
+import { formatAmount } from "../_common/utils/currency"
 import { camelCaseToSeparated } from "../../../../utils/seperateText"
 import { getInitials } from "./Header"
 import useClipboard from "../../../common/hooks/useClipboard"
@@ -169,17 +169,12 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
     }
   }
 
-  console.log("userId", userId);
-
   return (
     <div className="p-6 rounded-xl border-[#393e4614] border mt-8 h-fit bg-white">
       <div className="flex items-center justify-between ">
         <Link
-          href={`/dashboard/explore/profile/${user?._id || userId}`}
+          href={`/profile/${user?._id}`}
           className="group flex items-center"
-          // onClick={() => {
-          //   router.push(`/explore/profile/${id}`)
-          // }}
         >
           {avatar ? (
             <Image

@@ -7,7 +7,7 @@ import { RFC } from "../../../common/types"
 import TextInput from "../../../common/components/TextInput"
 import TextAreaInput from "../../../common/components/TextAreaInput"
 import { Button, WhiteButton } from "../../../common/components/Button"
-import { useUser } from "../common/hooks/useUser"
+import { useUser } from "../_common/hooks/useUser"
 import makeRequest from "../../../../utils/makeRequest"
 import toast from "react-hot-toast"
 

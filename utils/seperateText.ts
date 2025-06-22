@@ -8,10 +8,14 @@ export function camelCaseToSeparated(value: string): string {
   return separated.charAt(0).toUpperCase() + separated.slice(1)
 }
 
-export const formatCurrency = (value: number) => {
+export const formatCurrency = (
+  value: number,
+  options: Intl.NumberFormatOptions = {}
+) => {
   return new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
+    ...options,
   }).format(value)
 }
 

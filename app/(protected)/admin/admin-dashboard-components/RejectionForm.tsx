@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useAtom, useAtomValue } from "jotai"
-import { useUser } from "../../dashboard/common/hooks/useUser"
+import { useUser } from "../../dashboard/_common/hooks/useUser"
 import { useToast } from "../../../common/hooks/useToast"
 import { Button } from "../../../common/components/Button"
 import TextInput from "../../../common/components/TextInput"

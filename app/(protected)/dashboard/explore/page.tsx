@@ -2,8 +2,8 @@
 import Image from "next/image";
 import { Search } from "lucide-react";
 import debounce from "lodash/debounce";
-import { useUser } from "../common/hooks/useUser";
-import ExploreCard from "../dashboard-components/ExploreCard";
+import { useUser } from "../_common/hooks/useUser";
+import ExploreCard from "../_components/ExploreCard";
 import makeRequest from "../../../../utils/makeRequest";
 import { extractErrorMessage } from "../../../../utils/extractErrorMessage";
 import { campaignsTag } from "../../../../tags";

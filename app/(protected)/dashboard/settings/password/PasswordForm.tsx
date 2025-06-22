@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form"
-import { useUser } from "../../common/hooks/useUser"
+import { useUser } from "../../_common/hooks/useUser"
 import { useToast } from "../../../../common/hooks/useToast"
 import InputTitle from "../../../../common/components/InputTitle"
 import { Button } from "../../../../common/components/Button"

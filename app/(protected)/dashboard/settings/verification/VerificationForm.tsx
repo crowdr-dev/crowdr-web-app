@@ -1,6 +1,6 @@
 import { useQuery } from "react-query"
 import { useFormContext } from "react-hook-form"
-import { useUser } from "../../common/hooks/useUser"
+import { useUser } from "../../_common/hooks/useUser"
 import { useToast } from "../../../../common/hooks/useToast"
 import TextInput from "../../../../common/components/TextInput"
 import SelectInput from "../../../../common/components/SelectInput"
@@ -10,8 +10,8 @@ import { Button } from "../../../../common/components/Button"
 import { extractErrorMessage } from "../../../../../utils/extractErrorMessage"
 import objectToFormData from "../../../../../utils/objectToFormData"
 import makeRequest from "../../../../../utils/makeRequest"
-import { keys } from "../../utils/queryKeys"
-import { Option } from "../../common/utils/form"
+import { keys } from "../../_utils/queryKeys"
+import { Option } from "../../_common/utils/form"
 import VerificationFormContext, {
   FormFields,
 } from "../utils/useVerificationForm"
