@@ -237,6 +237,7 @@ export default function DynamicExplore() {
                   routeTo={`/explore/c/${campaign._id}`}
                   avatar={campaign?.photo?.url || ""}
                   campaignType={campaign.campaignType}
+                  user={userDetails}
                 />
               );
             })}

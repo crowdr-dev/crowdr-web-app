@@ -172,10 +172,10 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
     <div className="p-6 rounded-xl border-[#393e4614] border mt-8 h-fit bg-white">
       <div className="flex items-center justify-between ">
         <Link
-          href={`/explore/profile/${user?._id}`}
+          href={`/profile/${user?._id}`}
           className="group flex items-center"
           // onClick={() => {
-          //   router.push(`/explore/profile/${id}`)
+          //   router.push(`/profile/${id}`)
           // }}
         >
           {avatar ? (

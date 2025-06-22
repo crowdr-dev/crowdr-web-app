@@ -25,7 +25,7 @@ import {
 } from "../../../../api/_campaigns/models/GetCampaigns"
 
 const OrganizationProfilePage: React.FC = () => {
-  const { id: userId } = useParams() as { id: string }
+  const { userId } = useParams() as { userId: string }
   const [activeTab, setActiveTab] = useState<string>("Campaigns")
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(
     null
@@ -69,7 +69,7 @@ const OrganizationProfilePage: React.FC = () => {
   const amountDonated = selectedCampaign?.totalAmountDonated
 
   return (
-    <div className="max-w-[1140px] p-4">
+    <div className="max-w-[1140px] p-4 mx-auto py-10">
       {/* Two-column layout for the entire page */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Left column (2/3) */}

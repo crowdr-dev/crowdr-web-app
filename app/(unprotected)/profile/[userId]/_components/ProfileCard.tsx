@@ -46,7 +46,7 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
   const handleCopyLink = () => {
     try {
       navigator.clipboard.writeText(
-        `https://oncrowdr.com/explore/profile/${profile?.user?._id}`
+        `https://oncrowdr.com/profile/${profile?.user?._id}`
       )
       toast.success("Copied")
     } catch (error) {
@@ -116,7 +116,7 @@ const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
           <div className="flex items-center gap-[14px]">
             {isOwnProfile && (
               <Link
-                href={`/explore/profile/${profile.user._id}/edit`}
+                href={`/profile/${profile.user._id}/edit`}
                 className="flex items-center gap-2 text-[#00B964] bg-[#00b96314] hover:bg-[#00b9631f] rounded-full transition-colors h-10 px-[14px]"
               >
                 <RiEditLine size={24} fill="#00B964" /> Edit Profile

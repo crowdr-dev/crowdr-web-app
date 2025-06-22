@@ -7,7 +7,7 @@ import _profile from "../../../../../api/_profile"
 import ProfileDetails from "./_components/ProfileDetails"
 
 const EditProfile = () => {
-  const { id: userId } = useParams() as { id: string }
+  const { userId } = useParams() as { userId: string }
 
   return (
     <Provider userId={userId}>
