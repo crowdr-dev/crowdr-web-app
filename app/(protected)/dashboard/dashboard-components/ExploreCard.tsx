@@ -28,6 +28,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
   const {
     id,
     name,
+    userId,
     tier,
     avatar,
     header,
@@ -168,11 +169,13 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
     }
   }
 
+  console.log("userId", userId);
+
   return (
     <div className="p-6 rounded-xl border-[#393e4614] border mt-8 h-fit bg-white">
       <div className="flex items-center justify-between ">
         <Link
-          href={`/explore/profile/${user?._id}`}
+          href={`/dashboard/explore/profile/${user?._id || userId}`}
           className="group flex items-center"
           // onClick={() => {
           //   router.push(`/explore/profile/${id}`)
@@ -438,6 +441,7 @@ type VolunteerDetails = {
 type ExploreCardProps = {
   id: string
   name: string
+  userId: string
   tier: string
   header?: string
   subheader?: string
