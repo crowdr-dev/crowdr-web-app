@@ -2,6 +2,13 @@ import { API_BASE_URL } from "../config";
 import { extractErrorMessage } from "./extractErrorMessage";
 import { RequestOptions } from "https";
 
+console.log("=== PAGE COMPONENT DEBUG ===");
+console.log("API_BASE_URL:", API_BASE_URL);
+console.log("typeof API_BASE_URL:", typeof API_BASE_URL);
+console.log(
+  "process.env.NEXT_PUBLIC_CUSTOM_NODE_ENV:",
+  process.env.NEXT_PUBLIC_CUSTOM_NODE_ENV
+);
 export default async function makeRequest<T = any>(
   endpoint: string,
   options: {
@@ -13,11 +20,6 @@ export default async function makeRequest<T = any>(
     extractError?: boolean;
   } = {}
 ): Promise<IResponse<T>> {
-  console.log("=== makeRequest DEBUG ===");
-  console.log("API_BASE_URL imported:", API_BASE_URL);
-  console.log("endpoint:", endpoint);
-  console.log("Full URL will be:", API_BASE_URL + endpoint);
-
   const {
     method = "GET",
     payload = null,
@@ -51,8 +53,10 @@ export default async function makeRequest<T = any>(
     requestOptions.body = payload;
   }
 
+  const TEMP_API_URL = "https://test-api.oncrowdr.com";
+  console.log("Using hardcoded URL:", TEMP_API_URL);
   try {
-    const response = await fetch(API_BASE_URL + endpoint, requestOptions);
+    const response = await fetch(TEMP_API_URL + endpoint, requestOptions);
     const data = await response.json();
 
     if (!response.ok) {
