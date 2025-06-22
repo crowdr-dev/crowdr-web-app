@@ -2,12 +2,12 @@
 
 import { useState, useEffect, use } from "react";
 import Image from "next/image";
-import ProgressBar from "../../../../(protected)/dashboard/dashboard-components/ProgressBar";
-import ExploreCard from "../../../../(protected)/dashboard/dashboard-components/ExploreCard";
-import Filter from "../../../../(protected)/dashboard/dashboard-components/Filter";
-import Input from "../../../../(protected)/dashboard/dashboard-components/Input";
-import Checkbox from "../../../../(protected)/dashboard/dashboard-components/Checkbox";
-import Select from "../../../../(protected)/dashboard/dashboard-components/Select";
+import ProgressBar from "../../../../(protected)/dashboard/_components/ProgressBar";
+import ExploreCard from "../../../../(protected)/dashboard/_components/ExploreCard";
+import Filter from "../../../../(protected)/dashboard/_components/Filter";
+import Input from "../../../../(protected)/dashboard/_components/Input";
+import Checkbox from "../../../../(protected)/dashboard/_components/Checkbox";
+import Select from "../../../../(protected)/dashboard/_components/Select";
 import { Button } from "../../../../common/components/Button";
 import { getSingleCampaign } from "../../../../api/campaigns/getCampaigns";
 import makeRequest from "../../../../../utils/makeRequest";
@@ -22,7 +22,7 @@ import { Mixpanel } from "../../../../../utils/mixpanel";
 import PhoneNumberInput from "../../../../common/components/PhoneNumberInput";
 import NotFound from "../../../../not-found";
 import { FaApplePay } from "react-icons/fa";
-import { formatAmount } from "../../../../(protected)/dashboard/common/utils/currency";
+import { formatAmount } from "../../../../(protected)/dashboard/_common/utils/currency";
 import { calculateTransactionFee } from "../../../../../utils/seperateText";
 import { presetAmounts } from "../../../../../utils/constants";
 

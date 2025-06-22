@@ -2,7 +2,7 @@
 import { atom, useAtom } from "jotai"
 import OldModal from "../../../common/components/OldModal"
 import ShareCampaign from "../../../common/components/share-campaign"
-import { shareCampaignModalAtom } from "../utils/atoms"
+import { shareCampaignModalAtom } from "../_utils/atoms"
 
 import { RFC } from "../../../common/types"
 

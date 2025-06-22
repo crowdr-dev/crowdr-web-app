@@ -1,5 +1,5 @@
 import { toTitleCase } from "../../../../../utils/toTitleCase"
-import { formatAmount } from "../../../dashboard/common/utils/currency"
+import { formatAmount } from "../../../dashboard/_common/utils/currency"
 
 import {
   Campaign,

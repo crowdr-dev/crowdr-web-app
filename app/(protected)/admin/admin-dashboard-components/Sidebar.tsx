@@ -7,7 +7,7 @@ import { atom, useAtom, useAtomValue } from "jotai"
 import TextInput from "../../../common/components/TextInput"
 import { pages as _pages } from "../pages"
 import userService from "../common/services/user"
-import { useUser } from "../../dashboard/common/hooks/useUser"
+import { useUser } from "../../dashboard/_common/hooks/useUser"
 
 import CrowdrLogo from "@/public/images/brand/crowdr-logo.svg"
 import CrowdrLogoType from "@/public/svg/crowdr-logo.svg"

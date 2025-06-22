@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState, use } from 'react';
-import Tabs from '../../../../dashboard-components/Tabs'
-import Table from '../../../../dashboard-components/Table'
+import Tabs from '../../../../_components/Tabs'
+import Table from '../../../../_components/Table'
 import { getSingleCampaign } from '../../../../../../api/campaigns/getCampaigns'
 
 export default function AllDonations(props: { params: Promise<{ id: string }> }) {

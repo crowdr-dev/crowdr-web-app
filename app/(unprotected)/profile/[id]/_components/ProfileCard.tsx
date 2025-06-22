@@ -1,13 +1,13 @@
 "use client"
 import { Edit, ExternalLink, Instagram, Mail, Twitter } from "lucide-react"
 import Image from "next/image"
-import { IGetProfileResponseData } from "../../../../../../../api/_profile/models/GetProfile"
-import { RFC } from "../../../../../../common/types"
+import { IGetProfileResponseData } from "../../../../../api/_profile/models/GetProfile"
+import { RFC } from "../../../../common/types"
 import toast from "react-hot-toast"
-import { useUser } from "../../../../common/hooks/useUser"
+import { useUser } from "../../../../(protected)/dashboard/_common/hooks/useUser"
 import { RiEditLine } from "react-icons/ri"
 import Link from "next/link"
-import Text from "../../../../dashboard-components/Text"
+import Text from "../../../../(protected)/dashboard/_components/Text"
 
 const ProfileCard: RFC<Props> & { Skeleton: RFC } = ({ profile }) => {
   const user = useUser()
