@@ -5,6 +5,7 @@ import { Button } from "../../../common/components/Button";
 import { IconType } from "react-icons/lib";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { FiCheck } from "react-icons/fi";
+import { useUser } from "../common/hooks/useUser";
 
 interface CampaignOption {
   id: string;
@@ -13,9 +14,12 @@ interface CampaignOption {
 }
 
 const CreateCampaignDropdown = (): JSX.Element => {
+  const user = useUser();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
+
+  const userType = user?.userType || "individual"; 
 
   const campaignOptions: CampaignOption[] = [
     {
@@ -71,9 +75,15 @@ const CreateCampaignDropdown = (): JSX.Element => {
   return (
     <div className="relative" ref={dropdownRef}>
       <Button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={
+          userType === "individual" ? (
+            () => router.push("/dashboard/campaigns/create-or-edit-campaign?type=fundraise")
+          ) : (
+            () => setIsOpen(!isOpen)
+          )
+        }
         text="Create Campaign"
-        icon={ArrowIcon}
+        icon={userType === "individual" ? undefined : ArrowIcon}
         iconPosition="right"
         className="min-w-44"
       />

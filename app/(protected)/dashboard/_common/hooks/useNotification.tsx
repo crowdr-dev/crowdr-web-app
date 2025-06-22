@@ -169,7 +169,6 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
     if (headlessService) {
       headlessService.markAllMessagesAsRead({
         listener: (result) => {
-          // console.log(result);
           // Handle the result of marking all messages as read
           // You can update the state or perform other actions here
         },
@@ -188,7 +187,6 @@ const NotificationProvider: React.FC<Props> = ({ children }) => {
     if (headlessService) {
       headlessService.markAllMessagesAsSeen({
         listener: (result) => {
-          // console.log(result);
           // Handle the result of marking all messages as read
           // You can update the state or perform other actions here
         },

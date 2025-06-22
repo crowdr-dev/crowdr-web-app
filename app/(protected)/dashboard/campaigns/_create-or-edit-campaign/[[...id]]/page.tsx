@@ -56,7 +56,8 @@ const CreateEditCampaign = () => {
       title,
       category,
       story,
-      campaignType: isIndividual ? "fundraise" : campaignType,
+      campaignType: campaignType,
+      // isIndividual ? "fundraise" : campaignType,
       // campaignStartDate: campaignDuration[0],
       // campaignEndDate: campaignDuration[1],
       campaignStartDate: new Date(
@@ -75,7 +76,7 @@ const CreateEditCampaign = () => {
       }
     }
 
-    if (isFundraiseRelated || isIndividual) {
+    if (isFundraiseRelated) {
       // TODO: MAKE objectToFormData handle converting nested objects to JSON
       payload.fundraise = JSON.stringify({
         fundingGoalDetails: [

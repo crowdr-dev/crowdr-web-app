@@ -214,6 +214,7 @@ export default function DynamicExplore() {
               return (
                 <ExploreCard
                   key={campaign._id}
+                  userId={userDetails?._id}
                   id={campaign._id}
                   name={
                     userDetails?.userType === "individual"

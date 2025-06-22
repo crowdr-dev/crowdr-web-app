@@ -1,9 +1,9 @@
 [build]
-  command = "npm run build"
+  command = "yarn install && yarn build"
   publish = ".next"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
 [build.environment]
-  NEXT_USE_NETLIFY_EDGE = "true"
+  NEXT_FORCE_EDGE_IMAGES = "true"

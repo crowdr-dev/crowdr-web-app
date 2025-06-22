@@ -125,7 +125,7 @@ const ShareCampaign = (props: ShareCampaignProps) => {
             shareUrl
           )}&text=${encodeURIComponent(
             "Please join me in supporting this campaign!"
-          )}`}
+          )} @oncrowdr`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => Mixpanel.track("Shared via Twitter")}

@@ -28,6 +28,7 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
   const {
     id,
     name,
+    userId,
     tier,
     avatar,
     header,
@@ -174,9 +175,6 @@ const ExploreCard: RFC<ExploreCardProps> = (props) => {
         <Link
           href={`/profile/${user?._id}`}
           className="group flex items-center"
-          // onClick={() => {
-          //   router.push(`/profile/${id}`)
-          // }}
         >
           {avatar ? (
             <Image
@@ -438,6 +436,7 @@ type VolunteerDetails = {
 type ExploreCardProps = {
   id: string
   name: string
+  userId: string
   tier: string
   header?: string
   subheader?: string

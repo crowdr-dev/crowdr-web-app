@@ -13,6 +13,6 @@ const COOKIE_CONFIG = {
   maxAge: COOKIE_EXPIRATION,
   path: "/", // Set the path to '/' to make it available for the entire domain
   secure: true,
-  httpOnly: true,
+  httpOnly: true
 };
 export { API_BASE_URL, COOKIE_CONFIG };

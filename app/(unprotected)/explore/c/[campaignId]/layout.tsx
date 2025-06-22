@@ -6,7 +6,7 @@ import { getSingleCampaign } from '../../../../api/campaigns/getCampaigns'
 export async function generateMetadata(props: any, parent: ResolvingMetadata): Promise<Metadata> {
   const params = await props.params;
   // read route params
-  const id = params.id
+  const id = params.campaignId
 
   try {
     // fetch data
