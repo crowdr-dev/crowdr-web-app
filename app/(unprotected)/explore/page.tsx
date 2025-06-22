@@ -6,7 +6,7 @@ import { useState, useEffect, useCallback } from "react";
 import Navigation from "../../common/components/Navigation";
 import Footer from "../../common/components/Footer";
 import OldModal from "../../common/components/OldModal";
-import WaitlistForm from "../../home/home-components/WaitlistForm";
+import WaitlistForm from "../../_components/home/home-components/WaitlistForm";
 import Head from "next/head";
 import NavBar from "./components/NavBar";
 import Loading from "../../loading";
@@ -234,7 +234,7 @@ export default function DynamicExplore() {
                     ...(urlsOnly || [])
                   ]}
                   donateImage=""
-                  routeTo={`/explore-campaigns/donate-or-volunteer/${campaign._id}`}
+                  routeTo={`/explore/c/${campaign._id}`}
                   avatar={campaign?.photo?.url || ""}
                   campaignType={campaign.campaignType}
                 />

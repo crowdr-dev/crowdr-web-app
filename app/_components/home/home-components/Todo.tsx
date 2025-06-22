@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import "../home-styles/todo.css";
-import useWindowSize from "../../common/hooks/useWindowSize";
+import useWindowSize from "../../../common/hooks/useWindowSize";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";

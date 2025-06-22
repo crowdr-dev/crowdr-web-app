@@ -1,5 +1,5 @@
 "use client";
-import { openEmail } from "../../../utils/openEmail";
+import { openEmail } from "../../../../utils/openEmail";
 import Image from "next/image";
 import Collapsible from "react-collapsible";
 import "../home-styles/faq.css";

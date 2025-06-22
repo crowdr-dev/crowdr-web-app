@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-import { RFC } from "../../common/types";
+import { RFC } from "../../../common/types";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import "../home-styles/happening.css";
-import ProgressBar from "../../(protected)/dashboard/dashboard-components/ProgressBar";
-import { formatAmount } from "../../(protected)/dashboard/common/utils/currency";
-import useWindowSize from "../../common/hooks/useWindowSize";
+import ProgressBar from "../../../(protected)/dashboard/dashboard-components/ProgressBar";
+import { formatAmount } from "../../../(protected)/dashboard/common/utils/currency";
+import useWindowSize from "../../../common/hooks/useWindowSize";
 import { useRouter } from "next/navigation";
-import { Campaign, getCampaigns } from "../../api/campaigns/getCampaigns";
-import Loading from "../../loading";
+import { Campaign, getCampaigns } from "../../../api/campaigns/getCampaigns";
+import Loading from "../../../loading";
 
 type ExploreCardProps = {
   name: string;
@@ -241,7 +241,7 @@ const Happening = () => {
                   campaign?.campaignCoverImage?.url,
                   ...(urlsOnly || [])
                 ]}
-                routeTo={`/explore-campaigns/donate-or-volunteer/${campaign._id}`}
+                routeTo={`/explore/c/${campaign._id}`}
                 key={index}
                 campaignType={campaign.campaignType}
               />
