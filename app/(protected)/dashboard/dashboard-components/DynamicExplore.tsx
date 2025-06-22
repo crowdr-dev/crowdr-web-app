@@ -52,6 +52,7 @@ export default function DynamicExplore({
             return (
               <ExploreCard
                 id={campaign._id}
+                userId={userDetails?._id}
                 name={userDetails?.organizationName}
                 tier={userDetails?.userType}
                 header={campaign?.title}
