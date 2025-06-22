@@ -51,7 +51,6 @@ const CampaignProvider: RFC<Props> = ({ children, campaignId }) => {
 
   useEffect(() => {
     const initCampaignForm = (campaignType: CampaignType) => {
-      // console.log(campaignType)
       if (campaignType === "volunteer") {
         setCampaignForm("volunteer")
       } else {

@@ -23,7 +23,6 @@ export default async function VerifyEmail(
     
       revalidate(userTag); // revalidate after user isEmailVerified property changes
     } catch (error) {
-      console.log(extractErrorMessage(error),999)
       return (
         <div className="flex items-center justify-center h-screen w-screen">
           <div>{extractErrorMessage(error)}</div>

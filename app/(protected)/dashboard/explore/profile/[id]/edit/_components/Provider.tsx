@@ -25,7 +25,6 @@ const Provider: RFC<Props> = ({ userId = "", children }) => {
   const profileMutation = useMutation({
     mutationFn: _profile.updateProfile,
     onSuccess: (res) => {
-      console.log(res)
       router.back()
     },
     onError: (err) => {
