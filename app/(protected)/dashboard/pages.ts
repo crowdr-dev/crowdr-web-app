@@ -19,7 +19,7 @@ export class Page {
 export const pageGroups = [
   [new Page({ route: "campaigns" }, "My Campaigns", megaphone)],
   [
-    new Page({ route: "explore" }, "Discover/Explore", heart),
+    new Page({ route: "/explore" }, "Discover/Explore", heart),
     new Page({ route: "donations" }, "My Donations", dollar),
     new Page({ route: "" }, "Manage Website Page", globe, "COMING SOON")
   ],

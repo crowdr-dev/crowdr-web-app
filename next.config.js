@@ -1,18 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "res.cloudinary.com",
-      "images.unsplash.com",
-      "crowdr.netlify.app"
-    ],
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;"
-  },
-  experimental: {
-    logging: {
-      level: "verbose"
-    }
+    domains: ["res.cloudinary.com", "images.unsplash.com", "crowdr.netlify.app"]
   },
   async redirects() {
     return [
