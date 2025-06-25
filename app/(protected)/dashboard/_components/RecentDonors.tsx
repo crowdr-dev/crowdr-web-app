@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { formatAmount } from '../common/utils/currency';
+import { formatAmount } from '../_common/utils/currency';
 
 interface Donor {
   id: string;

@@ -6,8 +6,8 @@ import Link from "next/link"
 import Image from "next/image"
 import ModalTrigger from "../../../common/components/ModalTrigger"
 import DrawerTrigger from "../../../common/components/DrawerTrigger"
-import { useUser } from "../common/hooks/useUser"
-import { useNotification } from "../common/hooks/useNotification"
+import { useUser } from "../_common/hooks/useUser"
+import { useNotification } from "../_common/hooks/useNotification"
 import { Page, pageGroups as _pageGroups } from "../pages"
 import Icon from "./Icon"
 
@@ -71,7 +71,7 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
     }
 
     const adminDashboard = new Page(
-      { route: "/admin/dashboard" },
+      { route: "#/admin/dashboard" },
       "Admin Dashboard",
       shield
     )
@@ -106,7 +106,8 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
             // IF IT'S A ROUTE AND A DRAWER IS CURRENTLY ACTIVE, IT ISN'T THE CURRENT PAGE.
             isCurrentPage = currentDrawerId // OR ELSE CHECK IF THE ROUTE PATH MATCHES WITH THE CURRENT URL PATH
               ? false
-              : currentPath.startsWith("/" + page.route.split("/")[1])
+              : page.route !== "" &&
+                currentPath.startsWith("/dashboard/" + page.route.split("/")[0])
           } else if (!page.noHighlight) {
             isCurrentPage = currentDrawerId === page.modalId
           }
@@ -135,7 +136,13 @@ const Sidebar: RFC<SidebarProps> = ({ drawer }) => {
           const isValidRoute = isRoute && page.route
           const NavItem: any = isValidRoute ? Link : "span"
           const linkProps: any = {
-            ...(isValidRoute ? { href: `/dashboard/${page.route}` } : {}),
+            ...(isValidRoute
+              ? {
+                  href: page.route.startsWith("#")
+                    ? page.route.replace("#", "")
+                    : `/dashboard/${page.route}`,
+                }
+              : {}),
             className: pageLinkStyle,
           }
 

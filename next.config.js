@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["res.cloudinary.com", "images.unsplash.com", "crowdr.netlify.app"]
+    domains: [
+      "res.cloudinary.com",
+      "images.unsplash.com",
+      "crowdr.netlify.app",
+    ],
   },
   async redirects() {
     return [
@@ -9,34 +13,49 @@ const nextConfig = {
       {
         source: "/explore-campaigns/donate-or-volunteer/:path*",
         destination: "/explore/c/:path*",
-        permanent: true
+        permanent: true,
       },
       // Redirect all /explore-campaigns/* to /explore/*
       {
         source: "/explore-campaigns/:path*",
         destination: "/explore/:path*",
-        permanent: true
+        permanent: true,
       },
       // Redirect all /campaigns/* to /dashboard/campaigns/*
       {
         source: "/campaigns/:path*",
         destination: "/dashboard/campaigns/:path*",
-        permanent: true
+        permanent: true,
       },
       // Redirect all /donations/* to /dashboard/donations/*
       {
         source: "/donations/:path*",
         destination: "/dashboard/donations/:path*",
-        permanent: true
+        permanent: true,
       },
       // Redirect all /settings/* to /dashboard/settings/*
       {
         source: "/settings/:path*",
         destination: "/dashboard/settings/:path*",
-        permanent: true
-      }
-    ];
-  }
-};
+        permanent: true,
+      },
+      {
+        source: "/admin",
+        destination: "/admin/dashboard",
+        permanent: true,
+      },
+      {
+        source: "/dashboard",
+        destination: "/dashboard/campaigns",
+        permanent: true,
+      },
+      {
+        source: "/dashboard/settings",
+        destination: "/dashboard/settings/profile",
+        permanent: true,
+      },
+    ]
+  },
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig

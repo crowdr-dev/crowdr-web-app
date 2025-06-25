@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useQuery } from "react-query"
 import { useDebounceCallback } from "usehooks-ts"
-import { useUser } from "../../dashboard/common/hooks/useUser"
+import { useUser } from "../../dashboard/_common/hooks/useUser"
 import Image from "next/image"
 import { Button } from "../../../common/components/Button"
 import TextInput from "../../../common/components/TextInput"
@@ -32,7 +32,7 @@ import {
   mapKycResponseToView,
   mapWithdrawalResponseToView,
 } from "../common/utils/mappings"
-import { keys } from "../../dashboard/utils/queryKeys"
+import { keys } from "../../dashboard/_utils/queryKeys"
 
 import {
   IGetCampaignsParams,

@@ -10,7 +10,7 @@ import {
 import { HeadlessService, IMessage } from "@novu/headless"
 import { useUser } from "./useUser"
 import { useSetAtom } from "jotai"
-import { pageDrawerAtom } from "../../dashboard-components/Sidebar"
+import { pageDrawerAtom } from "../../_components/Sidebar"
 
 interface NotificationContextType {
   notifications: IMessage[]

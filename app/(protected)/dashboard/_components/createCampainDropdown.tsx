@@ -5,7 +5,7 @@ import { Button } from "../../../common/components/Button";
 import { IconType } from "react-icons/lib";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { FiCheck } from "react-icons/fi";
-import { useUser } from "../common/hooks/useUser";
+import { useUser } from "../_common/hooks/useUser";
 
 interface CampaignOption {
   id: string;

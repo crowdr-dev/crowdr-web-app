@@ -2,11 +2,11 @@ import Link from "next/link"
 import Image from "next/image"
 import moment, { Moment } from "moment"
 import { useSetAtom } from "jotai"
-import { useNotification } from "../common/hooks/useNotification"
+import { useNotification } from "../_common/hooks/useNotification"
 import ModalTrigger from "../../../common/components/ModalTrigger"
 import Dot from "./Dot"
 
-import { formatAmount } from "../common/utils/currency"
+import { formatAmount } from "../_common/utils/currency"
 import { pageDrawerAtom } from "./Sidebar"
 
 import { RFC } from "../../../common/types"

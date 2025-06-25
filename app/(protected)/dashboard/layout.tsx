@@ -1,9 +1,9 @@
 "use client";
-import Header from "./dashboard-components/Header";
-import Sidebar from "./dashboard-components/Sidebar";
-import Page from "./dashboard-components/Page";
-import UserProvider from "./common/hooks/useUser";
-import { NotificationProvider } from "./common/hooks/useNotification";
+import Header from "./_components/Header";
+import Sidebar from "./_components/Sidebar";
+import Page from "./_components/Page";
+import UserProvider from "./_common/hooks/useUser";
+import { NotificationProvider } from "./_common/hooks/useNotification";
 
 import { RFC } from "../../common/types";
 import { PropsWithChildren } from "react";

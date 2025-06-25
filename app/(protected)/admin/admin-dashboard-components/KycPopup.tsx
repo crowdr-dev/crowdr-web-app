@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { atom, useAtom } from "jotai"
-import { useUser } from "../../dashboard/common/hooks/useUser"
+import { useUser } from "../../dashboard/_common/hooks/useUser"
 import { useToast } from "../../../common/hooks/useToast"
 import { Button, GrayButton } from "../../../common/components/Button"
 import FileItem from "./FileItem"

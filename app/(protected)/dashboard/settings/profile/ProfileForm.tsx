@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form"
-import { useUser, userAtom } from "../../common/hooks/useUser"
+import { useUser, userAtom } from "../../_common/hooks/useUser"
 import { useToast } from "../../../../common/hooks/useToast"
 import { Button } from "../../../../common/components/Button"
 import TextInput from "../../../../common/components/TextInput"
