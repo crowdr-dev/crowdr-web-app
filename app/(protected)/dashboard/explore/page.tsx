@@ -167,7 +167,7 @@ const Explore = () => {
             onClick={() => handleInterestToggle(value)}>
             {icon && (
               <Image
-                src={`svg/emoji/${icon}.svg`}
+                src={`/svg/emoji/${icon}.svg`}
                 alt={icon}
                 width={15}
                 height={15}
