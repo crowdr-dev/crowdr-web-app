@@ -40,6 +40,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/admin",
+        destination: "/admin/dashboard",
+        permanent: true,
+      },
+      {
         source: "/dashboard",
         destination: "/dashboard/campaigns",
         permanent: true,
